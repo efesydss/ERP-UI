@@ -79,8 +79,14 @@ export const Main = styled(Box)(({ theme }) => ({
 }))
 
 export const ListItem = styled(MuiListItem, {
-  shouldForwardProp: (prop) => prop !== 'isCurrent'
-})<{ isCurrent: boolean }>(({ theme, isCurrent }) => ({
+  shouldForwardProp: (prop) => prop !== 'isCurrent' && prop !== 'isChild'
+})<{ isCurrent: boolean; isChild: boolean }>(({ theme, isCurrent, isChild }) => ({
+  width: 'auto',
+  overflow: 'hidden',
+  ...(isChild && {
+    margin: theme.spacing(0.5, 2),
+    borderRadius: theme.spacing(1)
+  }),
   ...(isCurrent && {
     backgroundColor: theme.palette.secondary.main
   })
@@ -92,14 +98,16 @@ export const ListItemButton = styled(MuiListItemButton)(() => ({
 }))
 
 export const ListItemContent = styled('div', {
-  shouldForwardProp: (prop) => prop !== 'depth'
-})<{ depth: number }>(({ theme, depth }) => ({
+  shouldForwardProp: (prop) => prop !== 'depth' && prop !== 'isDrawerOpen'
+})<{ depth: number; isDrawerOpen: boolean }>(({ theme, depth, isDrawerOpen }) => ({
   width: '100%',
   display: 'flex',
   alignItems: 'center',
   gap: theme.spacing(2),
   position: 'relative',
-  ...(depth !== 0 && {
-    paddingLeft: theme.spacing(depth)
-  })
+  justifyContent: 'center',
+  ...(depth !== 0 &&
+    isDrawerOpen && {
+      paddingLeft: theme.spacing(depth)
+    })
 }))

@@ -4,6 +4,7 @@ import { ListItemButton, ListItemContent, ListItem } from '@/components/Root/sty
 import { ExpandLess, ExpandMore } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from '@tanstack/react-router'
+import { useAppContext } from '@/utils/hooks/useAppContext'
 
 export interface NavListItemProps {
   depth: number
@@ -15,12 +16,14 @@ export interface NavListItemProps {
 }
 
 export const NavListItem = (props: NavListItemProps) => {
+  const { isDrawerOpen } = useAppContext()
   const { t } = useTranslation('nav')
+  const navigate = useNavigate()
+
   const { depth, menuName, data, onHandleMenuClick, activeMenus, parentRoute } = props
   const isToggled = activeMenus.includes(menuName)
   const hasSub = !!data.sub
   const itemLink = parentRoute ? `/${parentRoute}/${data.label}` : `/${data.label}`
-  const navigate = useNavigate()
   const pathname = useLocation({
     select: (location) => location.pathname
   })
@@ -30,6 +33,7 @@ export const NavListItem = (props: NavListItemProps) => {
       <ListItem
         disablePadding
         isCurrent={itemLink === pathname}
+        isChild={!!parentRoute}
       >
         <ListItemButton
           onClick={() => {
@@ -40,11 +44,14 @@ export const NavListItem = (props: NavListItemProps) => {
             onHandleMenuClick(menuName)
           }}
         >
-          <ListItemContent depth={depth}>
+          <ListItemContent
+            depth={depth}
+            isDrawerOpen={isDrawerOpen}
+          >
             <ListItemIcon sx={{ minWidth: 0 }}>{<data.icon />}</ListItemIcon>
-            <ListItemText primary={t(data.label)} />
+            {isDrawerOpen && <ListItemText primary={t(data.label)} />}
           </ListItemContent>
-          {hasSub && (isToggled ? <ExpandLess /> : <ExpandMore />)}
+          {isDrawerOpen && hasSub && (isToggled ? <ExpandLess /> : <ExpandMore />)}
         </ListItemButton>
       </ListItem>
       {data.sub && isToggled && (
