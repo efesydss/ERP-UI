@@ -4,5 +4,10 @@ import { useAppContext } from '@/utils/hooks/useAppContext'
 export const App = ({ router }: { router: Router }) => {
   const auth = useAppContext()
 
-  return <RouterProvider router={router} context={{ auth }} />
+  return (
+    <RouterProvider
+      router={router}
+      context={{ auth }}
+    />
+  )
 }

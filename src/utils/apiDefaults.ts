@@ -1,7 +1,21 @@
-import axios, { AxiosError, AxiosResponse } from 'axios'
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
 import createAuthRefreshInterceptor from 'axios-auth-refresh'
 
 export const backendURL = import.meta.env.VITE_BACKEND_ENDPOINT
+
+type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
+
+interface Pagination {
+  totalCount: number
+  pageSize: number
+  currentPage: number
+  totalPages: number
+}
+
+export interface ApiResponse<T> {
+  data: T[]
+  pagination: Pagination
+}
 
 if (!backendURL) {
   console.error('BACKEND_ENDPOINT must be set. Please copy .env.dist to .env')
@@ -12,6 +26,16 @@ export const axiosBase = axios.create({
   withCredentials: true,
   baseURL: '/api'
 })
+
+export const apiRequest = async <T>(url: string, method: HttpMethod = 'GET', data?: unknown, config?: AxiosRequestConfig): Promise<T> => {
+  const response: AxiosResponse<T> = await axiosBase({
+    url,
+    method,
+    data,
+    ...config
+  })
+  return response.data
+}
 
 export interface TokenResponse {
   accessToken: string

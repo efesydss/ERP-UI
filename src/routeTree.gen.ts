@@ -14,7 +14,6 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as LoginImport } from './routes/login'
 import { Route as AuthenticatedImport } from './routes/_authenticated'
 import { Route as IndexImport } from './routes/index'
-import { Route as AuthenticatedProfileImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedDashboardImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedHrIndexImport } from './routes/_authenticated/hr/index'
 import { Route as AuthenticatedHrTallyImport } from './routes/_authenticated/hr/tally'
@@ -38,11 +37,6 @@ const AuthenticatedRoute = AuthenticatedImport.update({
 const IndexRoute = IndexImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
-} as any)
-
-const AuthenticatedProfileRoute = AuthenticatedProfileImport.update({
-  path: '/profile',
-  getParentRoute: () => AuthenticatedRoute,
 } as any)
 
 const AuthenticatedDashboardRoute = AuthenticatedDashboardImport.update({
@@ -113,13 +107,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardImport
       parentRoute: typeof AuthenticatedImport
     }
-    '/_authenticated/profile': {
-      id: '/_authenticated/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof AuthenticatedProfileImport
-      parentRoute: typeof AuthenticatedImport
-    }
     '/_authenticated/hr/debitCreditAnalysis': {
       id: '/_authenticated/hr/debitCreditAnalysis'
       path: '/hr/debitCreditAnalysis'
@@ -171,7 +158,6 @@ export const routeTree = rootRoute.addChildren({
   IndexRoute,
   AuthenticatedRoute: AuthenticatedRoute.addChildren({
     AuthenticatedDashboardRoute,
-    AuthenticatedProfileRoute,
     AuthenticatedHrDebitCreditAnalysisRoute,
     AuthenticatedHrFinancesRoute,
     AuthenticatedHrLeavesRoute,

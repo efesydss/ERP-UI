@@ -38,6 +38,7 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
 
   initI18n()
+
   root.render(
     <StrictMode>
       <MultiThemeProvider>

@@ -1,38 +1,41 @@
 import { useFormik } from 'formik'
-import { loginSchema } from '@/components/auth/loginSchema'
+import { loginSchema } from '@/components/Auth/loginSchema'
 import { toFormikValidationSchema } from 'zod-formik-adapter'
 import { Button, Container, Stack, TextField } from '@mui/material'
 import { useTranslation } from 'react-i18next'
-import { axiosBase } from '@/utils/apiDefaults'
+import { axiosBase, setAuthToken } from '@/utils/apiDefaults'
 import { useRouter } from '@tanstack/react-router'
 
 export const LoginComponent = () => {
-  const { t } = useTranslation()
+  const { t } = useTranslation('common')
   const router = useRouter()
 
-  const { handleSubmit, values, handleChange, handleBlur, touched, errors } =
-    useFormik({
-      initialValues: {
-        username: '',
-        password: ''
-      },
-      validationSchema: toFormikValidationSchema(loginSchema),
-      onSubmit: async (values) => {
-        const { username, password } = values
-        try {
-          const response = await axiosBase.get('/user/login', {
-            params: { username, password }
-          })
-          console.log(response.data)
-          router.history.push('/dashboard')
-        } catch (error) {
-          console.error('There was an error!', error)
-        }
+  const { handleSubmit, values, handleChange, handleBlur, touched, errors } = useFormik({
+    initialValues: {
+      username: '',
+      password: ''
+    },
+    validationSchema: toFormikValidationSchema(loginSchema),
+    onSubmit: async (values) => {
+      const { username, password } = values
+      try {
+        const response = await axiosBase.get('/user/login', {
+          params: { username, password }
+        })
+        console.log(response.data)
+        setAuthToken(response.data.token)
+        router.history.push('/dashboard')
+      } catch (error) {
+        console.error('There was an error!', error)
       }
-    })
+    }
+  })
 
   return (
-    <Container maxWidth='xs' sx={{ py: 4 }}>
+    <Container
+      maxWidth='xs'
+      sx={{ py: 4 }}
+    >
       <form onSubmit={handleSubmit}>
         <Stack spacing={2}>
           <TextField
@@ -40,7 +43,7 @@ export const LoginComponent = () => {
             fullWidth
             id='username'
             name='username'
-            label={t('auth.username')}
+            label={t('username')}
             value={values.username}
             onChange={handleChange}
             onBlur={handleBlur}
@@ -52,7 +55,7 @@ export const LoginComponent = () => {
             fullWidth
             id='password'
             name='password'
-            label={t('auth.password')}
+            label={t('password')}
             type='password'
             value={values.password}
             onChange={handleChange}
@@ -60,8 +63,12 @@ export const LoginComponent = () => {
             error={touched.password && !!errors.password}
             helperText={touched.password && errors.password}
           />
-          <Button type={'submit'} color={'primary'} variant={'contained'}>
-            {t('auth.login')}
+          <Button
+            type={'submit'}
+            color={'primary'}
+            variant={'contained'}
+          >
+            {t('login')}
           </Button>
         </Stack>
       </form>
