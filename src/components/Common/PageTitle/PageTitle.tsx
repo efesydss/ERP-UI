@@ -11,7 +11,7 @@ export const PageTitle = (props: PageTitleProps) => {
 
   return (
     <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-      <Typography variant={'h5'}>{title}</Typography>
+      <Typography variant={'h6'}>{title}</Typography>
       {actions}
     </Box>
   )
