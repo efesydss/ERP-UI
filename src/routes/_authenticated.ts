@@ -1,12 +1,11 @@
-import { createFileRoute, redirect } from '@tanstack/react-router'
-import { getRefreshToken, setAuthToken, tokenGlobal } from '@/utils/apiDefaults'
+import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_authenticated')({
-  beforeLoad: async ({ context, location }) => {
+  /* beforeLoad: async ({ context, location }) => {
     const { setUser } = context.auth
     const persistedUserInfo = localStorage.getItem('user')
 
-    /* if (!persistedUserInfo) {
+    if (!persistedUserInfo) {
       throw redirect({
         to: '/login',
         search: {
@@ -28,10 +27,10 @@ export const Route = createFileRoute('/_authenticated')({
     } catch (err) {
       console.error('err', err)
       redirect({ to: '/login' })
-    }*/
+    }
 
     return {
       username: context.auth.user
-    }
-  }
+
+  }}*/
 })

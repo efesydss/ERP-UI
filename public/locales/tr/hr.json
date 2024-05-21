@@ -1,5 +1,8 @@
 {
   "personnelTitle": "Personel Listesi",
   "newPersonnel": "Yeni Personel",
-  "department": "Departman"
+  "department": "Departman",
+  "infoGeneral": "Personel Bilgileri",
+  "infoIdentity": "Nüfus Bilgileri",
+  "infoPayroll": "Bordro Bilgileri"
 }

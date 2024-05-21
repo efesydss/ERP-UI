@@ -15,12 +15,12 @@ import { Route as LoginImport } from './routes/login'
 import { Route as AuthenticatedImport } from './routes/_authenticated'
 import { Route as IndexImport } from './routes/index'
 import { Route as AuthenticatedDashboardImport } from './routes/_authenticated/dashboard'
-import { Route as AuthenticatedHrIndexImport } from './routes/_authenticated/hr/index'
 import { Route as AuthenticatedHrTallyImport } from './routes/_authenticated/hr/tally'
-import { Route as AuthenticatedHrPersonnelImport } from './routes/_authenticated/hr/personnel'
 import { Route as AuthenticatedHrLeavesImport } from './routes/_authenticated/hr/leaves'
 import { Route as AuthenticatedHrFinancesImport } from './routes/_authenticated/hr/finances'
 import { Route as AuthenticatedHrDebitCreditAnalysisImport } from './routes/_authenticated/hr/debitCreditAnalysis'
+import { Route as AuthenticatedHrPersonnelIndexImport } from './routes/_authenticated/hr/personnel/index'
+import { Route as AuthenticatedHrPersonnelIdImport } from './routes/_authenticated/hr/personnel/$id'
 
 // Create/Update Routes
 
@@ -44,18 +44,8 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardImport.update({
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 
-const AuthenticatedHrIndexRoute = AuthenticatedHrIndexImport.update({
-  path: '/hr/',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
-
 const AuthenticatedHrTallyRoute = AuthenticatedHrTallyImport.update({
   path: '/hr/tally',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
-
-const AuthenticatedHrPersonnelRoute = AuthenticatedHrPersonnelImport.update({
-  path: '/hr/personnel',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 
@@ -74,6 +64,19 @@ const AuthenticatedHrDebitCreditAnalysisRoute =
     path: '/hr/debitCreditAnalysis',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+
+const AuthenticatedHrPersonnelIndexRoute =
+  AuthenticatedHrPersonnelIndexImport.update({
+    path: '/hr/personnel/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
+const AuthenticatedHrPersonnelIdRoute = AuthenticatedHrPersonnelIdImport.update(
+  {
+    path: '/hr/personnel/$id',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any,
+)
 
 // Populate the FileRoutesByPath interface
 
@@ -128,13 +131,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHrLeavesImport
       parentRoute: typeof AuthenticatedImport
     }
-    '/_authenticated/hr/personnel': {
-      id: '/_authenticated/hr/personnel'
-      path: '/hr/personnel'
-      fullPath: '/hr/personnel'
-      preLoaderRoute: typeof AuthenticatedHrPersonnelImport
-      parentRoute: typeof AuthenticatedImport
-    }
     '/_authenticated/hr/tally': {
       id: '/_authenticated/hr/tally'
       path: '/hr/tally'
@@ -142,11 +138,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHrTallyImport
       parentRoute: typeof AuthenticatedImport
     }
-    '/_authenticated/hr/': {
-      id: '/_authenticated/hr/'
-      path: '/hr'
-      fullPath: '/hr'
-      preLoaderRoute: typeof AuthenticatedHrIndexImport
+    '/_authenticated/hr/personnel/$id': {
+      id: '/_authenticated/hr/personnel/$id'
+      path: '/hr/personnel/$id'
+      fullPath: '/hr/personnel/$id'
+      preLoaderRoute: typeof AuthenticatedHrPersonnelIdImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/hr/personnel/': {
+      id: '/_authenticated/hr/personnel/'
+      path: '/hr/personnel'
+      fullPath: '/hr/personnel'
+      preLoaderRoute: typeof AuthenticatedHrPersonnelIndexImport
       parentRoute: typeof AuthenticatedImport
     }
   }
@@ -161,9 +164,9 @@ export const routeTree = rootRoute.addChildren({
     AuthenticatedHrDebitCreditAnalysisRoute,
     AuthenticatedHrFinancesRoute,
     AuthenticatedHrLeavesRoute,
-    AuthenticatedHrPersonnelRoute,
     AuthenticatedHrTallyRoute,
-    AuthenticatedHrIndexRoute,
+    AuthenticatedHrPersonnelIdRoute,
+    AuthenticatedHrPersonnelIndexRoute,
   }),
   LoginRoute,
 })

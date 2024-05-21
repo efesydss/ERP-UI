@@ -1,14 +1,13 @@
 import ReactDOM from 'react-dom/client'
 import { StrictMode } from 'react'
 import { CssBaseline } from '@mui/material'
-import { App } from '@/App'
 import { MultiThemeProvider } from '@/utils/ThemeContext'
 import { initI18n } from '@/i18n'
 import { AppProvider } from '@/utils/AppProvider'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.min.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { createRouter, ErrorComponent } from '@tanstack/react-router'
+import { createRouter, ErrorComponent, RouterProvider } from '@tanstack/react-router'
 import { routeTree } from '@/routeTree.gen'
 
 const queryClient = new QueryClient()
@@ -22,7 +21,7 @@ declare module '@tanstack/react-router' {
 const router = createRouter({
   routeTree,
   context: {
-    auth: undefined!,
+    //auth: undefined!,
     queryClient
   },
   defaultPreload: 'intent',
@@ -46,7 +45,8 @@ if (!rootElement.innerHTML) {
           <CssBaseline />
           <AppProvider>
             <ToastContainer />
-            <App router={router} />
+            {/*<App router={router} />*/}
+            <RouterProvider router={router} />
           </AppProvider>
         </QueryClientProvider>
       </MultiThemeProvider>
