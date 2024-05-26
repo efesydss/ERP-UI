@@ -9,11 +9,12 @@ import { Button } from '@mui/material'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
 import { apiRoutes } from '@/utils/apiRoutes'
-import { Link } from '@tanstack/react-router'
+import { Link, useNavigate } from '@tanstack/react-router'
 
-export const Personnel = () => {
+export const PersonnelList = () => {
   const { t: common } = useTranslation('common')
   const { t: hr } = useTranslation('hr')
+  const navigate = useNavigate()
 
   const { data } = useQuery({
     queryKey: ['personnelData'],
@@ -41,6 +42,7 @@ export const Personnel = () => {
         <Button
           variant={'contained'}
           startIcon={<PersonAddAlt1Icon />}
+          onClick={() => navigate({ to: '/hr/personnel/add' })}
         >
           {hr('newPersonnel')}
         </Button>
@@ -66,7 +68,7 @@ export const Personnel = () => {
       </Link>
       <BaseTable
         columns={columns}
-        data={data?.data}
+        data={data?.results}
       />
     </div>
   )

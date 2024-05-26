@@ -1,6 +1,12 @@
 import { z } from 'zod'
 
-export const loginSchema = z.object({
-  username: z.string().min(1, 'Username is required'),
-  password: z.string().min(1, 'Password is required')
-})
+export const loginSchema = (t: (key: string) => string) => {
+  return z.object({
+    username: z.string({
+      required_error: t('notValid.username')
+    }),
+    password: z.string({
+      required_error: t('notValid.password')
+    })
+  })
+}

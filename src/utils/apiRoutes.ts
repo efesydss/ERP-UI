@@ -1,3 +1,6 @@
 export const apiRoutes = {
-  personnelList: '/humanResources/personnels'
+  refresh: 'public/refresh',
+  login: 'user/login',
+  personnelList: '/humanResources/personnels',
+  personnelCrud: '/humanResources/personnel'
 }

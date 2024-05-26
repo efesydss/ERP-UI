@@ -4,5 +4,6 @@
   "department": "Departman",
   "infoGeneral": "Personel Bilgileri",
   "infoIdentity": "Nüfus Bilgileri",
-  "infoPayroll": "Bordro Bilgileri"
+  "infoPayroll": "Bordro Bilgileri",
+  "startDate": "İşe Giriş"
 }

@@ -1,77 +1,52 @@
-import { useFormik } from 'formik'
-import { loginSchema } from '@/components/Auth/loginSchema'
-import { toFormikValidationSchema } from 'zod-formik-adapter'
-import { Button, Container, Stack, TextField } from '@mui/material'
-import { useTranslation } from 'react-i18next'
-import { axiosBase, setAuthToken } from '@/utils/apiDefaults'
+import { Container } from '@mui/material'
+import { apiRequest } from '@/utils/apiDefaults'
 import { useRouter } from '@tanstack/react-router'
+import { BaseForm } from '@/components/Common/Form/BaseForm'
+import { loginSchema } from '@/components/Auth/loginSchema'
+import { FormLogin } from '@/components/Auth/FormLogin'
+import { useMutation } from '@tanstack/react-query'
+import { apiRoutes } from '@/utils/apiRoutes'
 
 export const LoginComponent = () => {
-  const { t } = useTranslation('common')
   const router = useRouter()
 
-  const { handleSubmit, values, handleChange, handleBlur, touched, errors } = useFormik({
-    initialValues: {
-      username: '',
-      password: ''
-    },
-    validationSchema: toFormikValidationSchema(loginSchema),
-    onSubmit: async (values) => {
-      const { username, password } = values
-      try {
-        const response = await axiosBase.get('/user/login', {
-          params: { username, password }
-        })
-        console.log(response.data)
-        setAuthToken(response.data.token)
-        router.history.push('/dashboard')
-      } catch (error) {
-        console.error('There was an error!', error)
-      }
-    }
+  const loginFormFields = {
+    username: '',
+    password: ''
+  }
+
+  const { mutate } = useMutation({
+    mutationFn: (values: typeof loginFormFields) => apiRequest<typeof loginFormFields>(apiRoutes.login, 'POST', values),
+    onSuccess: () => console.log('login form success'),
+    onError: () => console.log('login form error')
   })
+
+  const onFormSubmit = (values: typeof loginFormFields) => {
+    mutate(values)
+
+    /* try {
+      const response = await axiosBase.get('/user/login', {
+        params: { username, password }
+      })
+      console.log(response.data)
+      setAuthToken(response.data.token)
+      router.history.push('/dashboard')
+    } catch (error) {
+      console.error('There was an error!', error)
+    }*/
+  }
 
   return (
     <Container
       maxWidth='xs'
       sx={{ py: 4 }}
     >
-      <form onSubmit={handleSubmit}>
-        <Stack spacing={2}>
-          <TextField
-            size={'small'}
-            fullWidth
-            id='username'
-            name='username'
-            label={t('username')}
-            value={values.username}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            error={touched.username && !!errors.username}
-            helperText={touched.username && errors.username}
-          />
-          <TextField
-            size={'small'}
-            fullWidth
-            id='password'
-            name='password'
-            label={t('password')}
-            type='password'
-            value={values.password}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            error={touched.password && !!errors.password}
-            helperText={touched.password && errors.password}
-          />
-          <Button
-            type={'submit'}
-            color={'primary'}
-            variant={'contained'}
-          >
-            {t('login')}
-          </Button>
-        </Stack>
-      </form>
+      <BaseForm
+        initialValues={loginFormFields}
+        elementToRender={<FormLogin />}
+        onSubmit={onFormSubmit}
+        validationSchema={loginSchema}
+      />
     </Container>
   )
 }

@@ -20,6 +20,7 @@ import { Route as AuthenticatedHrLeavesImport } from './routes/_authenticated/hr
 import { Route as AuthenticatedHrFinancesImport } from './routes/_authenticated/hr/finances'
 import { Route as AuthenticatedHrDebitCreditAnalysisImport } from './routes/_authenticated/hr/debitCreditAnalysis'
 import { Route as AuthenticatedHrPersonnelIndexImport } from './routes/_authenticated/hr/personnel/index'
+import { Route as AuthenticatedHrPersonnelAddImport } from './routes/_authenticated/hr/personnel/add'
 import { Route as AuthenticatedHrPersonnelIdImport } from './routes/_authenticated/hr/personnel/$id'
 
 // Create/Update Routes
@@ -68,6 +69,12 @@ const AuthenticatedHrDebitCreditAnalysisRoute =
 const AuthenticatedHrPersonnelIndexRoute =
   AuthenticatedHrPersonnelIndexImport.update({
     path: '/hr/personnel/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
+const AuthenticatedHrPersonnelAddRoute =
+  AuthenticatedHrPersonnelAddImport.update({
+    path: '/hr/personnel/add',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
@@ -145,6 +152,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHrPersonnelIdImport
       parentRoute: typeof AuthenticatedImport
     }
+    '/_authenticated/hr/personnel/add': {
+      id: '/_authenticated/hr/personnel/add'
+      path: '/hr/personnel/add'
+      fullPath: '/hr/personnel/add'
+      preLoaderRoute: typeof AuthenticatedHrPersonnelAddImport
+      parentRoute: typeof AuthenticatedImport
+    }
     '/_authenticated/hr/personnel/': {
       id: '/_authenticated/hr/personnel/'
       path: '/hr/personnel'
@@ -166,6 +180,7 @@ export const routeTree = rootRoute.addChildren({
     AuthenticatedHrLeavesRoute,
     AuthenticatedHrTallyRoute,
     AuthenticatedHrPersonnelIdRoute,
+    AuthenticatedHrPersonnelAddRoute,
     AuthenticatedHrPersonnelIndexRoute,
   }),
   LoginRoute,

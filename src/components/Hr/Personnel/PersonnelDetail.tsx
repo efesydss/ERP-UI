@@ -1,30 +1,19 @@
-import { Box, Tab, Tabs, Typography } from '@mui/material'
-import { ReactNode, SyntheticEvent, useState } from 'react'
+import { Box, Tab, Tabs } from '@mui/material'
+import { SyntheticEvent, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { BaseForm } from '@/components/Common/Form/BaseForm'
+import { FormPersonnelDetail } from '@/components/Hr/Personnel/FormPersonnelDetail'
+import { personnelSchema } from '@/components/Hr/Personnel/schemaPersonnel'
+import { useMutation } from '@tanstack/react-query'
+import { apiRequest } from '@/utils/apiDefaults'
+import { apiRoutes } from '@/utils/apiRoutes'
 
-interface TabPanelProps {
-  children?: ReactNode
-  index: number
-  value: number
-}
-
-const CustomTabPanel = (props: TabPanelProps) => {
-  const { children, value, index, ...other } = props
-
-  return (
-    <div
-      role='tabpanel'
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  )
+const initialPersonnel = {
+  fullName: '',
+  email: '',
+  category: '',
+  address: '',
+  startDate: null
 }
 
 export const PersonnelDetail = () => {
@@ -33,6 +22,15 @@ export const PersonnelDetail = () => {
 
   const handleChange = (_event: SyntheticEvent, newValue: number) => {
     setValue(newValue)
+  }
+
+  const { mutateAsync } = useMutation({
+    mutationFn: (values: typeof initialPersonnel) => apiRequest<typeof initialPersonnel>(apiRoutes.personnelCrud, 'POST', values)
+  })
+
+  const onFormSubmit = async (values: typeof initialPersonnel) => {
+    console.log('values -->', values)
+    await mutateAsync(values)
   }
 
   return (
@@ -47,24 +45,12 @@ export const PersonnelDetail = () => {
           <Tab label={hr('infoPayroll')} />
         </Tabs>
       </Box>
-      <CustomTabPanel
-        value={value}
-        index={0}
-      >
-        Item One
-      </CustomTabPanel>
-      <CustomTabPanel
-        value={value}
-        index={1}
-      >
-        Item Two
-      </CustomTabPanel>
-      <CustomTabPanel
-        value={value}
-        index={2}
-      >
-        Item Three
-      </CustomTabPanel>
+      <BaseForm
+        initialValues={initialPersonnel}
+        validationSchema={personnelSchema}
+        elementToRender={<FormPersonnelDetail value={value} />}
+        onSubmit={onFormSubmit}
+      />
     </Box>
   )
 }

@@ -1,9 +1,10 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
 import createAuthRefreshInterceptor from 'axios-auth-refresh'
+import { apiRoutes } from '@/utils/apiRoutes'
 
 export const backendURL = import.meta.env.VITE_BACKEND_ENDPOINT
 
-type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
+export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
 
 interface Pagination {
   totalCount: number
@@ -13,7 +14,7 @@ interface Pagination {
 }
 
 export interface ApiResponse<T> {
-  data: T[]
+  results: T[]
   pagination: Pagination
 }
 
@@ -49,7 +50,7 @@ export const getRefreshToken = async () => {
   }
 
   try {
-    const refreshedToken = await axiosBase.post<TokenResponse>('/public/refresh')
+    const refreshedToken = await axiosBase.post<TokenResponse>(apiRoutes.refresh)
 
     return refreshedToken.data.accessToken
   } catch (err) {

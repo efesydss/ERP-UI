@@ -1,4 +1,7 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Outlet } from '@tanstack/react-router'
+import { AppBar } from '@/components/Root/components/AppBar/AppBar'
+import { AppDrawer } from '@/components/Root/components/AppDrawer/AppDrawer'
+import { DrawerHeader, Main, RootWrapper } from '@/components/Root/stylesRoot'
 
 export const Route = createFileRoute('/_authenticated')({
   /* beforeLoad: async ({ context, location }) => {
@@ -33,4 +36,16 @@ export const Route = createFileRoute('/_authenticated')({
       username: context.auth.user
 
   }}*/
+  component: () => (
+    <>
+      <RootWrapper>
+        <AppBar />
+        <AppDrawer />
+        <Main component={'main'}>
+          <DrawerHeader />
+          <Outlet />
+        </Main>
+      </RootWrapper>
+    </>
+  )
 })

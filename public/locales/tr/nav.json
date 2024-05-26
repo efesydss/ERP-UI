@@ -3,7 +3,8 @@
   "personnel": "Personel",
   "leaves": "İzinler",
   "debitCreditAnalysis": "Borç Alacak Analizi",
-  "finances": "Mali Hareketler",
-  "tally": "Puantaj"
+  "finances": "Ödemeler",
+  "tally": "Puantaj",
+  "admin": "Yonetici"
 }
 

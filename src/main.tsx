@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.min.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createRouter, ErrorComponent, RouterProvider } from '@tanstack/react-router'
 import { routeTree } from '@/routeTree.gen'
+import { useAppContext } from '@/utils/hooks/useAppContext'
 
 const queryClient = new QueryClient()
 
@@ -21,7 +22,7 @@ declare module '@tanstack/react-router' {
 const router = createRouter({
   routeTree,
   context: {
-    //auth: undefined!,
+    app: undefined!,
     queryClient
   },
   defaultPreload: 'intent',
@@ -30,6 +31,24 @@ const router = createRouter({
   defaultErrorComponent: ({ error }) => <ErrorComponent error={error} />,
   defaultNotFoundComponent: () => <span>is a 404</span>
 })
+
+function InnerApp() {
+  const app = useAppContext()
+  return (
+    <RouterProvider
+      router={router}
+      context={{ app }}
+    />
+  )
+}
+
+function App() {
+  return (
+    <AppProvider>
+      <InnerApp />
+    </AppProvider>
+  )
+}
 
 const rootElement = document.getElementById('appRoot')!
 
@@ -43,11 +62,8 @@ if (!rootElement.innerHTML) {
       <MultiThemeProvider>
         <QueryClientProvider client={queryClient}>
           <CssBaseline />
-          <AppProvider>
-            <ToastContainer />
-            {/*<App router={router} />*/}
-            <RouterProvider router={router} />
-          </AppProvider>
+          <ToastContainer />
+          <App />
         </QueryClientProvider>
       </MultiThemeProvider>
     </StrictMode>

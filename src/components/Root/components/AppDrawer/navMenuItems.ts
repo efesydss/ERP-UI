@@ -34,7 +34,7 @@ export const navMenuItems: MenuItemProps[] = [
     ]
   },
   {
-    label: 'Admin',
+    label: 'admin',
     icon: RiAdminLine
   }
 ]

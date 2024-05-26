@@ -1,9 +1,9 @@
 import { MenuItemProps } from '@/components/Root/typesRoot'
 import { List, ListItemIcon, ListItemText } from '@mui/material'
-import { ListItemButton, ListItemContent, ListItem } from '@/components/Root/stylesRoot'
+import { ListItem, ListItemButton, ListItemContent } from '@/components/Root/stylesRoot'
 import { ExpandLess, ExpandMore } from '@mui/icons-material'
 import { useTranslation } from 'react-i18next'
-import { useLocation, useNavigate } from '@tanstack/react-router'
+import { useLocation, useMatches, useNavigate } from '@tanstack/react-router'
 import { useAppContext } from '@/utils/hooks/useAppContext'
 
 export interface NavListItemProps {
@@ -19,6 +19,7 @@ export const NavListItem = (props: NavListItemProps) => {
   const { isDrawerOpen } = useAppContext()
   const { t } = useTranslation('nav')
   const navigate = useNavigate()
+  const matches = useMatches()
 
   const { depth, menuName, data, onHandleMenuClick, activeMenus, parentRoute } = props
   const isToggled = activeMenus.includes(menuName)
@@ -28,11 +29,13 @@ export const NavListItem = (props: NavListItemProps) => {
     select: (location) => location.pathname
   })
 
+  const isActive = matches.some((match) => match.pathname.includes(itemLink)) || itemLink === pathname
+
   return (
     <>
       <ListItem
         disablePadding
-        isCurrent={itemLink === pathname}
+        isCurrent={isActive}
         isChild={!!parentRoute}
       >
         <ListItemButton

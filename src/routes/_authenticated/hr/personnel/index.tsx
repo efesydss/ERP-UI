@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Personnel } from '@/components/Hr/Personnel/Personnel'
+import { PersonnelList } from '@/components/Hr/Personnel/PersonnelList'
 
 export const Route = createFileRoute('/_authenticated/hr/personnel/')({
-  component: () => <Personnel />
+  component: () => <PersonnelList />
 })

@@ -4,5 +4,9 @@
   "username": "Kullanıcı Adı",
   "password": "Şifre",
   "login": "Giriş Yap",
-  "fullName": "Adı Soyadı"
+  "fullName": "Adı Soyadı",
+  "name": "Adı",
+  "surname": "Soyadı",
+  "email": "E-Posta",
+  "address": "Adres"
 }

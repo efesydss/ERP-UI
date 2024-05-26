@@ -1,0 +1,8 @@
+{
+  "notValid": {
+    "required": "Zorunlu alan",
+    "name": "İsim gerekli",
+    "username" : "Kullanıcı adı gerekli",
+    "password": "Şifre gerekli"
+  }
+}

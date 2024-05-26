@@ -8,12 +8,11 @@ import { useState } from 'react'
 
 export const AppDrawer = () => {
   const { isDrawerOpen, setIsDrawerOpen } = useAppContext()
-  const [activeMenus, setActiveMenus] = useState<string[]>([''])
+  const [activeMenus, setActiveMenus] = useState<string[]>([])
 
   const handleMenuClick = (menuName: string) => {
     setActiveMenus((prev) => (prev.includes(menuName) ? prev.filter((name) => name !== menuName) : [...prev, menuName]))
   }
-
   return (
     <AppLeftDrawer
       variant={'permanent'}
@@ -27,7 +26,7 @@ export const AppDrawer = () => {
       <List disablePadding>
         {navMenuItems.map((nav, i) => {
           const depth = 0
-          const menuName = `sidebar-${depth}-${i}`
+          const menuName = `${depth}-${i}`
 
           return (
             <NavListItem
