@@ -43,7 +43,7 @@ export const LoginComponent = () => {
     >
       <BaseForm
         initialValues={loginFormFields}
-        elementToRender={<FormLogin />}
+        component={<FormLogin />}
         onSubmit={onFormSubmit}
         validationSchema={loginSchema}
       />

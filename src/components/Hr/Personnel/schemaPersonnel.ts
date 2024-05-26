@@ -20,8 +20,8 @@ export const personnelSchema = (t: (key: string) => string) => {
   return z.object({
     fullName: checkString(t),
     email: checkString(t).email(),
-    category: checkString(t),
     address: checkString(t),
-    startDate: z.date().nullable()
+    title: checkString(t),
+    startDate: dateSchema
   })
 }

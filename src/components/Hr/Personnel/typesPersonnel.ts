@@ -67,8 +67,8 @@ export interface PersonnelData {
   title: string
   emergencyContact: EmergencyContact
   citizenInformation: CitizenInformation
-  payrollDetails: PayrollInformation
-  uuid: string
+  payrollInformation: PayrollInformation
+  uuid: number
   docRef: string
   createdAt: string
 }

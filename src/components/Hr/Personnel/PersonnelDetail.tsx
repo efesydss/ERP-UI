@@ -7,12 +7,13 @@ import { personnelSchema } from '@/components/Hr/Personnel/schemaPersonnel'
 import { useMutation } from '@tanstack/react-query'
 import { apiRequest } from '@/utils/apiDefaults'
 import { apiRoutes } from '@/utils/apiRoutes'
+import { PersonnelData } from '@/components/Hr/Personnel/typesPersonnel'
 
-const initialPersonnel = {
+const personnel = {
   fullName: '',
   email: '',
-  category: '',
   address: '',
+  title: '',
   startDate: null
 }
 
@@ -25,10 +26,10 @@ export const PersonnelDetail = () => {
   }
 
   const { mutateAsync } = useMutation({
-    mutationFn: (values: typeof initialPersonnel) => apiRequest<typeof initialPersonnel>(apiRoutes.personnelCrud, 'POST', values)
+    mutationFn: (values: PersonnelData) => apiRequest<PersonnelData>(apiRoutes.personnelCrud, 'POST', values)
   })
 
-  const onFormSubmit = async (values: typeof initialPersonnel) => {
+  const onFormSubmit = async (values: PersonnelData) => {
     console.log('values -->', values)
     await mutateAsync(values)
   }
@@ -46,9 +47,9 @@ export const PersonnelDetail = () => {
         </Tabs>
       </Box>
       <BaseForm
-        initialValues={initialPersonnel}
+        initialValues={personnel}
         validationSchema={personnelSchema}
-        elementToRender={<FormPersonnelDetail value={value} />}
+        component={<FormPersonnelDetail value={value} />}
         onSubmit={onFormSubmit}
       />
     </Box>

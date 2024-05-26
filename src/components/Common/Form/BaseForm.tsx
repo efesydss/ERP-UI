@@ -8,12 +8,12 @@ interface BaseFormProps<T extends FormikValues> {
   initialValues: T
   onSubmit: (values: T) => void
   validationSchema: (t: (key: string) => string) => ZodSchema<T>
-  elementToRender: ReactNode
+  component: ReactNode
 }
 
 export const BaseForm = <T extends FormikValues>(props: BaseFormProps<T>) => {
   const { t: feedbacks } = useTranslation('feedbacks')
-  const { initialValues, onSubmit, validationSchema, elementToRender } = props
+  const { initialValues, onSubmit, validationSchema, component } = props
 
   return (
     <Formik
@@ -21,7 +21,7 @@ export const BaseForm = <T extends FormikValues>(props: BaseFormProps<T>) => {
       onSubmit={onSubmit}
       validationSchema={toFormikValidationSchema(validationSchema(feedbacks))}
     >
-      <Form>{elementToRender}</Form>
+      <Form>{component}</Form>
     </Formik>
   )
 }

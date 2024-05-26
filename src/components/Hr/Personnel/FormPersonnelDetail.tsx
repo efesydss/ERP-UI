@@ -51,7 +51,7 @@ export const FormPersonnelDetail = (props: FormPersonnelDetailProps) => {
           <Input name={'fullName'} />
           <Input name={'email'} />
           <BaseSelect
-            name='category'
+            name='title'
             options={options}
           />
           <DatePicker
