@@ -62,6 +62,7 @@ export const FormPersonnelDetail = (props: FormPersonnelDetailProps) => {
             name={'address'}
             isMultiLine
           />
+          <Input name={'title'} />
         </FormGrid>
         <Button
           type={'submit'}

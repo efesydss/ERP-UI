@@ -14,8 +14,6 @@ export const DatePicker = (props: DatePickerProps) => {
   const { name, label, ...rest } = props
   const [field, { touched, error }, { setValue }] = useField(name)
 
-  console.log('error -->', error)
-
   return (
     <Stack position={'relative'}>
       <RDatePicker
@@ -27,7 +25,7 @@ export const DatePicker = (props: DatePickerProps) => {
         locale={'tr'}
         customInput={
           <TextField
-            label={t(name)}
+            label={t(name, { ns: 'hr' })}
             fullWidth
             size={'small'}
             error={touched && !!error}

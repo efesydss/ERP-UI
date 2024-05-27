@@ -54,21 +54,21 @@ interface CitizenInformation {
 
 export interface PersonnelData {
   fullName: string
-  isInactive: boolean
+  email: string
+  address: string
+  title: string
   startDate: Date | null
+  /*  isInactive: boolean
   endDate: Date | null
   bloodType: BloodType
   socialSecurityNumber: number
   homePhone?: string
   mobilePhone: string
-  email: string
-  address: string
   department: string
-  title: string
   emergencyContact: EmergencyContact
   citizenInformation: CitizenInformation
   payrollInformation: PayrollInformation
   uuid: number
   docRef: string
-  createdAt: string
+  createdAt: string*/
 }

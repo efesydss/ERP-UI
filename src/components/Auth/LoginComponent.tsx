@@ -2,10 +2,10 @@ import { Container } from '@mui/material'
 import { apiRequest } from '@/utils/apiDefaults'
 import { useRouter } from '@tanstack/react-router'
 import { BaseForm } from '@/components/Common/Form/BaseForm'
-import { loginSchema } from '@/components/Auth/loginSchema'
 import { FormLogin } from '@/components/Auth/FormLogin'
 import { useMutation } from '@tanstack/react-query'
 import { apiRoutes } from '@/utils/apiRoutes'
+import * as yup from 'yup'
 
 export const LoginComponent = () => {
   const router = useRouter()
@@ -36,6 +36,11 @@ export const LoginComponent = () => {
     }*/
   }
 
+  const validationSchema = yup.object({
+    username: yup.string().required(),
+    password: yup.string().required()
+  })
+
   return (
     <Container
       maxWidth='xs'
@@ -45,7 +50,7 @@ export const LoginComponent = () => {
         initialValues={loginFormFields}
         component={<FormLogin />}
         onSubmit={onFormSubmit}
-        validationSchema={loginSchema}
+        validationSchema={validationSchema}
       />
     </Container>
   )

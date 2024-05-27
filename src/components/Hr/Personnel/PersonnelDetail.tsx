@@ -3,11 +3,11 @@ import { SyntheticEvent, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { BaseForm } from '@/components/Common/Form/BaseForm'
 import { FormPersonnelDetail } from '@/components/Hr/Personnel/FormPersonnelDetail'
-import { personnelSchema } from '@/components/Hr/Personnel/schemaPersonnel'
 import { useMutation } from '@tanstack/react-query'
 import { apiRequest } from '@/utils/apiDefaults'
 import { apiRoutes } from '@/utils/apiRoutes'
 import { PersonnelData } from '@/components/Hr/Personnel/typesPersonnel'
+import * as yup from 'yup'
 
 const personnel = {
   fullName: '',
@@ -20,6 +20,14 @@ const personnel = {
 export const PersonnelDetail = () => {
   const { t: hr } = useTranslation('hr')
   const [value, setValue] = useState(0)
+
+  const validationSchema = yup.object({
+    fullName: yup.string().required(),
+    email: yup.string().email().required(),
+    address: yup.string().required(),
+    title: yup.string().required(),
+    startDate: yup.date().required()
+  })
 
   const handleChange = (_event: SyntheticEvent, newValue: number) => {
     setValue(newValue)
@@ -48,7 +56,7 @@ export const PersonnelDetail = () => {
       </Box>
       <BaseForm
         initialValues={personnel}
-        validationSchema={personnelSchema}
+        validationSchema={validationSchema}
         component={<FormPersonnelDetail value={value} />}
         onSubmit={onFormSubmit}
       />
