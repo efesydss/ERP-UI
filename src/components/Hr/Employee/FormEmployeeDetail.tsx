@@ -5,9 +5,10 @@ import { ReactNode } from 'react'
 import { BaseSelect } from '@/components/Common/Form/BaseSelect'
 import { FormGrid } from '@/components/Common/Form/FormGrid/FormGrid'
 import { DatePicker } from '@/components/Common/Form/DatePicker/DatePicker'
+import { BloodType } from '@/components/Hr/Employee/typesEmployee'
 
 interface FormPersonnelDetailProps {
-  value: number
+  value?: number
 }
 
 interface TabPanelProps {
@@ -31,38 +32,52 @@ const CustomTabPanel = (props: TabPanelProps) => {
   )
 }
 
-export const FormPersonnelDetail = (props: FormPersonnelDetailProps) => {
+export const FormEmployeeDetail = (props: FormPersonnelDetailProps) => {
   const { t: common } = useTranslation('common')
   const { value } = props
 
   const options = [
-    { value: 'option1', label: 'Option 1' },
+    { value: 'software_developer', label: 'Software Developer' },
     { value: 'option2', label: 'Option 2' },
     { value: 'option3', label: 'Option 3' }
   ]
 
+  const bloodTypeOptions = Object.values(BloodType).map((type) => ({
+    value: type,
+    label: type
+  }))
+
   return (
     <>
       <CustomTabPanel
-        value={value}
+        value={value || 0}
         index={0}
       >
         <FormGrid widths={'half'}>
-          <Input name={'fullName'} />
-          <Input name={'email'} />
-          <BaseSelect
-            name='title'
-            options={options}
-          />
-          <DatePicker
-            name={'startDate'}
-            label={'start'}
-          />
-          <Input
-            name={'address'}
-            isMultiLine
-          />
-          <Input name={'title'} />
+          <FormGrid>
+            <Input name={'name'} />
+            <Input name={'surname'} />
+            <Input name={'email'} />
+            <BaseSelect
+              name='profession'
+              options={options}
+              placeholder={common('title')}
+            />
+            <DatePicker name={'startDate'} />
+            <DatePicker name={'endDate'} />
+          </FormGrid>
+          <FormGrid>
+            <Input name={'homePhone'} />
+            <Input name={'mobilePhone'} />
+            <BaseSelect
+              name='bloodType'
+              options={bloodTypeOptions}
+            />
+            <Input
+              name={'address'}
+              isMultiLine
+            />
+          </FormGrid>
         </FormGrid>
         <Button
           type={'submit'}
@@ -73,13 +88,13 @@ export const FormPersonnelDetail = (props: FormPersonnelDetailProps) => {
         </Button>
       </CustomTabPanel>
       <CustomTabPanel
-        value={value}
+        value={value || 0}
         index={1}
       >
         Item Two
       </CustomTabPanel>
       <CustomTabPanel
-        value={value}
+        value={value || 0}
         index={2}
       >
         three

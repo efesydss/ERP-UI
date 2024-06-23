@@ -7,7 +7,7 @@ export const initI18n = () => {
     .use(initReactI18next)
     .use(HttpBackend)
     .init({
-      debug: true,
+      debug: false,
       lng: 'tr',
       fallbackLng: 'tr',
       backend: {

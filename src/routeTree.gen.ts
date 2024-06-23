@@ -14,14 +14,16 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as LoginImport } from './routes/login'
 import { Route as AuthenticatedImport } from './routes/_authenticated'
 import { Route as IndexImport } from './routes/index'
+import { Route as AuthenticatedHrImport } from './routes/_authenticated/hr'
 import { Route as AuthenticatedDashboardImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedHrTallyImport } from './routes/_authenticated/hr/tally'
 import { Route as AuthenticatedHrLeavesImport } from './routes/_authenticated/hr/leaves'
 import { Route as AuthenticatedHrFinancesImport } from './routes/_authenticated/hr/finances'
+import { Route as AuthenticatedHrEmployeesImport } from './routes/_authenticated/hr/employees'
 import { Route as AuthenticatedHrDebitCreditAnalysisImport } from './routes/_authenticated/hr/debitCreditAnalysis'
-import { Route as AuthenticatedHrPersonnelIndexImport } from './routes/_authenticated/hr/personnel/index'
-import { Route as AuthenticatedHrPersonnelAddImport } from './routes/_authenticated/hr/personnel/add'
-import { Route as AuthenticatedHrPersonnelIdImport } from './routes/_authenticated/hr/personnel/$id'
+import { Route as AuthenticatedHrEmployeesIndexImport } from './routes/_authenticated/hr/employees/index'
+import { Route as AuthenticatedHrEmployeesCreateImport } from './routes/_authenticated/hr/employees/create'
+import { Route as AuthenticatedHrEmployeesIdIndexImport } from './routes/_authenticated/hr/employees/$id/index'
 
 // Create/Update Routes
 
@@ -40,50 +42,59 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AuthenticatedHrRoute = AuthenticatedHrImport.update({
+  path: '/hr',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
 const AuthenticatedDashboardRoute = AuthenticatedDashboardImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 
 const AuthenticatedHrTallyRoute = AuthenticatedHrTallyImport.update({
-  path: '/hr/tally',
-  getParentRoute: () => AuthenticatedRoute,
+  path: '/tally',
+  getParentRoute: () => AuthenticatedHrRoute,
 } as any)
 
 const AuthenticatedHrLeavesRoute = AuthenticatedHrLeavesImport.update({
-  path: '/hr/leaves',
-  getParentRoute: () => AuthenticatedRoute,
+  path: '/leaves',
+  getParentRoute: () => AuthenticatedHrRoute,
 } as any)
 
 const AuthenticatedHrFinancesRoute = AuthenticatedHrFinancesImport.update({
-  path: '/hr/finances',
-  getParentRoute: () => AuthenticatedRoute,
+  path: '/finances',
+  getParentRoute: () => AuthenticatedHrRoute,
+} as any)
+
+const AuthenticatedHrEmployeesRoute = AuthenticatedHrEmployeesImport.update({
+  path: '/employees',
+  getParentRoute: () => AuthenticatedHrRoute,
 } as any)
 
 const AuthenticatedHrDebitCreditAnalysisRoute =
   AuthenticatedHrDebitCreditAnalysisImport.update({
-    path: '/hr/debitCreditAnalysis',
-    getParentRoute: () => AuthenticatedRoute,
+    path: '/debitCreditAnalysis',
+    getParentRoute: () => AuthenticatedHrRoute,
   } as any)
 
-const AuthenticatedHrPersonnelIndexRoute =
-  AuthenticatedHrPersonnelIndexImport.update({
-    path: '/hr/personnel/',
-    getParentRoute: () => AuthenticatedRoute,
+const AuthenticatedHrEmployeesIndexRoute =
+  AuthenticatedHrEmployeesIndexImport.update({
+    path: '/',
+    getParentRoute: () => AuthenticatedHrEmployeesRoute,
   } as any)
 
-const AuthenticatedHrPersonnelAddRoute =
-  AuthenticatedHrPersonnelAddImport.update({
-    path: '/hr/personnel/add',
-    getParentRoute: () => AuthenticatedRoute,
+const AuthenticatedHrEmployeesCreateRoute =
+  AuthenticatedHrEmployeesCreateImport.update({
+    path: '/create',
+    getParentRoute: () => AuthenticatedHrEmployeesRoute,
   } as any)
 
-const AuthenticatedHrPersonnelIdRoute = AuthenticatedHrPersonnelIdImport.update(
-  {
-    path: '/hr/personnel/$id',
-    getParentRoute: () => AuthenticatedRoute,
-  } as any,
-)
+const AuthenticatedHrEmployeesIdIndexRoute =
+  AuthenticatedHrEmployeesIdIndexImport.update({
+    path: '/$id/',
+    getParentRoute: () => AuthenticatedHrEmployeesRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -117,54 +128,68 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardImport
       parentRoute: typeof AuthenticatedImport
     }
+    '/_authenticated/hr': {
+      id: '/_authenticated/hr'
+      path: '/hr'
+      fullPath: '/hr'
+      preLoaderRoute: typeof AuthenticatedHrImport
+      parentRoute: typeof AuthenticatedImport
+    }
     '/_authenticated/hr/debitCreditAnalysis': {
       id: '/_authenticated/hr/debitCreditAnalysis'
-      path: '/hr/debitCreditAnalysis'
+      path: '/debitCreditAnalysis'
       fullPath: '/hr/debitCreditAnalysis'
       preLoaderRoute: typeof AuthenticatedHrDebitCreditAnalysisImport
-      parentRoute: typeof AuthenticatedImport
+      parentRoute: typeof AuthenticatedHrImport
+    }
+    '/_authenticated/hr/employees': {
+      id: '/_authenticated/hr/employees'
+      path: '/employees'
+      fullPath: '/hr/employees'
+      preLoaderRoute: typeof AuthenticatedHrEmployeesImport
+      parentRoute: typeof AuthenticatedHrImport
     }
     '/_authenticated/hr/finances': {
       id: '/_authenticated/hr/finances'
-      path: '/hr/finances'
+      path: '/finances'
       fullPath: '/hr/finances'
       preLoaderRoute: typeof AuthenticatedHrFinancesImport
-      parentRoute: typeof AuthenticatedImport
+      parentRoute: typeof AuthenticatedHrImport
     }
     '/_authenticated/hr/leaves': {
       id: '/_authenticated/hr/leaves'
-      path: '/hr/leaves'
+      path: '/leaves'
       fullPath: '/hr/leaves'
       preLoaderRoute: typeof AuthenticatedHrLeavesImport
-      parentRoute: typeof AuthenticatedImport
+      parentRoute: typeof AuthenticatedHrImport
     }
     '/_authenticated/hr/tally': {
       id: '/_authenticated/hr/tally'
-      path: '/hr/tally'
+      path: '/tally'
       fullPath: '/hr/tally'
       preLoaderRoute: typeof AuthenticatedHrTallyImport
-      parentRoute: typeof AuthenticatedImport
+      parentRoute: typeof AuthenticatedHrImport
     }
-    '/_authenticated/hr/personnel/$id': {
-      id: '/_authenticated/hr/personnel/$id'
-      path: '/hr/personnel/$id'
-      fullPath: '/hr/personnel/$id'
-      preLoaderRoute: typeof AuthenticatedHrPersonnelIdImport
-      parentRoute: typeof AuthenticatedImport
+    '/_authenticated/hr/employees/create': {
+      id: '/_authenticated/hr/employees/create'
+      path: '/create'
+      fullPath: '/hr/employees/create'
+      preLoaderRoute: typeof AuthenticatedHrEmployeesCreateImport
+      parentRoute: typeof AuthenticatedHrEmployeesImport
     }
-    '/_authenticated/hr/personnel/add': {
-      id: '/_authenticated/hr/personnel/add'
-      path: '/hr/personnel/add'
-      fullPath: '/hr/personnel/add'
-      preLoaderRoute: typeof AuthenticatedHrPersonnelAddImport
-      parentRoute: typeof AuthenticatedImport
+    '/_authenticated/hr/employees/': {
+      id: '/_authenticated/hr/employees/'
+      path: '/'
+      fullPath: '/hr/employees/'
+      preLoaderRoute: typeof AuthenticatedHrEmployeesIndexImport
+      parentRoute: typeof AuthenticatedHrEmployeesImport
     }
-    '/_authenticated/hr/personnel/': {
-      id: '/_authenticated/hr/personnel/'
-      path: '/hr/personnel'
-      fullPath: '/hr/personnel'
-      preLoaderRoute: typeof AuthenticatedHrPersonnelIndexImport
-      parentRoute: typeof AuthenticatedImport
+    '/_authenticated/hr/employees/$id/': {
+      id: '/_authenticated/hr/employees/$id/'
+      path: '/$id'
+      fullPath: '/hr/employees/$id'
+      preLoaderRoute: typeof AuthenticatedHrEmployeesIdIndexImport
+      parentRoute: typeof AuthenticatedHrEmployeesImport
     }
   }
 }
@@ -175,13 +200,17 @@ export const routeTree = rootRoute.addChildren({
   IndexRoute,
   AuthenticatedRoute: AuthenticatedRoute.addChildren({
     AuthenticatedDashboardRoute,
-    AuthenticatedHrDebitCreditAnalysisRoute,
-    AuthenticatedHrFinancesRoute,
-    AuthenticatedHrLeavesRoute,
-    AuthenticatedHrTallyRoute,
-    AuthenticatedHrPersonnelIdRoute,
-    AuthenticatedHrPersonnelAddRoute,
-    AuthenticatedHrPersonnelIndexRoute,
+    AuthenticatedHrRoute: AuthenticatedHrRoute.addChildren({
+      AuthenticatedHrDebitCreditAnalysisRoute,
+      AuthenticatedHrEmployeesRoute: AuthenticatedHrEmployeesRoute.addChildren({
+        AuthenticatedHrEmployeesCreateRoute,
+        AuthenticatedHrEmployeesIndexRoute,
+        AuthenticatedHrEmployeesIdIndexRoute,
+      }),
+      AuthenticatedHrFinancesRoute,
+      AuthenticatedHrLeavesRoute,
+      AuthenticatedHrTallyRoute,
+    }),
   }),
   LoginRoute,
 })

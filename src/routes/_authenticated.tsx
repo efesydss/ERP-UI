@@ -1,12 +1,16 @@
-import { createFileRoute, Outlet } from '@tanstack/react-router'
+import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 import { AppBar } from '@/components/Root/components/AppBar/AppBar'
 import { AppDrawer } from '@/components/Root/components/AppDrawer/AppDrawer'
 import { DrawerHeader, Main, RootWrapper } from '@/components/Root/stylesRoot'
+import { getRefreshToken, setAuthToken, tokenGlobal } from '@/utils/apiDefaults'
+import { Breadcrumbs } from '@/components/Common/Breadcrumbs/Breadcrumbs'
 
 export const Route = createFileRoute('/_authenticated')({
-  /* beforeLoad: async ({ context, location }) => {
-    const { setUser } = context.auth
+  beforeLoad: async ({ context, location }) => {
+    const { setUser } = context.app
     const persistedUserInfo = localStorage.getItem('user')
+
+    console.log('context -->', context)
 
     if (!persistedUserInfo) {
       throw redirect({
@@ -19,6 +23,9 @@ export const Route = createFileRoute('/_authenticated')({
 
     try {
       const accessToken = await getRefreshToken()
+      if (!accessToken) {
+        return redirect({ to: '/login' })
+      }
 
       if (tokenGlobal !== accessToken) {
         setAuthToken(accessToken)
@@ -29,13 +36,9 @@ export const Route = createFileRoute('/_authenticated')({
       })
     } catch (err) {
       console.error('err', err)
-      redirect({ to: '/login' })
+      throw redirect({ to: '/login' })
     }
-
-    return {
-      username: context.auth.user
-
-  }}*/
+  },
   component: () => (
     <>
       <RootWrapper>
@@ -43,6 +46,7 @@ export const Route = createFileRoute('/_authenticated')({
         <AppDrawer />
         <Main component={'main'}>
           <DrawerHeader />
+          <Breadcrumbs />
           <Outlet />
         </Main>
       </RootWrapper>

@@ -8,5 +8,9 @@
   "name": "Adı",
   "surname": "Soyadı",
   "email": "E-Posta",
-  "address": "Adres"
+  "address": "Adres",
+  "profession": "Ünvan",
+  "homePhone": "Ev Telefonu",
+  "mobilePhone": "Cep Telefonu",
+  "bloodType": "Kan Grubu"
 }

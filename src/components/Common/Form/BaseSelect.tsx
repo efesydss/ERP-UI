@@ -1,7 +1,7 @@
 import Select, { ActionMeta, MultiValue, SingleValue } from 'react-select'
 import { useField } from 'formik'
-import { ErrorMessage } from '@/components/Common/Form/stylesForm'
 import { Stack, useTheme } from '@mui/material'
+import { Label } from '@/components/Common/Form/Label/Label'
 
 interface OptionType {
   value: string
@@ -12,10 +12,11 @@ interface BaseSelectProps {
   name: string
   options: OptionType[]
   isMulti?: boolean
+  placeholder?: string
 }
 
 export const BaseSelect = (props: BaseSelectProps) => {
-  const { options, name, isMulti = false, ...rest } = props
+  const { options, name, placeholder, isMulti = false, ...rest } = props
   const [field, { touched, error }, { setValue }] = useField(name)
   const theme = useTheme()
 
@@ -46,9 +47,10 @@ export const BaseSelect = (props: BaseSelectProps) => {
   const customStyles = {
     control: (provided: any) => ({
       ...provided,
-      borderColor: hasError ? theme.palette.error.main : provided.borderColor,
+      cursor: 'pointer',
+      borderColor: hasError ? theme.palette.error.main : theme.palette.divider,
       '&:hover': {
-        borderColor: hasError ? theme.palette.error.main : provided['&:hover'].borderColor
+        borderColor: hasError ? theme.palette.error.main : theme.palette.primary.main
       }
     }),
     placeholder: (provided: any) => ({
@@ -58,22 +60,31 @@ export const BaseSelect = (props: BaseSelectProps) => {
     singleValue: (provided: any) => ({
       ...provided,
       color: hasError ? theme.palette.error.main : provided.color
+    }),
+    menu: (provided: any) => ({
+      ...provided,
+      zIndex: 1001
     })
   }
 
   return (
-    <Stack position={'relative'}>
+    <Stack>
+      <Label
+        name={name}
+        hasError={hasError}
+        errorMessage={error}
+      />
       <Select
         {...rest}
         {...field}
-        name={field.name}
+        name={name}
         value={getValue()}
         onChange={onChange}
         options={options}
         isMulti={isMulti}
         styles={customStyles}
+        placeholder={''}
       />
-      {touched && error && <ErrorMessage>{error}</ErrorMessage>}
     </Stack>
   )
 }

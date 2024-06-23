@@ -1,32 +1,43 @@
-import { Stack, TextField, TextFieldProps } from '@mui/material'
+import { InputBaseProps, Stack } from '@mui/material'
 import { useField } from 'formik'
-import { useTranslation } from 'react-i18next'
-import { ErrorMessage } from '@/components/Common/Form/stylesForm'
+import { InputBaseWrapper } from '@/components/Common/Form/stylesForm'
+import { Label } from '@/components/Common/Form/Label/Label'
+import { ForwardedRef, forwardRef } from 'react'
 
-interface InputProps extends Omit<TextFieldProps, 'helperText'> {
+interface InputProps extends InputBaseProps {
   name: string
   nameSpace?: string
   isMultiLine?: boolean
+  label?: string
 }
 
-export const Input = (props: InputProps) => {
-  const { name, nameSpace, isMultiLine, ...rest } = props
-  const { t } = useTranslation(nameSpace || 'common')
+const InputBase = (props: InputProps, ref: ForwardedRef<HTMLElement>) => {
+  const { name, nameSpace, label, isMultiLine, ...rest } = props
   const [field, { error, touched }] = useField(name)
 
+  const hasError = touched && !!error
+
   return (
-    <Stack position={'relative'}>
-      <TextField
+    <Stack>
+      <Label
+        name={name}
+        hasError={hasError}
+        errorMessage={error}
+        nameSpace={nameSpace}
+        label={label}
+      />
+      <InputBaseWrapper
+        ref={ref}
         multiline={isMultiLine}
         rows={isMultiLine ? 4 : 1}
         fullWidth
-        label={t(name)}
-        size={'small'}
+        error={hasError}
+        type={name === 'password' ? 'password' : 'text'}
         {...field}
         {...rest}
-        error={touched && !!error}
       />
-      {touched && error && <ErrorMessage>{error}</ErrorMessage>}
     </Stack>
   )
 }
+
+export const Input = forwardRef(InputBase) as typeof InputBase

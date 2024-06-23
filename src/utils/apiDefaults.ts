@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
+import axios, { AxiosError, AxiosHeaders, AxiosRequestConfig, AxiosResponse } from 'axios'
 import createAuthRefreshInterceptor from 'axios-auth-refresh'
 import { apiRoutes } from '@/utils/apiRoutes'
 
@@ -6,16 +6,19 @@ export const backendURL = import.meta.env.VITE_BACKEND_ENDPOINT
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
 
-interface Pagination {
-  totalCount: number
-  pageSize: number
-  currentPage: number
-  totalPages: number
+interface RequestConfig {
+  endpoint: keyof typeof apiRoutes
+  method?: HttpMethod
+  payload?: any
+  headers?: AxiosHeaders
+  id?: number
 }
 
 export interface ApiResponse<T> {
-  results: T[]
-  pagination: Pagination
+  data: T[]
+  pageSize: number
+  page: number
+  total: number
 }
 
 if (!backendURL) {
@@ -28,18 +31,28 @@ export const axiosBase = axios.create({
   baseURL: '/api'
 })
 
-export const apiRequest = async <T>(url: string, method: HttpMethod = 'GET', data?: unknown, config?: AxiosRequestConfig): Promise<T> => {
-  const response: AxiosResponse<T> = await axiosBase({
+export const apiRequest = async <T>(options: RequestConfig): Promise<T> => {
+  const { endpoint, payload, method = 'POST', headers = new AxiosHeaders(), id } = options
+
+  let url = apiRoutes[endpoint]
+
+  if (id) {
+    url = `${url}/${id}`
+  }
+
+  const params: AxiosRequestConfig = {
     url,
     method,
-    data,
-    ...config
-  })
+    data: payload,
+    headers
+  }
+
+  const response: AxiosResponse<T> = await axiosBase(params)
   return response.data
 }
 
 export interface TokenResponse {
-  accessToken: string
+  token: string
 }
 
 export let tokenGlobal: string | undefined = undefined
@@ -50,11 +63,15 @@ export const getRefreshToken = async () => {
   }
 
   try {
-    const refreshedToken = await axiosBase.post<TokenResponse>(apiRoutes.refresh)
+    const refreshedToken = await axiosBase.post<TokenResponse>(apiRoutes.userRefresh)
 
-    return refreshedToken.data.accessToken
-  } catch (err) {
-    console.error('error getRefreshToken', err)
+    return refreshedToken.data.token
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err)) {
+      console.info((err as AxiosError).message)
+    } else {
+      console.error('An unexpected error occurred', err)
+    }
   }
 }
 
@@ -68,8 +85,8 @@ export const setAuthToken = (token: string | undefined) => {
 }
 
 export const refreshAuth = async (failedRequest: AxiosError) => {
-  return axiosBase.post<TokenResponse>('/public/refresh').then((tokenRefreshResponse: AxiosResponse<TokenResponse>) => {
-    const newAccessToken = tokenRefreshResponse.data.accessToken
+  return axiosBase.post<TokenResponse>(apiRoutes.userRefresh).then((tokenRefreshResponse: AxiosResponse<TokenResponse>) => {
+    const newAccessToken = tokenRefreshResponse.data.token
     setAuthToken(newAccessToken)
 
     if (failedRequest.response && failedRequest.response.config) {

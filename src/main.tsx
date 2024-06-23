@@ -13,12 +13,6 @@ import { useAppContext } from '@/utils/hooks/useAppContext'
 
 const queryClient = new QueryClient()
 
-declare module '@tanstack/react-router' {
-  interface Register {
-    router: typeof router
-  }
-}
-
 const router = createRouter({
   routeTree,
   context: {
@@ -31,6 +25,14 @@ const router = createRouter({
   defaultErrorComponent: ({ error }) => <ErrorComponent error={error} />,
   defaultNotFoundComponent: () => <span>is a 404</span>
 })
+
+/*
+declare module '@tanstack/react-router' {
+  interface Register {
+    router: typeof router
+  }
+}
+*/
 
 function InnerApp() {
   const app = useAppContext()

@@ -2,9 +2,21 @@ import { IconButton, Toolbar, Typography } from '@mui/material'
 import { useAppContext } from '@/utils/hooks/useAppContext'
 import MenuIcon from '@mui/icons-material/Menu'
 import { AppTopBar } from '@/components/Root/stylesRoot'
+import { setLocale } from 'yup'
+import { useTranslation } from 'react-i18next'
 
 export const AppBar = () => {
   const { isDrawerOpen, setIsDrawerOpen } = useAppContext()
+  const { t: feedbacks } = useTranslation('feedbacks')
+
+  setLocale({
+    mixed: {
+      required: feedbacks('notValid.required')
+    },
+    string: {
+      email: feedbacks('notValid.email')
+    }
+  })
 
   return (
     <AppTopBar

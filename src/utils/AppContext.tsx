@@ -1,16 +1,20 @@
 import { createContext } from 'react'
 
-export interface LoginResponseProps {
-  username: string
-  userId: number
-  accessToken: string | undefined
-  avatarURL: string
+type Roles = 'USER' | 'ADMIN'
+
+export interface LoginResponse {
+  token?: string
+  user: User
 }
 
-export interface User extends Omit<LoginResponseProps, 'accessToken'> {}
+export interface User {
+  email: string
+  id: number
+  role: Roles
+}
 
-export interface LoginRequestProps {
-  username: string
+export interface LoginRequest {
+  email: string
   password: string
 }
 
@@ -19,13 +23,15 @@ export interface AppContextProps {
   user: User | null
   setIsDrawerOpen: (isOpen: boolean) => void
   isDrawerOpen: boolean
+  crumb: string
 }
 
 const appInitials: AppContextProps = {
   setUser: () => {},
   setIsDrawerOpen: () => {},
   user: null,
-  isDrawerOpen: true
+  isDrawerOpen: true,
+  crumb: '/'
 }
 
 export const AppContext = createContext<AppContextProps>(appInitials)

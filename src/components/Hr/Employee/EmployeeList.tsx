@@ -3,34 +3,58 @@ import { useMemo } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { apiRequest, ApiResponse } from '@/utils/apiDefaults'
 import { useQuery } from '@tanstack/react-query'
-import { PersonnelData } from '@/components/Hr/Personnel/typesPersonnel'
+import { Employee } from '@/components/Hr/Employee/typesEmployee'
 import { useTranslation } from 'react-i18next'
 import { Button } from '@mui/material'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
-import { apiRoutes } from '@/utils/apiRoutes'
-import { Link, useNavigate } from '@tanstack/react-router'
+import { useNavigate } from '@tanstack/react-router'
+import { EmployeeListEditActions } from '@/components/Hr/Employee/components/EmployeeListEditActions'
+import { Route } from '@/routes/_authenticated/hr/employees/create'
 
-export const PersonnelList = () => {
+export const EmployeeList = () => {
   const { t: common } = useTranslation('common')
   const { t: hr } = useTranslation('hr')
   const navigate = useNavigate()
 
   const { data } = useQuery({
-    queryKey: ['personnelData'],
-    queryFn: () => apiRequest<ApiResponse<PersonnelData>>(apiRoutes.personnelList),
-    enabled: false
+    queryKey: ['employees'],
+    queryFn: () =>
+      apiRequest<ApiResponse<Employee>>({
+        endpoint: 'employees',
+        payload: {
+          filter: '',
+          sort: 'id,asc',
+          page: 0,
+          pageSize: 50
+        }
+      })
   })
 
-  const columns = useMemo<ColumnDef<PersonnelData>[]>(
+  const columns = useMemo<ColumnDef<Employee>[]>(
     () => [
       {
-        header: common('fullName'),
-        accessorFn: (originalRow) => `${originalRow.name} ${originalRow.surname}`
+        header: common('name'),
+        accessorKey: 'name'
+      },
+      {
+        header: common('surname'),
+        accessorKey: 'surname'
       },
       {
         header: hr('department'),
         accessorKey: 'department'
+      },
+      {
+        id: 'actions',
+        cell: ({ row }) => {
+          const personnelId = row.original.id
+
+          if (!personnelId) {
+            return null
+          }
+          return <EmployeeListEditActions personnelId={personnelId} />
+        }
       }
     ],
     []
@@ -42,7 +66,7 @@ export const PersonnelList = () => {
         <Button
           variant={'contained'}
           startIcon={<PersonAddAlt1Icon />}
-          onClick={() => navigate({ to: '/hr/personnel/add' })}
+          onClick={() => navigate({ to: Route.fullPath })}
         >
           {hr('newPersonnel')}
         </Button>
@@ -58,17 +82,10 @@ export const PersonnelList = () => {
           actions={<PersonnelListActions />}
         />
       </div>
-      <Link
-        to={'/hr/personnel/$id'}
-        params={{
-          id: 1
-        }}
-      >
-        p.detail
-      </Link>
+
       <BaseTable
         columns={columns}
-        data={data?.results}
+        data={data?.data}
       />
     </div>
   )

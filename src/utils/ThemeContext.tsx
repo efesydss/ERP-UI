@@ -45,7 +45,7 @@ export const MultiThemeProvider = (props: PropsWithChildren) => {
         main: '#D6E0E6'
       },
       error: {
-        main: '#ff0000'
+        main: '#790000'
       },
       background: {
         default: '#FCFCFC',

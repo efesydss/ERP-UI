@@ -1,11 +1,11 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { z } from 'zod'
-import { PersonnelDetail } from '@/components/Hr/Personnel/PersonnelDetail'
+import { EmployeeDetails } from '@/components/Hr/Employee/EmployeeDetails'
 
-export const Route = createFileRoute('/_authenticated/hr/personnel/$id')({
+export const Route = createFileRoute('/_authenticated/hr/employees/$id/')({
   parseParams: (params) => ({
     id: z.number().int().parse(Number(params.id))
   }),
   stringifyParams: ({ id }) => ({ id: `${id}` }),
-  component: () => <PersonnelDetail />
+  component: () => <EmployeeDetails />
 })

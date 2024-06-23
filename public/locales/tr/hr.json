@@ -5,5 +5,6 @@
   "infoGeneral": "Personel Bilgileri",
   "infoIdentity": "Nüfus Bilgileri",
   "infoPayroll": "Bordro Bilgileri",
-  "startDate": "İşe Giriş"
+  "startDate": "İşe Giriş",
+  "endDate": "İşten Çıkış"
 }

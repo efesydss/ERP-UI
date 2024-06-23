@@ -15,7 +15,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://falconsapi.azurewebsites.net',
+        target: 'https://falcons-erp-api-dev.sd.iafl.net/api/',
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/api/, '')

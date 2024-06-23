@@ -1,11 +1,12 @@
 import { useMutation } from '@tanstack/react-query'
-import { LoginRequestProps, LoginResponseProps } from '@/utils/AppContext'
+import { LoginRequest, LoginResponse } from '@/utils/AppContext'
 import { axiosBase, setAuthToken } from '@/utils/apiDefaults'
 import { useAppContext } from '@/utils/hooks/useAppContext'
 import { AxiosError } from 'axios'
 import { toast } from 'react-toastify'
 import type { CustomAxiosRequestConfig } from 'axios-auth-refresh/dist/utils'
 import { useRouter } from '@tanstack/react-router'
+import { apiRoutes } from '@/utils/apiRoutes'
 
 interface ErrorResponse {
   error: string
@@ -20,27 +21,19 @@ export const useLogin = () => {
   }
 
   return useMutation({
-    mutationFn: ({ username, password }: LoginRequestProps) => {
-      return axiosBase.post<LoginResponseProps>(
-        '/user/login',
-        { username, password },
-        customAxiosRequestConfig
-      )
+    mutationFn: ({ email, password }: LoginRequest) => {
+      return axiosBase.post<LoginResponse>(apiRoutes.userLogin, { email, password }, customAxiosRequestConfig)
     },
     onSuccess: (res) => {
-      const { username, userId, accessToken, avatarURL } = res.data
+      const { user, token } = res.data
 
-      const userData = {
-        username,
-        userId,
-        avatarURL
-      }
+      console.log('userData -->', res.data)
 
-      localStorage.setItem('user', JSON.stringify(userData))
+      localStorage.setItem('user', JSON.stringify(user))
 
-      setUser(userData)
+      setUser(user)
 
-      setAuthToken(accessToken)
+      setAuthToken(token)
       router.history.push('/dashboard')
     },
     onError: (err: AxiosError<ErrorResponse>) => {

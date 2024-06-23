@@ -1,18 +1,17 @@
 import { useField } from 'formik'
 import RDatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-import { Stack, TextField } from '@mui/material'
-import { ErrorMessage } from '@/components/Common/Form/stylesForm'
+import { Stack } from '@mui/material'
 import { t } from 'i18next'
+import { Input } from '@/components/Common/Form/Input/Input'
 
 interface DatePickerProps {
   name: string
-  label: string
 }
 
 export const DatePicker = (props: DatePickerProps) => {
-  const { name, label, ...rest } = props
-  const [field, { touched, error }, { setValue }] = useField(name)
+  const { name, ...rest } = props
+  const [field, _, { setValue }] = useField(name)
 
   return (
     <Stack position={'relative'}>
@@ -24,15 +23,12 @@ export const DatePicker = (props: DatePickerProps) => {
         onChange={(value) => setValue(value)}
         locale={'tr'}
         customInput={
-          <TextField
+          <Input
+            name={name}
             label={t(name, { ns: 'hr' })}
-            fullWidth
-            size={'small'}
-            error={touched && !!error}
           />
         }
       />
-      {touched && error && <ErrorMessage>{error}</ErrorMessage>}
     </Stack>
   )
 }

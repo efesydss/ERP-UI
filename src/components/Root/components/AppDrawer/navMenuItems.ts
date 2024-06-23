@@ -12,7 +12,7 @@ export const navMenuItems: MenuItemProps[] = [
     icon: FaPeopleRoof,
     sub: [
       {
-        label: 'personnel',
+        label: 'employees',
         icon: TbUserStar
       },
       {
