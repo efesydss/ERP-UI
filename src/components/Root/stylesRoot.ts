@@ -34,6 +34,7 @@ export const AppTopBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'isOpen'
 })<AppBarProps>(({ theme, isOpen }) => ({
   zIndex: theme.zIndex.drawer + 1,
+  justifyContent: 'flex-end',
   transition: theme.transitions.create(['width', 'margin'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen
@@ -68,8 +69,16 @@ export const AppLeftDrawer = styled(MuiDrawer, {
 export const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'flex-end',
   padding: theme.spacing(0, 1),
+  ...theme.mixins.toolbar
+}))
+
+export const SidebarHeader = styled('div')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  padding: theme.spacing(0, 1),
+  background: 'linear-gradient(90deg, rgba(18,45,60,1) 0%, rgba(214,224,230,1) 90%)',
   ...theme.mixins.toolbar
 }))
 
@@ -83,13 +92,30 @@ export const ListItem = styled(MuiListItem, {
 })<{ isCurrent: boolean; isChild: boolean }>(({ theme, isCurrent, isChild }) => ({
   width: 'auto',
   overflow: 'hidden',
-  ...(isChild && {
-    margin: theme.spacing(0.5, 2),
-    borderRadius: theme.spacing(1)
-  }),
-  ...(isCurrent && {
-    backgroundColor: theme.palette.secondary.main
-  })
+  ...(isChild
+    ? {
+        margin: theme.spacing(0.5, 2),
+        borderRadius: theme.spacing(1),
+        ...(isCurrent && {
+          backgroundColor: theme.palette.primary.main,
+          color: theme.palette.background.paper,
+
+          '& svg': {
+            color: theme.palette.background.paper
+          }
+        })
+      }
+    : {
+        '& .MuiListItemText-root': {
+          paddingTop: theme.spacing(0.25)
+        },
+        '& .MuiListItemText-primary': {
+          textTransform: 'uppercase',
+          fontWeight: 600,
+          fontSize: '.8rem',
+          lineHeight: '.8'
+        }
+      })
 }))
 
 export const ListItemButton = styled(MuiListItemButton)(() => ({

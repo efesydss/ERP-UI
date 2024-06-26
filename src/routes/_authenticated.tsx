@@ -10,8 +10,6 @@ export const Route = createFileRoute('/_authenticated')({
     const { setUser } = context.app
     const persistedUserInfo = localStorage.getItem('user')
 
-    console.log('context -->', context)
-
     if (!persistedUserInfo) {
       throw redirect({
         to: '/login',

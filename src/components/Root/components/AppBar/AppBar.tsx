@@ -1,4 +1,4 @@
-import { IconButton, Toolbar, Typography } from '@mui/material'
+import { Avatar, IconButton, Toolbar, Typography } from '@mui/material'
 import { useAppContext } from '@/utils/hooks/useAppContext'
 import MenuIcon from '@mui/icons-material/Menu'
 import { AppTopBar } from '@/components/Root/stylesRoot'
@@ -25,7 +25,7 @@ export const AppBar = () => {
       color={'secondary'}
       elevation={0}
     >
-      <Toolbar>
+      <Toolbar sx={{ justifyContent: isDrawerOpen ? 'flex-end' : 'space-between' }}>
         <IconButton
           color='inherit'
           aria-label='open drawer'
@@ -38,13 +38,7 @@ export const AppBar = () => {
         >
           <MenuIcon />
         </IconButton>
-        <Typography
-          variant='h6'
-          noWrap
-          component='div'
-        >
-          header
-        </Typography>
+        <Avatar>A</Avatar>
       </Toolbar>
     </AppTopBar>
   )

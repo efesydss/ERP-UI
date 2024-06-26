@@ -13,7 +13,6 @@ interface BreadcrumbProps {
 export const Breadcrumbs = () => {
   const router = useRouter()
   const { matches } = router.state
-  console.log('matches -->', matches)
   const navigate = useNavigate()
   const { t } = useTranslation('nav')
 
@@ -34,8 +33,6 @@ export const Breadcrumbs = () => {
     }
     return acc
   }, [] as BreadcrumbProps[])
-
-  console.log('breadcrumbs -->', breadcrumbs)
 
   const crumbs = breadcrumbs.map((b, index) => {
     const isLast = index === breadcrumbs.length - 1

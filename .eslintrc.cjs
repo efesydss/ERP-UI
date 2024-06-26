@@ -7,5 +7,9 @@ module.exports = {
     "plugin:@typescript-eslint/recommended"
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
-  plugins: ["@typescript-eslint"],
+  plugins: ["@typescript-eslint", "react-hooks"],
+  rules: {
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn" 
+  }
 }

@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom/client'
 import { StrictMode } from 'react'
-import { CssBaseline } from '@mui/material'
+import { CircularProgress, CssBaseline } from '@mui/material'
 import { MultiThemeProvider } from '@/utils/ThemeContext'
 import { initI18n } from '@/i18n'
 import { AppProvider } from '@/utils/AppProvider'
@@ -21,7 +21,7 @@ const router = createRouter({
   },
   defaultPreload: 'intent',
   defaultPreloadStaleTime: 0,
-  defaultPendingComponent: () => <span>...loading...</span>,
+  defaultPendingComponent: () => <CircularProgress />,
   defaultErrorComponent: ({ error }) => <ErrorComponent error={error} />,
   defaultNotFoundComponent: () => <span>is a 404</span>
 })

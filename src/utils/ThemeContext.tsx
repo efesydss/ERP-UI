@@ -37,9 +37,9 @@ export const MultiThemeProvider = (props: PropsWithChildren) => {
       fontFamily: 'Inter'
     },
     palette: {
-      mode: isDarkMode ? 'dark' : 'light',
+      //     mode: isDarkMode ? 'dark' : 'light',
       primary: {
-        main: '#1B3A4B'
+        main: '#122d3c'
       },
       secondary: {
         main: '#D6E0E6'
