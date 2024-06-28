@@ -21,5 +21,8 @@ erkankosluk/falcons-erp-ui-deploy@main:
     dest: tsconfig.node.json
   - source: vite.config.ts
     dest: vite.config.ts
+  - source: README.md
+    dest: README.md
+
 
 
