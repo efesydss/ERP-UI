@@ -1,5 +1,5 @@
 erkankosluk/falcons-erp-ui-deploy@main:
-  - source: .
+  - source: /
     dest: /ui
     exclude: |
       .github/workflows/sync.yml
