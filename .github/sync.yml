@@ -1,2 +1,3 @@
 erkankosluk/falcons-erp-ui-deploy@main:
-  - .
+  - source: src/
+    dest: src/
