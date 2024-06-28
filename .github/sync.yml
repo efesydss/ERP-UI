@@ -23,6 +23,8 @@ erkankosluk/falcons-erp-ui-deploy@main:
     dest: vite.config.ts
   - source: README.md
     dest: README.md
+  - source: launch_dev.sh
+    dest: launch_dev.sh
 
 
 
