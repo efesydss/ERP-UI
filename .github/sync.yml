@@ -1,3 +1,25 @@
 erkankosluk/falcons-erp-ui-deploy@main:
-  - source: .
-    dest: ui/
+  - source: public/
+    dest: public/
+  - source: src/
+    dest: src/
+  - source: .env.list
+    dest: .env.list
+  - source: .prettierrc.json
+    dest: .prettierrc.json
+  - source: Dockerfile
+    dest: Dockerfile
+  - source: bun.lockb
+    dest: bun.lockb
+  - source: index.html
+    dest: index.html
+  - source: package.json
+    dest: package.json
+  - source: tsconfig.json
+    dest: tsconfig.json
+  - source: tsconfig.node.json
+    dest: tsconfig.node.json
+  - source: vite.config.ts
+    dest: vite.config.ts
+
+
