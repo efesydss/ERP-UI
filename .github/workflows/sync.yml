@@ -8,6 +8,7 @@ jobs:
   bun:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/setup-node@v4
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
