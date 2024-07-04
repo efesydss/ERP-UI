@@ -5,7 +5,16 @@ on:
       - main
   workflow_dispatch:
 jobs:
+  bun:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: oven-sh/setup-bun@v2
+      - run: bun run install
+      - run: bun run lint
+      - run: bun run build 
+
   sync:
+    needs: bun
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
