@@ -26,7 +26,7 @@ export const EmployeeList = () => {
           filter: '',
           sort: 'id,asc',
           page: 0,
-          pageSize: 50
+          pageSize: 10
         }
       })
   })
@@ -57,7 +57,7 @@ export const EmployeeList = () => {
         }
       }
     ],
-    []
+    [common, hr]
   )
 
   const PersonnelListActions = () => {
@@ -86,6 +86,7 @@ export const EmployeeList = () => {
       <BaseTable
         columns={columns}
         data={data?.data}
+        pageSize={data?.pageSize}
       />
     </div>
   )

@@ -2,6 +2,7 @@ import { Box, IconButton, Menu, MenuItem } from '@mui/material'
 import { IoMdMore } from 'react-icons/io'
 import { SyntheticEvent, useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
+import { t } from 'i18next'
 
 interface PersonnelListEditActionsProps {
   personnelId: number
@@ -29,7 +30,7 @@ export const EmployeeListEditActions = (props: PersonnelListEditActionsProps) =>
         open={isMenuOpen}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => navigate({ to: '/hr/employees/$id', params: { id: props.personnelId } })}>Edit</MenuItem>
+        <MenuItem onClick={() => navigate({ to: '/hr/employees/$id', params: { id: props.personnelId } })}>{t('common:details')}</MenuItem>
       </Menu>
     </Box>
   )

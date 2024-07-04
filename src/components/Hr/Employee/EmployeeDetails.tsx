@@ -7,6 +7,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { apiRequest } from '@/utils/apiDefaults'
 import { Employee } from '@/components/Hr/Employee/typesEmployee'
 import { Route } from '@/routes/_authenticated/hr/employees/$id'
+import { AxiosError } from 'axios'
 
 export const EmployeeDetails = () => {
   const { t: hr } = useTranslation('hr')
@@ -24,14 +25,23 @@ export const EmployeeDetails = () => {
       })
   })
 
-  const { mutate } = useMutation({
-    mutationFn: (values: Employee) =>
-      apiRequest({
-        endpoint: 'employee',
-        method: 'PUT',
-        id,
-        payload: values
-      })
+  const updateEmployee = async (employee: Employee) => {
+    const res = await apiRequest<Employee>({
+      endpoint: 'employee',
+      method: 'PUT',
+      id,
+      payload: employee
+    })
+
+    return res
+  }
+
+  const { mutateAsync } = useMutation({
+    mutationFn: updateEmployee,
+    onError: (err: AxiosError) => {
+      console.log('mutateAsync', err)
+    },
+    onSuccess: () => console.log('success')
   })
 
   /*  const validationSchema = yup.object({
@@ -53,7 +63,7 @@ export const EmployeeDetails = () => {
 
   const onFormSubmit = async (values: Employee) => {
     console.log('values -->', values)
-    mutate(values)
+    await mutateAsync(values)
   }
 
   return (

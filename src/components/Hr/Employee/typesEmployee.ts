@@ -49,9 +49,9 @@ export interface Employee {
   surname: string
   department: string
   profession: string
+  startDate: string
   emergencyPhone?: string
   emergencyName?: string
-  startDate?: string
   endDate?: string
   phone?: string
   email?: string

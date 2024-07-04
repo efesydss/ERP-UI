@@ -1,10 +1,10 @@
 {
   "save": "Kaydet",
   "cancel": "İptal",
+  "details": "Detaylar",
   "username": "Kullanıcı Adı",
   "password": "Şifre",
   "login": "Giriş Yap",
-  "fullName": "Adı Soyadı",
   "name": "Adı",
   "surname": "Soyadı",
   "email": "E-Posta",

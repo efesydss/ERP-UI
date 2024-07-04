@@ -4,6 +4,7 @@ import { CivilStatus, Employee } from '@/components/Hr/Employee/typesEmployee'
 import { useMutation } from '@tanstack/react-query'
 import { apiRequest } from '@/utils/apiDefaults'
 import { toast } from 'react-toastify'
+import { AxiosError } from 'axios'
 
 const initialPersonnel: Employee = {
   identificationNumber: '123588',
@@ -38,12 +39,24 @@ export const EmployeeCreate = () => {
         endpoint: 'employee',
         payload: values
       }),
-    onSuccess: () => toast.success('Employee Created')
+    onSuccess: () => toast.success('Employee Created'),
+    onError: (
+      err: AxiosError<{
+        err?: string
+      }>
+    ) => {
+      if (err.response?.status === 409) {
+        console.log(err.response)
+        toast.error('exist')
+      } else {
+        toast.error('other error')
+      }
+    }
   })
 
   const onFormSubmit = async (values: Employee) => {
     console.log('values -->', values)
-    mutateAsync(values)
+    await mutateAsync(values)
   }
   return (
     <BaseForm
