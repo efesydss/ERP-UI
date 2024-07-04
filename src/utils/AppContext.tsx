@@ -23,15 +23,13 @@ export interface AppContextProps {
   user: User | null
   setIsDrawerOpen: (isOpen: boolean) => void
   isDrawerOpen: boolean
-  crumb: string
 }
 
 const appInitials: AppContextProps = {
   setUser: () => {},
   setIsDrawerOpen: () => {},
   user: null,
-  isDrawerOpen: true,
-  crumb: '/'
+  isDrawerOpen: true
 }
 
 export const AppContext = createContext<AppContextProps>(appInitials)

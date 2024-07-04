@@ -1,4 +1,4 @@
-import { Avatar, IconButton, Toolbar, Typography } from '@mui/material'
+import { Avatar, IconButton, Toolbar } from '@mui/material'
 import { useAppContext } from '@/utils/hooks/useAppContext'
 import MenuIcon from '@mui/icons-material/Menu'
 import { AppTopBar } from '@/components/Root/stylesRoot'

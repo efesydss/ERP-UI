@@ -115,9 +115,7 @@ export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) =
         page={pagination.pageIndex}
         onPageChange={(_, n) => setPagination({ pageSize: 10, pageIndex: n })}
         rowsPerPage={pagination.pageSize}
-        onRowsPerPageChange={(e) => {
-          setPagination({ pageSize: parseInt(e.target.value, 10), pageIndex: 0 })
-        }}
+        onRowsPerPageChange={(e) => setPagination({ pageSize: parseInt(e.target.value, 10), pageIndex: 0 })}
       />
     </Stack>
   )

@@ -1,4 +1,4 @@
-import { AppLeftDrawer, DrawerHeader, SidebarHeader, sidebarHeader } from '@/components/Root/stylesRoot'
+import { AppLeftDrawer, SidebarHeader } from '@/components/Root/stylesRoot'
 import { IconButton, List } from '@mui/material'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import { useAppContext } from '@/utils/hooks/useAppContext'
@@ -47,7 +47,7 @@ export const AppDrawer = () => {
         </IconButton>
       </SidebarHeader>
       <List disablePadding>
-        {navMenuItems.map((nav, i) => {
+        {navMenuItems.map((nav) => {
           const depth = 0
           const menuName = nav.label
 
