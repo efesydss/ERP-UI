@@ -8,7 +8,7 @@ jobs:
   bun:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v2
       - uses: oven-sh/setup-bun@v1
         with:
           bun-version: latest
