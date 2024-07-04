@@ -1,8 +1,6 @@
 import { BaseTable } from '@/components/Common/Table/BaseTable'
 import { useMemo } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
-import { apiRequest, ApiResponse } from '@/utils/apiDefaults'
-import { useQuery } from '@tanstack/react-query'
 import { Employee } from '@/components/Hr/Employee/typesEmployee'
 import { useTranslation } from 'react-i18next'
 import { Button } from '@mui/material'
@@ -16,20 +14,6 @@ export const EmployeeList = () => {
   const { t: common } = useTranslation('common')
   const { t: hr } = useTranslation('hr')
   const navigate = useNavigate()
-
-  const { data } = useQuery({
-    queryKey: ['employees'],
-    queryFn: () =>
-      apiRequest<ApiResponse<Employee>>({
-        endpoint: 'employees',
-        payload: {
-          filter: '',
-          sort: 'id,asc',
-          page: 0,
-          pageSize: 10
-        }
-      })
-  })
 
   const columns = useMemo<ColumnDef<Employee>[]>(
     () => [
@@ -83,10 +67,9 @@ export const EmployeeList = () => {
         />
       </div>
 
-      <BaseTable
+      <BaseTable<Employee>
         columns={columns}
-        data={data?.data}
-        pageSize={data?.pageSize}
+        endpoint={'employees'}
       />
     </div>
   )

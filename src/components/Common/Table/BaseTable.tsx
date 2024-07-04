@@ -1,27 +1,41 @@
 import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, getSortedRowModel, PaginationState, RowData, useReactTable } from '@tanstack/react-table'
-import { Pagination, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
+import { CircularProgress, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material'
 import { useState } from 'react'
+import { apiRequest, ApiResponse } from '@/utils/apiDefaults'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import { apiRoutes } from '@/utils/apiRoutes'
 
 interface BaseTableProps<TData extends RowData> {
-  data?: TData[]
+  endpoint: keyof typeof apiRoutes
   columns: ColumnDef<TData>[]
-  pageSize?: number
 }
 
 export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) => {
-  const { data = [], columns } = props
+  const { columns, endpoint } = props
+
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: props.pageSize || 10
+    pageSize: 10
   })
 
-  const handleChange = (_: unknown, value: number) => {
-    setPagination({ ...pagination, pageIndex: value })
-  }
+  const { data, isLoading } = useQuery({
+    queryKey: [endpoint, pagination],
+    queryFn: () =>
+      apiRequest<ApiResponse<TData>>({
+        endpoint,
+        payload: {
+          filter: '',
+          sort: 'id,asc',
+          page: pagination.pageIndex,
+          pageSize: pagination.pageSize
+        }
+      }),
+    placeholderData: keepPreviousData
+  })
 
   const table = useReactTable<TData>({
     columns,
-    data,
+    data: data?.data ?? [],
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -64,35 +78,46 @@ export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) =
             ))}
           </TableHead>
           <TableBody>
-            {table.getRowModel().rows.map((row) => {
-              return (
+            {isLoading ? (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  align='center'
+                >
+                  <CircularProgress />
+                </TableCell>
+              </TableRow>
+            ) : (
+              table.getRowModel().rows.map((row) => (
                 <TableRow
                   hover
                   key={row.id}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
-                  {row.getVisibleCells().map((cell) => {
-                    return (
-                      <TableCell
-                        component='td'
-                        scope='row'
-                        key={cell.id}
-                      >
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </TableCell>
-                    )
-                  })}
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell
+                      component='td'
+                      scope='row'
+                      key={cell.id}
+                    >
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
+                  ))}
                 </TableRow>
-              )
-            })}
+              ))
+            )}
           </TableBody>
         </Table>
       </TableContainer>
-      <Pagination
-        count={10}
-        shape='rounded'
+      <TablePagination
+        component='div'
+        count={data?.total || -1}
         page={pagination.pageIndex}
-        onChange={handleChange}
+        onPageChange={(_, n) => setPagination({ pageSize: 10, pageIndex: n })}
+        rowsPerPage={pagination.pageSize}
+        onRowsPerPageChange={(e) => {
+          setPagination({ pageSize: parseInt(e.target.value, 10), pageIndex: 0 })
+        }}
       />
     </Stack>
   )

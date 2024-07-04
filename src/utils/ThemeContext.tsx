@@ -1,6 +1,7 @@
 import { createContext, PropsWithChildren, useEffect, useState } from 'react'
 import { createTheme } from '@mui/material/styles'
 import { ThemeProvider, useMediaQuery } from '@mui/material'
+import { trTR } from '@mui/material/locale'
 
 interface ThemeContextProps {
   toggleTheme: () => void
@@ -32,27 +33,30 @@ export const MultiThemeProvider = (props: PropsWithChildren) => {
 
   const toggleTheme = () => setIsDarkMode(!isDarkMode)
 
-  const theme = createTheme({
-    typography: {
-      fontFamily: 'Inter'
-    },
-    palette: {
-      //     mode: isDarkMode ? 'dark' : 'light',
-      primary: {
-        main: '#122d3c'
+  const theme = createTheme(
+    {
+      typography: {
+        fontFamily: 'Inter'
       },
-      secondary: {
-        main: '#D6E0E6'
-      },
-      error: {
-        main: '#790000'
-      },
-      background: {
-        default: '#FCFCFC',
-        paper: '#FFFFFF'
+      palette: {
+        //     mode: isDarkMode ? 'dark' : 'light',
+        primary: {
+          main: '#122d3c'
+        },
+        secondary: {
+          main: '#D6E0E6'
+        },
+        error: {
+          main: '#790000'
+        },
+        background: {
+          default: '#FCFCFC',
+          paper: '#FFFFFF'
+        }
       }
-    }
-  })
+    },
+    trTR
+  )
 
   return (
     <ThemeContext.Provider value={{ toggleTheme, isDarkMode }}>
