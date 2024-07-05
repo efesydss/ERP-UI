@@ -216,3 +216,83 @@ export const routeTree = rootRoute.addChildren({
 })
 
 /* prettier-ignore-end */
+
+/* ROUTE_MANIFEST_START
+{
+  "routes": {
+    "__root__": {
+      "filePath": "__root.tsx",
+      "children": [
+        "/",
+        "/_authenticated",
+        "/login"
+      ]
+    },
+    "/": {
+      "filePath": "index.tsx"
+    },
+    "/_authenticated": {
+      "filePath": "_authenticated.tsx",
+      "children": [
+        "/_authenticated/dashboard",
+        "/_authenticated/hr"
+      ]
+    },
+    "/login": {
+      "filePath": "login.tsx"
+    },
+    "/_authenticated/dashboard": {
+      "filePath": "_authenticated/dashboard.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/hr": {
+      "filePath": "_authenticated/hr.tsx",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/hr/debitCreditAnalysis",
+        "/_authenticated/hr/employees",
+        "/_authenticated/hr/finances",
+        "/_authenticated/hr/leaves",
+        "/_authenticated/hr/tally"
+      ]
+    },
+    "/_authenticated/hr/debitCreditAnalysis": {
+      "filePath": "_authenticated/hr/debitCreditAnalysis.tsx",
+      "parent": "/_authenticated/hr"
+    },
+    "/_authenticated/hr/employees": {
+      "filePath": "_authenticated/hr/employees.tsx",
+      "parent": "/_authenticated/hr",
+      "children": [
+        "/_authenticated/hr/employees/create",
+        "/_authenticated/hr/employees/",
+        "/_authenticated/hr/employees/$id/"
+      ]
+    },
+    "/_authenticated/hr/finances": {
+      "filePath": "_authenticated/hr/finances.tsx",
+      "parent": "/_authenticated/hr"
+    },
+    "/_authenticated/hr/leaves": {
+      "filePath": "_authenticated/hr/leaves.tsx",
+      "parent": "/_authenticated/hr"
+    },
+    "/_authenticated/hr/tally": {
+      "filePath": "_authenticated/hr/tally.tsx",
+      "parent": "/_authenticated/hr"
+    },
+    "/_authenticated/hr/employees/create": {
+      "filePath": "_authenticated/hr/employees/create.tsx",
+      "parent": "/_authenticated/hr/employees"
+    },
+    "/_authenticated/hr/employees/": {
+      "filePath": "_authenticated/hr/employees/index.tsx",
+      "parent": "/_authenticated/hr/employees"
+    },
+    "/_authenticated/hr/employees/$id/": {
+      "filePath": "_authenticated/hr/employees/$id/index.tsx",
+      "parent": "/_authenticated/hr/employees"
+    }
+  }
+}
+ROUTE_MANIFEST_END */
