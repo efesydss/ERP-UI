@@ -1,9 +1,11 @@
 # ERP-UI
 Falcons ERP Web App UI
 
-to run locally, first clone..
+- Automatically deployed on : https://falcons-erp-api-dev.sd.iafl.net/ | [Alternative](https://octopus-app-2cww7.ondigitalocean.app/swagger-ui/index.html)
+- Swagger UI: https://falcons-erp-api-dev.sd.iafl.net/swagger-ui/index.html  | [Alternative](https://octopus-app-2cww7.ondigitalocean.app/swagger-ui/index.html)
 
-at root directory 
+
+to run locally, first clone and execute below codes at root directory 
 
 ```bash
 source .env.dist
