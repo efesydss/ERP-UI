@@ -61,7 +61,6 @@ export const FormEmployeeDetail = (props: FormPersonnelDetailProps) => {
             <BaseSelect
               name='profession'
               options={options}
-              placeholder={common('title')}
             />
             <DatePicker name={'startDate'} />
             <DatePicker name={'endDate'} />

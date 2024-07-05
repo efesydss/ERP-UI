@@ -1,4 +1,4 @@
-import Select, { ActionMeta, MultiValue, SingleValue } from 'react-select'
+import Select, { MultiValue, SingleValue } from 'react-select'
 import { useField } from 'formik'
 import { Stack, useTheme } from '@mui/material'
 import { Label } from '@/components/Common/Form/Label/Label'
@@ -12,15 +12,14 @@ interface BaseSelectProps {
   name: string
   options: OptionType[]
   isMulti?: boolean
-  placeholder?: string
 }
 
 export const BaseSelect = (props: BaseSelectProps) => {
-  const { options, name, placeholder, isMulti = false, ...rest } = props
+  const { options, name, isMulti = false, ...rest } = props
   const [field, { touched, error }, { setValue }] = useField(name)
   const theme = useTheme()
 
-  const onChange = (newValue: MultiValue<OptionType> | SingleValue<OptionType> | null, _actionMeta: ActionMeta<OptionType>) => {
+  const onChange = (newValue: MultiValue<OptionType> | SingleValue<OptionType> | null) => {
     let valueToSet: string | string[] = ''
 
     if (newValue === null) {

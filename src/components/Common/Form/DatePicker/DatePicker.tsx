@@ -11,7 +11,10 @@ interface DatePickerProps {
 
 export const DatePicker = (props: DatePickerProps) => {
   const { name, ...rest } = props
-  const [field, _, { setValue }] = useField(name)
+  const [field, meta, helpers] = useField(name)
+
+  const { value } = meta
+  const { setValue } = helpers
 
   return (
     <Stack position={'relative'}>
@@ -19,7 +22,7 @@ export const DatePicker = (props: DatePickerProps) => {
         {...field}
         {...rest}
         dateFormat='dd/MM/yyyy'
-        selected={field.value && new Date(field.value)}
+        selected={value && new Date(field.value)}
         onChange={(value) => setValue(value)}
         locale={'tr'}
         customInput={
