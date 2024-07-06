@@ -3,6 +3,16 @@ import { createTheme } from '@mui/material/styles'
 import { ThemeProvider, useMediaQuery } from '@mui/material'
 import { trTR } from '@mui/material/locale'
 
+declare module '@mui/material/styles' {
+  interface Palette {
+    muted: Palette['primary']
+  }
+
+  interface PaletteOptions {
+    muted?: PaletteOptions['primary']
+  }
+}
+
 interface ThemeContextProps {
   toggleTheme: () => void
   isDarkMode: boolean
@@ -43,8 +53,11 @@ export const MultiThemeProvider = (props: PropsWithChildren) => {
         primary: {
           main: '#122d3c'
         },
+        muted: {
+          main: '#F3F4F6'
+        },
         secondary: {
-          main: '#D6E0E6'
+          main: '#7F9C96'
         },
         error: {
           main: '#790000'

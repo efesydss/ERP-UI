@@ -1,9 +1,10 @@
-import { Avatar, IconButton, Toolbar } from '@mui/material'
+import { Avatar, Divider, IconButton, Toolbar } from '@mui/material'
 import { useAppContext } from '@/utils/hooks/useAppContext'
 import MenuIcon from '@mui/icons-material/Menu'
 import { AppTopBar } from '@/components/Root/stylesRoot'
 import { setLocale } from 'yup'
 import { useTranslation } from 'react-i18next'
+import { Breadcrumbs } from '@/components/Common/Breadcrumbs/Breadcrumbs'
 
 export const AppBar = () => {
   const { isDrawerOpen, setIsDrawerOpen } = useAppContext()
@@ -20,9 +21,9 @@ export const AppBar = () => {
 
   return (
     <AppTopBar
-      position={'fixed'}
+      position={'sticky'}
       isOpen={isDrawerOpen}
-      color={'secondary'}
+      color={'inherit'}
       elevation={0}
     >
       <Toolbar sx={{ justifyContent: isDrawerOpen ? 'flex-end' : 'space-between' }}>
@@ -40,6 +41,9 @@ export const AppBar = () => {
         </IconButton>
         <Avatar>A</Avatar>
       </Toolbar>
+      <Divider />
+      <Breadcrumbs />
+      <Divider />
     </AppTopBar>
   )
 }

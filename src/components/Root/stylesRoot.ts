@@ -3,7 +3,7 @@ import MuiAppBar from '@mui/material/AppBar'
 import { AppBarProps } from '@/components/Root/typesRoot'
 import MuiDrawer from '@mui/material/Drawer'
 
-const drawerWidth = 240
+const drawerWidth = 300
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -32,20 +32,13 @@ export const RootWrapper = styled('div')({
 
 export const AppTopBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'isOpen'
-})<AppBarProps>(({ theme, isOpen }) => ({
+})<AppBarProps>(({ theme }) => ({
   zIndex: theme.zIndex.drawer + 1,
+  backgroundColor: theme.palette.background.paper,
   justifyContent: 'flex-end',
   transition: theme.transitions.create(['width', 'margin'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen
-  }),
-  ...(isOpen && {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen
-    })
   })
 }))
 
@@ -69,17 +62,14 @@ export const AppLeftDrawer = styled(MuiDrawer, {
 export const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
-  padding: theme.spacing(0, 1),
-  ...theme.mixins.toolbar
+  padding: theme.spacing(0, 1)
 }))
 
 export const SidebarHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  padding: theme.spacing(0, 1),
-  background: 'linear-gradient(90deg, rgba(18,45,60,1) 0%, rgba(214,224,230,1) 90%)',
-  ...theme.mixins.toolbar
+  padding: theme.spacing(0, 1)
 }))
 
 export const Main = styled(Box)(({ theme }) => ({

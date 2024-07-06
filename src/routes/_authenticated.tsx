@@ -3,7 +3,7 @@ import { AppBar } from '@/components/Root/components/AppBar/AppBar'
 import { AppDrawer } from '@/components/Root/components/AppDrawer/AppDrawer'
 import { DrawerHeader, Main, RootWrapper } from '@/components/Root/stylesRoot'
 import { getRefreshToken, setAuthToken, tokenGlobal } from '@/utils/apiDefaults'
-import { Breadcrumbs } from '@/components/Common/Breadcrumbs/Breadcrumbs'
+import { Box } from '@mui/material'
 
 export const Route = createFileRoute('/_authenticated')({
   beforeLoad: async ({ context, location }) => {
@@ -40,13 +40,15 @@ export const Route = createFileRoute('/_authenticated')({
   component: () => (
     <>
       <RootWrapper>
-        <AppBar />
         <AppDrawer />
-        <Main component={'main'}>
-          <DrawerHeader />
-          <Breadcrumbs />
-          <Outlet />
-        </Main>
+        <Box sx={{ width: '100%' }}>
+          <AppBar />
+          <Main component={'main'}>
+            <DrawerHeader />
+
+            <Outlet />
+          </Main>
+        </Box>
       </RootWrapper>
     </>
   )

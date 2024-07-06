@@ -3,7 +3,7 @@ import { SyntheticEvent, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { BaseForm } from '@/components/Common/Form/BaseForm'
 import { FormEmployeeDetail } from '@/components/Hr/Employee/FormEmployeeDetail'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { apiRequest } from '@/utils/apiDefaults'
 import { Employee } from '@/components/Hr/Employee/typesEmployee'
 import { Route } from '@/routes/_authenticated/hr/employees/$id'
@@ -13,27 +13,15 @@ export const EmployeeDetails = () => {
   const { t: hr } = useTranslation('hr')
   const [value, setValue] = useState(0)
   const { id } = Route.useParams()
-
-  const { data } = useQuery({
-    queryKey: ['employee', id],
-    enabled: !!id,
-    queryFn: () =>
-      apiRequest<Employee>({
-        method: 'GET',
-        endpoint: 'employee',
-        id
-      })
-  })
+  const data = Route.useLoaderData()
 
   const updateEmployee = async (employee: Employee) => {
-    const res = await apiRequest<Employee>({
+    return await apiRequest<Employee>({
       endpoint: 'employee',
       method: 'PUT',
       id,
       payload: employee
     })
-
-    return res
   }
 
   const { mutateAsync } = useMutation({
@@ -78,14 +66,12 @@ export const EmployeeDetails = () => {
           <Tab label={hr('infoPayroll')} />
         </Tabs>
       </Box>
-      {data && (
-        <BaseForm
-          initialValues={data}
-          //validationSchema={validationSchema}
-          component={<FormEmployeeDetail value={value} />}
-          onSubmit={onFormSubmit}
-        />
-      )}
+      <BaseForm
+        initialValues={data}
+        //validationSchema={validationSchema}
+        component={<FormEmployeeDetail value={value} />}
+        onSubmit={onFormSubmit}
+      />
     </Box>
   )
 }

@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom/client'
 import { StrictMode } from 'react'
-import { CircularProgress, CssBaseline } from '@mui/material'
+import { CircularProgress, CssBaseline, GlobalStyles } from '@mui/material'
 import { MultiThemeProvider } from '@/utils/ThemeContext'
 import { initI18n } from '@/i18n'
 import { AppProvider } from '@/utils/AppProvider'
@@ -64,6 +64,13 @@ if (!rootElement.innerHTML) {
       <MultiThemeProvider>
         <QueryClientProvider client={queryClient}>
           <CssBaseline />
+          <GlobalStyles
+            styles={{
+              body: {
+                backgroundColor: '#F3F4F6'
+              }
+            }}
+          />
           <ToastContainer />
           <App />
         </QueryClientProvider>

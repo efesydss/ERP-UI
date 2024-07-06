@@ -36,11 +36,11 @@ export const FormEmployeeDetail = (props: FormPersonnelDetailProps) => {
   const { t: common } = useTranslation('common')
   const { value } = props
 
-  const options = [
+  /*  const options = [
     { value: 'software_developer', label: 'Software Developer' },
     { value: 'option2', label: 'Option 2' },
     { value: 'option3', label: 'Option 3' }
-  ]
+  ]*/
 
   const bloodTypeOptions = Object.values(BloodType).map((type) => ({
     value: type,
@@ -58,10 +58,11 @@ export const FormEmployeeDetail = (props: FormPersonnelDetailProps) => {
             <Input name={'name'} />
             <Input name={'surname'} />
             <Input name={'email'} />
-            <BaseSelect
+            <Input name={'profession'} />
+            {/* <BaseSelect
               name='profession'
               options={options}
-            />
+            />*/}
             <DatePicker name={'startDate'} />
             <DatePicker name={'endDate'} />
           </FormGrid>
@@ -90,13 +91,31 @@ export const FormEmployeeDetail = (props: FormPersonnelDetailProps) => {
         value={value || 0}
         index={1}
       >
-        Item Two
+        <FormGrid widths={'half'}>
+          <Input name={'volumeNumber'} />
+          <Input name={'familySerial'} />
+          <Input name={'birthPlace'} />
+          <Input name={'fathersName'} />
+          <Input name={'mothersName'} />
+          <Input name={'city'} />
+          <Input name={'province'} />
+          <Input name={'state'} />
+          <Input name={'street'} />
+          <DatePicker name={'birthDate'} />
+        </FormGrid>
+        <Button
+          type={'submit'}
+          color={'primary'}
+          variant={'contained'}
+        >
+          {common('save')}
+        </Button>
       </CustomTabPanel>
       <CustomTabPanel
         value={value || 0}
         index={2}
       >
-        three
+        <FormGrid widths={'half'}>here</FormGrid>
       </CustomTabPanel>
     </>
   )

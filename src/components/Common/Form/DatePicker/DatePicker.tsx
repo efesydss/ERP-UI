@@ -21,7 +21,7 @@ export const DatePicker = (props: DatePickerProps) => {
       <RDatePicker
         {...field}
         {...rest}
-        dateFormat='dd/MM/yyyy'
+        dateFormat='yyyy/MM/dd'
         selected={value && new Date(field.value)}
         onChange={(value) => setValue(value)}
         locale={'tr'}

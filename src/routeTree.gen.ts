@@ -16,6 +16,7 @@ import { Route as AuthenticatedImport } from './routes/_authenticated'
 import { Route as IndexImport } from './routes/index'
 import { Route as AuthenticatedHrImport } from './routes/_authenticated/hr'
 import { Route as AuthenticatedDashboardImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedHrIndexImport } from './routes/_authenticated/hr/index'
 import { Route as AuthenticatedHrTallyImport } from './routes/_authenticated/hr/tally'
 import { Route as AuthenticatedHrLeavesImport } from './routes/_authenticated/hr/leaves'
 import { Route as AuthenticatedHrFinancesImport } from './routes/_authenticated/hr/finances'
@@ -50,6 +51,11 @@ const AuthenticatedHrRoute = AuthenticatedHrImport.update({
 const AuthenticatedDashboardRoute = AuthenticatedDashboardImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRoute,
+} as any)
+
+const AuthenticatedHrIndexRoute = AuthenticatedHrIndexImport.update({
+  path: '/',
+  getParentRoute: () => AuthenticatedHrRoute,
 } as any)
 
 const AuthenticatedHrTallyRoute = AuthenticatedHrTallyImport.update({
@@ -170,6 +176,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHrTallyImport
       parentRoute: typeof AuthenticatedHrImport
     }
+    '/_authenticated/hr/': {
+      id: '/_authenticated/hr/'
+      path: '/'
+      fullPath: '/hr/'
+      preLoaderRoute: typeof AuthenticatedHrIndexImport
+      parentRoute: typeof AuthenticatedHrImport
+    }
     '/_authenticated/hr/employees/create': {
       id: '/_authenticated/hr/employees/create'
       path: '/create'
@@ -210,6 +223,7 @@ export const routeTree = rootRoute.addChildren({
       AuthenticatedHrFinancesRoute,
       AuthenticatedHrLeavesRoute,
       AuthenticatedHrTallyRoute,
+      AuthenticatedHrIndexRoute,
     }),
   }),
   LoginRoute,
@@ -253,7 +267,8 @@ export const routeTree = rootRoute.addChildren({
         "/_authenticated/hr/employees",
         "/_authenticated/hr/finances",
         "/_authenticated/hr/leaves",
-        "/_authenticated/hr/tally"
+        "/_authenticated/hr/tally",
+        "/_authenticated/hr/"
       ]
     },
     "/_authenticated/hr/debitCreditAnalysis": {
@@ -279,6 +294,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_authenticated/hr/tally": {
       "filePath": "_authenticated/hr/tally.tsx",
+      "parent": "/_authenticated/hr"
+    },
+    "/_authenticated/hr/": {
+      "filePath": "_authenticated/hr/index.tsx",
       "parent": "/_authenticated/hr"
     },
     "/_authenticated/hr/employees/create": {
