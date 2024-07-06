@@ -3,17 +3,19 @@ import { SyntheticEvent, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { BaseForm } from '@/components/Common/Form/BaseForm'
 import { FormEmployeeDetail } from '@/components/Hr/Employee/FormEmployeeDetail'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { apiRequest } from '@/utils/apiDefaults'
 import { Employee } from '@/components/Hr/Employee/typesEmployee'
 import { Route } from '@/routes/_authenticated/hr/employees/$id'
 import { AxiosError } from 'axios'
+import { toast } from 'react-toastify'
 
 export const EmployeeDetails = () => {
   const { t: hr } = useTranslation('hr')
   const [value, setValue] = useState(0)
   const { id } = Route.useParams()
   const data = Route.useLoaderData()
+  const queryClient = useQueryClient()
 
   const updateEmployee = async (employee: Employee) => {
     return await apiRequest<Employee>({
@@ -29,7 +31,10 @@ export const EmployeeDetails = () => {
     onError: (err: AxiosError) => {
       console.log('mutateAsync', err)
     },
-    onSuccess: () => console.log('success')
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['employee'] })
+      toast.success('Employee Updated')
+    }
   })
 
   /*  const validationSchema = yup.object({

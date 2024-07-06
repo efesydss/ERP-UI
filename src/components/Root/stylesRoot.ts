@@ -4,6 +4,7 @@ import { AppBarProps } from '@/components/Root/typesRoot'
 import MuiDrawer from '@mui/material/Drawer'
 
 const drawerWidth = 300
+const drawerCollapsed = 100
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -20,10 +21,7 @@ const closedMixin = (theme: Theme): CSSObject => ({
     duration: theme.transitions.duration.leavingScreen
   }),
   overflowX: 'hidden',
-  width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up('sm')]: {
-    width: `calc(${theme.spacing(8)} + 1px)`
-  }
+  width: drawerCollapsed
 })
 
 export const RootWrapper = styled('div')({
@@ -69,7 +67,8 @@ export const SidebarHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  padding: theme.spacing(0, 1)
+  padding: theme.spacing(0, 1),
+  height: 64
 }))
 
 export const Main = styled(Box)(({ theme }) => ({
@@ -81,7 +80,6 @@ export const ListItem = styled(MuiListItem, {
   shouldForwardProp: (prop) => prop !== 'isCurrent' && prop !== 'isChild'
 })<{ isCurrent: boolean; isChild: boolean }>(({ theme, isCurrent, isChild }) => ({
   width: 'auto',
-  overflow: 'hidden',
   ...(isChild
     ? {
         margin: theme.spacing(0.5, 2),
@@ -110,7 +108,8 @@ export const ListItem = styled(MuiListItem, {
 
 export const ListItemButton = styled(MuiListItemButton)(() => ({
   width: '100%',
-  position: 'relative'
+  position: 'relative',
+  height: 44
 }))
 
 export const ListItemContent = styled('div', {
