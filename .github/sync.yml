@@ -25,6 +25,8 @@ erkankosluk/falcons-erp-ui-deploy@main:
     dest: README.md
   - source: launch_dev.sh
     dest: launch_dev.sh
+  - source: conf/
+    dest: conf/
 
 
 
