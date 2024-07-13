@@ -5,6 +5,7 @@ import MuiDrawer from '@mui/material/Drawer'
 
 const drawerWidth = 300
 const drawerCollapsed = 100
+export const headerHeight = 110
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -37,10 +38,11 @@ export const AppTopBar = styled(MuiAppBar, {
   transition: theme.transitions.create(['width', 'margin'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen
-  })
+  }),
+  height: headerHeight
 }))
 
-export const AppLeftDrawer = styled(MuiDrawer, {
+export const AppNavDrawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== 'open'
 })(({ theme, open }) => ({
   width: drawerWidth,

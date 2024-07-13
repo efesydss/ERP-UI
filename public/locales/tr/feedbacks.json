@@ -2,5 +2,6 @@
   "notValid": {
     "required": "Zorunlu alan",
     "email": "Geçersiz email adresi"
-  }
+  },
+  "noDataFound": "Sonuç bulunamadı"
 }

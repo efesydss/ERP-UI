@@ -54,7 +54,7 @@ export const MultiThemeProvider = (props: PropsWithChildren) => {
           main: '#122d3c'
         },
         muted: {
-          main: '#F3F4F6'
+          main: '#e9f1ff'
         },
         secondary: {
           main: '#7F9C96'

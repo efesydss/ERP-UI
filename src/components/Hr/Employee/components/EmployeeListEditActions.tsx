@@ -22,7 +22,10 @@ export const EmployeeListEditActions = (props: PersonnelListEditActionsProps) =>
   }
   return (
     <Box>
-      <IconButton onClick={handleClick}>
+      <IconButton
+        onClick={handleClick}
+        size={'small'}
+      >
         <IoMdMore />
       </IconButton>
       <Menu

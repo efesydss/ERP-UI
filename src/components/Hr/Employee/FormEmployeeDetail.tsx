@@ -36,12 +36,6 @@ export const FormEmployeeDetail = (props: FormPersonnelDetailProps) => {
   const { t: common } = useTranslation('common')
   const { value } = props
 
-  /*  const options = [
-    { value: 'software_developer', label: 'Software Developer' },
-    { value: 'option2', label: 'Option 2' },
-    { value: 'option3', label: 'Option 3' }
-  ]*/
-
   const bloodTypeOptions = Object.values(BloodType).map((type) => ({
     value: type,
     label: type
@@ -59,10 +53,6 @@ export const FormEmployeeDetail = (props: FormPersonnelDetailProps) => {
             <Input name={'surname'} />
             <Input name={'email'} />
             <Input name={'profession'} />
-            {/* <BaseSelect
-              name='profession'
-              options={options}
-            />*/}
             <DatePicker name={'startDate'} />
             <DatePicker name={'endDate'} />
           </FormGrid>

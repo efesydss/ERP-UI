@@ -1,4 +1,4 @@
-import { AppLeftDrawer, SidebarHeader } from '@/components/Root/stylesRoot'
+import { AppNavDrawer, SidebarHeader } from '@/components/Root/stylesRoot'
 import { IconButton, List } from '@mui/material'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import { useAppContext } from '@/utils/hooks/useAppContext'
@@ -31,7 +31,7 @@ export const AppDrawer = () => {
   }
 
   return (
-    <AppLeftDrawer
+    <AppNavDrawer
       variant={'permanent'}
       open={isDrawerOpen}
     >
@@ -63,6 +63,6 @@ export const AppDrawer = () => {
           )
         })}
       </List>
-    </AppLeftDrawer>
+    </AppNavDrawer>
   )
 }

@@ -29,7 +29,6 @@ export const AppBar = () => {
       <Toolbar sx={{ justifyContent: isDrawerOpen ? 'flex-end' : 'space-between' }}>
         <IconButton
           color='inherit'
-          aria-label='open drawer'
           onClick={() => setIsDrawerOpen(true)}
           edge='start'
           sx={{

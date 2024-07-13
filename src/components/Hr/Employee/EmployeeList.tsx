@@ -31,6 +31,8 @@ export const EmployeeList = () => {
       },
       {
         id: 'actions',
+        enableSorting: false,
+        enableColumnFilter: false,
         cell: ({ row }) => {
           const personnelId = row.original.id
 
@@ -59,7 +61,7 @@ export const EmployeeList = () => {
   }
 
   return (
-    <div>
+    <>
       <div>
         <PageTitle
           title={hr('personnelTitle')}
@@ -71,6 +73,6 @@ export const EmployeeList = () => {
         columns={columns}
         endpoint={'employees'}
       />
-    </div>
+    </>
   )
 }
