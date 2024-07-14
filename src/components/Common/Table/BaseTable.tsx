@@ -22,7 +22,7 @@ export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) =
   const { setItem, getItem } = useLocalStorage(endpoint)
   const { t: feedbacks } = useTranslation('feedbacks')
 
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(getItem())
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(getItem() || [])
   const [sorting, setSorting] = useState<SortingState>([])
 
   const [pagination, setPagination] = useState<PaginationState>({
