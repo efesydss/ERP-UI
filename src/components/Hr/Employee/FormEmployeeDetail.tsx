@@ -51,14 +51,15 @@ export const FormEmployeeDetail = (props: FormPersonnelDetailProps) => {
           <FormGrid>
             <Input name={'name'} />
             <Input name={'surname'} />
+            <Input name={'identificationNumber'} />
             <Input name={'email'} />
             <Input name={'profession'} />
+            <Input name={'department'} />
             <DatePicker name={'startDate'} />
             <DatePicker name={'endDate'} />
           </FormGrid>
           <FormGrid>
-            <Input name={'homePhone'} />
-            <Input name={'mobilePhone'} />
+            <Input name={'phone'} />
             <BaseSelect
               name='bloodType'
               options={bloodTypeOptions}

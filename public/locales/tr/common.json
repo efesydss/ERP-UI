@@ -11,6 +11,8 @@
   "address": "Adres",
   "profession": "Ünvan",
   "homePhone": "Ev Telefonu",
+  "phone": "Telefon",
   "mobilePhone": "Cep Telefonu",
-  "bloodType": "Kan Grubu"
+  "bloodType": "Kan Grubu",
+  "identificationNumber": "Kimlik No"
 }

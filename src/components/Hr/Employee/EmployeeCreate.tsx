@@ -1,35 +1,34 @@
 import { FormEmployeeDetail } from '@/components/Hr/Employee/FormEmployeeDetail'
 import { BaseForm } from '@/components/Common/Form/BaseForm'
-import { CivilStatus, Employee } from '@/components/Hr/Employee/typesEmployee'
+import { Employee } from '@/components/Hr/Employee/typesEmployee'
 import { useMutation } from '@tanstack/react-query'
 import { apiRequest } from '@/utils/apiDefaults'
 import { toast } from 'react-toastify'
 import { AxiosError } from 'axios'
 
 const initialPersonnel: Employee = {
-  identificationNumber: '123588',
-  name: 'John2',
-  surname: 'Doe2',
-  department: 'Engineering',
-  profession: 'software_developer',
-  emergencyPhone: '555-555-5555',
-  emergencyName: 'Jane Doe',
-  startDate: '2023-07-01',
-  endDate: '2024-11-30',
-  phone: '555-555-5555',
-  email: 'john.doe@example.com',
-  serialNumber: '55226',
-  fathersName: 'Ahmet',
-  mothersName: 'Fatma',
-  birthPlace: 'Istanbul',
-  birthDate: '1990-01-01',
-  civilStatus: CivilStatus.Married,
-  city: 'Istanbul',
-  province: 'Kadikoy',
-  state: 'Marmara',
-  street: 'Ataturk Street',
-  volumeNumber: '10',
-  familySerial: 'A123456'
+  identificationNumber: '',
+  name: '',
+  surname: '',
+  department: '',
+  profession: '',
+  emergencyPhone: '',
+  emergencyName: '',
+  startDate: '',
+  endDate: '',
+  phone: '',
+  email: '',
+  serialNumber: '',
+  fathersName: '',
+  mothersName: '',
+  birthPlace: '',
+  birthDate: '',
+  city: '',
+  province: '',
+  state: '',
+  street: '',
+  volumeNumber: '',
+  familySerial: ''
 }
 
 export const EmployeeCreate = () => {
