@@ -22,7 +22,9 @@ import { Route as AuthenticatedHrLeavesImport } from './routes/_authenticated/hr
 import { Route as AuthenticatedHrFinancesImport } from './routes/_authenticated/hr/finances'
 import { Route as AuthenticatedHrEmployeesImport } from './routes/_authenticated/hr/employees'
 import { Route as AuthenticatedHrDebitCreditAnalysisImport } from './routes/_authenticated/hr/debitCreditAnalysis'
+import { Route as AuthenticatedHrLeavesIndexImport } from './routes/_authenticated/hr/leaves/index'
 import { Route as AuthenticatedHrEmployeesIndexImport } from './routes/_authenticated/hr/employees/index'
+import { Route as AuthenticatedHrLeavesNewLeaveImport } from './routes/_authenticated/hr/leaves/new-leave'
 import { Route as AuthenticatedHrEmployeesCreateImport } from './routes/_authenticated/hr/employees/create'
 import { Route as AuthenticatedHrEmployeesIdIndexImport } from './routes/_authenticated/hr/employees/$id/index'
 
@@ -84,10 +86,23 @@ const AuthenticatedHrDebitCreditAnalysisRoute =
     getParentRoute: () => AuthenticatedHrRoute,
   } as any)
 
+const AuthenticatedHrLeavesIndexRoute = AuthenticatedHrLeavesIndexImport.update(
+  {
+    path: '/',
+    getParentRoute: () => AuthenticatedHrLeavesRoute,
+  } as any,
+)
+
 const AuthenticatedHrEmployeesIndexRoute =
   AuthenticatedHrEmployeesIndexImport.update({
     path: '/',
     getParentRoute: () => AuthenticatedHrEmployeesRoute,
+  } as any)
+
+const AuthenticatedHrLeavesNewLeaveRoute =
+  AuthenticatedHrLeavesNewLeaveImport.update({
+    path: '/new-leave',
+    getParentRoute: () => AuthenticatedHrLeavesRoute,
   } as any)
 
 const AuthenticatedHrEmployeesCreateRoute =
@@ -190,12 +205,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHrEmployeesCreateImport
       parentRoute: typeof AuthenticatedHrEmployeesImport
     }
+    '/_authenticated/hr/leaves/new-leave': {
+      id: '/_authenticated/hr/leaves/new-leave'
+      path: '/new-leave'
+      fullPath: '/hr/leaves/new-leave'
+      preLoaderRoute: typeof AuthenticatedHrLeavesNewLeaveImport
+      parentRoute: typeof AuthenticatedHrLeavesImport
+    }
     '/_authenticated/hr/employees/': {
       id: '/_authenticated/hr/employees/'
       path: '/'
       fullPath: '/hr/employees/'
       preLoaderRoute: typeof AuthenticatedHrEmployeesIndexImport
       parentRoute: typeof AuthenticatedHrEmployeesImport
+    }
+    '/_authenticated/hr/leaves/': {
+      id: '/_authenticated/hr/leaves/'
+      path: '/'
+      fullPath: '/hr/leaves/'
+      preLoaderRoute: typeof AuthenticatedHrLeavesIndexImport
+      parentRoute: typeof AuthenticatedHrLeavesImport
     }
     '/_authenticated/hr/employees/$id/': {
       id: '/_authenticated/hr/employees/$id/'
@@ -221,7 +250,10 @@ export const routeTree = rootRoute.addChildren({
         AuthenticatedHrEmployeesIdIndexRoute,
       }),
       AuthenticatedHrFinancesRoute,
-      AuthenticatedHrLeavesRoute,
+      AuthenticatedHrLeavesRoute: AuthenticatedHrLeavesRoute.addChildren({
+        AuthenticatedHrLeavesNewLeaveRoute,
+        AuthenticatedHrLeavesIndexRoute,
+      }),
       AuthenticatedHrTallyRoute,
       AuthenticatedHrIndexRoute,
     }),
@@ -290,7 +322,11 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_authenticated/hr/leaves": {
       "filePath": "_authenticated/hr/leaves.tsx",
-      "parent": "/_authenticated/hr"
+      "parent": "/_authenticated/hr",
+      "children": [
+        "/_authenticated/hr/leaves/new-leave",
+        "/_authenticated/hr/leaves/"
+      ]
     },
     "/_authenticated/hr/tally": {
       "filePath": "_authenticated/hr/tally.tsx",
@@ -304,9 +340,17 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_authenticated/hr/employees/create.tsx",
       "parent": "/_authenticated/hr/employees"
     },
+    "/_authenticated/hr/leaves/new-leave": {
+      "filePath": "_authenticated/hr/leaves/new-leave.tsx",
+      "parent": "/_authenticated/hr/leaves"
+    },
     "/_authenticated/hr/employees/": {
       "filePath": "_authenticated/hr/employees/index.tsx",
       "parent": "/_authenticated/hr/employees"
+    },
+    "/_authenticated/hr/leaves/": {
+      "filePath": "_authenticated/hr/leaves/index.tsx",
+      "parent": "/_authenticated/hr/leaves"
     },
     "/_authenticated/hr/employees/$id/": {
       "filePath": "_authenticated/hr/employees/$id/index.tsx",

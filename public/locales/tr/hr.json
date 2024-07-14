@@ -1,10 +1,11 @@
 {
-  "personnelTitle": "Personel Listesi",
+  "personnelList": "Personel Listesi",
   "newPersonnel": "Yeni Personel",
   "department": "Departman",
   "infoGeneral": "Personel Bilgileri",
   "infoIdentity": "Nüfus Bilgileri",
   "infoPayroll": "Bordro Bilgileri",
   "startDate": "İşe Giriş",
-  "endDate": "İşten Çıkış"
+  "endDate": "İşten Çıkış",
+  "leaveAdd": "İzin EKle"
 }

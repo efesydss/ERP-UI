@@ -6,6 +6,7 @@
   "password": "Şifre",
   "login": "Giriş Yap",
   "name": "Adı",
+  "fullName": "Adı Soyadı",
   "surname": "Soyadı",
   "email": "E-Posta",
   "address": "Adres",
