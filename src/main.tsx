@@ -67,7 +67,7 @@ if (!rootElement.innerHTML) {
           <GlobalStyles
             styles={{
               body: {
-                backgroundColor: '#F3F4F6'
+                backgroundColor: '#F9F9F9'
               }
             }}
           />

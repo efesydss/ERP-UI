@@ -46,10 +46,9 @@ export const MultiThemeProvider = (props: PropsWithChildren) => {
   const theme = createTheme(
     {
       typography: {
-        fontFamily: 'Inter'
+        fontFamily: 'Heebo'
       },
       palette: {
-        //     mode: isDarkMode ? 'dark' : 'light',
         primary: {
           main: '#122d3c'
         },
@@ -57,7 +56,7 @@ export const MultiThemeProvider = (props: PropsWithChildren) => {
           main: '#e9f1ff'
         },
         secondary: {
-          main: '#7F9C96'
+          main: '#82A3A1'
         },
         error: {
           main: '#790000'

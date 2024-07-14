@@ -1,12 +1,12 @@
 import { AppNavDrawer, SidebarHeader } from '@/components/Root/stylesRoot'
 import { IconButton, List } from '@mui/material'
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import { useAppContext } from '@/utils/hooks/useAppContext'
 import { navMenuItems } from '@/components/Root/components/AppDrawer/navMenuItems'
 import { NavListItem } from '@/components/Root/components/AppDrawer/NavListItem'
 import { useEffect, useState } from 'react'
 import { useLocation } from '@tanstack/react-router'
 import logo from '@/assets/images/sahinler_logo.png'
+import { TbLayoutSidebarRightCollapseFilled, TbLayoutSidebarRightExpandFilled } from 'react-icons/tb'
 
 export const AppDrawer = () => {
   const { isDrawerOpen, setIsDrawerOpen } = useAppContext()
@@ -41,12 +41,11 @@ export const AppDrawer = () => {
           src={logo}
           alt='sahinler erp'
         />
-
-        <IconButton onClick={() => setIsDrawerOpen(false)}>
-          <ChevronLeftIcon />
-        </IconButton>
       </SidebarHeader>
-      <List disablePadding>
+      <List
+        disablePadding
+        sx={{ flexGrow: 1 }}
+      >
         {navMenuItems.map((nav) => {
           const depth = 0
           const menuName = nav.label
@@ -63,6 +62,12 @@ export const AppDrawer = () => {
           )
         })}
       </List>
+      <IconButton
+        onClick={() => setIsDrawerOpen(!isDrawerOpen)}
+        disableRipple
+      >
+        {isDrawerOpen ? <TbLayoutSidebarRightExpandFilled /> : <TbLayoutSidebarRightCollapseFilled />}
+      </IconButton>
     </AppNavDrawer>
   )
 }

@@ -1,13 +1,12 @@
-import { Avatar, Divider, IconButton, Toolbar } from '@mui/material'
+import { Toolbar } from '@mui/material'
 import { useAppContext } from '@/utils/hooks/useAppContext'
-import MenuIcon from '@mui/icons-material/Menu'
 import { AppTopBar } from '@/components/Root/stylesRoot'
 import { setLocale } from 'yup'
 import { useTranslation } from 'react-i18next'
 import { Breadcrumbs } from '@/components/Common/Breadcrumbs/Breadcrumbs'
 
 export const AppBar = () => {
-  const { isDrawerOpen, setIsDrawerOpen } = useAppContext()
+  const { isDrawerOpen } = useAppContext()
   const { t: feedbacks } = useTranslation('feedbacks')
 
   setLocale({
@@ -26,23 +25,9 @@ export const AppBar = () => {
       color={'inherit'}
       elevation={0}
     >
-      <Toolbar sx={{ justifyContent: isDrawerOpen ? 'flex-end' : 'space-between' }}>
-        <IconButton
-          color='inherit'
-          onClick={() => setIsDrawerOpen(true)}
-          edge='start'
-          sx={{
-            marginRight: 5,
-            ...(isDrawerOpen && { display: 'none' })
-          }}
-        >
-          <MenuIcon />
-        </IconButton>
-        <Avatar>A</Avatar>
+      <Toolbar>
+        <Breadcrumbs />
       </Toolbar>
-      <Divider />
-      <Breadcrumbs />
-      <Divider />
     </AppTopBar>
   )
 }

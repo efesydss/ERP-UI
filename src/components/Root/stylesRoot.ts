@@ -3,9 +3,9 @@ import MuiAppBar from '@mui/material/AppBar'
 import { AppBarProps } from '@/components/Root/typesRoot'
 import MuiDrawer from '@mui/material/Drawer'
 
-const drawerWidth = 300
-const drawerCollapsed = 100
-export const headerHeight = 110
+const drawerWidth = 240
+const drawerCollapsed = 80
+export const headerHeight = 54
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -34,21 +34,18 @@ export const AppTopBar = styled(MuiAppBar, {
 })<AppBarProps>(({ theme }) => ({
   zIndex: theme.zIndex.drawer + 1,
   backgroundColor: theme.palette.background.paper,
-  justifyContent: 'flex-end',
+  borderBottom: `1px solid ${theme.palette.muted.main}`,
   transition: theme.transitions.create(['width', 'margin'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen
-  }),
-  height: headerHeight
+  })
 }))
 
 export const AppNavDrawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== 'open'
 })(({ theme, open }) => ({
   width: drawerWidth,
-  flexShrink: 0,
-  whiteSpace: 'nowrap',
-  boxSizing: 'border-box',
+  display: 'flex',
   ...(open && {
     ...openedMixin(theme),
     '& .MuiDrawer-paper': openedMixin(theme)
@@ -56,7 +53,14 @@ export const AppNavDrawer = styled(MuiDrawer, {
   ...(!open && {
     ...closedMixin(theme),
     '& .MuiDrawer-paper': closedMixin(theme)
-  })
+  }),
+  '& .MuiPaper-root': {
+    borderRight: `1px solid ${theme.palette.muted.main}`,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    height: '100dvh'
+  }
 }))
 
 export const DrawerHeader = styled('div')(({ theme }) => ({
@@ -86,8 +90,11 @@ export const ListItem = styled(MuiListItem, {
     ? {
         margin: theme.spacing(0.5, 2),
         borderRadius: theme.spacing(1),
+        '& .MuiTypography-root': {
+          fontSize: '0.8rem'
+        },
         ...(isCurrent && {
-          backgroundColor: theme.palette.primary.main,
+          backgroundColor: theme.palette.secondary.main,
           color: theme.palette.background.paper,
 
           '& svg': {

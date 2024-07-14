@@ -42,7 +42,7 @@ export const Breadcrumbs = () => {
     return (
       <IconButton
         onClick={() => navigate({ to: '/dashboard' })}
-        size={'small'}
+        sx={{ width: 32, height: 32 }}
       >
         <IoHomeOutline />
       </IconButton>
