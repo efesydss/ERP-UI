@@ -42,7 +42,7 @@ export const Breadcrumbs = () => {
     return (
       <IconButton
         onClick={() => navigate({ to: '/dashboard' })}
-        sx={{ width: 32, height: 32 }}
+        sx={{ width: 32, height: 32, mr: 1 }}
       >
         <IoHomeOutline />
       </IconButton>
@@ -73,7 +73,7 @@ export const Breadcrumbs = () => {
     return (
       <CrumbWrapper key={index}>
         {!isLast ? <StyledLink to={b.path}>{b.label}</StyledLink> : <span>{b.label}</span>}
-        {!isLast && <LuDot />}
+        {!isLast && index !== 0 && <LuDot />}
       </CrumbWrapper>
     )
   })

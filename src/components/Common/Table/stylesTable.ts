@@ -12,7 +12,8 @@ export const ColumnHeaderWrapper = styled('div')(({ theme }) => ({
 export const ColumnHeaderTitle = styled(Typography)(({ theme }) => ({
   marginRight: theme.spacing(2),
   textTransform: 'uppercase',
-  fontSize: '0.8rem'
+  fontSize: '0.8rem',
+  whiteSpace: 'nowrap'
 })) as typeof Typography
 
 export const FilterWrapper = styled(Paper)(({ theme }) => ({

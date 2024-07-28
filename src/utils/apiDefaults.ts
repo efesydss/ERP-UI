@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosHeaders, AxiosRequestConfig, AxiosResponse } from 'axios'
 import createAuthRefreshInterceptor from 'axios-auth-refresh'
 import { apiRoutes } from '@/utils/apiRoutes'
+import { CustomAxiosRequestConfig } from 'axios-auth-refresh/dist/utils'
 
 export const backendURL = import.meta.env.VITE_BACKEND_ENDPOINT
 
@@ -94,6 +95,10 @@ export const refreshAuth = async (failedRequest: AxiosError) => {
     }
     return Promise.resolve()
   })
+}
+
+export const skipRefreshAuth: CustomAxiosRequestConfig = {
+  skipAuthRefresh: true
 }
 
 createAuthRefreshInterceptor(axiosBase, refreshAuth)

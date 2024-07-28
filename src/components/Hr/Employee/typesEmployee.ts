@@ -1,3 +1,5 @@
+import { Named } from '@/utils/commonTypes'
+
 export enum CivilStatus {
   Single = 'Single',
   Married = 'Married'
@@ -47,7 +49,7 @@ export interface Employee {
   identificationNumber: string
   name: string
   surname: string
-  department: string
+  department: Named
   profession: string
   startDate: string
   emergencyPhone?: string

@@ -37,6 +37,22 @@ export const LeavesList = () => {
       {
         header: hr('department'),
         accessorKey: 'department'
+      },
+      {
+        header: hr('entitled'),
+        accessorKey: 'entitled'
+      },
+      {
+        header: hr('transferred'),
+        accessorKey: 'transferred'
+      },
+      {
+        header: hr('usedCurrentYear'),
+        accessorKey: 'usedCurrentYear'
+      },
+      {
+        header: hr('usable'),
+        accessorKey: 'usable'
       }
     ],
     [common, hr]

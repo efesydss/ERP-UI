@@ -1,19 +1,15 @@
 import { useMutation } from '@tanstack/react-query'
 import { axiosBase, setAuthToken } from '@/utils/apiDefaults'
-import type { CustomAxiosRequestConfig } from 'axios-auth-refresh/dist/utils'
 import { useAppContext } from '@/utils/hooks/useAppContext'
 import { useRouter } from '@tanstack/react-router'
+import { apiRoutes } from '@/utils/apiRoutes'
 
 export const useLogout = () => {
   const { setUser } = useAppContext()
   const router = useRouter()
 
-  const customAxiosRequestConfig: CustomAxiosRequestConfig = {
-    skipAuthRefresh: true
-  }
-
   return useMutation({
-    mutationFn: () => axiosBase.post('/logout', {}, customAxiosRequestConfig),
+    mutationFn: () => axiosBase.post(apiRoutes.userLogout),
     onSuccess: () => {
       setUser(null)
       localStorage.removeItem('user')

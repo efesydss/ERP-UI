@@ -1,7 +1,15 @@
-import { Box, ListItem as MuiListItem, CSSObject, ListItemButton as MuiListItemButton, styled, Theme } from '@mui/material'
-import MuiAppBar from '@mui/material/AppBar'
+import {
+  Box,
+  ListItem as MuiListItem,
+  CSSObject,
+  ListItemButton as MuiListItemButton,
+  Toolbar as MuiToolbar,
+  AppBar as MuiAppBar,
+  Drawer as MuiDrawer,
+  styled,
+  Theme
+} from '@mui/material'
 import { AppBarProps } from '@/components/Root/typesRoot'
-import MuiDrawer from '@mui/material/Drawer'
 
 const drawerWidth = 240
 const drawerCollapsed = 80
@@ -119,6 +127,12 @@ export const ListItemButton = styled(MuiListItemButton)(() => ({
   width: '100%',
   position: 'relative',
   height: 44
+}))
+
+export const Toolbar = styled(MuiToolbar)(() => ({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center'
 }))
 
 export const ListItemContent = styled('div', {

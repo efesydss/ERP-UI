@@ -1,10 +1,9 @@
 import { useMutation } from '@tanstack/react-query'
 import { LoginRequest, LoginResponse } from '@/utils/AppContext'
-import { axiosBase, setAuthToken } from '@/utils/apiDefaults'
+import { axiosBase, setAuthToken, skipRefreshAuth } from '@/utils/apiDefaults'
 import { useAppContext } from '@/utils/hooks/useAppContext'
 import { AxiosError } from 'axios'
 import { toast } from 'react-toastify'
-import type { CustomAxiosRequestConfig } from 'axios-auth-refresh/dist/utils'
 import { useRouter } from '@tanstack/react-router'
 import { apiRoutes } from '@/utils/apiRoutes'
 
@@ -16,13 +15,9 @@ export const useLogin = () => {
   const { setUser } = useAppContext()
   const router = useRouter()
 
-  const customAxiosRequestConfig: CustomAxiosRequestConfig = {
-    skipAuthRefresh: true
-  }
-
   return useMutation({
     mutationFn: ({ email, password }: LoginRequest) => {
-      return axiosBase.post<LoginResponse>(apiRoutes.userLogin, { email, password }, customAxiosRequestConfig)
+      return axiosBase.post<LoginResponse>(apiRoutes.userLogin, { email, password }, skipRefreshAuth)
     },
     onSuccess: (res) => {
       const { user, token } = res.data

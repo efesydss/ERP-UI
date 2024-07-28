@@ -27,7 +27,7 @@ export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) =
 
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 10
+    pageSize: 15
   })
 
   const { data, isLoading } = useQuery({

@@ -10,7 +10,7 @@ export const apiRoutes = {
   employees: 'hr/employees',
 
   // Employee Vacation Management
-  employeeVacations: 'hr/employee/timeoffs',
+  employeeVacations: 'hr/employees/timeoffstatuses',
   employeeVacation: 'hr/employee/vacation',
 
   // Employee Payroll Management

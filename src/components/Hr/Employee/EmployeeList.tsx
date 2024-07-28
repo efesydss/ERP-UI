@@ -26,8 +26,9 @@ export const EmployeeList = () => {
         accessorKey: 'surname'
       },
       {
-        header: hr('department'),
-        accessorKey: 'department'
+        header: common('department'),
+        accessorKey: 'department',
+        accessorFn: (row) => row.department.name
       },
       {
         id: 'actions',
@@ -43,7 +44,7 @@ export const EmployeeList = () => {
         }
       }
     ],
-    [common, hr]
+    [common]
   )
 
   const PersonnelListActions = () => {
@@ -64,7 +65,7 @@ export const EmployeeList = () => {
     <>
       <div>
         <PageTitle
-          title={hr('personnelTitle')}
+          title={hr('personnelList')}
           actions={<PersonnelListActions />}
         />
       </div>

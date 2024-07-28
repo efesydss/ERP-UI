@@ -10,7 +10,7 @@ const initialPersonnel: Employee = {
   identificationNumber: '',
   name: '',
   surname: '',
-  department: '',
+  department: { id: 0, name: '' },
   profession: '',
   emergencyPhone: '',
   emergencyName: '',
@@ -57,6 +57,7 @@ export const EmployeeCreate = () => {
     console.log('values -->', values)
     await mutateAsync(values)
   }
+
   return (
     <BaseForm
       initialValues={initialPersonnel}

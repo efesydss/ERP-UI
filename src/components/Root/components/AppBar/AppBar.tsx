@@ -1,13 +1,16 @@
-import { Toolbar } from '@mui/material'
 import { useAppContext } from '@/utils/hooks/useAppContext'
-import { AppTopBar } from '@/components/Root/stylesRoot'
+import { AppTopBar, Toolbar } from '@/components/Root/stylesRoot'
 import { setLocale } from 'yup'
 import { useTranslation } from 'react-i18next'
 import { Breadcrumbs } from '@/components/Common/Breadcrumbs/Breadcrumbs'
+import { IconButton } from '@mui/material'
+import { MdOutlineLogout } from 'react-icons/md'
+import { useLogout } from '@/utils/hooks/useLogout'
 
 export const AppBar = () => {
   const { isDrawerOpen } = useAppContext()
   const { t: feedbacks } = useTranslation('feedbacks')
+  const { mutate } = useLogout()
 
   setLocale({
     mixed: {
@@ -27,6 +30,9 @@ export const AppBar = () => {
     >
       <Toolbar>
         <Breadcrumbs />
+        <IconButton onClick={() => mutate()}>
+          <MdOutlineLogout />
+        </IconButton>
       </Toolbar>
     </AppTopBar>
   )

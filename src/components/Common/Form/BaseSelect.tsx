@@ -3,7 +3,7 @@ import { useField } from 'formik'
 import { Stack, useTheme } from '@mui/material'
 import { Label } from '@/components/Common/Form/Label/Label'
 
-interface OptionType {
+export interface OptionType {
   value: string
   label: string
 }
@@ -12,10 +12,11 @@ interface BaseSelectProps {
   name: string
   options: OptionType[]
   isMulti?: boolean
+  nameSpace?: string
 }
 
 export const BaseSelect = (props: BaseSelectProps) => {
-  const { options, name, isMulti = false, ...rest } = props
+  const { options, name, nameSpace, isMulti = false, ...rest } = props
   const [field, { touched, error }, { setValue }] = useField(name)
   const theme = useTheme()
 
@@ -72,6 +73,7 @@ export const BaseSelect = (props: BaseSelectProps) => {
         name={name}
         hasError={hasError}
         errorMessage={error}
+        nameSpace={nameSpace}
       />
       <Select
         {...rest}
