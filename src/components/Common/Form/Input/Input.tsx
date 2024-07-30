@@ -2,7 +2,7 @@ import { InputBaseProps, Stack } from '@mui/material'
 import { useField } from 'formik'
 import { InputBaseWrapper } from '@/components/Common/Form/stylesForm'
 import { Label } from '@/components/Common/Form/Label/Label'
-import { ForwardedRef, forwardRef } from 'react'
+import { ForwardedRef, forwardRef, useEffect } from 'react'
 
 interface InputProps extends InputBaseProps {
   name: string
@@ -12,10 +12,20 @@ interface InputProps extends InputBaseProps {
 }
 
 const InputBase = (props: InputProps, ref: ForwardedRef<HTMLElement>) => {
-  const { name, nameSpace, label, isMultiLine, ...rest } = props
-  const [field, { error, touched }] = useField(name)
+  const { name, nameSpace, label, isMultiLine, type, ...rest } = props
+  const [field, { error, touched }, { setValue }] = useField(name)
+  const isNumber = type === 'number'
 
   const hasError = touched && !!error
+
+  useEffect(() => {
+    if (isNumber) {
+      const numericValue = field.value?.toString().replace(/[^\d]/g, '')
+      setValue(numericValue)
+    }
+  }, [field.value, isNumber, setValue, type])
+
+  const inputProps = isNumber ? { inputProps: { pattern: '\\d*' } } : {}
 
   return (
     <Stack>
@@ -35,6 +45,7 @@ const InputBase = (props: InputProps, ref: ForwardedRef<HTMLElement>) => {
         type={name === 'password' ? 'password' : 'text'}
         {...field}
         {...rest}
+        {...inputProps}
       />
     </Stack>
   )

@@ -28,6 +28,7 @@ export const LeavesList = () => {
       </>
     )
   }
+
   const columns = useMemo<ColumnDef<VacationStatus>[]>(
     () => [
       {
@@ -64,7 +65,7 @@ export const LeavesList = () => {
         actions={<LeavesListActions />}
       />
       <BaseTable<VacationStatus>
-        endpoint={'employeeVacations'}
+        endpoint={'employeeVacationStatuses'}
         columns={columns}
       />
     </>

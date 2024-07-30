@@ -16,5 +16,6 @@
   "mobilePhone": "Cep Telefonu",
   "bloodType": "Kan Grubu",
   "identificationNumber": "Kimlik No",
-  "department": "Departman"
+  "department": "Departman",
+  "timePick": "Saat"
 }

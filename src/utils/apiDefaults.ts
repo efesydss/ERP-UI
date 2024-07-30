@@ -13,6 +13,7 @@ interface RequestConfig {
   payload?: any
   headers?: AxiosHeaders
   id?: number
+  params?: Record<string, string>
 }
 
 export interface ApiResponse<T> {
@@ -33,7 +34,7 @@ export const axiosBase = axios.create({
 })
 
 export const apiRequest = async <T>(options: RequestConfig): Promise<T> => {
-  const { endpoint, payload, method = 'POST', headers = new AxiosHeaders(), id } = options
+  const { endpoint, payload, method = 'POST', headers = new AxiosHeaders(), id, params } = options
 
   let url = apiRoutes[endpoint]
 
@@ -41,14 +42,20 @@ export const apiRequest = async <T>(options: RequestConfig): Promise<T> => {
     url = `${url}/${id}`
   }
 
-  const params: AxiosRequestConfig = {
+  if (params) {
+    for (const key in params) {
+      url = url.replace(`{${key}}`, params[key])
+    }
+  }
+
+  const axiosParams: AxiosRequestConfig = {
     url,
     method,
     data: payload,
     headers
   }
 
-  const response: AxiosResponse<T> = await axiosBase(params)
+  const response: AxiosResponse<T> = await axiosBase(axiosParams)
   return response.data
 }
 

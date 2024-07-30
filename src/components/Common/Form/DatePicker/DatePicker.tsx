@@ -21,9 +21,11 @@ export const DatePicker = (props: DatePickerProps) => {
       <RDatePicker
         {...field}
         {...rest}
-        dateFormat='yyyy/MM/dd'
+        dateFormat='yyyy/MM/dd h:mm'
         selected={value && new Date(field.value)}
         onChange={(value) => setValue(value)}
+        showTimeInput
+        timeInputLabel={t('timePick', { ns: 'common' })}
         locale={'tr'}
         customInput={
           <Input

@@ -20,8 +20,8 @@ export enum LeaveType {
 
 export interface LeavesBaseProps {
   personnel: string
-  startTime: string
-  endTime: string
+  startDateTime: Date
+  endDateTime: Date
   workingDays: number
   workingHours: number
   timeOffType: LeaveType

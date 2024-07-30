@@ -15,10 +15,11 @@ interface BaseTableProps<TData extends RowData> {
   endpoint: keyof typeof apiRoutes
   columns: ColumnDef<TData>[]
   nameSpace?: string
+  params?: Record<string, string>
 }
 
 export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) => {
-  const { columns, endpoint, nameSpace = 'common' } = props
+  const { columns, endpoint, params, nameSpace = 'common' } = props
   const { setItem, getItem } = useLocalStorage(endpoint)
   const { t: feedbacks } = useTranslation('feedbacks')
 
@@ -35,6 +36,7 @@ export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) =
     queryFn: () =>
       apiRequest<ApiResponse<TData>>({
         endpoint,
+        params,
         payload: {
           filter: createFilterString(),
           sort: sortingOptions(),

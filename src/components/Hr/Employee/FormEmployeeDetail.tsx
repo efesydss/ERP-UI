@@ -6,6 +6,7 @@ import { BaseSelect } from '@/components/Common/Form/BaseSelect'
 import { FormGrid } from '@/components/Common/Form/FormGrid/FormGrid'
 import { DatePicker } from '@/components/Common/Form/DatePicker/DatePicker'
 import { BloodType } from '@/components/Hr/Employee/typesEmployee'
+import { EmployeeVacations } from '@/components/Hr/Employee/EmployeeVacations'
 
 interface FormPersonnelDetailProps {
   value?: number
@@ -107,6 +108,12 @@ export const FormEmployeeDetail = (props: FormPersonnelDetailProps) => {
         index={2}
       >
         <FormGrid widths={'half'}>here</FormGrid>
+      </CustomTabPanel>
+      <CustomTabPanel
+        value={value || 0}
+        index={3}
+      >
+        <EmployeeVacations />
       </CustomTabPanel>
     </>
   )

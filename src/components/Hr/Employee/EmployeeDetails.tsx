@@ -55,7 +55,6 @@ export const EmployeeDetails = () => {
   }
 
   const onFormSubmit = async (values: Employee) => {
-    console.log('values -->', values)
     await mutateAsync(values)
   }
 
@@ -69,6 +68,7 @@ export const EmployeeDetails = () => {
           <Tab label={hr('infoGeneral')} />
           <Tab label={hr('infoIdentity')} />
           <Tab label={hr('infoPayroll')} />
+          <Tab label={hr('infoTimeOffs')} />
         </Tabs>
       </Box>
       <BaseForm
