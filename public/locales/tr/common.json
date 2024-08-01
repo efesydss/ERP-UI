@@ -17,5 +17,6 @@
   "bloodType": "Kan Grubu",
   "identificationNumber": "Kimlik No",
   "department": "Departman",
+  "companyBranch": "Şube",
   "timePick": "Saat"
 }

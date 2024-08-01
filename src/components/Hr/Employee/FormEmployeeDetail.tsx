@@ -2,11 +2,14 @@ import { Box, Button } from '@mui/material'
 import { Input } from '@/components/Common/Form/Input/Input'
 import { useTranslation } from 'react-i18next'
 import { ReactNode } from 'react'
-import { BaseSelect } from '@/components/Common/Form/BaseSelect'
+import { BaseSelect, OptionType } from '@/components/Common/Form/BaseSelect'
 import { FormGrid } from '@/components/Common/Form/FormGrid/FormGrid'
 import { DatePicker } from '@/components/Common/Form/DatePicker/DatePicker'
 import { BloodType } from '@/components/Hr/Employee/typesEmployee'
 import { EmployeeVacations } from '@/components/Hr/Employee/EmployeeVacations'
+import { useQuery } from '@tanstack/react-query'
+import { apiRequest, ApiResponse } from '@/utils/apiDefaults'
+import { Named } from '@/utils/commonTypes'
 
 interface FormPersonnelDetailProps {
   value?: number
@@ -42,6 +45,27 @@ export const FormEmployeeDetail = (props: FormPersonnelDetailProps) => {
     label: type
   }))
 
+  const { data: departments, isLoading } = useQuery({
+    queryKey: ['departmentList'],
+    queryFn: () =>
+      apiRequest<ApiResponse<Named>>({
+        endpoint: 'departments',
+        payload: {
+          filter: '',
+          page: 0,
+          pageSize: 100
+        }
+      }),
+    select: (res): OptionType[] => {
+      return res.data.map((r) => {
+        return {
+          value: r.id.toString(),
+          label: r.name
+        }
+      })
+    }
+  })
+
   return (
     <>
       <CustomTabPanel
@@ -55,7 +79,11 @@ export const FormEmployeeDetail = (props: FormPersonnelDetailProps) => {
             <Input name={'identificationNumber'} />
             <Input name={'email'} />
             <Input name={'profession'} />
-            <Input name={'department'} />
+            <BaseSelect
+              isLoading={isLoading}
+              name='department'
+              options={departments || []}
+            />
             <DatePicker name={'startDate'} />
             <DatePicker name={'endDate'} />
           </FormGrid>

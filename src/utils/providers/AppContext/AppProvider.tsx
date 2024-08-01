@@ -1,5 +1,5 @@
 import { PropsWithChildren, useMemo, useState } from 'react'
-import { AppContext, User } from '@/utils/AppContext'
+import { AppContext, User } from '@/utils/providers/AppContext/AppContext'
 
 export const AppProvider = (props: PropsWithChildren) => {
   const [user, setUser] = useState<User | null>(null)

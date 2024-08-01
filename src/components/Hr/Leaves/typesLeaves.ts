@@ -27,3 +27,7 @@ export interface LeavesBaseProps {
   timeOffType: LeaveType
   unPaid?: boolean
 }
+
+export interface EmployeeLeavesProps extends LeavesBaseProps {
+  id: number
+}

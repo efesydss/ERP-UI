@@ -13,10 +13,11 @@ interface BaseSelectProps {
   options: OptionType[]
   isMulti?: boolean
   nameSpace?: string
+  isLoading?: boolean
 }
 
 export const BaseSelect = (props: BaseSelectProps) => {
-  const { options, name, nameSpace, isMulti = false, ...rest } = props
+  const { options, name, nameSpace, isLoading, isMulti = false, ...rest } = props
   const [field, { touched, error }, { setValue }] = useField(name)
   const theme = useTheme()
 
@@ -34,9 +35,12 @@ export const BaseSelect = (props: BaseSelectProps) => {
     setValue(valueToSet)
   }
 
+  //todo: types for field value
   const getValue = () => {
     if (options) {
-      return isMulti ? options.filter((option) => field.value.includes(option.value)) : options.find((option) => option.value === field.value) || null
+      return isMulti
+        ? options.filter((option) => field.value.includes(option.value))
+        : options.find((option) => option.value === field.value?.id.toString()) || null
     } else {
       return isMulti ? [] : null
     }
@@ -85,6 +89,7 @@ export const BaseSelect = (props: BaseSelectProps) => {
         isMulti={isMulti}
         styles={customStyles}
         placeholder={''}
+        isLoading={isLoading}
       />
     </Stack>
   )

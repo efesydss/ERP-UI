@@ -13,6 +13,7 @@ export const apiRoutes = {
   employeeVacationStatuses: 'hr/employees/timeoffstatuses',
   employeeVacation: 'hr/employee/{employeeId}/timeoffs',
   employeeVacationAdd: 'hr/employee/{employeeId}/timeoff',
+  employeeVacationDelete: 'hr/employee/{employeeId}/timeoff/{timeOffId}',
 
   // Employee Payroll Management
   employeePayrollData: 'hr/employee/payrollData',
@@ -24,6 +25,10 @@ export const apiRoutes = {
   // Department Management
   department: 'company/department',
   departments: 'company/departments',
+
+  //Branch Management
+  branches: 'company/branches',
+  branchAdd: 'company/branch',
 
   // Time Keeping
   timeKeepingDraft: 'hr/timekeeping/draft/employee'

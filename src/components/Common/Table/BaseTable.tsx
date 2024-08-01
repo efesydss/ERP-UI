@@ -18,6 +18,14 @@ interface BaseTableProps<TData extends RowData> {
   params?: Record<string, string>
 }
 
+declare module '@tanstack/react-table' {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  interface ColumnMeta<TData extends RowData, TValue> {
+    filterVariant?: 'text' | 'range' | 'select'
+    filterOptions?: any
+  }
+}
+
 export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) => {
   const { columns, endpoint, params, nameSpace = 'common' } = props
   const { setItem, getItem } = useLocalStorage(endpoint)
@@ -61,6 +69,8 @@ export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) =
     onColumnFiltersChange: setColumnFilters,
     onSortingChange: setSorting
   })
+
+  console.log('columnFilters -->', columnFilters)
 
   //todo: value typing with selects
   const createFilterString = () => {

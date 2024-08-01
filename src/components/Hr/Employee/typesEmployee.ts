@@ -50,6 +50,7 @@ export interface Employee {
   name: string
   surname: string
   department: Named
+  companyBranch: Named
   profession: string
   startDate: string
   emergencyPhone?: string

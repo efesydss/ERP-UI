@@ -18,5 +18,7 @@
   "OnDemand": "On Demand",
   "Vacation": "Yıllık İzin",
   "ChildBirth": "Doğum",
-  "infoTimeOffs": "İzinler"
+  "infoTimeOffs": "İzinler",
+  "SICK_LEAVE": "Hastalık İzni",
+  "CHILD_BIRTH": "Doğum İzni"
 }

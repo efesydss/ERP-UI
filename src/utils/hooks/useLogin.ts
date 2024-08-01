@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import { LoginRequest, LoginResponse } from '@/utils/AppContext'
+import { LoginRequest, LoginResponse } from '@/utils/providers/AppContext/AppContext'
 import { axiosBase, setAuthToken, skipRefreshAuth } from '@/utils/apiDefaults'
 import { useAppContext } from '@/utils/hooks/useAppContext'
 import { AxiosError } from 'axios'

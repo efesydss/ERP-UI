@@ -3,7 +3,7 @@ import { StrictMode } from 'react'
 import { CssBaseline, GlobalStyles } from '@mui/material'
 import { MultiThemeProvider } from '@/utils/ThemeContext'
 import { initI18n } from '@/i18n'
-import { AppProvider } from '@/utils/AppProvider'
+import { AppProvider } from '@/utils/providers/AppContext/AppProvider'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.min.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -11,6 +11,8 @@ import { createRouter, ErrorComponent, RouterProvider } from '@tanstack/react-ro
 import { routeTree } from '@/routeTree.gen'
 import { useAppContext } from '@/utils/hooks/useAppContext'
 import { FullPageCircular } from '@/components/Common/Loaders/FullPageCircular'
+import { ConfirmationDialog } from '@/components/Common/Dialog/ConfirmationDialog'
+import { ConfirmDialogProvider } from '@/utils/providers/ConfirmDialogContext/ConfirmDialogProvider'
 
 const queryClient = new QueryClient()
 
@@ -48,7 +50,10 @@ function InnerApp() {
 function App() {
   return (
     <AppProvider>
-      <InnerApp />
+      <ConfirmDialogProvider>
+        <ConfirmationDialog />
+        <InnerApp />
+      </ConfirmDialogProvider>
     </AppProvider>
   )
 }
