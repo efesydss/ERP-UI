@@ -1,4 +1,5 @@
-import { Named } from '@/utils/commonTypes'
+import { Identifiable, NamedEntity } from '@/utils/sharedTypes'
+import { OptionType } from '@/components/Common/Form/BaseSelect'
 
 export enum CivilStatus {
   Single = 'Single',
@@ -44,25 +45,24 @@ export interface PayrollData {
   wifeWorking?: boolean
 }
 
-export interface Employee {
-  id?: number
+export interface EmployeeShared {
   identificationNumber: string
   name: string
   surname: string
-  department: Named
-  companyBranch: Named
   profession: string
-  startDate: string
-  emergencyPhone?: string
-  emergencyName?: string
-  endDate?: string
+  emergencyPhone: string
+  emergencyName: string
+  startDate: Date
+  companyBranch: OptionType
+  department: OptionType
+  endDate?: Date
   phone?: string
   email?: string
   serialNumber?: string
   fathersName?: string
   mothersName?: string
   birthPlace?: string
-  birthDate?: string
+  birthDate?: Date
   civilStatus?: CivilStatus
   city?: string
   province?: string
@@ -70,5 +70,38 @@ export interface Employee {
   street?: string
   volumeNumber?: string
   familySerial?: string
-  payrollData?: PayrollData
+}
+
+export interface EmployeeCreateRequest extends Omit<EmployeeShared, 'department' | 'companyBranch' | 'startDate'> {
+  companyBranch: Identifiable
+  department: Identifiable
+  startDate: string
+}
+
+export interface EmployeeResponse {
+  id: number
+  identificationNumber: string
+  name: string
+  surname: string
+  companyBranch: NamedEntity
+  department: NamedEntity
+  profession: string
+  emergencyPhone: string
+  emergencyName: string
+  startDate: string
+  endDate?: string
+  phone?: string
+  email?: string
+  serialNumber?: string
+  fathersName?: string
+  mothersName?: string
+  birthPlace?: string
+  birthDate?: Date
+  civilStatus?: CivilStatus
+  city?: string
+  province?: string
+  state?: string
+  street?: string
+  volumeNumber?: string
+  familySerial?: string
 }

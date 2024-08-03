@@ -10,7 +10,7 @@ export interface VacationStatus {
   remaining: number
 }
 
-export enum LeaveType {
+export enum VacationType {
   Marriage = 'MARRIAGE',
   SickLeave = 'SICK_LEAVE',
   OnDemand = 'ON_DEMAND',
@@ -18,16 +18,16 @@ export enum LeaveType {
   ChildBirth = 'CHILD_BIRTH'
 }
 
-export interface LeavesBaseProps {
+export interface VacationBaseProps {
   personnel: string
   startDateTime: Date
   endDateTime: Date
   workingDays: number
   workingHours: number
-  timeOffType: LeaveType
+  timeOffType: VacationType
   unPaid?: boolean
 }
 
-export interface EmployeeLeavesProps extends LeavesBaseProps {
+export interface EmployeeVacationProps extends VacationBaseProps {
   id: number
 }

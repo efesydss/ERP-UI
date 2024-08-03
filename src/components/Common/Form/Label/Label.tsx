@@ -7,14 +7,17 @@ interface LabelProps {
   errorMessage?: string
   nameSpace?: string
   label?: string
+  isOptional?: boolean
 }
 
 export const Label = (props: LabelProps) => {
-  const { name, nameSpace, errorMessage, label, hasError = false } = props
+  const { name, nameSpace, errorMessage, label, hasError = false, isOptional = false } = props
   const { t } = useTranslation(nameSpace || 'common')
   return (
     <LabelWrapper>
-      <label htmlFor={name}>{label || t(name)}</label>
+      <label htmlFor={name}>
+        {label || t(name)} {!isOptional && '*'}
+      </label>
       {hasError && <ErrorMessage>{errorMessage}</ErrorMessage>}
     </LabelWrapper>
   )

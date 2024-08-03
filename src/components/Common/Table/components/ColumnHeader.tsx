@@ -46,7 +46,10 @@ export const ColumnHeader = (props: PropsWithChildren<ColumnHeaderProps>) => {
       {filterVisible && (
         <ClickAwayListener onClickAway={handleClickAway}>
           <FilterWrapper>
-            <Filter column={column} />
+            <Filter
+              column={column}
+              onSetVisible={setFilterVisible}
+            />
           </FilterWrapper>
         </ClickAwayListener>
       )}

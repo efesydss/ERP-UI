@@ -1,5 +1,5 @@
 import { BaseTable } from '@/components/Common/Table/BaseTable'
-import { EmployeeLeavesProps } from '@/components/Hr/Leaves/typesLeaves'
+import { EmployeeVacationProps } from '@/components/Hr/Vacations/typeVacations'
 import { ColumnDef } from '@tanstack/react-table'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -31,7 +31,7 @@ export const EmployeeVacations = () => {
     }
   })
 
-  const columns = useMemo<ColumnDef<EmployeeLeavesProps>[]>(
+  const columns = useMemo<ColumnDef<EmployeeVacationProps>[]>(
     () => [
       {
         header: hr('startDateTime'),
@@ -81,7 +81,7 @@ export const EmployeeVacations = () => {
   )
 
   return (
-    <BaseTable<EmployeeLeavesProps>
+    <BaseTable<EmployeeVacationProps>
       endpoint={'employeeVacation'}
       params={{ employeeId: id.toString() }}
       columns={columns}

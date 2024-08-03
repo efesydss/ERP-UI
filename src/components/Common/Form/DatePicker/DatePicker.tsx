@@ -4,29 +4,43 @@ import 'react-datepicker/dist/react-datepicker.css'
 import { Stack } from '@mui/material'
 import { t } from 'i18next'
 import { Input } from '@/components/Common/Form/Input/Input'
+import { format } from 'date-fns'
 
 interface DatePickerProps {
   name: string
+  isTimeEnabled?: boolean
 }
 
 export const DatePicker = (props: DatePickerProps) => {
-  const { name, ...rest } = props
+  const { name, isTimeEnabled = false, ...rest } = props
   const [field, meta, helpers] = useField(name)
 
   const { value } = meta
   const { setValue } = helpers
+
+  const handleChange = (date: Date | null) => {
+    if (date) {
+      const formattedDate = isTimeEnabled ? format(date, 'yyyy-MM-dd HH:mm') : format(date, 'yyyy-MM-dd')
+      setValue(formattedDate)
+    } else {
+      setValue('')
+    }
+  }
 
   return (
     <Stack position={'relative'}>
       <RDatePicker
         {...field}
         {...rest}
-        dateFormat='yyyy/MM/dd h:mm'
-        selected={value && new Date(field.value)}
-        onChange={(value) => setValue(value)}
-        showTimeInput
+        dateFormat={isTimeEnabled ? 'yyyy-MM-dd h:mm' : 'yyyy-MM-dd'}
+        selected={value ? new Date(field.value) : null}
+        onChange={handleChange}
+        showTimeInput={isTimeEnabled}
         timeInputLabel={t('timePick', { ns: 'common' })}
         locale={'tr'}
+        showYearDropdown
+        yearDropdownItemNumber={85}
+        scrollableYearDropdown
         customInput={
           <Input
             name={name}

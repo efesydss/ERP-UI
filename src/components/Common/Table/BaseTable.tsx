@@ -1,6 +1,6 @@
 import { ColumnDef, ColumnFiltersState, flexRender, getCoreRowModel, PaginationState, RowData, SortingState, useReactTable } from '@tanstack/react-table'
 import { CircularProgress, Paper, Stack, Table, TableBody, TableCell, TableContainer, TablePagination, TableRow } from '@mui/material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { apiRequest, ApiResponse } from '@/utils/apiDefaults'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { apiRoutes } from '@/utils/apiRoutes'
@@ -10,29 +10,40 @@ import { AppliedFilters } from '@/components/Common/Table/components/AppliedFilt
 import { useTranslation } from 'react-i18next'
 import { TableState } from '@/components/Common/Table/components/TableState'
 import { TableHeader } from '@/components/Common/Table/stylesTable'
+import { FilterOperators } from '@/utils/filterOperators'
 
 interface BaseTableProps<TData extends RowData> {
   endpoint: keyof typeof apiRoutes
   columns: ColumnDef<TData>[]
   nameSpace?: string
   params?: Record<string, string>
+  customFilter?: string
+}
+
+type FilterVariant = 'text' | 'select' | 'enum'
+
+interface ColumnFilterProps {
+  columnId: string
+  filterVariant?: FilterVariant
 }
 
 declare module '@tanstack/react-table' {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface ColumnMeta<TData extends RowData, TValue> {
-    filterVariant?: 'text' | 'range' | 'select'
+    filterVariant?: FilterVariant
     filterOptions?: any
+    filterOptionsEndpoint?: keyof typeof apiRoutes
   }
 }
 
 export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) => {
-  const { columns, endpoint, params, nameSpace = 'common' } = props
+  const { columns, endpoint, params, customFilter, nameSpace = 'common' } = props
   const { setItem, getItem } = useLocalStorage(endpoint)
   const { t: feedbacks } = useTranslation('feedbacks')
 
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(getItem() || [])
   const [sorting, setSorting] = useState<SortingState>([])
+  const [filterOperators, setFilterOperators] = useState<ColumnFilterProps[]>([])
 
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -40,13 +51,13 @@ export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) =
   })
 
   const { data, isLoading } = useQuery({
-    queryKey: [endpoint, pagination, columnFilters, sorting],
+    queryKey: [endpoint, pagination, columnFilters, sorting, customFilter],
     queryFn: () =>
       apiRequest<ApiResponse<TData>>({
         endpoint,
         params,
         payload: {
-          filter: createFilterString(),
+          filter: createFilterQuery(),
           sort: sortingOptions(),
           page: pagination.pageIndex,
           pageSize: pagination.pageSize
@@ -70,18 +81,38 @@ export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) =
     onSortingChange: setSorting
   })
 
-  console.log('columnFilters -->', columnFilters)
+  const getFilterOperator = (filterVariant: FilterVariant) => {
+    switch (filterVariant) {
+      case 'text':
+        return FilterOperators.like
+      case 'select':
+        return FilterOperators.idEquals
+      case 'enum':
+        return FilterOperators.equals
+      default:
+        return FilterOperators.like
+    }
+  }
 
-  //todo: value typing with selects
-  const createFilterString = () => {
-    const filters = columnFilters.map((filter) => `${filter.id}=ilike=${filter.value as string}`).join(';')
+  const createFilterQuery = () => {
+    const filters = columnFilters
+      .map((filter) => {
+        const filterInfo = filterOperators.find((operator) => operator.columnId === filter.id)
+        const filterOperator = getFilterOperator(filterInfo?.filterVariant || 'text')
+
+        return `${filter.id}${filterOperator}${filter.value as string}`
+      })
+      .join(';')
+
+    const combinedFilters = customFilter ? (filters ? `${filters};${customFilter}` : customFilter) : filters
+
     setItem(columnFilters)
-    return filters
+    return combinedFilters
   }
 
   const sortingOptions = () => {
     if (!sorting.length) {
-      return 'id,asc'
+      return 'id,desc'
     }
 
     const selected = sorting[0]
@@ -93,6 +124,16 @@ export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) =
   const handleDeleteFilter = (id: string) => {
     setColumnFilters((prevFilters) => prevFilters.filter((filter) => filter.id !== id))
   }
+
+  useEffect(() => {
+    const newFilterOperators: ColumnFilterProps[] = table.getHeaderGroups().flatMap((headerGroup) =>
+      headerGroup.headers.map((header) => ({
+        filterVariant: header.column.columnDef.meta?.filterVariant,
+        columnId: header.column.id
+      }))
+    )
+    setFilterOperators(newFilterOperators)
+  }, [table])
 
   return (
     <>

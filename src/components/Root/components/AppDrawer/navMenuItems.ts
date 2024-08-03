@@ -16,7 +16,7 @@ export const navMenuItems: MenuItemProps[] = [
         icon: TbUserStar
       },
       {
-        label: 'leaves',
+        label: 'vacations',
         icon: MdOutlineBeachAccess
       },
       {

@@ -3,7 +3,7 @@ import { BaseSelect, OptionType } from '@/components/Common/Form/BaseSelect'
 import { Button } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { useFormikContext } from 'formik'
-import { LeavesBaseProps, LeaveType } from '@/components/Hr/Leaves/typesLeaves'
+import { VacationBaseProps, VacationType } from '@/components/Hr/Vacations/typeVacations'
 import { DatePicker } from '@/components/Common/Form/DatePicker/DatePicker'
 import { enumToOptions } from '@/utils/transformers'
 import { Input } from '@/components/Common/Form/Input/Input'
@@ -16,7 +16,7 @@ interface FormLeavesAddProps {
 export const FormLeavesAdd = (props: FormLeavesAddProps) => {
   const { employees } = props
   const { t: common } = useTranslation('common')
-  const { values } = useFormikContext<LeavesBaseProps>()
+  const { values } = useFormikContext<VacationBaseProps>()
 
   return (
     <>
@@ -33,7 +33,7 @@ export const FormLeavesAdd = (props: FormLeavesAddProps) => {
             <FormGrid widths={'half'}>
               <BaseSelect
                 name={'timeOffType'}
-                options={enumToOptions(LeaveType, 'hr')}
+                options={enumToOptions(VacationType, 'hr')}
                 nameSpace={'hr'}
               />
               <Checkbox

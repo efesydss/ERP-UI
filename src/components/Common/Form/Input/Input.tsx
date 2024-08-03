@@ -9,10 +9,11 @@ interface InputProps extends InputBaseProps {
   nameSpace?: string
   isMultiLine?: boolean
   label?: string
+  isOptional?: boolean
 }
 
 const InputBase = (props: InputProps, ref: ForwardedRef<HTMLElement>) => {
-  const { name, nameSpace, label, isMultiLine, type, ...rest } = props
+  const { name, nameSpace, label, isMultiLine, type, isOptional = false, ...rest } = props
   const [field, { error, touched }, { setValue }] = useField(name)
   const isNumber = type === 'number'
 
@@ -34,6 +35,7 @@ const InputBase = (props: InputProps, ref: ForwardedRef<HTMLElement>) => {
         hasError={hasError}
         errorMessage={error}
         nameSpace={nameSpace}
+        isOptional={isOptional}
         label={label}
       />
       <InputBaseWrapper

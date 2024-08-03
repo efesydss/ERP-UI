@@ -1,24 +1,19 @@
-import { Box, Tab, Tabs } from '@mui/material'
-import { SyntheticEvent, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { BaseForm } from '@/components/Common/Form/BaseForm'
-import { FormEmployeeDetail } from '@/components/Hr/Employee/FormEmployeeDetail'
+import { FormEmployeeDetail } from '@/components/Hr/Employees/FormEmployeeDetail'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { apiRequest } from '@/utils/apiDefaults'
-import { Employee } from '@/components/Hr/Employee/typesEmployee'
+import { EmployeeResponse } from '@/components/Hr/Employees/typesEmployee'
 import { Route } from '@/routes/_authenticated/hr/employees/$id'
 import { AxiosError } from 'axios'
 import { toast } from 'react-toastify'
 
 export const EmployeeDetails = () => {
-  const { t: hr } = useTranslation('hr')
-  const [value, setValue] = useState(0)
   const { id } = Route.useParams()
   const data = Route.useLoaderData()
   const queryClient = useQueryClient()
 
-  const updateEmployee = async (employee: Employee) => {
-    return await apiRequest<Employee>({
+  const updateEmployee = async (employee: EmployeeResponse) => {
+    return await apiRequest<EmployeeResponse>({
       endpoint: 'employee',
       method: 'PUT',
       id,
@@ -50,33 +45,16 @@ export const EmployeeDetails = () => {
       bloodType: yup.string().oneOf(Object.values(BloodType)).required()
     })*/
 
-  const handleChange = (_event: SyntheticEvent, newValue: number) => {
-    setValue(newValue)
-  }
-
-  const onFormSubmit = async (values: Employee) => {
+  const onFormSubmit = async (values: EmployeeResponse) => {
     await mutateAsync(values)
   }
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-        >
-          <Tab label={hr('infoGeneral')} />
-          <Tab label={hr('infoIdentity')} />
-          <Tab label={hr('infoPayroll')} />
-          <Tab label={hr('infoTimeOffs')} />
-        </Tabs>
-      </Box>
-      <BaseForm
-        initialValues={data}
-        //validationSchema={validationSchema}
-        component={<FormEmployeeDetail value={value} />}
-        onSubmit={onFormSubmit}
-      />
-    </Box>
+    <BaseForm
+      initialValues={data}
+      //validationSchema={validationSchema}
+      component={<FormEmployeeDetail />}
+      onSubmit={onFormSubmit}
+    />
   )
 }

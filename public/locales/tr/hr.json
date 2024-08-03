@@ -20,5 +20,6 @@
   "ChildBirth": "Doğum",
   "infoTimeOffs": "İzinler",
   "SICK_LEAVE": "Hastalık İzni",
-  "CHILD_BIRTH": "Doğum İzni"
+  "CHILD_BIRTH": "Doğum İzni",
+  "paymentType": "Hareket Türü"
 }

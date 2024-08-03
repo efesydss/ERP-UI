@@ -1,30 +1,30 @@
-import { LeavesBaseProps, LeaveType } from '@/components/Hr/Leaves/typesLeaves'
+import { VacationBaseProps, VacationType } from '@/components/Hr/Vacations/typeVacations'
 import { BaseForm } from '@/components/Common/Form/BaseForm'
 import { FormLeavesAdd } from './FormLeavesAdd'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { apiRequest, ApiResponse } from '@/utils/apiDefaults'
-import { Employee } from '@/components/Hr/Employee/typesEmployee'
+import { EmployeeResponse } from '@/components/Hr/Employees/typesEmployee'
 import { OptionType } from '@/components/Common/Form/BaseSelect'
 import { toast } from 'react-toastify'
 import { useNavigate } from '@tanstack/react-router'
 
-const initialLeave: LeavesBaseProps = {
+const initialLeave: VacationBaseProps = {
   personnel: '',
   startDateTime: new Date(),
   endDateTime: new Date(),
   workingDays: 0,
   workingHours: 0,
-  timeOffType: LeaveType.Vacation,
+  timeOffType: VacationType.Vacation,
   unPaid: false
 }
 
-export const LeavesAdd = () => {
+export const VacationAdd = () => {
   const navigate = useNavigate()
 
   const { data } = useQuery({
     queryKey: ['employees'],
     queryFn: () =>
-      apiRequest<ApiResponse<Employee>>({
+      apiRequest<ApiResponse<EmployeeResponse>>({
         endpoint: 'employees',
         payload: {
           filter: '',
@@ -35,7 +35,7 @@ export const LeavesAdd = () => {
     select: (res): OptionType[] => {
       return res.data.map((r) => {
         return {
-          value: (r.id ?? 0).toString(),
+          value: r.id ?? 0,
           label: `${r.name} ${r.surname}`
         }
       })
@@ -43,7 +43,7 @@ export const LeavesAdd = () => {
   })
 
   const { mutateAsync } = useMutation({
-    mutationFn: (values: LeavesBaseProps) =>
+    mutationFn: (values: VacationBaseProps) =>
       apiRequest({
         endpoint: 'employeeVacationAdd',
         params: { employeeId: values.personnel },
@@ -59,11 +59,11 @@ export const LeavesAdd = () => {
       }),
     onSuccess: () => {
       toast.success('Vacation Created')
-      navigate({ to: '/hr/leaves' })
+      navigate({ to: '/hr/vacations' })
     }
   })
 
-  const onFormSubmit = async (values: LeavesBaseProps) => {
+  const onFormSubmit = async (values: VacationBaseProps) => {
     await mutateAsync(values)
   }
 

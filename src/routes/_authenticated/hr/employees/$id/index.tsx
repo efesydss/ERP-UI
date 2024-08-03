@@ -1,8 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { z } from 'zod'
-import { EmployeeDetails } from '@/components/Hr/Employee/EmployeeDetails'
+import { EmployeeDetails } from '@/components/Hr/Employees/EmployeeDetails'
 import { apiRequest } from '@/utils/apiDefaults'
-import { Employee } from '@/components/Hr/Employee/typesEmployee'
+import { EmployeeResponse } from '@/components/Hr/Employees/typesEmployee'
 
 export const Route = createFileRoute('/_authenticated/hr/employees/$id/')({
   params: {
@@ -15,7 +15,7 @@ export const Route = createFileRoute('/_authenticated/hr/employees/$id/')({
     const data = await context.queryClient.ensureQueryData({
       queryKey: ['employee', id],
       queryFn: () =>
-        apiRequest<Employee>({
+        apiRequest<EmployeeResponse>({
           method: 'GET',
           endpoint: 'employee',
           id

@@ -18,5 +18,10 @@
   "identificationNumber": "Kimlik No",
   "department": "Departman",
   "companyBranch": "Şube",
-  "timePick": "Saat"
+  "timePick": "Saat",
+  "date": "Tarih",
+  "amount": "Miktar",
+  "description": "Açıklama",
+  "Salary": "Maaş",
+  "Overtime": "Mesai"
 }

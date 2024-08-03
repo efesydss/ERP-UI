@@ -2,48 +2,69 @@ import Select, { MultiValue, SingleValue } from 'react-select'
 import { useField } from 'formik'
 import { Stack, useTheme } from '@mui/material'
 import { Label } from '@/components/Common/Form/Label/Label'
+import { apiRequest, ApiResponse } from '@/utils/apiDefaults'
+import { NamedEntity } from '@/utils/sharedTypes'
+import { useQuery } from '@tanstack/react-query'
+import { apiRoutes } from '@/utils/apiRoutes'
 
 export interface OptionType {
-  value: string
+  value: number
   label: string
 }
 
 interface BaseSelectProps {
   name: string
-  options: OptionType[]
+  options?: OptionType[]
   isMulti?: boolean
   nameSpace?: string
   isLoading?: boolean
+  endpoint?: keyof typeof apiRoutes
 }
 
 export const BaseSelect = (props: BaseSelectProps) => {
-  const { options, name, nameSpace, isLoading, isMulti = false, ...rest } = props
+  const { options, name, nameSpace, isLoading, endpoint, isMulti = false, ...rest } = props
   const [field, { touched, error }, { setValue }] = useField(name)
   const theme = useTheme()
 
+  //todo: can we get rid off 'branches'
+  const { data: fetchedOptions, isLoading: isFetching } = useQuery({
+    queryKey: [`${endpoint}List`],
+    queryFn: () =>
+      apiRequest<ApiResponse<NamedEntity>>({
+        endpoint: endpoint || 'branches',
+        payload: {
+          filter: '',
+          page: 0,
+          pageSize: 100
+        }
+      }),
+    select: (res): OptionType[] => {
+      return res.data.map((r) => ({
+        value: r.id,
+        label: r.name
+      }))
+    },
+    enabled: !options && !!endpoint
+  })
+
   const onChange = (newValue: MultiValue<OptionType> | SingleValue<OptionType> | null) => {
-    let valueToSet: string | string[] = ''
-
     if (newValue === null) {
-      valueToSet = ''
+      setValue(isMulti ? [] : { id: 0, name: '' })
     } else if (isMulti && Array.isArray(newValue)) {
-      valueToSet = newValue.map((item: OptionType) => item.value)
+      setValue(newValue.map((v) => ({ id: v.value, name: v.label })))
     } else {
-      valueToSet = (newValue as SingleValue<OptionType>)?.value || ''
+      const selectedOption = newValue as OptionType
+      setValue({ id: selectedOption.value, name: selectedOption.label })
     }
-
-    setValue(valueToSet)
   }
 
-  //todo: types for field value
-  const getValue = () => {
-    if (options) {
-      return isMulti
-        ? options.filter((option) => field.value.includes(option.value))
-        : options.find((option) => option.value === field.value?.id.toString()) || null
-    } else {
-      return isMulti ? [] : null
+  const getValue = (): MultiValue<OptionType> | SingleValue<OptionType> | null => {
+    const finalOptions = options || fetchedOptions || []
+    if (isMulti) {
+      return finalOptions.filter((option) => (field.value as Array<{ id: number; name: string }>).some((val) => val.id === option.value))
     }
+    const singleValue = finalOptions.find((option) => option.value === (field.value as { id: number; name: string })?.id)
+    return singleValue ? singleValue : null
   }
 
   const hasError = !!(touched && error)
@@ -85,11 +106,11 @@ export const BaseSelect = (props: BaseSelectProps) => {
         name={name}
         value={getValue()}
         onChange={onChange}
-        options={options}
+        options={options || fetchedOptions}
         isMulti={isMulti}
         styles={customStyles}
         placeholder={''}
-        isLoading={isLoading}
+        isLoading={isLoading || isFetching}
       />
     </Stack>
   )

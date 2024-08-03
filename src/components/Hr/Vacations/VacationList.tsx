@@ -1,15 +1,15 @@
 import { BaseTable } from '@/components/Common/Table/BaseTable'
-import { VacationStatus } from './typesLeaves'
+import { VacationStatus } from 'components/Hr/Vacations/typeVacations'
 import { useMemo } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import { useTranslation } from 'react-i18next'
 import { Button } from '@mui/material'
-import { Route } from '@/routes/_authenticated/hr/leaves/new-leave'
+import { Route } from '@/routes/_authenticated/hr/vacations/new'
 import { useNavigate } from '@tanstack/react-router'
 import { MdAdd } from 'react-icons/md'
 
-export const LeavesList = () => {
+export const VacationList = () => {
   const { t: nav } = useTranslation('nav')
   const { t: common } = useTranslation('common')
   const { t: hr } = useTranslation('hr')
@@ -61,7 +61,7 @@ export const LeavesList = () => {
   return (
     <>
       <PageTitle
-        title={nav('leaves')}
+        title={nav('vacations')}
         actions={<LeavesListActions />}
       />
       <BaseTable<VacationStatus>

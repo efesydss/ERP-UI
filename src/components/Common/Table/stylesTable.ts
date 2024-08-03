@@ -23,7 +23,8 @@ export const FilterWrapper = styled(Paper)(({ theme }) => ({
   bottom: -columnHeaderHeight,
   left: 0,
   padding: theme.spacing(1),
-  borderRadius: theme.shape.borderRadius
+  borderRadius: theme.shape.borderRadius,
+  minWidth: 150
 }))
 
 export const FilterInputWrapper = styled(MUIInputBase)(({ theme }) => ({

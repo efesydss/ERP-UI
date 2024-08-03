@@ -1,12 +1,13 @@
 {
   "hr": "İnsan Kaynakları",
   "employees": "Personel Listesi",
-  "leaves": "İzinler",
+  "vacations": "İzinler",
   "debitCreditAnalysis": "Borç Alacak Analizi",
-  "finances": "Ödemeler",
+  "finances": "Personel Ödemeleri",
   "tally": "Puantaj",
   "admin": "Yonetici",
   "create": "Yeni Personel",
+  "new": "Yeni",
   "new-leave": "İzin Ekle"
 }
 

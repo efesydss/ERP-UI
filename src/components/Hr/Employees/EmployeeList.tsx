@@ -1,46 +1,21 @@
 import { BaseTable } from '@/components/Common/Table/BaseTable'
 import { useMemo } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
-import { Employee } from '@/components/Hr/Employee/typesEmployee'
+import { EmployeeResponse } from '@/components/Hr/Employees/typesEmployee'
 import { useTranslation } from 'react-i18next'
 import { Button } from '@mui/material'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
 import { useNavigate } from '@tanstack/react-router'
-import { EmployeeListEditActions } from '@/components/Hr/Employee/components/EmployeeListEditActions'
-import { Route } from '@/routes/_authenticated/hr/employees/create'
-import { apiRequest, ApiResponse } from '@/utils/apiDefaults'
-import { Named } from '@/utils/commonTypes'
-import { OptionType } from '@/components/Common/Form/BaseSelect'
-import { useQuery } from '@tanstack/react-query'
+import { EmployeeListEditActions } from '@/components/Hr/Employees/components/EmployeeListEditActions'
+import { Route } from '@/routes/_authenticated/hr/employees/new'
 
 export const EmployeeList = () => {
   const { t: common } = useTranslation('common')
   const { t: hr } = useTranslation('hr')
   const navigate = useNavigate()
 
-  const { data: branchList } = useQuery({
-    queryKey: ['branchList'],
-    queryFn: () =>
-      apiRequest<ApiResponse<Named>>({
-        endpoint: 'branches',
-        payload: {
-          filter: '',
-          page: 0,
-          pageSize: 100
-        }
-      }),
-    select: (res): OptionType[] => {
-      return res.data.map((r) => {
-        return {
-          value: r.id.toString(),
-          label: r.name
-        }
-      })
-    }
-  })
-
-  const columns = useMemo<ColumnDef<Employee>[]>(
+  const columns = useMemo<ColumnDef<EmployeeResponse>[]>(
     () => [
       {
         header: common('name'),
@@ -53,7 +28,11 @@ export const EmployeeList = () => {
       {
         header: common('department'),
         accessorKey: 'department',
-        accessorFn: (row) => row.department.name
+        accessorFn: (row) => row.department.name,
+        meta: {
+          filterVariant: 'select',
+          filterOptionsEndpoint: 'departments'
+        }
       },
       {
         header: common('companyBranch'),
@@ -61,7 +40,7 @@ export const EmployeeList = () => {
         accessorFn: (row) => row.companyBranch.name,
         meta: {
           filterVariant: 'select',
-          filterOptions: branchList
+          filterOptionsEndpoint: 'branches'
         }
       },
       {
@@ -78,7 +57,7 @@ export const EmployeeList = () => {
         }
       }
     ],
-    [branchList, common]
+    [common]
   )
 
   const PersonnelListActions = () => {
@@ -97,14 +76,12 @@ export const EmployeeList = () => {
 
   return (
     <>
-      <div>
-        <PageTitle
-          title={hr('personnelList')}
-          actions={<PersonnelListActions />}
-        />
-      </div>
+      <PageTitle
+        title={hr('personnelList')}
+        actions={<PersonnelListActions />}
+      />
 
-      <BaseTable<Employee>
+      <BaseTable<EmployeeResponse>
         columns={columns}
         endpoint={'employees'}
       />
