@@ -77,7 +77,10 @@ export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) =
       columnFilters,
       sorting
     },
-    onColumnFiltersChange: setColumnFilters,
+    onColumnFiltersChange: (newFilters) => {
+      setColumnFilters(newFilters)
+      setPagination((prev) => ({ ...prev, pageIndex: 0 }))
+    },
     onSortingChange: setSorting
   })
 
@@ -123,6 +126,7 @@ export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) =
 
   const handleDeleteFilter = (id: string) => {
     setColumnFilters((prevFilters) => prevFilters.filter((filter) => filter.id !== id))
+    setPagination((prev) => ({ ...prev, pageIndex: 0 }))
   }
 
   useEffect(() => {
