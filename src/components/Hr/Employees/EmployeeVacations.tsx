@@ -36,12 +36,12 @@ export const EmployeeVacations = () => {
       {
         header: hr('vacationStart'),
         accessorKey: 'startDateTime',
-        accessorFn: (row) => formatToDateReadable(row.startDateTime)
+        accessorFn: (row) => formatToDateReadable(row.startTime)
       },
       {
         header: hr('vacationEnd'),
         accessorKey: 'endDateTime',
-        accessorFn: (row) => formatToDateReadable(row.endDateTime)
+        accessorFn: (row) => formatToDateReadable(row.endTime)
       },
       {
         header: hr('timeOffType'),
