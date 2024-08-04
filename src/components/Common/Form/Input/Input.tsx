@@ -20,9 +20,11 @@ const InputBase = (props: InputProps, ref: ForwardedRef<HTMLElement>) => {
   const hasError = touched && !!error
 
   useEffect(() => {
-    if (isNumber) {
-      const numericValue = field.value?.toString().replace(/[^\d]/g, '')
-      setValue(numericValue)
+    if (isNumber && field.value !== '') {
+      const numericValue = parseFloat(field.value.toString().replace(/[^\d]/g, ''))
+      if (!isNaN(numericValue)) {
+        setValue(numericValue)
+      }
     }
   }, [field.value, isNumber, setValue, type])
 

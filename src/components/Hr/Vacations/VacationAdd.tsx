@@ -9,8 +9,8 @@ import { FormVacationAdd } from '@/components/Hr/Vacations/FormVacationAdd'
 
 const initialLeave: VacationBaseProps = {
   personnel: { id: 0, name: '' },
-  startTime: '',
-  endTime: '',
+  startDateTime: '',
+  endDateTime: '',
   workingDays: 1,
   workingHours: 8,
   timeOffType: VacationType.Vacation,
@@ -27,8 +27,8 @@ export const VacationAdd = () => {
         params: { employeeId: values.personnel.id.toString() },
         payload: {
           id: values.personnel.id,
-          startTime: formatToISOString(values.startTime),
-          endTime: formatToISOString(values.endTime),
+          startDateTime: formatToISOString(values.startDateTime),
+          endDateTime: formatToISOString(values.endDateTime),
           workingDays: values.workingDays,
           workingHours: values.workingHours,
           timeOffType: values.timeOffType,

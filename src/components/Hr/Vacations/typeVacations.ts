@@ -1,15 +1,16 @@
 import { NamedEntity } from '@/utils/sharedTypes'
+import { EmployeeResponse } from '@/components/Hr/Employees/typesEmployee'
 
 export interface VacationStatus {
-  employeeId: number
-  fullName: string
-  department: string
-  title: string
   entitled: number
+  allTimeUsed: number
+  employee: EmployeeResponse
   transferred: number
   usedCurrentYear: number
   usable: number
-  remaining: number
+  profession: string
+  workingDays: number
+  startDateTime: string
 }
 
 export enum VacationType {
@@ -22,8 +23,8 @@ export enum VacationType {
 
 export interface VacationBaseProps {
   personnel: NamedEntity
-  startTime: string
-  endTime: string
+  startDateTime: string
+  endDateTime: string
   workingDays: number
   workingHours: number
   timeOffType: VacationType

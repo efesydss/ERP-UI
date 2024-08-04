@@ -1,7 +1,7 @@
 import { ColumnDef, ColumnFiltersState, flexRender, getCoreRowModel, PaginationState, RowData, SortingState, useReactTable } from '@tanstack/react-table'
 import { CircularProgress, Paper, Stack, Table, TableBody, TableCell, TableContainer, TablePagination, TableRow } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { apiRequest, ApiResponse } from '@/utils/apiDefaults'
+import { apiRequest, ApiResponse, HttpMethod } from '@/utils/apiDefaults'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { apiRoutes } from '@/utils/apiRoutes'
 import { useLocalStorage } from '@/utils/hooks/useLocalStorage'
@@ -18,6 +18,7 @@ interface BaseTableProps<TData extends RowData> {
   nameSpace?: string
   params?: Record<string, string>
   customFilter?: string
+  method?: HttpMethod
 }
 
 type FilterVariant = 'text' | 'select' | 'enum'
@@ -37,7 +38,7 @@ declare module '@tanstack/react-table' {
 }
 
 export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) => {
-  const { columns, endpoint, params, customFilter, nameSpace = 'common' } = props
+  const { columns, endpoint, params, customFilter, nameSpace = 'common', method = 'POST' } = props
   const { setItem, getItem } = useLocalStorage(endpoint)
   const { t: feedbacks } = useTranslation('feedbacks')
 
@@ -56,6 +57,7 @@ export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) =
       apiRequest<ApiResponse<TData>>({
         endpoint,
         params,
+        method,
         payload: {
           filter: createFilterQuery(),
           sort: sortingOptions(),
@@ -102,8 +104,10 @@ export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) =
       .map((filter) => {
         const filterInfo = filterOperators.find((operator) => operator.columnId === filter.id)
         const filterOperator = getFilterOperator(filterInfo?.filterVariant || 'text')
+        //todo: check how we should handle this in backend
+        const originalId = filter.id.replace(/.*_/, '')
 
-        return `${filter.id}${filterOperator}${filter.value as string}`
+        return `${originalId}${filterOperator}${filter.value as string}`
       })
       .join(';')
 

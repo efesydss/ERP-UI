@@ -32,16 +32,25 @@ export const VacationList = () => {
   const columns = useMemo<ColumnDef<VacationStatus>[]>(
     () => [
       {
-        header: common('fullName'),
-        accessorKey: 'fullName'
+        header: common('name'),
+        accessorKey: 'employee.name'
+      },
+      {
+        header: common('surname'),
+        accessorKey: 'employee.surname'
+      },
+      {
+        header: common('profession'),
+        accessorKey: 'profession'
       },
       {
         header: hr('department'),
-        accessorKey: 'department'
-      },
-      {
-        header: hr('entitled'),
-        accessorKey: 'entitled'
+        accessorKey: 'employee.department',
+        accessorFn: (row) => row.employee.department.name,
+        meta: {
+          filterVariant: 'select',
+          filterOptionsEndpoint: 'departments'
+        }
       },
       {
         header: hr('transferred'),

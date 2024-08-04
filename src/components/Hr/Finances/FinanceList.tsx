@@ -64,7 +64,7 @@ export const FinanceList = () => {
         enableSorting: false
       }
     ],
-    [common, hr]
+    [common, hr, paymentTypeOptions]
   )
   return (
     <>

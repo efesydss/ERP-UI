@@ -17,6 +17,7 @@ export const EmployeeVacations = () => {
   const { id } = Route.useParams()
   const queryClient = useQueryClient()
   const { openDialog } = useConfirmDialog()
+
   const { mutate } = useMutation({
     mutationFn: async (timeOffId: string) => {
       return await apiRequest({
@@ -36,12 +37,12 @@ export const EmployeeVacations = () => {
       {
         header: hr('vacationStart'),
         accessorKey: 'startDateTime',
-        accessorFn: (row) => formatToDateReadable(row.startTime)
+        accessorFn: (row) => (row.startDateTime ? formatToDateReadable(row.startDateTime) : '')
       },
       {
         header: hr('vacationEnd'),
         accessorKey: 'endDateTime',
-        accessorFn: (row) => formatToDateReadable(row.endTime)
+        accessorFn: (row) => (row.endDateTime ? formatToDateReadable(row.endDateTime) : '')
       },
       {
         header: hr('timeOffType'),
@@ -77,7 +78,7 @@ export const EmployeeVacations = () => {
         }
       }
     ],
-    [hr, mutate]
+    [hr, mutate, openDialog]
   )
 
   return (

@@ -31,5 +31,5 @@ export const apiRoutes = {
   branchAdd: 'company/branch',
 
   // Time Keeping
-  timeKeepingDraft: 'hr/timekeeping/draft/employee'
+  timeKeepingDraft: 'hr/timekeeping/draft/employee/{employeeId}/year/{year}/month/{month}'
 }

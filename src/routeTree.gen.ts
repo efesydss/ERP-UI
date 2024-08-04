@@ -23,6 +23,7 @@ import { Route as AuthenticatedHrFinancesImport } from './routes/_authenticated/
 import { Route as AuthenticatedHrEmployeesImport } from './routes/_authenticated/hr/employees'
 import { Route as AuthenticatedHrDebitCreditAnalysisImport } from './routes/_authenticated/hr/debitCreditAnalysis'
 import { Route as AuthenticatedHrVacationsIndexImport } from './routes/_authenticated/hr/vacations/index'
+import { Route as AuthenticatedHrTallyIndexImport } from './routes/_authenticated/hr/tally/index'
 import { Route as AuthenticatedHrFinancesIndexImport } from './routes/_authenticated/hr/finances/index'
 import { Route as AuthenticatedHrEmployeesIndexImport } from './routes/_authenticated/hr/employees/index'
 import { Route as AuthenticatedHrVacationsNewImport } from './routes/_authenticated/hr/vacations/new'
@@ -92,6 +93,11 @@ const AuthenticatedHrVacationsIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedHrVacationsRoute,
   } as any)
+
+const AuthenticatedHrTallyIndexRoute = AuthenticatedHrTallyIndexImport.update({
+  path: '/',
+  getParentRoute: () => AuthenticatedHrTallyRoute,
+} as any)
 
 const AuthenticatedHrFinancesIndexRoute =
   AuthenticatedHrFinancesIndexImport.update({
@@ -232,6 +238,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHrFinancesIndexImport
       parentRoute: typeof AuthenticatedHrFinancesImport
     }
+    '/_authenticated/hr/tally/': {
+      id: '/_authenticated/hr/tally/'
+      path: '/'
+      fullPath: '/hr/tally/'
+      preLoaderRoute: typeof AuthenticatedHrTallyIndexImport
+      parentRoute: typeof AuthenticatedHrTallyImport
+    }
     '/_authenticated/hr/vacations/': {
       id: '/_authenticated/hr/vacations/'
       path: '/'
@@ -265,7 +278,9 @@ export const routeTree = rootRoute.addChildren({
       AuthenticatedHrFinancesRoute: AuthenticatedHrFinancesRoute.addChildren({
         AuthenticatedHrFinancesIndexRoute,
       }),
-      AuthenticatedHrTallyRoute,
+      AuthenticatedHrTallyRoute: AuthenticatedHrTallyRoute.addChildren({
+        AuthenticatedHrTallyIndexRoute,
+      }),
       AuthenticatedHrVacationsRoute: AuthenticatedHrVacationsRoute.addChildren({
         AuthenticatedHrVacationsNewRoute,
         AuthenticatedHrVacationsIndexRoute,
@@ -340,7 +355,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_authenticated/hr/tally": {
       "filePath": "_authenticated/hr/tally.tsx",
-      "parent": "/_authenticated/hr"
+      "parent": "/_authenticated/hr",
+      "children": [
+        "/_authenticated/hr/tally/"
+      ]
     },
     "/_authenticated/hr/vacations": {
       "filePath": "_authenticated/hr/vacations.tsx",
@@ -369,6 +387,10 @@ export const routeTree = rootRoute.addChildren({
     "/_authenticated/hr/finances/": {
       "filePath": "_authenticated/hr/finances/index.tsx",
       "parent": "/_authenticated/hr/finances"
+    },
+    "/_authenticated/hr/tally/": {
+      "filePath": "_authenticated/hr/tally/index.tsx",
+      "parent": "/_authenticated/hr/tally"
     },
     "/_authenticated/hr/vacations/": {
       "filePath": "_authenticated/hr/vacations/index.tsx",

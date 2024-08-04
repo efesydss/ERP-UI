@@ -48,11 +48,11 @@ export const FormVacationAdd = () => {
         {!!values.personnel.id && (
           <FormGrid widths={'half'}>
             <DatePicker
-              name={'startTime'}
+              name={'startDateTime'}
               isTimeEnabled
             />
             <DatePicker
-              name={'endTime'}
+              name={'endDateTime'}
               isTimeEnabled
             />
             <FormGrid widths={'half'}>

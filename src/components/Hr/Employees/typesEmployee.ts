@@ -1,5 +1,4 @@
-import { Identifiable, NamedEntity } from '@/utils/sharedTypes'
-import { OptionType } from '@/components/Common/Form/BaseSelect'
+import { NamedEntity } from '@/utils/sharedTypes'
 
 export enum CivilStatus {
   Single = 'Single',
@@ -43,39 +42,6 @@ export interface PayrollData {
   iban: string
   children?: number
   wifeWorking?: boolean
-}
-
-export interface EmployeeShared {
-  identificationNumber: string
-  name: string
-  surname: string
-  profession: string
-  emergencyPhone: string
-  emergencyName: string
-  startDate: Date
-  companyBranch: OptionType
-  department: OptionType
-  endDate?: Date
-  phone?: string
-  email?: string
-  serialNumber?: string
-  fathersName?: string
-  mothersName?: string
-  birthPlace?: string
-  birthDate?: Date
-  civilStatus?: CivilStatus
-  city?: string
-  province?: string
-  state?: string
-  street?: string
-  volumeNumber?: string
-  familySerial?: string
-}
-
-export interface EmployeeCreateRequest extends Omit<EmployeeShared, 'department' | 'companyBranch' | 'startDate'> {
-  companyBranch: Identifiable
-  department: Identifiable
-  startDate: string
 }
 
 export interface EmployeeResponse {
