@@ -1,4 +1,4 @@
-import { format, Locale } from 'date-fns'
+import { format, parseISO } from 'date-fns'
 import { t } from 'i18next'
 import { tr } from 'date-fns/locale'
 
@@ -11,12 +11,16 @@ export const enumToOptions = <T extends object>(enumObj: T, namespace: string = 
   }))
 }
 
-export const formatDate = (date: Date, locale: Locale = tr): string => {
-  const day = format(date, 'd', { locale })
-  const month = format(date, 'MMMM', { locale })
-  const dayOfWeek = format(date, 'EEEE', { locale })
-  const year = format(date, 'yyyy', { locale })
-  const time = format(date, 'h:mm aa', { locale })
+export const formatToDateReadable = (dateString: string, locale = tr): string => {
+  const date = parseISO(dateString)
+  return format(date, 'dd-MM-yyyy HH:mm', { locale })
+}
 
-  return `${day} ${month} ${dayOfWeek}, ${year}, ${time}`
+export const formatToISOString = (dateString: string): string => {
+  console.log('dateString -->', dateString)
+
+  const date = new Date(dateString.replace(' ', 'T'))
+  console.log('date -->', date)
+
+  return date.toISOString()
 }

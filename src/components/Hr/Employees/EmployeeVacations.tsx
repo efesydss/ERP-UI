@@ -3,7 +3,7 @@ import { EmployeeVacationProps } from '@/components/Hr/Vacations/typeVacations'
 import { ColumnDef } from '@tanstack/react-table'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { formatDate } from '@/utils/transformers'
+import { formatToDateReadable } from '@/utils/transformers'
 import { Route } from '@/routes/_authenticated/hr/employees/$id'
 import { IconButton } from '@mui/material'
 import { FaRegTrashCan } from 'react-icons/fa6'
@@ -34,14 +34,14 @@ export const EmployeeVacations = () => {
   const columns = useMemo<ColumnDef<EmployeeVacationProps>[]>(
     () => [
       {
-        header: hr('startDateTime'),
+        header: hr('vacationStart'),
         accessorKey: 'startDateTime',
-        accessorFn: (row) => formatDate(row.startDateTime)
+        accessorFn: (row) => formatToDateReadable(row.startDateTime)
       },
       {
-        header: hr('endDateTime'),
+        header: hr('vacationEnd'),
         accessorKey: 'endDateTime',
-        accessorFn: (row) => formatDate(row.endDateTime)
+        accessorFn: (row) => formatToDateReadable(row.endDateTime)
       },
       {
         header: hr('timeOffType'),

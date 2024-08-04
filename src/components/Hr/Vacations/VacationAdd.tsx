@@ -1,19 +1,18 @@
 import { VacationBaseProps, VacationType } from '@/components/Hr/Vacations/typeVacations'
 import { BaseForm } from '@/components/Common/Form/BaseForm'
-import { FormLeavesAdd } from './FormLeavesAdd'
-import { useMutation, useQuery } from '@tanstack/react-query'
-import { apiRequest, ApiResponse } from '@/utils/apiDefaults'
-import { EmployeeResponse } from '@/components/Hr/Employees/typesEmployee'
-import { OptionType } from '@/components/Common/Form/BaseSelect'
+import { useMutation } from '@tanstack/react-query'
+import { apiRequest } from '@/utils/apiDefaults'
 import { toast } from 'react-toastify'
 import { useNavigate } from '@tanstack/react-router'
+import { formatToISOString } from '@/utils/transformers'
+import { FormVacationAdd } from '@/components/Hr/Vacations/FormVacationAdd'
 
 const initialLeave: VacationBaseProps = {
-  personnel: '',
-  startDateTime: new Date(),
-  endDateTime: new Date(),
-  workingDays: 0,
-  workingHours: 0,
+  personnel: { id: 0, name: '' },
+  startTime: '',
+  endTime: '',
+  workingDays: 1,
+  workingHours: 8,
   timeOffType: VacationType.Vacation,
   unPaid: false
 }
@@ -21,38 +20,17 @@ const initialLeave: VacationBaseProps = {
 export const VacationAdd = () => {
   const navigate = useNavigate()
 
-  const { data } = useQuery({
-    queryKey: ['employees'],
-    queryFn: () =>
-      apiRequest<ApiResponse<EmployeeResponse>>({
-        endpoint: 'employees',
-        payload: {
-          filter: '',
-          page: 0,
-          pageSize: 100
-        }
-      }),
-    select: (res): OptionType[] => {
-      return res.data.map((r) => {
-        return {
-          value: r.id ?? 0,
-          label: `${r.name} ${r.surname}`
-        }
-      })
-    }
-  })
-
   const { mutateAsync } = useMutation({
     mutationFn: (values: VacationBaseProps) =>
       apiRequest({
         endpoint: 'employeeVacationAdd',
-        params: { employeeId: values.personnel },
+        params: { employeeId: values.personnel.id.toString() },
         payload: {
-          id: Number(values.personnel),
-          startDateTime: values.startDateTime.toISOString(),
-          endDateTime: values.endDateTime.toISOString(),
-          workingDays: Number(values.workingDays),
-          workingHours: Number(values.workingHours),
+          id: values.personnel.id,
+          startTime: formatToISOString(values.startTime),
+          endTime: formatToISOString(values.endTime),
+          workingDays: values.workingDays,
+          workingHours: values.workingHours,
           timeOffType: values.timeOffType,
           unPaid: values.unPaid
         }
@@ -71,7 +49,7 @@ export const VacationAdd = () => {
     <BaseForm
       initialValues={initialLeave}
       onSubmit={onFormSubmit}
-      component={<FormLeavesAdd employees={data || []} />}
+      component={<FormVacationAdd />}
     />
   )
 }

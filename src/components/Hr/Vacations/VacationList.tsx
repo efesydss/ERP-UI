@@ -15,7 +15,7 @@ export const VacationList = () => {
   const { t: hr } = useTranslation('hr')
   const navigate = useNavigate()
 
-  const LeavesListActions = () => {
+  const VacationListActions = () => {
     return (
       <>
         <Button
@@ -62,7 +62,7 @@ export const VacationList = () => {
     <>
       <PageTitle
         title={nav('vacations')}
-        actions={<LeavesListActions />}
+        actions={<VacationListActions />}
       />
       <BaseTable<VacationStatus>
         endpoint={'employeeVacationStatuses'}

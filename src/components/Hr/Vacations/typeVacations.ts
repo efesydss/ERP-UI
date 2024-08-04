@@ -1,3 +1,5 @@
+import { NamedEntity } from '@/utils/sharedTypes'
+
 export interface VacationStatus {
   employeeId: number
   fullName: string
@@ -19,9 +21,9 @@ export enum VacationType {
 }
 
 export interface VacationBaseProps {
-  personnel: string
-  startDateTime: Date
-  endDateTime: Date
+  personnel: NamedEntity
+  startTime: string
+  endTime: string
   workingDays: number
   workingHours: number
   timeOffType: VacationType

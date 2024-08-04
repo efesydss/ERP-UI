@@ -8,7 +8,7 @@ import { useQuery } from '@tanstack/react-query'
 import { apiRoutes } from '@/utils/apiRoutes'
 
 export interface OptionType {
-  value: number
+  value: number | string
   label: string
 }
 
@@ -19,10 +19,11 @@ interface BaseSelectProps {
   nameSpace?: string
   isLoading?: boolean
   endpoint?: keyof typeof apiRoutes
+  isEnum?: boolean
 }
 
 export const BaseSelect = (props: BaseSelectProps) => {
-  const { options, name, nameSpace, isLoading, endpoint, isMulti = false, ...rest } = props
+  const { options, name, nameSpace, isLoading, endpoint, isMulti = false, isEnum = false, ...rest } = props
   const [field, { touched, error }, { setValue }] = useField(name)
   const theme = useTheme()
 
@@ -35,7 +36,7 @@ export const BaseSelect = (props: BaseSelectProps) => {
         payload: {
           filter: '',
           page: 0,
-          pageSize: 100
+          pageSize: 200
         }
       }),
     select: (res): OptionType[] => {
@@ -47,26 +48,46 @@ export const BaseSelect = (props: BaseSelectProps) => {
     enabled: !options && !!endpoint
   })
 
+  //todo: refactor isEnum condition
   const onChange = (newValue: MultiValue<OptionType> | SingleValue<OptionType> | null) => {
-    if (newValue === null) {
-      setValue(isMulti ? [] : { id: 0, name: '' })
-    } else if (isMulti && Array.isArray(newValue)) {
-      setValue(newValue.map((v) => ({ id: v.value, name: v.label })))
+    if (isEnum) {
+      if (newValue === null) {
+        setValue('')
+      } else if (isMulti && Array.isArray(newValue)) {
+        setValue(newValue.map((v) => v.value).join(','))
+      } else {
+        const selectedOption = newValue as OptionType
+        setValue(selectedOption.value)
+      }
     } else {
-      const selectedOption = newValue as OptionType
-      setValue({ id: selectedOption.value, name: selectedOption.label })
+      if (newValue === null) {
+        setValue(isMulti ? [] : { id: 0, name: '' })
+      } else if (isMulti && Array.isArray(newValue)) {
+        setValue(newValue.map((v) => ({ id: v.value, name: v.label })))
+      } else {
+        const selectedOption = newValue as OptionType
+        setValue({ id: selectedOption.value, name: selectedOption.label })
+      }
     }
   }
 
   const getValue = (): MultiValue<OptionType> | SingleValue<OptionType> | null => {
     const finalOptions = options || fetchedOptions || []
-    if (isMulti) {
-      return finalOptions.filter((option) => (field.value as Array<{ id: number; name: string }>).some((val) => val.id === option.value))
+    if (isEnum) {
+      if (isMulti) {
+        const values = (field.value as string).split(',')
+        return finalOptions.filter((option) => values.includes(option.value.toString()))
+      } else {
+        return finalOptions.find((option) => option.value.toString() === field.value) || null
+      }
+    } else {
+      if (isMulti) {
+        return finalOptions.filter((option) => (field.value as Array<{ id: number; name: string }>).some((val) => val.id === option.value))
+      }
+      const singleValue = finalOptions.find((option) => option.value === (field.value as { id: number; name: string })?.id)
+      return singleValue ? singleValue : null
     }
-    const singleValue = finalOptions.find((option) => option.value === (field.value as { id: number; name: string })?.id)
-    return singleValue ? singleValue : null
   }
-
   const hasError = !!(touched && error)
 
   const customStyles = {
