@@ -23,5 +23,10 @@
   "CHILD_BIRTH": "Doğum İzni",
   "paymentType": "Hareket Türü",
   "vacationStart": "Başlangıç",
-  "vacationEnd": "Bitiş"
+  "vacationEnd": "Bitiş",
+  "netSalary": "Net Maaş",
+  "normalWorkingDays": "Normal Çalışma",
+  "weekendWorkingDays": "Hafta Sonu Çalışma",
+  "unpaidTimeOffHours": "Ücretsiz İzin Saat"
+
 }

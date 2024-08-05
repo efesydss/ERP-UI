@@ -1,6 +1,4 @@
-export type PaymentType = 'SALARY' | 'SALARY_PAYMENT' | 'OVERTIME' | 'ADVANCE' | 'DEDUCTION' | 'TRANSFER' | 'SEIZURE'
-
-export enum PaymentTypes {
+export enum PaymentType {
   Salary = 'SALARY',
   SalaryPayment = 'SALARY_PAYMENT',
   Overtime = 'OVERTIME',

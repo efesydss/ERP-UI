@@ -52,7 +52,7 @@ export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) =
   })
 
   const { data, isLoading } = useQuery({
-    queryKey: [endpoint, pagination, columnFilters, sorting, customFilter],
+    queryKey: [endpoint, pagination, columnFilters, sorting, customFilter, params],
     queryFn: () =>
       apiRequest<ApiResponse<TData>>({
         endpoint,

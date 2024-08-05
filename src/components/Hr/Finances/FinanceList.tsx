@@ -1,7 +1,7 @@
 import { BaseTable } from '@/components/Common/Table/BaseTable'
 import { ColumnDef } from '@tanstack/react-table'
 import { useMemo, useState } from 'react'
-import { EmployeePayment, PaymentTypes } from '@/components/Hr/Finances/typesFinance'
+import { EmployeePayment, PaymentType } from '@/components/Hr/Finances/typesFinance'
 import { useTranslation } from 'react-i18next'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import { BaseForm } from '@/components/Common/Form/BaseForm'
@@ -31,7 +31,7 @@ export const FinanceList = () => {
   const { t: nav } = useTranslation('nav')
   const [reportRange, setReportRange] = useState('')
 
-  const paymentTypeOptions = enumToOptions(PaymentTypes)
+  const paymentTypeOptions = enumToOptions(PaymentType)
 
   const columns = useMemo<ColumnDef<EmployeePayment>[]>(
     () => [

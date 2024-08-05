@@ -1,10 +1,13 @@
 import { BaseForm } from '@/components/Common/Form/BaseForm'
-import { EmployeeTally } from '@/components/Hr/Tally/components/EmployeeTally'
+import { EmployeeTimeKeepingDateSet } from '@/components/Hr/Tally/components/EmployeeTimeKeepingDateSet'
 import * as yup from 'yup'
-import { EmployeeTallySpan } from '@/components/Hr/Tally/typesTally'
+import { EmployeeTallyProps, EmployeeTallySpan } from '@/components/Hr/Tally/typesTimeKeeping'
 import { getCurrentMonth, getCurrentYear } from '@/utils/dateTimeUtils'
-import { BaseTable } from '@/components/Common/Table/BaseTable'
 import { useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { apiRequest } from '@/utils/apiDefaults'
+import { EmployeeTimeKeepingDetails } from '@/components/Hr/Tally/components/EmployeeTimeKeepingDetails'
+import { Divider } from '@mui/material'
 
 const initialTimeKeepSelectValues: EmployeeTallySpan = {
   employee: { id: 0, name: '' },
@@ -29,10 +32,21 @@ const validationSchema = yup.object({
   month: yup.number().required()
 })
 
-export const TallyList = () => {
+export const TimeKeepingList = () => {
   const [draftProperties, setDraftProperties] = useState<DraftProps>()
 
-  console.log('draftProperties -->', draftProperties)
+  const { data } = useQuery({
+    queryKey: ['employeeTimeKeeping', draftProperties],
+    queryFn: () =>
+      apiRequest<EmployeeTallyProps>({
+        endpoint: 'timeKeepingDraft',
+        method: 'GET',
+        params: { employeeId: draftProperties?.id || '', year: draftProperties?.year || '', month: draftProperties?.month || '' }
+      }),
+    enabled: !!draftProperties?.id
+  })
+
+  console.log('data -->', data)
 
   return (
     <>
@@ -46,19 +60,14 @@ export const TallyList = () => {
             month: values.month.toString()
           })
         }}
-        component={<EmployeeTally />}
+        component={<EmployeeTimeKeepingDateSet />}
       />
-      {draftProperties && (
-        <BaseTable
-          endpoint={'timeKeepingDraft'}
-          params={{
-            employeeId: draftProperties.id,
-            year: draftProperties.year,
-            month: draftProperties.month
-          }}
-          method='GET'
-          columns={[]}
-        />
+
+      {data && (
+        <>
+          <Divider sx={{ my: 4 }} />
+          <EmployeeTimeKeepingDetails data={data} />
+        </>
       )}
     </>
   )

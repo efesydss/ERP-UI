@@ -6,7 +6,7 @@ import { apiRequest, ApiResponse } from '@/utils/apiDefaults'
 import { EmployeeResponse } from '@/components/Hr/Employees/typesEmployee'
 import { useQuery } from '@tanstack/react-query'
 
-export const EmployeeTally = () => {
+export const EmployeeTimeKeepingDateSet = () => {
   const { data } = useQuery({
     queryKey: ['employees'],
     queryFn: () =>
@@ -29,7 +29,7 @@ export const EmployeeTally = () => {
   })
   return (
     <>
-      <FormGrid widths={'third'}>
+      <FormGrid widths={'forth'}>
         <BaseSelect
           name={'employee'}
           options={data}
