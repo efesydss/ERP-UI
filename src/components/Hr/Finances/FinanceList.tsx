@@ -1,7 +1,7 @@
 import { BaseTable } from '@/components/Common/Table/BaseTable'
 import { ColumnDef } from '@tanstack/react-table'
 import { useMemo, useState } from 'react'
-import { EmployeePayment, PaymentType } from '@/components/Hr/Finances/typesFinance'
+import { PaymentType } from '@/components/Hr/Finances/typesFinance'
 import { useTranslation } from 'react-i18next'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import { BaseForm } from '@/components/Common/Form/BaseForm'
@@ -9,6 +9,7 @@ import { DateRangeForm } from '@/components/Hr/Finances/components/DateRangeForm
 import { FilterOperators } from '@/utils/filterOperators'
 import * as yup from 'yup'
 import { enumToOptions } from '@/utils/transformers'
+import { EmployeePaymentProps } from '@/components/Hr/typesHr'
 
 export interface ReportDateRange {
   reportStartDate: string
@@ -33,7 +34,7 @@ export const FinanceList = () => {
 
   const paymentTypeOptions = enumToOptions(PaymentType)
 
-  const columns = useMemo<ColumnDef<EmployeePayment>[]>(
+  const columns = useMemo<ColumnDef<EmployeePaymentProps>[]>(
     () => [
       {
         header: hr('paymentType'),

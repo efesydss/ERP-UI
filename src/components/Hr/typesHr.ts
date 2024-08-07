@@ -1,18 +1,19 @@
-import { Currency, PaymentType } from '@/components/Hr/Finances/typesFinance'
+import { CurrencyCode, PaymentType } from '@/components/Hr/Finances/typesFinance'
 
 export interface BankAccount {
-  id: number
+  id?: number
   accountNumber: string
   iban: string
-  currency: Currency
+  currency: CurrencyCode //todo: will be updated with Currency Type
 }
 
-export interface EmployeePayment {
-  id: number
+export interface EmployeePaymentProps {
+  id?: number
   paymentDate: string
-  PaymentType: PaymentType
+  paymentType: PaymentType
   description: string
   bankAccount: BankAccount
   transactionCost: number
-  amountCurrency: Currency
+  amount: number
+  amountCurrency: CurrencyCode //todo: will be updated with Currency Type
 }

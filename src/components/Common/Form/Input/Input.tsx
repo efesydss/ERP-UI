@@ -20,15 +20,19 @@ const InputBase = (props: InputProps, ref: ForwardedRef<HTMLElement>) => {
   const hasError = touched && !!error
 
   useEffect(() => {
-    if (isNumber && field.value !== '') {
-      const numericValue = parseFloat(field.value.toString().replace(/[^\d]/g, ''))
+    if (!isNumber) {
+      return
+    }
+
+    if (field.value !== undefined && field.value !== '') {
+      const numericValue = parseFloat(field.value.toString().replace(/[^\d.]/g, ''))
       if (!isNaN(numericValue)) {
         setValue(numericValue)
       }
     }
   }, [field.value, isNumber, setValue, type])
 
-  const inputProps = isNumber ? { inputProps: { pattern: '\\d*' } } : {}
+  const inputProps = isNumber ? { inputProps: { pattern: '[0-9]*[.,]?[0-9]*' } } : {}
 
   return (
     <Stack>
@@ -46,7 +50,7 @@ const InputBase = (props: InputProps, ref: ForwardedRef<HTMLElement>) => {
         rows={isMultiLine ? 4 : 1}
         fullWidth
         error={hasError}
-        type={name === 'password' ? 'password' : 'text'}
+        type={isNumber ? 'number' : name === 'password' ? 'password' : 'text'}
         {...field}
         {...rest}
         {...inputProps}

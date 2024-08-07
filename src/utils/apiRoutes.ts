@@ -21,6 +21,11 @@ export const apiRoutes = {
   // Employee Payment Management
   employeePayments: 'hr/employee/payments',
   employeePayment: 'hr/employee/payment',
+  employeeAddPayment: 'hr/employee/{employeeId}/payment',
+
+  // Employee Overtime Management
+  employeeAddOvertime: 'hr/employee/{employeeId}/overtime',
+  employeeDeleteOvertime: 'hr/employee/{employeeId}/overtime/{overtimeId}',
 
   // Department Management
   department: 'company/department',
@@ -31,5 +36,7 @@ export const apiRoutes = {
   branchAdd: 'company/branch',
 
   // Time Keeping
-  timeKeepingDraft: 'hr/timekeeping/draft/employee/{employeeId}/year/{year}/month/{month}'
+  timeKeepingDraft: 'hr/timekeeping/draft/employee/{employeeId}/year/{year}/month/{month}',
+  timeKeepingCreate: 'hr/timekeeping',
+  timeKeepings: 'hr/timekeepings'
 }

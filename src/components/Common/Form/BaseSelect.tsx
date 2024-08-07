@@ -20,10 +20,11 @@ interface BaseSelectProps {
   isLoading?: boolean
   endpoint?: keyof typeof apiRoutes
   isEnum?: boolean
+  onChange?: (option: string) => void
 }
 
 export const BaseSelect = (props: BaseSelectProps) => {
-  const { options, name, nameSpace, isLoading, endpoint, isMulti = false, isEnum = false, ...rest } = props
+  const { options, name, nameSpace, isLoading, endpoint, isMulti = false, isEnum = false, onChange, ...rest } = props
   const [field, { touched, error }, { setValue }] = useField(name)
   const theme = useTheme()
 
@@ -49,7 +50,9 @@ export const BaseSelect = (props: BaseSelectProps) => {
   })
 
   //todo: refactor isEnum condition
-  const onChange = (newValue: MultiValue<OptionType> | SingleValue<OptionType> | null) => {
+  //todo: onChange only supports singleValue for now
+
+  const handleChange = (newValue: MultiValue<OptionType> | SingleValue<OptionType> | null) => {
     if (isEnum) {
       if (newValue === null) {
         setValue('')
@@ -67,6 +70,9 @@ export const BaseSelect = (props: BaseSelectProps) => {
       } else {
         const selectedOption = newValue as OptionType
         setValue({ id: selectedOption.value, name: selectedOption.label })
+        if (onChange) {
+          onChange(selectedOption.value as string)
+        }
       }
     }
   }
@@ -114,7 +120,7 @@ export const BaseSelect = (props: BaseSelectProps) => {
   }
 
   return (
-    <Stack>
+    <Stack sx={{ width: '100%' }}>
       <Label
         name={name}
         hasError={hasError}
@@ -126,7 +132,7 @@ export const BaseSelect = (props: BaseSelectProps) => {
         {...field}
         name={name}
         value={getValue()}
-        onChange={onChange}
+        onChange={handleChange}
         options={options || fetchedOptions}
         isMulti={isMulti}
         styles={customStyles}

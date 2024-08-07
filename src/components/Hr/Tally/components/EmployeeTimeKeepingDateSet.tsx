@@ -49,7 +49,7 @@ export const EmployeeTimeKeepingDateSet = () => {
         color={'primary'}
         variant={'contained'}
       >
-        Getir
+        Taslak Oluştur
       </Button>
     </>
   )

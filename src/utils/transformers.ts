@@ -17,10 +17,6 @@ export const formatToDateReadable = (dateString: string, locale = tr): string =>
 }
 
 export const formatToISOString = (dateString: string): string => {
-  console.log('dateString -->', dateString)
-
   const date = new Date(dateString.replace(' ', 'T'))
-  console.log('date -->', date)
-
   return date.toISOString()
 }

@@ -26,7 +26,13 @@
   "vacationEnd": "Bitiş",
   "netSalary": "Net Maaş",
   "normalWorkingDays": "Normal Çalışma",
-  "weekendWorkingDays": "Hafta Sonu Çalışma",
-  "unpaidTimeOffHours": "Ücretsiz İzin Saat"
+  "weekendWorkingHours": "Hafta Sonu Çalışma",
+  "unpaidTimeOffHours": "Ücretsiz İzin Saat",
+  "branchSuffix": "Şubesi",
+  "departmentSuffix": "Departmanı",
+  "deductions": "Ek Kesintiler",
+  "overtimes": "Ek Mesailer",
+  "additionalPayments": "Ek Ödemeler",
+  "addTimeKeeping": "Puantaj Ekle"
 
 }
