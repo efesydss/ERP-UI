@@ -10,7 +10,7 @@ import { IoMdClose } from 'react-icons/io'
 import { MdAdd, MdAutorenew } from 'react-icons/md'
 import { enumToOptions } from '@/utils/transformers'
 import { EmployeeOverTime, EmployeeTimeKeepingProps, OverTimePercentage } from '@/components/Hr/Tally/typesTimeKeeping'
-import { CurrencyCode, PaymentType } from '@/components/Hr/Finances/typesFinance'
+import { AdditionalPaymentType, CurrencyCode, DeductionPaymentType, PaymentType } from '@/components/Hr/Finances/typesFinance'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { apiRequest } from '@/utils/apiDefaults'
 import { useConfirmDialog } from '@/utils/hooks/useConfirmDialogContext'
@@ -84,7 +84,10 @@ export const FormEmployeeTimeKeeping = () => {
   })
 
   const overTimeOptions = enumToOptions(OverTimePercentage)
-  const paymentTypeOptions = enumToOptions(PaymentType)
+
+  const additionalPaymentTypeOptions = enumToOptions(AdditionalPaymentType)
+  const deductionPaymentTypeOptions = enumToOptions(DeductionPaymentType)
+
   const currencyCodeOptions = enumToOptions(CurrencyCode)
 
   //todo: temp
@@ -117,11 +120,6 @@ export const FormEmployeeTimeKeeping = () => {
       type: 'date'
     },
     {
-      name: 'paymentType',
-      type: 'select',
-      options: paymentTypeOptions
-    },
-    {
       name: 'description'
     },
     {
@@ -149,9 +147,27 @@ export const FormEmployeeTimeKeeping = () => {
     }*/
   ]
 
+  const additionalPayment = [
+    ...employeePayment,
+    {
+      name: 'paymentType',
+      type: 'select',
+      options: additionalPaymentTypeOptions
+    }
+  ]
+
+  const deductionPayment = [
+    ...employeePayment,
+    {
+      name: 'paymentType',
+      type: 'select',
+      options: deductionPaymentTypeOptions
+    }
+  ]
+
   const fieldConfigurations: { [key: string]: Array<DynamicInputFieldProps> } = {
-    deductions: employeePayment,
-    additionalPayments: employeePayment,
+    deductions: deductionPayment,
+    additionalPayments: additionalPayment,
     overtimes: [
       {
         name: 'overTimePercentage',
@@ -177,18 +193,29 @@ export const FormEmployeeTimeKeeping = () => {
     )
   }
 
-  const newOvertimeRecords = useCallback(() => {
-    return values.overtimes.filter((item) => !item.id && item.overTimePercentage && item.overtimeDate)
-  }, [values.overtimes])
-  const newPaymentRecords = useCallback(() => {
-    const deductionRecords = values.deductions.filter((d) => !d.id && hasAllValuesFilled(d))
-    const additionalPaymentRecords = values.additionalPayments.filter((d) => !d.id && hasAllValuesFilled(d))
+  const recordsToProcess = useCallback(() => {
+    const overtimesToUpdate = values.overtimes.filter((item) => item.id)
+    const overtimesToAdd = values.overtimes.filter((item) => !item.id && hasAllValuesFilled(item))
 
-    return [...deductionRecords, ...additionalPaymentRecords]
-  }, [values.additionalPayments, values.deductions])
+    const deductionRecordsToAdd = values.deductions.filter((d) => !d.id && hasAllValuesFilled(d))
+    const additionalPaymentRecordsToAdd = values.additionalPayments.filter((d) => !d.id && hasAllValuesFilled(d))
 
-  const hasNewOvertimeRecords = newOvertimeRecords().length >= 1
-  const hasNewPaymentRecords = newPaymentRecords().length >= 1
+    const paymentRecordsToUpdate = [...values.deductions.filter((d) => d.id), ...values.additionalPayments.filter((d) => d.id)]
+
+    return {
+      overtimesToUpdate,
+      overtimesToAdd,
+      paymentRecordsToAdd: [...deductionRecordsToAdd, ...additionalPaymentRecordsToAdd],
+      paymentRecordsToUpdate
+    }
+  }, [values.overtimes, values.deductions, values.additionalPayments])
+
+  console.log('recordsToProcess -->', recordsToProcess())
+
+  const { overtimesToUpdate, overtimesToAdd, paymentRecordsToAdd, paymentRecordsToUpdate } = recordsToProcess()
+
+  const hasNewOvertimeRecords = overtimesToAdd.length >= 1
+  const hasNewPaymentRecords = paymentRecordsToAdd.length >= 1
 
   const isUpdateEnabled = hasNewOvertimeRecords || hasNewPaymentRecords
 
@@ -295,11 +322,11 @@ export const FormEmployeeTimeKeeping = () => {
           variant={'outlined'}
           onClick={async () => {
             if (hasNewOvertimeRecords) {
-              await addOvertime(newOvertimeRecords())
+              await addOvertime(overtimesToAdd)
             }
 
             if (hasNewPaymentRecords) {
-              await addPayment(newPaymentRecords())
+              await addPayment(paymentRecordsToAdd)
             }
           }}
         >

@@ -18,6 +18,7 @@ export const BaseForm = <T extends FormikValues>(props: BaseFormProps<T>) => {
       onSubmit={onSubmit}
       validationSchema={validationSchema}
       validateOnBlur={false}
+      enableReinitialize
     >
       <Form>{component}</Form>
     </Formik>

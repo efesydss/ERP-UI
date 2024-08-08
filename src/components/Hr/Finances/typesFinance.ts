@@ -10,6 +10,18 @@ export enum PaymentType {
   TRAVEL_PAYMENT = 'TRAVEL_PAYMENT'
 }
 
+export enum AdditionalPaymentType {
+  ADDITIONAL_PAYMENT = 'ADDITIONAL_PAYMENT',
+  TRAVEL_PAYMENT = 'TRAVEL_PAYMENT'
+}
+
+export enum DeductionPaymentType {
+  ADVANCE = 'ADVANCE',
+  DEDUCTION = 'DEDUCTION',
+  TRANSFER = 'TRANSFER',
+  SEIZURE = 'SEIZURE'
+}
+
 export enum CurrencyCode {
   TRY = 'TRY',
   USD = 'USD',
