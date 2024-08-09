@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { useTranslation } from 'react-i18next'
 import { BaseTable } from '@/components/Common/Table/BaseTable'
+import { TimeKeepingListActions } from '@/components/Hr/Tally/components/TimeKeepingListActions'
 
 export const TimeKeepingList = () => {
   const { t: common } = useTranslation('common')
@@ -12,6 +13,8 @@ export const TimeKeepingList = () => {
     () => [
       { header: common('name'), accessorKey: 'employee.name' },
       { header: common('surname'), accessorKey: 'employee.surname' },
+      { header: common('companyBranch'), accessorKey: 'employee.companyBranch.name' },
+      { header: common('department'), accessorKey: 'employee.department.name' },
       {
         header: common('date'),
         accessorKey: 'year',
@@ -21,7 +24,20 @@ export const TimeKeepingList = () => {
         }
       },
       { header: hr('netSalary'), accessorKey: 'netSalary' },
-      { header: hr('total'), accessorKey: 'total' }
+      { header: hr('total'), accessorKey: 'total' },
+      {
+        id: 'actions',
+        enableSorting: false,
+        enableColumnFilter: false,
+        cell: ({ row }) => {
+          const timeKeepingId = row.original.id
+
+          if (!timeKeepingId) {
+            return null
+          }
+          return <TimeKeepingListActions timeKeepingId={timeKeepingId} />
+        }
+      }
     ],
     [common, hr]
   )

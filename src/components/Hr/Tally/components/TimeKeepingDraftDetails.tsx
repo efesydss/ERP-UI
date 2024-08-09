@@ -1,7 +1,7 @@
 import { EmployeeTimeKeepingProps } from '@/components/Hr/Tally/typesTimeKeeping'
 import { BaseForm } from '@/components/Common/Form/BaseForm'
 import { FormEmployeeTimeKeeping } from '@/components/Hr/Tally/FormEmployeeTimeKeeping'
-import { Paper, Typography } from '@mui/material'
+import { Box, Paper, Typography } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { useMutation } from '@tanstack/react-query'
 import { apiRequest } from '@/utils/apiDefaults'
@@ -18,6 +18,7 @@ export const TimeKeepingDraftDetails = (props: EmployeeTimeKeepingDetailsProps) 
       title,
       year,
       month,
+      total,
       employee: { name, surname, companyBranch, department }
     }
   } = props
@@ -31,8 +32,17 @@ export const TimeKeepingDraftDetails = (props: EmployeeTimeKeepingDetailsProps) 
   })
 
   const onFormSubmit = async (values: EmployeeTimeKeepingProps) => {
-    const { normalWorkingDays, weekendWorkingHours, unpaidTimeOffHours, employee, deductions, additionalPayments, overtimes, total, netSalary, timeOffs } =
-      values
+    const {
+      normalWorkingDays,
+      weekendWorkingHours,
+      unpaidTimeOffHours,
+      employee,
+      deductions,
+      additionalPayments,
+      overtimes,
+      netSalary,
+      timeOffs
+    } = values
 
     const newTimeKeep = {
       year,
@@ -55,19 +65,31 @@ export const TimeKeepingDraftDetails = (props: EmployeeTimeKeepingDetailsProps) 
   }
 
   return (
-    <Paper sx={{ p: 2, mt: 4 }}>
-      <Typography sx={{ mb: 1 }}>
-        {name} {surname}
-      </Typography>
-      <Typography sx={{ mb: 5 }}>
-        {companyBranch.name} {hr('branchSuffix')}, {department.name} {hr('departmentSuffix')}
-      </Typography>
-      <Typography sx={{ mb: 2 }}>{title}</Typography>
-      <BaseForm
-        initialValues={props.data}
-        onSubmit={onFormSubmit}
-        component={<FormEmployeeTimeKeeping />}
-      />
-    </Paper>
+    <>
+      <Paper sx={{ p: 2, mt: 4 }}>
+        <Box>
+          <Typography variant={'h5'}>
+            {name} {surname}
+          </Typography>
+          <Typography sx={{ mb: 3 }}>
+            {companyBranch.name} {hr('branchSuffix')}, {department.name} {hr('departmentSuffix')}
+          </Typography>
+          <Typography>{title}</Typography>
+          <Typography
+            sx={{ mt: 1 }}
+            variant={'h6'}
+          >
+            Net Ödenecek: {total}
+          </Typography>
+        </Box>
+      </Paper>
+      <Paper sx={{ p: 2, mt: 2 }}>
+        <BaseForm
+          initialValues={props.data}
+          onSubmit={onFormSubmit}
+          component={<FormEmployeeTimeKeeping />}
+        />
+      </Paper>
+    </>
   )
 }

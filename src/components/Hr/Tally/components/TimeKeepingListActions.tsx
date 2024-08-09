@@ -1,15 +1,15 @@
+import { SyntheticEvent, useState } from 'react'
 import { Box, IconButton, Menu, MenuItem } from '@mui/material'
 import { IoMdMore } from 'react-icons/io'
-import { SyntheticEvent, useState } from 'react'
-import { useNavigate } from '@tanstack/react-router'
-import { t } from 'i18next'
 
-interface PersonnelListEditActionsProps {
-  employeeId: number
+interface TimeKeepingListActionsProps {
+  timeKeepingId: number
 }
 
-export const EmployeeListEditActions = (props: PersonnelListEditActionsProps) => {
-  const navigate = useNavigate()
+export const TimeKeepingListActions = (props: TimeKeepingListActionsProps) => {
+  const { timeKeepingId } = props
+
+  console.log('timeKeepingId -->', timeKeepingId)
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const isMenuOpen = Boolean(anchorEl)
@@ -20,6 +20,7 @@ export const EmployeeListEditActions = (props: PersonnelListEditActionsProps) =>
   const handleClose = () => {
     setAnchorEl(null)
   }
+
   return (
     <Box>
       <IconButton
@@ -33,7 +34,7 @@ export const EmployeeListEditActions = (props: PersonnelListEditActionsProps) =>
         open={isMenuOpen}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => navigate({ to: '/hr/employees/$id', params: { id: props.employeeId } })}>{t('common:details')}</MenuItem>
+        <MenuItem>here</MenuItem>
       </Menu>
     </Box>
   )

@@ -48,12 +48,12 @@ export const EmployeeList = () => {
         enableSorting: false,
         enableColumnFilter: false,
         cell: ({ row }) => {
-          const personnelId = row.original.id
+          const employeeId = row.original.id
 
-          if (!personnelId) {
+          if (!employeeId) {
             return null
           }
-          return <EmployeeListEditActions personnelId={personnelId} />
+          return <EmployeeListEditActions employeeId={employeeId} />
         }
       }
     ],

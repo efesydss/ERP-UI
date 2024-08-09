@@ -18,8 +18,6 @@ export const EmployeeTimeKeepingDateSet = (props: EmployeeTimeKeepingDateSetProp
 
   const { year, month } = values
 
-  console.log('values -->', values)
-
   const { data: timeKeepings } = useQuery({
     queryKey: ['timeKeepings', values],
     queryFn: () =>
@@ -75,7 +73,6 @@ export const EmployeeTimeKeepingDateSet = (props: EmployeeTimeKeepingDateSetProp
           options={data}
           nameSpace={'hr'}
           isLoading={isEmployeeListLoading}
-          onChange={(option) => console.log(option)}
         />
       </FormGrid>
       <Button

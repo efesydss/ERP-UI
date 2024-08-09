@@ -8,7 +8,7 @@ export const FormWrapper = styled('div', {
   gridTemplateColumns: `repeat(${contentWidthMap[elementWidth]}, 1fr)`,
   columnGap: theme.spacing(2),
   rowGap: theme.spacing(2),
-  alignItems: 'flex-start',
+  alignItems: 'flex-end',
   marginBottom: theme.spacing(2),
   [theme.breakpoints.down('md')]: {
     gridTemplateColumns: `repeat(1, 1fr)`

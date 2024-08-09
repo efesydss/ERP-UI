@@ -64,6 +64,11 @@ export const MultiThemeProvider = (props: PropsWithChildren) => {
         background: {
           default: '#FCFCFC',
           paper: '#FFFFFF'
+        },
+        text: {
+          primary: '#3A3A3A',
+          secondary: '#82A3A1',
+          disabled: '#BDBDBD'
         }
       }
     },

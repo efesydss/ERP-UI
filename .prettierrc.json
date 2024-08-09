@@ -3,7 +3,7 @@
   "singleQuote": true,
   "jsxSingleQuote": true,
   "trailingComma": "none",
-  "printWidth": 160,
+  "printWidth": 120,
   "singleAttributePerLine": true,
   "importOrder": ["react", "<THIRD_PARTY_MODULES>", "^app$"],
   "importOrderSeparation": false,
