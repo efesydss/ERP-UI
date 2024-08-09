@@ -21,7 +21,7 @@
   "infoTimeOffs": "İzinler",
   "SICK_LEAVE": "Hastalık İzni",
   "CHILD_BIRTH": "Doğum İzni",
-  "paymentType": "Hareket Türü",
+  "paymentType": "Ödeme Türü",
   "vacationStart": "Başlangıç",
   "vacationEnd": "Bitiş",
   "netSalary": "Net Maaş",
@@ -33,6 +33,22 @@
   "deductions": "Ek Kesintiler",
   "overtimes": "Ek Mesailer",
   "additionalPayments": "Ek Ödemeler",
-  "addTimeKeeping": "Puantaj Ekle"
-
+  "addTimeKeeping": "Puantaj Ekle",
+  "TRAVEL_PAYMENT": "Yol Parası",
+  "ADDITIONAL_PAYMENT": "Ek Ödeme",
+  "ADVANCE": "Avans",
+  "DEDUCTION": "Kesinti",
+  "TRANSFER": "Devir",
+  "SEIZURE": "Haciz",
+  "paymentDate": "Ödeme Tarihi",
+  "description": "Açıklama",
+  "transactionCost": "Transfer Maliyeti",
+  "amount": "Miktar",
+  "amountCurrency": "Para Birimi",
+  "bankAccount": "Banka Hesabı",
+  "employee": "Çalışan",
+  "overTimePercentage": "Çarpan",
+  "overtimeDate": "Tarih",
+  "workingHours ": "Çalışılan Saat",
+  "total": "Net Ödenecek"
 }

@@ -22,6 +22,7 @@ export const apiRoutes = {
   employeePayments: 'hr/employee/payments',
   employeePayment: 'hr/employee/payment',
   employeeAddPayment: 'hr/employee/{employeeId}/payment',
+  employeeDeletePayment: 'hr/employee/{employeeId}/payment/{paymentId}',
 
   // Employee Overtime Management
   employeeAddOvertime: 'hr/employee/{employeeId}/overtime',

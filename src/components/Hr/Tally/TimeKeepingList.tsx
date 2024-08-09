@@ -1,79 +1,35 @@
-import { BaseForm } from '@/components/Common/Form/BaseForm'
-import { EmployeeTimeKeepingDateSet } from '@/components/Hr/Tally/components/EmployeeTimeKeepingDateSet'
-import * as yup from 'yup'
-import { EmployeeTimeKeepingProps, EmployeeTimeKeepingSpan } from '@/components/Hr/Tally/typesTimeKeeping'
-import { getCurrentMonth, getCurrentYear } from '@/utils/dateTimeUtils'
-import { useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import { apiRequest } from '@/utils/apiDefaults'
-import { EmployeeTimeKeepingDetails } from '@/components/Hr/Tally/components/EmployeeTimeKeepingDetails'
-
-const initialTimeKeepSelectValues: EmployeeTimeKeepingSpan = {
-  employee: { id: 0, name: '' },
-  year: getCurrentYear(),
-  month: getCurrentMonth()
-}
-
-interface DraftProps {
-  id: string
-  year: string
-  month: string
-}
-
-const validationSchema = yup.object({
-  employee: yup
-    .object({
-      id: yup.number().required(),
-      name: yup.string().required()
-    })
-    .required('Employee is required'),
-  year: yup.number().required(),
-  month: yup.number().required()
-})
+import { EmployeeTimeKeepingProps } from '@/components/Hr/Tally/typesTimeKeeping'
+import { useMemo } from 'react'
+import { ColumnDef } from '@tanstack/react-table'
+import { useTranslation } from 'react-i18next'
+import { BaseTable } from '@/components/Common/Table/BaseTable'
 
 export const TimeKeepingList = () => {
-  const [draftProperties, setDraftProperties] = useState<DraftProps>()
+  const { t: common } = useTranslation('common')
+  const { t: hr } = useTranslation('hr')
 
-  const { data } = useQuery({
-    queryKey: ['employeeTimeKeeping', draftProperties],
-    queryFn: () =>
-      apiRequest<EmployeeTimeKeepingProps>({
-        endpoint: 'timeKeepingDraft',
-        method: 'GET',
-        params: { employeeId: draftProperties?.id || '', year: draftProperties?.year || '', month: draftProperties?.month || '' }
-      }),
-    enabled: !!draftProperties?.id
-  })
-
-  /*  const { data: timeKeepings } = useQuery({
-    queryKey: ['timeKeepings', draftProperties],
-    queryFn: () =>
-      apiRequest<EmployeeTimeKeepingProps>({
-        endpoint: 'timeKeepings',
-        payload: {
-          filter: '',
-          page: 0,
-          pageSize: 200
+  const columns = useMemo<ColumnDef<EmployeeTimeKeepingProps>[]>(
+    () => [
+      { header: common('name'), accessorKey: 'employee.name' },
+      { header: common('surname'), accessorKey: 'employee.surname' },
+      {
+        header: common('date'),
+        accessorKey: 'year',
+        cell: ({ row }) => {
+          const { year, month } = row.original
+          return `${month} / ${year}`
         }
-      })
-  })*/
+      },
+      { header: hr('netSalary'), accessorKey: 'netSalary' },
+      { header: hr('total'), accessorKey: 'total' }
+    ],
+    [common, hr]
+  )
 
   return (
-    <>
-      <BaseForm
-        initialValues={initialTimeKeepSelectValues}
-        validationSchema={validationSchema}
-        onSubmit={(values: EmployeeTimeKeepingSpan) => {
-          setDraftProperties({
-            id: values.employee.id.toString(),
-            year: values.year.toString(),
-            month: values.month.toString()
-          })
-        }}
-        component={<EmployeeTimeKeepingDateSet />}
-      />
-
-      {data && <EmployeeTimeKeepingDetails data={data} />}
-    </>
+    <BaseTable<EmployeeTimeKeepingProps>
+      columns={columns}
+      endpoint={'timeKeepings'}
+    />
   )
 }

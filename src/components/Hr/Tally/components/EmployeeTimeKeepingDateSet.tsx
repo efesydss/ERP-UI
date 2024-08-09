@@ -5,15 +5,45 @@ import { BaseSelect, OptionType } from '@/components/Common/Form/BaseSelect'
 import { apiRequest, ApiResponse } from '@/utils/apiDefaults'
 import { EmployeeResponse } from '@/components/Hr/Employees/typesEmployee'
 import { useQuery } from '@tanstack/react-query'
+import { EmployeeTimeKeepingProps, EmployeeTimeKeepingSpan } from '@/components/Hr/Tally/typesTimeKeeping'
+import { useFormikContext } from 'formik'
 
-export const EmployeeTimeKeepingDateSet = () => {
-  const { data } = useQuery({
-    queryKey: ['employees'],
+interface EmployeeTimeKeepingDateSetProps {
+  isLoading: boolean
+}
+
+export const EmployeeTimeKeepingDateSet = (props: EmployeeTimeKeepingDateSetProps) => {
+  const { isLoading } = props
+  const { values } = useFormikContext<EmployeeTimeKeepingSpan>()
+
+  const { year, month } = values
+
+  console.log('values -->', values)
+
+  const { data: timeKeepings } = useQuery({
+    queryKey: ['timeKeepings', values],
+    queryFn: () =>
+      apiRequest<ApiResponse<EmployeeTimeKeepingProps>>({
+        endpoint: 'timeKeepings',
+        payload: {
+          filter: `year==${year};month==${month}`,
+          page: 0,
+          pageSize: 200
+        }
+      }),
+    select: (res) => {
+      return res.data.map((r) => r.employee.id)
+    }
+  })
+
+  const { data, isLoading: isEmployeeListLoading } = useQuery({
+    //todo: pageSize needs to be updated
+    queryKey: ['employees', values],
     queryFn: () =>
       apiRequest<ApiResponse<EmployeeResponse>>({
         endpoint: 'employees',
         payload: {
-          filter: '',
+          filter: timeKeepings?.map((id) => `id!=${id}`).join(';'),
           page: 0,
           pageSize: 200
         }
@@ -25,16 +55,13 @@ export const EmployeeTimeKeepingDateSet = () => {
           label: `${r.name} ${r.surname}`
         }
       })
-    }
+    },
+    enabled: !!timeKeepings
   })
+
   return (
     <>
       <FormGrid widths={'forth'}>
-        <BaseSelect
-          name={'employee'}
-          options={data}
-          nameSpace={'hr'}
-        />
         <Input
           name={'year'}
           type={'number'}
@@ -43,13 +70,21 @@ export const EmployeeTimeKeepingDateSet = () => {
           name={'month'}
           type={'number'}
         />
+        <BaseSelect
+          name={'employee'}
+          options={data}
+          nameSpace={'hr'}
+          isLoading={isEmployeeListLoading}
+          onChange={(option) => console.log(option)}
+        />
       </FormGrid>
       <Button
         type={'submit'}
         color={'primary'}
         variant={'contained'}
+        disabled={isLoading || values.employee.id === 0}
       >
-        Taslak Oluştur
+        Taslağı Getir
       </Button>
     </>
   )

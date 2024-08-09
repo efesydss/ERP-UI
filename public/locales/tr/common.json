@@ -23,5 +23,9 @@
   "amount": "Miktar",
   "description": "Açıklama",
   "Salary": "Maaş",
-  "Overtime": "Mesai"
+  "Overtime": "Mesai",
+  "year": "Yıl",
+  "month": "Ay",
+  "entryType": "Puantaj Türü"
+
 }

@@ -2,6 +2,7 @@ import { Input } from '@/components/Common/Form/Input/Input'
 import { DatePicker } from '@/components/Common/Form/DatePicker/DatePicker'
 import { BaseSelect, OptionType } from '@/components/Common/Form/BaseSelect'
 import { Box } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 
 export interface DynamicInputFieldProps {
   name: string
@@ -17,17 +18,25 @@ interface DynamicInputProps {
 
 export const DynamicFields = (props: DynamicInputProps) => {
   const { prefix, fields } = props
+  const { t } = useTranslation('hr')
+
+  const getLabel = (str: string): string => {
+    const parts = str.split('.')
+    return parts[parts.length - 1]
+  }
 
   return (
     <>
       {fields.map((field, i) => {
         const fieldName = `${prefix}.${field.name}`
+        const fieldLabel = t(getLabel(field.name))
 
         if (field.type === 'date') {
           return (
             <DatePicker
               key={`${prefix}.${i}.${field.name}${i}`}
               name={fieldName}
+              label={fieldLabel}
             />
           )
         }
@@ -40,6 +49,8 @@ export const DynamicFields = (props: DynamicInputProps) => {
                 name={fieldName}
                 options={field.options}
                 isEnum
+                nameSpace={'hr'}
+                selectLabel={fieldLabel}
               />
             </div>
           )
@@ -65,6 +76,8 @@ export const DynamicFields = (props: DynamicInputProps) => {
             name={fieldName}
             type={field.type || 'text'}
             isOptional
+            nameSpace={'hr'}
+            label={fieldLabel}
           />
         )
       })}

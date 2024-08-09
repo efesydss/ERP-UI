@@ -9,10 +9,11 @@ import { format } from 'date-fns'
 interface DatePickerProps {
   name: string
   isTimeEnabled?: boolean
+  label?: string
 }
 
 export const DatePicker = (props: DatePickerProps) => {
-  const { name, isTimeEnabled = false, ...rest } = props
+  const { name, label, isTimeEnabled = false, ...rest } = props
   const [field, meta, helpers] = useField(name)
 
   const { value } = meta
@@ -44,7 +45,7 @@ export const DatePicker = (props: DatePickerProps) => {
         customInput={
           <Input
             name={name}
-            label={t(name, { ns: 'hr' })}
+            label={label || t(name, { ns: 'hr' })}
           />
         }
       />

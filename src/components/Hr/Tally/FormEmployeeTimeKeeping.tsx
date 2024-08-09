@@ -10,7 +10,7 @@ import { IoMdClose } from 'react-icons/io'
 import { MdAdd, MdAutorenew } from 'react-icons/md'
 import { enumToOptions } from '@/utils/transformers'
 import { EmployeeOverTime, EmployeeTimeKeepingProps, OverTimePercentage } from '@/components/Hr/Tally/typesTimeKeeping'
-import { AdditionalPaymentType, CurrencyCode, DeductionPaymentType, PaymentType } from '@/components/Hr/Finances/typesFinance'
+import { AdditionalPaymentType, CurrencyCode, DeductionPaymentType } from '@/components/Hr/Finances/typesFinance'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { apiRequest } from '@/utils/apiDefaults'
 import { useConfirmDialog } from '@/utils/hooks/useConfirmDialogContext'
@@ -26,6 +26,7 @@ export const FormEmployeeTimeKeeping = () => {
 
   const { values } = useFormikContext<EmployeeTimeKeepingProps>()
 
+  //todo: recheck, we dont need id here?
   const hasAllValuesFilled = (obj: any): boolean => {
     const checkValues = (obj: any): boolean => {
       return Object.keys(obj).every((key) => {
@@ -55,14 +56,14 @@ export const FormEmployeeTimeKeeping = () => {
 
   const { mutateAsync: addPayment } = useMutation({
     mutationFn: (payments: EmployeePaymentProps[]) =>
-      //todo: payload will be updated as []
+      //todo: check bank account, cant send whole object right now
       apiRequest({
         endpoint: 'employeeAddPayment',
         params: { employeeId: values.employee.id.toString() },
-        payload: {
-          ...payments[0],
-          bankAccount: { id: payments[0].bankAccount }
-        }
+        payload: payments.map((p) => ({
+          ...p,
+          bankAccount: { id: p.bankAccount }
+        }))
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['employeeTimeKeeping'] })
@@ -83,10 +84,23 @@ export const FormEmployeeTimeKeeping = () => {
     }
   })
 
+  const { mutate: deleteEmployeePayment } = useMutation({
+    mutationFn: (id: number) =>
+      apiRequest({
+        endpoint: 'employeeDeletePayment',
+        method: 'DELETE',
+        params: { employeeId: values.employee.id.toString(), paymentId: id.toString() }
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['employeeTimeKeeping'] })
+      toast.success('Entry Deleted')
+    }
+  })
+
   const overTimeOptions = enumToOptions(OverTimePercentage)
 
-  const additionalPaymentTypeOptions = enumToOptions(AdditionalPaymentType)
-  const deductionPaymentTypeOptions = enumToOptions(DeductionPaymentType)
+  const additionalPaymentTypeOptions = enumToOptions(AdditionalPaymentType, 'hr')
+  const deductionPaymentTypeOptions = enumToOptions(DeductionPaymentType, 'hr')
 
   const currencyCodeOptions = enumToOptions(CurrencyCode)
 
@@ -210,9 +224,7 @@ export const FormEmployeeTimeKeeping = () => {
     }
   }, [values.overtimes, values.deductions, values.additionalPayments])
 
-  console.log('recordsToProcess -->', recordsToProcess())
-
-  const { overtimesToUpdate, overtimesToAdd, paymentRecordsToAdd, paymentRecordsToUpdate } = recordsToProcess()
+  const { overtimesToAdd, paymentRecordsToAdd } = recordsToProcess()
 
   const hasNewOvertimeRecords = overtimesToAdd.length >= 1
   const hasNewPaymentRecords = paymentRecordsToAdd.length >= 1
@@ -280,12 +292,22 @@ export const FormEmployeeTimeKeeping = () => {
                   <IconButton
                     onClick={() => {
                       const fieldValue = form.values[selectedType][index]
+                      console.log('selectedType -->', selectedType)
+
+                      console.log('fieldValue -->', fieldValue)
+
+                      //todo: just temp! will refactor
                       if (fieldValue && fieldValue.id) {
                         openDialog(
                           'Confirm Deletion',
                           'Are you sure you want to delete this item?',
                           () => {
-                            deleteOvertime(fieldValue.id)
+                            if (selectedType === 'overtimes') {
+                              deleteOvertime(fieldValue.id)
+                            }
+                            if (selectedType === 'additionalPayments' || selectedType === 'deductions') {
+                              deleteEmployeePayment(fieldValue.id)
+                            }
                           },
                           () => console.log('Deletion cancelled')
                         )

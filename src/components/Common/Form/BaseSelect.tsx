@@ -21,10 +21,11 @@ interface BaseSelectProps {
   endpoint?: keyof typeof apiRoutes
   isEnum?: boolean
   onChange?: (option: string) => void
+  selectLabel?: string
 }
 
 export const BaseSelect = (props: BaseSelectProps) => {
-  const { options, name, nameSpace, isLoading, endpoint, isMulti = false, isEnum = false, onChange, ...rest } = props
+  const { options, name, nameSpace, selectLabel, isLoading, endpoint, isMulti = false, isEnum = false, onChange, ...rest } = props
   const [field, { touched, error }, { setValue }] = useField(name)
   const theme = useTheme()
 
@@ -126,6 +127,7 @@ export const BaseSelect = (props: BaseSelectProps) => {
         hasError={hasError}
         errorMessage={error}
         nameSpace={nameSpace}
+        label={selectLabel}
       />
       <Select
         {...rest}

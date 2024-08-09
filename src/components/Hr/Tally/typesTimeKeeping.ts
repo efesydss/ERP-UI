@@ -2,6 +2,7 @@ import { NamedEntity } from '@/utils/sharedTypes'
 import { VacationBaseProps } from '@/components/Hr/Vacations/typeVacations'
 import { EmployeePaymentProps } from '@/components/Hr/typesHr'
 
+//todo: employee can be null
 export interface EmployeeTimeKeepingSpan {
   employee: NamedEntity
   year: number

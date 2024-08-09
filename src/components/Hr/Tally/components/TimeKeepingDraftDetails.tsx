@@ -10,7 +10,7 @@ interface EmployeeTimeKeepingDetailsProps {
   data: EmployeeTimeKeepingProps
 }
 
-export const EmployeeTimeKeepingDetails = (props: EmployeeTimeKeepingDetailsProps) => {
+export const TimeKeepingDraftDetails = (props: EmployeeTimeKeepingDetailsProps) => {
   const { t: hr } = useTranslation('hr')
 
   const {
