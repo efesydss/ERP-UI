@@ -25,7 +25,18 @@ interface BaseSelectProps {
 }
 
 export const BaseSelect = (props: BaseSelectProps) => {
-  const { options, name, nameSpace, selectLabel, isLoading, endpoint, isMulti = false, isEnum = false, onChange, ...rest } = props
+  const {
+    options,
+    name,
+    nameSpace,
+    selectLabel,
+    isLoading,
+    endpoint,
+    isMulti = false,
+    isEnum = false,
+    onChange,
+    ...rest
+  } = props
   const [field, { touched, error }, { setValue }] = useField(name)
   const theme = useTheme()
 
@@ -89,9 +100,13 @@ export const BaseSelect = (props: BaseSelectProps) => {
       }
     } else {
       if (isMulti) {
-        return finalOptions.filter((option) => (field.value as Array<{ id: number; name: string }>).some((val) => val.id === option.value))
+        return finalOptions.filter((option) =>
+          (field.value as Array<{ id: number; name: string }>).some((val) => val.id === option.value)
+        )
       }
-      const singleValue = finalOptions.find((option) => option.value === (field.value as { id: number; name: string })?.id)
+      const singleValue = finalOptions.find(
+        (option) => option.value === (field.value as { id: number; name: string })?.id
+      )
       return singleValue ? singleValue : null
     }
   }
@@ -121,7 +136,7 @@ export const BaseSelect = (props: BaseSelectProps) => {
   }
 
   return (
-    <Stack sx={{ width: '100%' }}>
+    <Stack sx={{ minWidth: 250 }}>
       <Label
         name={name}
         hasError={hasError}

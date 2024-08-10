@@ -50,5 +50,10 @@
   "overTimePercentage": "Çarpan",
   "overtimeDate": "Tarih",
   "workingHours ": "Çalışılan Saat",
-  "total": "Net Ödenecek"
+  "total": "Net Ödenecek",
+  "noRecord" : "Hiç kayıt bulunamadı",
+  "createTimeKeeping": "Puantaj Oluştur",
+  "getDraft":"Taslağı Getir",
+  "removeEmployee": "Pasife Çek",
+  "employeeDetails": "Çalışan Detayları"
 }

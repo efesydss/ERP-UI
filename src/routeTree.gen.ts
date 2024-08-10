@@ -23,7 +23,7 @@ import { Route as AuthenticatedHrFinancesImport } from './routes/_authenticated/
 import { Route as AuthenticatedHrEmployeesImport } from './routes/_authenticated/hr/employees'
 import { Route as AuthenticatedHrDebitCreditAnalysisImport } from './routes/_authenticated/hr/debitCreditAnalysis'
 import { Route as AuthenticatedHrVacationsIndexImport } from './routes/_authenticated/hr/vacations/index'
-import { Route as AuthenticatedHrTallyIndexImport } from './routes/_authenticated/hr/tally/index'
+import { Route as AuthenticatedHrTimekeepingIndexImport } from './routes/_authenticated/hr/timekeeping/index'
 import { Route as AuthenticatedHrFinancesIndexImport } from './routes/_authenticated/hr/finances/index'
 import { Route as AuthenticatedHrEmployeesIndexImport } from './routes/_authenticated/hr/employees/index'
 import { Route as AuthenticatedHrVacationsNewImport } from './routes/_authenticated/hr/vacations/new'
@@ -94,10 +94,11 @@ const AuthenticatedHrVacationsIndexRoute =
     getParentRoute: () => AuthenticatedHrVacationsRoute,
   } as any)
 
-const AuthenticatedHrTallyIndexRoute = AuthenticatedHrTallyIndexImport.update({
-  path: '/',
-  getParentRoute: () => AuthenticatedHrTallyRoute,
-} as any)
+const AuthenticatedHrTimekeepingIndexRoute =
+  AuthenticatedHrTimekeepingIndexImport.update({
+    path: '/timekeeping/',
+    getParentRoute: () => AuthenticatedHrRoute,
+  } as any)
 
 const AuthenticatedHrFinancesIndexRoute =
   AuthenticatedHrFinancesIndexImport.update({
@@ -238,12 +239,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHrFinancesIndexImport
       parentRoute: typeof AuthenticatedHrFinancesImport
     }
-    '/_authenticated/hr/tally/': {
-      id: '/_authenticated/hr/tally/'
-      path: '/'
-      fullPath: '/hr/tally/'
-      preLoaderRoute: typeof AuthenticatedHrTallyIndexImport
-      parentRoute: typeof AuthenticatedHrTallyImport
+    '/_authenticated/hr/timekeeping/': {
+      id: '/_authenticated/hr/timekeeping/'
+      path: '/timekeeping'
+      fullPath: '/hr/timekeeping'
+      preLoaderRoute: typeof AuthenticatedHrTimekeepingIndexImport
+      parentRoute: typeof AuthenticatedHrImport
     }
     '/_authenticated/hr/vacations/': {
       id: '/_authenticated/hr/vacations/'
@@ -278,14 +279,13 @@ export const routeTree = rootRoute.addChildren({
       AuthenticatedHrFinancesRoute: AuthenticatedHrFinancesRoute.addChildren({
         AuthenticatedHrFinancesIndexRoute,
       }),
-      AuthenticatedHrTallyRoute: AuthenticatedHrTallyRoute.addChildren({
-        AuthenticatedHrTallyIndexRoute,
-      }),
+      AuthenticatedHrTallyRoute,
       AuthenticatedHrVacationsRoute: AuthenticatedHrVacationsRoute.addChildren({
         AuthenticatedHrVacationsNewRoute,
         AuthenticatedHrVacationsIndexRoute,
       }),
       AuthenticatedHrIndexRoute,
+      AuthenticatedHrTimekeepingIndexRoute,
     }),
   }),
   LoginRoute,
@@ -330,7 +330,8 @@ export const routeTree = rootRoute.addChildren({
         "/_authenticated/hr/finances",
         "/_authenticated/hr/tally",
         "/_authenticated/hr/vacations",
-        "/_authenticated/hr/"
+        "/_authenticated/hr/",
+        "/_authenticated/hr/timekeeping/"
       ]
     },
     "/_authenticated/hr/debitCreditAnalysis": {
@@ -355,10 +356,7 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_authenticated/hr/tally": {
       "filePath": "_authenticated/hr/tally.tsx",
-      "parent": "/_authenticated/hr",
-      "children": [
-        "/_authenticated/hr/tally/"
-      ]
+      "parent": "/_authenticated/hr"
     },
     "/_authenticated/hr/vacations": {
       "filePath": "_authenticated/hr/vacations.tsx",
@@ -388,9 +386,9 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_authenticated/hr/finances/index.tsx",
       "parent": "/_authenticated/hr/finances"
     },
-    "/_authenticated/hr/tally/": {
-      "filePath": "_authenticated/hr/tally/index.tsx",
-      "parent": "/_authenticated/hr/tally"
+    "/_authenticated/hr/timekeeping/": {
+      "filePath": "_authenticated/hr/timekeeping/index.tsx",
+      "parent": "/_authenticated/hr"
     },
     "/_authenticated/hr/vacations/": {
       "filePath": "_authenticated/hr/vacations/index.tsx",

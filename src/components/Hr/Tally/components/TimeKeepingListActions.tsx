@@ -1,6 +1,7 @@
 import { SyntheticEvent, useState } from 'react'
-import { Box, IconButton, Menu, MenuItem } from '@mui/material'
+import { Box, IconButton } from '@mui/material'
 import { IoMdMore } from 'react-icons/io'
+import { Menu, MenuItem } from '@/components/Common/Menu/stylesMenu'
 
 interface TimeKeepingListActionsProps {
   timeKeepingId: number
@@ -33,8 +34,16 @@ export const TimeKeepingListActions = (props: TimeKeepingListActionsProps) => {
         anchorEl={anchorEl}
         open={isMenuOpen}
         onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'center',
+          horizontal: 'center'
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right'
+        }}
       >
-        <MenuItem>here</MenuItem>
+        <MenuItem>details</MenuItem>
       </Menu>
     </Box>
   )

@@ -1,5 +1,24 @@
-import { ColumnDef, ColumnFiltersState, flexRender, getCoreRowModel, PaginationState, RowData, SortingState, useReactTable } from '@tanstack/react-table'
-import { CircularProgress, Paper, Stack, Table, TableBody, TableCell, TableContainer, TablePagination, TableRow } from '@mui/material'
+import {
+  ColumnDef,
+  ColumnFiltersState,
+  flexRender,
+  getCoreRowModel,
+  PaginationState,
+  RowData,
+  SortingState,
+  useReactTable
+} from '@tanstack/react-table'
+import {
+  CircularProgress,
+  Paper,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TablePagination,
+  TableRow
+} from '@mui/material'
 import { useEffect, useState } from 'react'
 import { apiRequest, ApiResponse, HttpMethod } from '@/utils/apiDefaults'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
@@ -48,7 +67,7 @@ export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) =
 
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 15
+    pageSize: 20
   })
 
   const { data, isLoading } = useQuery({
@@ -165,7 +184,7 @@ export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) =
                         component={'th'}
                         key={header.id}
                         colSpan={header.colSpan}
-                        sx={{ position: 'relative' }}
+                        sx={{ position: 'relative', px: 1, py: 0.5 }}
                       >
                         <ColumnHeader
                           column={header.column}
@@ -198,6 +217,7 @@ export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) =
                         component='td'
                         scope='row'
                         key={cell.id}
+                        sx={{ height: 45, p: 1 }}
                       >
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </TableCell>

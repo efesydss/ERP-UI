@@ -66,21 +66,19 @@ export const TimeKeepingDraftDetails = (props: EmployeeTimeKeepingDetailsProps) 
 
   return (
     <>
-      <Paper sx={{ p: 2, mt: 4 }}>
+      <Paper sx={{ p: 2, mt: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <Box>
           <Typography variant={'h5'}>
             {name} {surname}
           </Typography>
-          <Typography sx={{ mb: 3 }}>
+          <Typography sx={{ mb: 2 }}>
             {companyBranch.name} {hr('branchSuffix')}, {department.name} {hr('departmentSuffix')}
           </Typography>
-          <Typography>{title}</Typography>
-          <Typography
-            sx={{ mt: 1 }}
-            variant={'h6'}
-          >
-            Net Ödenecek: {total}
-          </Typography>
+          <Typography sx={{ fontSize: '.9rem' }}>{title}</Typography>
+        </Box>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 1 }}>
+          <Typography>Net Ödenecek Tutar</Typography>
+          <Typography variant={'h5'}>{total}</Typography>
         </Box>
       </Paper>
       <Paper sx={{ p: 2, mt: 2 }}>

@@ -17,15 +17,17 @@ import { toast } from 'react-toastify'
 import { EmployeePaymentProps } from '@/components/Hr/typesHr'
 import { DynamicFieldsWrapper } from '@/components/Hr/Tally/stylesTimeKeeping'
 import { FaRegTrashCan } from 'react-icons/fa6'
+import { useFormArray } from '@/components/Common/Form/useFormArray'
 
 export const FormEmployeeTimeKeeping = () => {
-  const { t: common } = useTranslation('common')
   const { t: hr } = useTranslation('hr')
   const [selectedType, setSelectedType] = useState('')
   const { openDialog } = useConfirmDialog()
   const queryClient = useQueryClient()
 
   const { values } = useFormikContext<EmployeeTimeKeepingProps>()
+
+  const { addItem, setCurrentHelpers, removeItem } = useFormArray<any>()
 
   const hasNoRecords =
     !!selectedType && !values[selectedType as 'overtimes' | 'deductions' | 'additionalPayments'].length
@@ -45,7 +47,7 @@ export const FormEmployeeTimeKeeping = () => {
     return checkValues(obj)
   }
 
-  const { mutateAsync: addOvertime } = useMutation({
+  const { mutateAsync: addOvertime, isPending: isAddOvertimePending } = useMutation({
     mutationFn: (overtimes: EmployeeOverTime[]) =>
       apiRequest({
         endpoint: 'employeeAddOvertime',
@@ -58,7 +60,7 @@ export const FormEmployeeTimeKeeping = () => {
     }
   })
 
-  const { mutateAsync: addPayment } = useMutation({
+  const { mutateAsync: addPayment, isPending: isAddPaymentPending } = useMutation({
     mutationFn: (payments: EmployeePaymentProps[]) =>
       //todo: check bank account, cant send whole object right now
       apiRequest({
@@ -266,81 +268,90 @@ export const FormEmployeeTimeKeeping = () => {
           type='number'
         />
       </FormGrid>
-      <Stack sx={{ width: '100%', marginY: 2 }}>
+      <Stack
+        direction={'row'}
+        alignItems={'flex-end'}
+        gap={2}
+        sx={{ width: '100%', marginY: 2 }}
+      >
         <BaseSelect
           name='entryType'
           options={typeOptions}
           onChange={(option) => setSelectedType(option)}
         />
+        <Button
+          type='button'
+          onClick={() => addItem(initializeValues(fieldConfigurations[selectedType]))}
+          color='primary'
+          variant='outlined'
+          sx={{ flexShrink: 0 }}
+          startIcon={<MdAdd />}
+          disabled={!selectedType}
+        >
+          Satır Ekle
+        </Button>
       </Stack>
-      {hasNoRecords && <Typography>No record yet</Typography>}
+      {hasNoRecords && <Typography sx={{ fontSize: '.8rem' }}>{hr('noRecord')}</Typography>}
 
       {selectedType && (
         <FieldArray name={selectedType}>
-          {({ push, remove, form }) => (
-            <>
-              {form.values[selectedType]?.map((_: any, index: number) => (
-                <DynamicFieldsWrapper key={index}>
-                  <Box>
-                    <FormGrid widths={'forth'}>
-                      <DynamicFields
-                        prefix={`${selectedType}.${index}`}
-                        fields={fieldConfigurations[selectedType]}
-                      />
-                    </FormGrid>
-                    <IconButton
-                      sx={{ position: 'absolute', right: 12, top: 12 }}
-                      size={'small'}
-                      disabled={isUpdateEnabled}
-                      onClick={() => {
-                        const fieldValue = form.values[selectedType][index]
-                        //todo: just temp! will refactor
-                        if (fieldValue && fieldValue.id) {
-                          openDialog(
-                            'Confirm Deletion',
-                            'Are you sure you want to delete this item?',
-                            () => {
-                              if (selectedType === 'overtimes') {
-                                deleteOvertime(fieldValue.id)
-                              }
-                              if (selectedType === 'additionalPayments' || selectedType === 'deductions') {
-                                deleteEmployeePayment(fieldValue.id)
-                              }
-                            },
-                            () => console.log('Deletion cancelled')
-                          )
-                        } else {
-                          remove(index)
-                        }
-                      }}
-                      color={'error'}
-                    >
-                      <FaRegTrashCan />
-                    </IconButton>
-                  </Box>
-                </DynamicFieldsWrapper>
-              ))}
-              <Button
-                type='button'
-                onClick={() => push(initializeValues(fieldConfigurations[selectedType]))}
-                color='primary'
-                variant='outlined'
-                sx={{ my: 2 }}
-                startIcon={<MdAdd />}
-              >
-                Satır Ekle
-              </Button>
-            </>
-          )}
+          {(arrayHelpers) => {
+            setCurrentHelpers(arrayHelpers)
+            return (
+              <>
+                {arrayHelpers.form.values[selectedType]?.map((_: any, index: number) => (
+                  <DynamicFieldsWrapper key={index}>
+                    <Box>
+                      <FormGrid widths={'forth'}>
+                        <DynamicFields
+                          prefix={`${selectedType}.${index}`}
+                          fields={fieldConfigurations[selectedType]}
+                        />
+                      </FormGrid>
+                      <IconButton
+                        sx={{ position: 'absolute', right: 8, top: 12 }}
+                        size={'small'}
+                        disabled={isUpdateEnabled}
+                        onClick={() => {
+                          const fieldValue = arrayHelpers.form.values[selectedType][index]
+                          //todo: just temp! will refactor
+                          if (fieldValue && fieldValue.id) {
+                            openDialog(
+                              'Confirm Deletion',
+                              'Are you sure you want to delete this item?',
+                              () => {
+                                if (selectedType === 'overtimes') {
+                                  deleteOvertime(fieldValue.id)
+                                }
+                                if (selectedType === 'additionalPayments' || selectedType === 'deductions') {
+                                  deleteEmployeePayment(fieldValue.id)
+                                }
+                              },
+                              () => console.log('Deletion cancelled')
+                            )
+                          } else {
+                            removeItem(index)
+                          }
+                        }}
+                        color={'error'}
+                      >
+                        <FaRegTrashCan />
+                      </IconButton>
+                    </Box>
+                  </DynamicFieldsWrapper>
+                ))}
+              </>
+            )
+          }}
         </FieldArray>
       )}
 
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 4 }}>
         <Button
           startIcon={<MdAutorenew />}
           type={'button'}
           color={'primary'}
-          disabled={!isUpdateEnabled}
+          disabled={!isUpdateEnabled || isAddOvertimePending || isAddPaymentPending}
           variant={'outlined'}
           onClick={async () => {
             if (hasNewOvertimeRecords) {
@@ -360,7 +371,7 @@ export const FormEmployeeTimeKeeping = () => {
           variant={'contained'}
           disabled={isUpdateEnabled}
         >
-          {common('save')}
+          {hr('createTimeKeeping')}
         </Button>
       </Box>
     </>

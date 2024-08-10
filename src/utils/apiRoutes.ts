@@ -8,6 +8,7 @@ export const apiRoutes = {
   // Employee Management
   employee: 'hr/employee',
   employees: 'hr/employees',
+  employeeRemove: 'hr/employee/{id}',
 
   // Employee Vacation Management
   employeeVacationStatuses: 'hr/employees/timeoffstatuses',
@@ -39,5 +40,6 @@ export const apiRoutes = {
   // Time Keeping
   timeKeepingDraft: 'hr/timekeeping/draft/employee/{employeeId}/year/{year}/month/{month}',
   timeKeepingCreate: 'hr/timekeeping',
-  timeKeepings: 'hr/timekeepings'
+  timeKeepings: 'hr/timekeepings',
+  timeKeeping: 'hr/timekeeping/{id}'
 }

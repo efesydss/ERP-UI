@@ -28,7 +28,7 @@ export const navMenuItems: MenuItemProps[] = [
         icon: HiOutlineCash
       },
       {
-        label: 'tally',
+        label: 'timekeeping',
         icon: PiFlag
       }
     ]

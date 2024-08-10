@@ -1,12 +1,12 @@
-import { FormGrid } from '@/components/Common/Form/FormGrid/FormGrid'
 import { Input } from '@/components/Common/Form/Input/Input'
-import { Button } from '@mui/material'
+import { Box, Button } from '@mui/material'
 import { BaseSelect, OptionType } from '@/components/Common/Form/BaseSelect'
 import { apiRequest, ApiResponse } from '@/utils/apiDefaults'
 import { EmployeeResponse } from '@/components/Hr/Employees/typesEmployee'
 import { useQuery } from '@tanstack/react-query'
 import { EmployeeTimeKeepingProps, EmployeeTimeKeepingSpan } from '@/components/Hr/Tally/typesTimeKeeping'
 import { useFormikContext } from 'formik'
+import { t } from 'i18next'
 
 interface EmployeeTimeKeepingDateSetProps {
   isLoading: boolean
@@ -59,7 +59,7 @@ export const EmployeeTimeKeepingDateSet = (props: EmployeeTimeKeepingDateSetProp
 
   return (
     <>
-      <FormGrid widths={'forth'}>
+      <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-end' }}>
         <Input
           name={'year'}
           type={'number'}
@@ -74,15 +74,15 @@ export const EmployeeTimeKeepingDateSet = (props: EmployeeTimeKeepingDateSetProp
           nameSpace={'hr'}
           isLoading={isEmployeeListLoading}
         />
-      </FormGrid>
-      <Button
-        type={'submit'}
-        color={'primary'}
-        variant={'contained'}
-        disabled={isLoading || values.employee.id === 0}
-      >
-        Taslağı Getir
-      </Button>
+        <Button
+          type={'submit'}
+          color={'primary'}
+          variant={'contained'}
+          disabled={isLoading || values.employee.id === 0}
+        >
+          {t('hr:getDraft')}
+        </Button>
+      </Box>
     </>
   )
 }
