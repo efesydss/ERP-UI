@@ -1,6 +1,6 @@
-import { EmployeeTimeKeepingProps } from '@/components/Hr/Tally/typesTimeKeeping'
+import { EmployeeTimeKeepingProps } from '@/components/Hr/TimeKeeping/typesTimeKeeping'
 import { BaseForm } from '@/components/Common/Form/BaseForm'
-import { FormEmployeeTimeKeeping } from '@/components/Hr/Tally/FormEmployeeTimeKeeping'
+import { FormEmployeeTimeKeeping } from '@/components/Hr/TimeKeeping/FormEmployeeTimeKeeping'
 import { Box, Paper, Typography } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { useMutation } from '@tanstack/react-query'
@@ -59,8 +59,6 @@ export const TimeKeepingDraftDetails = (props: EmployeeTimeKeepingDetailsProps) 
       additionalPayments,
       overtimes
     }
-    console.log('values -->', values)
-    console.log('newTimeKeep -->', newTimeKeep)
     await mutateAsync(newTimeKeep)
   }
 

@@ -1,9 +1,9 @@
-import { EmployeeTimeKeepingProps } from '@/components/Hr/Tally/typesTimeKeeping'
+import { EmployeeTimeKeepingProps } from '@/components/Hr/TimeKeeping/typesTimeKeeping'
 import { useMemo } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { useTranslation } from 'react-i18next'
 import { BaseTable } from '@/components/Common/Table/BaseTable'
-import { TimeKeepingListActions } from '@/components/Hr/Tally/components/TimeKeepingListActions'
+import { TimeKeepingListActions } from '@/components/Hr/TimeKeeping/components/TimeKeepingListActions'
 
 export const TimeKeepingList = () => {
   const { t: common } = useTranslation('common')

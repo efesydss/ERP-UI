@@ -9,7 +9,7 @@ export interface EmployeeTimeKeepingSpan {
   month: number
 }
 
-interface EmployeeTimeKeepingInfo {
+export interface EmployeeTimeKeepingInfo {
   id: number
   name: string
   surname: string

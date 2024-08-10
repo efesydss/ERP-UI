@@ -4,7 +4,7 @@ import { BaseSelect, OptionType } from '@/components/Common/Form/BaseSelect'
 import { apiRequest, ApiResponse } from '@/utils/apiDefaults'
 import { EmployeeResponse } from '@/components/Hr/Employees/typesEmployee'
 import { useQuery } from '@tanstack/react-query'
-import { EmployeeTimeKeepingProps, EmployeeTimeKeepingSpan } from '@/components/Hr/Tally/typesTimeKeeping'
+import { EmployeeTimeKeepingProps, EmployeeTimeKeepingSpan } from '@/components/Hr/TimeKeeping/typesTimeKeeping'
 import { useFormikContext } from 'formik'
 import { t } from 'i18next'
 
@@ -34,6 +34,7 @@ export const EmployeeTimeKeepingDateSet = (props: EmployeeTimeKeepingDateSetProp
     }
   })
 
+  //todo: we request employees x2. need to check it
   const { data, isLoading: isEmployeeListLoading } = useQuery({
     //todo: pageSize needs to be updated
     queryKey: ['employees', values],

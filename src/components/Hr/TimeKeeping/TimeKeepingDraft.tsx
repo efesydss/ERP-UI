@@ -1,12 +1,12 @@
-import { EmployeeTimeKeepingProps, EmployeeTimeKeepingSpan } from '@/components/Hr/Tally/typesTimeKeeping'
+import { EmployeeTimeKeepingProps, EmployeeTimeKeepingSpan } from '@/components/Hr/TimeKeeping/typesTimeKeeping'
 import { getCurrentMonth, getCurrentYear } from '@/utils/dateTimeUtils'
 import * as yup from 'yup'
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { apiRequest } from '@/utils/apiDefaults'
 import { BaseForm } from '@/components/Common/Form/BaseForm'
-import { EmployeeTimeKeepingDateSet } from '@/components/Hr/Tally/components/EmployeeTimeKeepingDateSet'
-import { TimeKeepingDraftDetails } from '@/components/Hr/Tally/components/TimeKeepingDraftDetails'
+import { EmployeeTimeKeepingDateSet } from '@/components/Hr/TimeKeeping/components/EmployeeTimeKeepingDateSet'
+import { TimeKeepingDraftDetails } from '@/components/Hr/TimeKeeping/components/TimeKeepingDraftDetails'
 
 const initialTimeKeepSelectValues: EmployeeTimeKeepingSpan = {
   employee: { id: 0, name: '' },

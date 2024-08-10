@@ -1,4 +1,4 @@
-import { BaseSelect, OptionType } from '@/components/Common/Form/BaseSelect'
+import { BaseSelect } from '@/components/Common/Form/BaseSelect'
 import { FormGrid } from '@/components/Common/Form/FormGrid/FormGrid'
 import { DynamicFields, DynamicInputFieldProps } from '@/components/Common/Form/Input/DynamicFields'
 import { Input } from '@/components/Common/Form/Input/Input'
@@ -7,17 +7,27 @@ import { useTranslation } from 'react-i18next'
 import { useCallback, useState } from 'react'
 import { FieldArray, useFormikContext } from 'formik'
 import { MdAdd, MdAutorenew } from 'react-icons/md'
-import { enumToOptions } from '@/utils/transformers'
-import { EmployeeOverTime, EmployeeTimeKeepingProps, OverTimePercentage } from '@/components/Hr/Tally/typesTimeKeeping'
-import { AdditionalPaymentType, CurrencyCode, DeductionPaymentType } from '@/components/Hr/Finances/typesFinance'
+import {
+  EmployeeOverTime,
+  EmployeeTimeKeepingInfo,
+  EmployeeTimeKeepingProps
+} from '@/components/Hr/TimeKeeping/typesTimeKeeping'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { apiRequest } from '@/utils/apiDefaults'
 import { useConfirmDialog } from '@/utils/hooks/useConfirmDialogContext'
 import { toast } from 'react-toastify'
 import { EmployeePaymentProps } from '@/components/Hr/typesHr'
-import { DynamicFieldsWrapper } from '@/components/Hr/Tally/stylesTimeKeeping'
+import { DynamicFieldsWrapper } from '@/components/Hr/TimeKeeping/stylesTimeKeeping'
 import { FaRegTrashCan } from 'react-icons/fa6'
 import { useFormArray } from '@/components/Common/Form/useFormArray'
+import { t } from 'i18next'
+import {
+  additionalPayment,
+  deductionPayment,
+  overTimeOptions,
+  typeOptions
+} from '@/components/Hr/TimeKeeping/utilsTimeKeeping'
+import { NamedEntity } from '@/utils/sharedTypes'
 
 export const FormEmployeeTimeKeeping = () => {
   const { t: hr } = useTranslation('hr')
@@ -25,12 +35,9 @@ export const FormEmployeeTimeKeeping = () => {
   const { openDialog } = useConfirmDialog()
   const queryClient = useQueryClient()
 
-  const { values } = useFormikContext<EmployeeTimeKeepingProps>()
+  const { values, initialValues } = useFormikContext<EmployeeTimeKeepingProps>()
 
   const { addItem, setCurrentHelpers, removeItem } = useFormArray<any>()
-
-  const hasNoRecords =
-    !!selectedType && !values[selectedType as 'overtimes' | 'deductions' | 'additionalPayments'].length
 
   //todo: recheck, we dont need id here?
   const hasAllValuesFilled = (obj: any): boolean => {
@@ -47,16 +54,52 @@ export const FormEmployeeTimeKeeping = () => {
     return checkValues(obj)
   }
 
+  //todo: refactor
+  const hasItemChanged = (
+    item: EmployeeOverTime | EmployeePaymentProps | EmployeeTimeKeepingInfo | NamedEntity,
+    initialItem: EmployeeOverTime | EmployeePaymentProps | EmployeeTimeKeepingInfo | NamedEntity
+  ): boolean => {
+    if (!initialItem) return false
+
+    return Object.keys(item).some((key) => {
+      const value = item[key as keyof typeof item]
+      const initialValue = initialItem[key as keyof typeof item]
+
+      if (value && typeof value === 'object' && !Array.isArray(value)) {
+        return hasItemChanged(value, initialValue as any)
+      }
+
+      return value !== initialValue
+    })
+  }
+
+  const hasNoRecords =
+    !!selectedType && !values[selectedType as 'overtimes' | 'deductions' | 'additionalPayments'].length
+
   const { mutateAsync: addOvertime, isPending: isAddOvertimePending } = useMutation({
-    mutationFn: (overtimes: EmployeeOverTime[]) =>
+    mutationFn: (overtimesToAdd: EmployeeOverTime[]) =>
       apiRequest({
         endpoint: 'employeeAddOvertime',
         params: { employeeId: values.employee.id.toString() },
-        payload: overtimes
+        payload: overtimesToAdd
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['employeeTimeKeeping'] })
       toast.success('Entry Created')
+    }
+  })
+
+  const { mutateAsync: updateOvertime } = useMutation({
+    mutationFn: (overtimesToUpdate: EmployeeOverTime[]) =>
+      apiRequest({
+        endpoint: 'employeeAddOvertime',
+        method: 'PUT',
+        params: { employeeId: values.employee.id.toString() },
+        payload: overtimesToUpdate
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['employeeTimeKeeping'] })
+      toast.success('Entry Updated')
     }
   })
 
@@ -74,6 +117,24 @@ export const FormEmployeeTimeKeeping = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['employeeTimeKeeping'] })
       toast.success('Entry Created')
+    }
+  })
+
+  const { mutateAsync: updatePayment } = useMutation({
+    mutationFn: (paymentsToUpdate: EmployeePaymentProps[]) =>
+      //todo: check bank account, cant send whole object right now
+      apiRequest({
+        endpoint: 'employeeUpdatePayment',
+        method: 'PUT',
+        params: { employeeId: values.employee.id.toString() },
+        payload: paymentsToUpdate.map((p) => ({
+          ...p,
+          bankAccount: { id: 1 }
+        }))
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['employeeTimeKeeping'] })
+      toast.success('Entry Updated')
     }
   })
 
@@ -102,88 +163,6 @@ export const FormEmployeeTimeKeeping = () => {
       toast.success('Entry Deleted')
     }
   })
-
-  const overTimeOptions = enumToOptions(OverTimePercentage)
-
-  const additionalPaymentTypeOptions = enumToOptions(AdditionalPaymentType, 'hr')
-  const deductionPaymentTypeOptions = enumToOptions(DeductionPaymentType, 'hr')
-
-  const currencyCodeOptions = enumToOptions(CurrencyCode)
-
-  //todo: temp
-  const bankOptions = [
-    {
-      value: '1',
-      label: 'defaultBank'
-    }
-  ]
-
-  const typeOptions: OptionType[] = [
-    { value: 'deductions', label: hr('deductions') },
-    { value: 'overtimes', label: hr('overtimes') },
-    { value: 'additionalPayments', label: hr('additionalPayments') }
-  ]
-
-  /*  const bankAccountFields = [
-    { name: 'accountNumber' },
-    { name: 'iban' },
-    {
-      name: 'currency',
-      type: 'select',
-      options: currencyCodeOptions
-    }
-  ]*/
-
-  const employeePayment = [
-    {
-      name: 'paymentDate',
-      type: 'date'
-    },
-    {
-      name: 'description'
-    },
-    {
-      name: 'transactionCost',
-      type: 'number'
-    },
-    {
-      name: 'amount',
-      type: 'number'
-    },
-    {
-      name: 'amountCurrency',
-      type: 'select',
-      options: currencyCodeOptions
-    },
-    {
-      name: 'bankAccount',
-      type: 'select',
-      options: bankOptions
-    }
-    /*{
-      name: 'bankAccount',
-      type: 'nested',
-      fields: bankAccountFields
-    }*/
-  ]
-
-  const additionalPayment = [
-    ...employeePayment,
-    {
-      name: 'paymentType',
-      type: 'select',
-      options: additionalPaymentTypeOptions
-    }
-  ]
-
-  const deductionPayment = [
-    ...employeePayment,
-    {
-      name: 'paymentType',
-      type: 'select',
-      options: deductionPaymentTypeOptions
-    }
-  ]
 
   const fieldConfigurations: { [key: string]: Array<DynamicInputFieldProps> } = {
     deductions: deductionPayment,
@@ -214,15 +193,25 @@ export const FormEmployeeTimeKeeping = () => {
   }
 
   const recordsToProcess = useCallback(() => {
-    const overtimesToUpdate = values.overtimes.filter((item) => item.id)
+    const overtimesToUpdate = values.overtimes.filter((item, index) => {
+      const initialItem = initialValues.overtimes[index]
+      return item.id && hasItemChanged(item, initialItem)
+    })
+
     const overtimesToAdd = values.overtimes.filter((item) => !item.id && hasAllValuesFilled(item))
 
     const deductionRecordsToAdd = values.deductions.filter((d) => !d.id && hasAllValuesFilled(d))
     const additionalPaymentRecordsToAdd = values.additionalPayments.filter((d) => !d.id && hasAllValuesFilled(d))
 
     const paymentRecordsToUpdate = [
-      ...values.deductions.filter((d) => d.id),
-      ...values.additionalPayments.filter((d) => d.id)
+      ...values.deductions.filter((d, index) => {
+        const initialItem = initialValues.deductions[index]
+        return d.id && hasItemChanged(d, initialItem)
+      }),
+      ...values.additionalPayments.filter((d, index) => {
+        const initialItem = initialValues.additionalPayments[index]
+        return d.id && hasItemChanged(d, initialItem)
+      })
     ]
 
     return {
@@ -231,14 +220,26 @@ export const FormEmployeeTimeKeeping = () => {
       paymentRecordsToAdd: [...deductionRecordsToAdd, ...additionalPaymentRecordsToAdd],
       paymentRecordsToUpdate
     }
-  }, [values.overtimes, values.deductions, values.additionalPayments])
+  }, [
+    values.overtimes,
+    values.deductions,
+    values.additionalPayments,
+    initialValues.overtimes,
+    initialValues.deductions,
+    initialValues.additionalPayments
+  ])
 
-  const { overtimesToAdd, paymentRecordsToAdd } = recordsToProcess()
+  const { overtimesToAdd, paymentRecordsToAdd, overtimesToUpdate, paymentRecordsToUpdate } = recordsToProcess()
 
   const hasNewOvertimeRecords = overtimesToAdd.length >= 1
   const hasNewPaymentRecords = paymentRecordsToAdd.length >= 1
+  const hasUpdatedOvertimes = overtimesToUpdate.length >= 1
+  const hasUpdatedPaymentRecords = paymentRecordsToUpdate.length >= 1
 
-  const isUpdateEnabled = hasNewOvertimeRecords || hasNewPaymentRecords
+  const isUpdateEnabled =
+    hasNewOvertimeRecords || hasNewPaymentRecords || hasUpdatedOvertimes || hasUpdatedPaymentRecords
+
+  console.log('recordsToProcess() -->', recordsToProcess())
 
   return (
     <>
@@ -309,9 +310,8 @@ export const FormEmployeeTimeKeeping = () => {
                         />
                       </FormGrid>
                       <IconButton
-                        sx={{ position: 'absolute', right: 8, top: 12 }}
+                        sx={{ position: 'absolute', right: 6, top: 6 }}
                         size={'small'}
-                        disabled={isUpdateEnabled}
                         onClick={() => {
                           const fieldValue = arrayHelpers.form.values[selectedType][index]
                           //todo: just temp! will refactor
@@ -361,9 +361,17 @@ export const FormEmployeeTimeKeeping = () => {
             if (hasNewPaymentRecords) {
               await addPayment(paymentRecordsToAdd)
             }
+
+            if (hasUpdatedOvertimes) {
+              await updateOvertime(overtimesToUpdate)
+            }
+
+            if (hasUpdatedPaymentRecords) {
+              await updatePayment(paymentRecordsToUpdate)
+            }
           }}
         >
-          Taslak olarak kaydet
+          {t('hr:saveDraft')}
         </Button>
         <Button
           type={'submit'}

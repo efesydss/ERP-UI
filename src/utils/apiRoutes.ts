@@ -23,10 +23,12 @@ export const apiRoutes = {
   employeePayments: 'hr/employee/payments',
   employeePayment: 'hr/employee/payment',
   employeeAddPayment: 'hr/employee/{employeeId}/payment',
+  employeeUpdatePayment: 'hr/employee/{employeeId}/payment',
   employeeDeletePayment: 'hr/employee/{employeeId}/payment/{paymentId}',
 
   // Employee Overtime Management
   employeeAddOvertime: 'hr/employee/{employeeId}/overtime',
+  employeeUpdateOvertime: 'hr/employee/{employeeId}/overtime',
   employeeDeleteOvertime: 'hr/employee/{employeeId}/overtime/{overtimeId}',
 
   // Department Management
@@ -41,5 +43,5 @@ export const apiRoutes = {
   timeKeepingDraft: 'hr/timekeeping/draft/employee/{employeeId}/year/{year}/month/{month}',
   timeKeepingCreate: 'hr/timekeeping',
   timeKeepings: 'hr/timekeepings',
-  timeKeeping: 'hr/timekeeping/{id}'
+  timeKeeping: 'hr/timekeeping'
 }

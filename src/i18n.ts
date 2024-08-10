@@ -12,6 +12,7 @@ export const initI18n = () => {
       fallbackLng: 'tr',
       backend: {
         loadPath: '/locales/{{lng}}/{{ns}}.json'
-      }
+      },
+      ns: ['common', 'hr']
     })
 }

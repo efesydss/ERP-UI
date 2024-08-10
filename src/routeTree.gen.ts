@@ -18,7 +18,7 @@ import { Route as AuthenticatedHrImport } from './routes/_authenticated/hr'
 import { Route as AuthenticatedDashboardImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedHrIndexImport } from './routes/_authenticated/hr/index'
 import { Route as AuthenticatedHrVacationsImport } from './routes/_authenticated/hr/vacations'
-import { Route as AuthenticatedHrTallyImport } from './routes/_authenticated/hr/tally'
+import { Route as AuthenticatedHrTimekeepingImport } from './routes/_authenticated/hr/timekeeping'
 import { Route as AuthenticatedHrFinancesImport } from './routes/_authenticated/hr/finances'
 import { Route as AuthenticatedHrEmployeesImport } from './routes/_authenticated/hr/employees'
 import { Route as AuthenticatedHrDebitCreditAnalysisImport } from './routes/_authenticated/hr/debitCreditAnalysis'
@@ -28,6 +28,7 @@ import { Route as AuthenticatedHrFinancesIndexImport } from './routes/_authentic
 import { Route as AuthenticatedHrEmployeesIndexImport } from './routes/_authenticated/hr/employees/index'
 import { Route as AuthenticatedHrVacationsNewImport } from './routes/_authenticated/hr/vacations/new'
 import { Route as AuthenticatedHrEmployeesNewImport } from './routes/_authenticated/hr/employees/new'
+import { Route as AuthenticatedHrTimekeepingIdIndexImport } from './routes/_authenticated/hr/timekeeping/$id/index'
 import { Route as AuthenticatedHrEmployeesIdIndexImport } from './routes/_authenticated/hr/employees/$id/index'
 
 // Create/Update Routes
@@ -67,10 +68,12 @@ const AuthenticatedHrVacationsRoute = AuthenticatedHrVacationsImport.update({
   getParentRoute: () => AuthenticatedHrRoute,
 } as any)
 
-const AuthenticatedHrTallyRoute = AuthenticatedHrTallyImport.update({
-  path: '/tally',
-  getParentRoute: () => AuthenticatedHrRoute,
-} as any)
+const AuthenticatedHrTimekeepingRoute = AuthenticatedHrTimekeepingImport.update(
+  {
+    path: '/timekeeping',
+    getParentRoute: () => AuthenticatedHrRoute,
+  } as any,
+)
 
 const AuthenticatedHrFinancesRoute = AuthenticatedHrFinancesImport.update({
   path: '/finances',
@@ -96,8 +99,8 @@ const AuthenticatedHrVacationsIndexRoute =
 
 const AuthenticatedHrTimekeepingIndexRoute =
   AuthenticatedHrTimekeepingIndexImport.update({
-    path: '/timekeeping/',
-    getParentRoute: () => AuthenticatedHrRoute,
+    path: '/',
+    getParentRoute: () => AuthenticatedHrTimekeepingRoute,
   } as any)
 
 const AuthenticatedHrFinancesIndexRoute =
@@ -122,6 +125,12 @@ const AuthenticatedHrEmployeesNewRoute =
   AuthenticatedHrEmployeesNewImport.update({
     path: '/new',
     getParentRoute: () => AuthenticatedHrEmployeesRoute,
+  } as any)
+
+const AuthenticatedHrTimekeepingIdIndexRoute =
+  AuthenticatedHrTimekeepingIdIndexImport.update({
+    path: '/$id/',
+    getParentRoute: () => AuthenticatedHrTimekeepingRoute,
   } as any)
 
 const AuthenticatedHrEmployeesIdIndexRoute =
@@ -190,11 +199,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHrFinancesImport
       parentRoute: typeof AuthenticatedHrImport
     }
-    '/_authenticated/hr/tally': {
-      id: '/_authenticated/hr/tally'
-      path: '/tally'
-      fullPath: '/hr/tally'
-      preLoaderRoute: typeof AuthenticatedHrTallyImport
+    '/_authenticated/hr/timekeeping': {
+      id: '/_authenticated/hr/timekeeping'
+      path: '/timekeeping'
+      fullPath: '/hr/timekeeping'
+      preLoaderRoute: typeof AuthenticatedHrTimekeepingImport
       parentRoute: typeof AuthenticatedHrImport
     }
     '/_authenticated/hr/vacations': {
@@ -241,10 +250,10 @@ declare module '@tanstack/react-router' {
     }
     '/_authenticated/hr/timekeeping/': {
       id: '/_authenticated/hr/timekeeping/'
-      path: '/timekeeping'
-      fullPath: '/hr/timekeeping'
+      path: '/'
+      fullPath: '/hr/timekeeping/'
       preLoaderRoute: typeof AuthenticatedHrTimekeepingIndexImport
-      parentRoute: typeof AuthenticatedHrImport
+      parentRoute: typeof AuthenticatedHrTimekeepingImport
     }
     '/_authenticated/hr/vacations/': {
       id: '/_authenticated/hr/vacations/'
@@ -259,6 +268,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/hr/employees/$id'
       preLoaderRoute: typeof AuthenticatedHrEmployeesIdIndexImport
       parentRoute: typeof AuthenticatedHrEmployeesImport
+    }
+    '/_authenticated/hr/timekeeping/$id/': {
+      id: '/_authenticated/hr/timekeeping/$id/'
+      path: '/$id'
+      fullPath: '/hr/timekeeping/$id'
+      preLoaderRoute: typeof AuthenticatedHrTimekeepingIdIndexImport
+      parentRoute: typeof AuthenticatedHrTimekeepingImport
     }
   }
 }
@@ -279,13 +295,16 @@ export const routeTree = rootRoute.addChildren({
       AuthenticatedHrFinancesRoute: AuthenticatedHrFinancesRoute.addChildren({
         AuthenticatedHrFinancesIndexRoute,
       }),
-      AuthenticatedHrTallyRoute,
+      AuthenticatedHrTimekeepingRoute:
+        AuthenticatedHrTimekeepingRoute.addChildren({
+          AuthenticatedHrTimekeepingIndexRoute,
+          AuthenticatedHrTimekeepingIdIndexRoute,
+        }),
       AuthenticatedHrVacationsRoute: AuthenticatedHrVacationsRoute.addChildren({
         AuthenticatedHrVacationsNewRoute,
         AuthenticatedHrVacationsIndexRoute,
       }),
       AuthenticatedHrIndexRoute,
-      AuthenticatedHrTimekeepingIndexRoute,
     }),
   }),
   LoginRoute,
@@ -328,10 +347,9 @@ export const routeTree = rootRoute.addChildren({
         "/_authenticated/hr/debitCreditAnalysis",
         "/_authenticated/hr/employees",
         "/_authenticated/hr/finances",
-        "/_authenticated/hr/tally",
+        "/_authenticated/hr/timekeeping",
         "/_authenticated/hr/vacations",
-        "/_authenticated/hr/",
-        "/_authenticated/hr/timekeeping/"
+        "/_authenticated/hr/"
       ]
     },
     "/_authenticated/hr/debitCreditAnalysis": {
@@ -354,9 +372,13 @@ export const routeTree = rootRoute.addChildren({
         "/_authenticated/hr/finances/"
       ]
     },
-    "/_authenticated/hr/tally": {
-      "filePath": "_authenticated/hr/tally.tsx",
-      "parent": "/_authenticated/hr"
+    "/_authenticated/hr/timekeeping": {
+      "filePath": "_authenticated/hr/timekeeping.tsx",
+      "parent": "/_authenticated/hr",
+      "children": [
+        "/_authenticated/hr/timekeeping/",
+        "/_authenticated/hr/timekeeping/$id/"
+      ]
     },
     "/_authenticated/hr/vacations": {
       "filePath": "_authenticated/hr/vacations.tsx",
@@ -388,7 +410,7 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_authenticated/hr/timekeeping/": {
       "filePath": "_authenticated/hr/timekeeping/index.tsx",
-      "parent": "/_authenticated/hr"
+      "parent": "/_authenticated/hr/timekeeping"
     },
     "/_authenticated/hr/vacations/": {
       "filePath": "_authenticated/hr/vacations/index.tsx",
@@ -397,6 +419,10 @@ export const routeTree = rootRoute.addChildren({
     "/_authenticated/hr/employees/$id/": {
       "filePath": "_authenticated/hr/employees/$id/index.tsx",
       "parent": "/_authenticated/hr/employees"
+    },
+    "/_authenticated/hr/timekeeping/$id/": {
+      "filePath": "_authenticated/hr/timekeeping/$id/index.tsx",
+      "parent": "/_authenticated/hr/timekeeping"
     }
   }
 }
