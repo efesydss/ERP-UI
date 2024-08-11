@@ -42,6 +42,7 @@ export const apiRoutes = {
   // Time Keeping
   timeKeepingDraft: 'hr/timekeeping/draft/employee/{employeeId}/year/{year}/month/{month}',
   timeKeepingCreate: 'hr/timekeeping',
+  timeKeepingUpdate: 'hr/timekeeping',
   timeKeepings: 'hr/timekeepings',
   timeKeeping: 'hr/timekeeping'
 }

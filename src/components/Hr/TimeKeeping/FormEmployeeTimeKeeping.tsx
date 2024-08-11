@@ -1,17 +1,13 @@
 import { BaseSelect } from '@/components/Common/Form/BaseSelect'
 import { FormGrid } from '@/components/Common/Form/FormGrid/FormGrid'
-import { DynamicFields, DynamicInputFieldProps } from '@/components/Common/Form/Input/DynamicFields'
+import { DynamicFields } from '@/components/Common/Form/Input/DynamicFields'
 import { Input } from '@/components/Common/Form/Input/Input'
 import { Box, Button, IconButton, Stack, Typography } from '@mui/material'
 import { useTranslation } from 'react-i18next'
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 import { FieldArray, useFormikContext } from 'formik'
 import { MdAdd, MdAutorenew } from 'react-icons/md'
-import {
-  EmployeeOverTime,
-  EmployeeTimeKeepingInfo,
-  EmployeeTimeKeepingProps
-} from '@/components/Hr/TimeKeeping/typesTimeKeeping'
+import { EmployeeOverTime, EmployeeTimeKeepingProps } from '@/components/Hr/TimeKeeping/typesTimeKeeping'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { apiRequest } from '@/utils/apiDefaults'
 import { useConfirmDialog } from '@/utils/hooks/useConfirmDialogContext'
@@ -22,12 +18,11 @@ import { FaRegTrashCan } from 'react-icons/fa6'
 import { useFormArray } from '@/components/Common/Form/useFormArray'
 import { t } from 'i18next'
 import {
-  additionalPayment,
-  deductionPayment,
-  overTimeOptions,
-  typeOptions
+  getFieldConfigurations,
+  getTypeOptions,
+  initializeValues,
+  processRecords
 } from '@/components/Hr/TimeKeeping/utilsTimeKeeping'
-import { NamedEntity } from '@/utils/sharedTypes'
 
 export const FormEmployeeTimeKeeping = () => {
   const { t: hr } = useTranslation('hr')
@@ -39,39 +34,7 @@ export const FormEmployeeTimeKeeping = () => {
 
   const { addItem, setCurrentHelpers, removeItem } = useFormArray<any>()
 
-  //todo: recheck, we dont need id here?
-  const hasAllValuesFilled = (obj: any): boolean => {
-    const checkValues = (obj: any): boolean => {
-      return Object.keys(obj).every((key) => {
-        if (key === 'id') return true
-        const value = obj[key]
-        if (value && typeof value === 'object') {
-          return checkValues(value)
-        }
-        return Boolean(value)
-      })
-    }
-    return checkValues(obj)
-  }
-
-  //todo: refactor
-  const hasItemChanged = (
-    item: EmployeeOverTime | EmployeePaymentProps | EmployeeTimeKeepingInfo | NamedEntity,
-    initialItem: EmployeeOverTime | EmployeePaymentProps | EmployeeTimeKeepingInfo | NamedEntity
-  ): boolean => {
-    if (!initialItem) return false
-
-    return Object.keys(item).some((key) => {
-      const value = item[key as keyof typeof item]
-      const initialValue = initialItem[key as keyof typeof item]
-
-      if (value && typeof value === 'object' && !Array.isArray(value)) {
-        return hasItemChanged(value, initialValue as any)
-      }
-
-      return value !== initialValue
-    })
-  }
+  const fieldConfigurations = getFieldConfigurations()
 
   const hasNoRecords =
     !!selectedType && !values[selectedType as 'overtimes' | 'deductions' | 'additionalPayments'].length
@@ -164,72 +127,10 @@ export const FormEmployeeTimeKeeping = () => {
     }
   })
 
-  const fieldConfigurations: { [key: string]: Array<DynamicInputFieldProps> } = {
-    deductions: deductionPayment,
-    additionalPayments: additionalPayment,
-    overtimes: [
-      {
-        name: 'overTimePercentage',
-        type: 'select',
-        options: overTimeOptions
-      },
-      { name: 'overtimeDate', type: 'date' },
-      { name: 'workingHours', type: 'number' }
-    ]
-  }
-
-  const initializeValues = (fields: Array<DynamicInputFieldProps>) => {
-    return fields.reduce(
-      (acc, field) => {
-        if (field.type === 'nested' && field.fields) {
-          acc[field.name] = initializeValues(field.fields)
-        } else {
-          acc[field.name] = field.type === 'number' ? 0 : ''
-        }
-        return acc
-      },
-      {} as Record<string, any>
-    )
-  }
-
-  const recordsToProcess = useCallback(() => {
-    const overtimesToUpdate = values.overtimes.filter((item, index) => {
-      const initialItem = initialValues.overtimes[index]
-      return item.id && hasItemChanged(item, initialItem)
-    })
-
-    const overtimesToAdd = values.overtimes.filter((item) => !item.id && hasAllValuesFilled(item))
-
-    const deductionRecordsToAdd = values.deductions.filter((d) => !d.id && hasAllValuesFilled(d))
-    const additionalPaymentRecordsToAdd = values.additionalPayments.filter((d) => !d.id && hasAllValuesFilled(d))
-
-    const paymentRecordsToUpdate = [
-      ...values.deductions.filter((d, index) => {
-        const initialItem = initialValues.deductions[index]
-        return d.id && hasItemChanged(d, initialItem)
-      }),
-      ...values.additionalPayments.filter((d, index) => {
-        const initialItem = initialValues.additionalPayments[index]
-        return d.id && hasItemChanged(d, initialItem)
-      })
-    ]
-
-    return {
-      overtimesToUpdate,
-      overtimesToAdd,
-      paymentRecordsToAdd: [...deductionRecordsToAdd, ...additionalPaymentRecordsToAdd],
-      paymentRecordsToUpdate
-    }
-  }, [
-    values.overtimes,
-    values.deductions,
-    values.additionalPayments,
-    initialValues.overtimes,
-    initialValues.deductions,
-    initialValues.additionalPayments
-  ])
-
-  const { overtimesToAdd, paymentRecordsToAdd, overtimesToUpdate, paymentRecordsToUpdate } = recordsToProcess()
+  const { overtimesToAdd, paymentRecordsToAdd, overtimesToUpdate, paymentRecordsToUpdate } = processRecords(
+    values,
+    initialValues
+  )
 
   const hasNewOvertimeRecords = overtimesToAdd.length >= 1
   const hasNewPaymentRecords = paymentRecordsToAdd.length >= 1
@@ -238,8 +139,6 @@ export const FormEmployeeTimeKeeping = () => {
 
   const isUpdateEnabled =
     hasNewOvertimeRecords || hasNewPaymentRecords || hasUpdatedOvertimes || hasUpdatedPaymentRecords
-
-  console.log('recordsToProcess() -->', recordsToProcess())
 
   return (
     <>
@@ -277,7 +176,7 @@ export const FormEmployeeTimeKeeping = () => {
       >
         <BaseSelect
           name='entryType'
-          options={typeOptions}
+          options={getTypeOptions()}
           onChange={(option) => setSelectedType(option)}
         />
         <Button
@@ -289,10 +188,10 @@ export const FormEmployeeTimeKeeping = () => {
           startIcon={<MdAdd />}
           disabled={!selectedType}
         >
-          Satır Ekle
+          {t('common:addNewLine')}
         </Button>
       </Stack>
-      {hasNoRecords && <Typography sx={{ fontSize: '.8rem' }}>{hr('noRecord')}</Typography>}
+      {hasNoRecords && <Typography sx={{ fontSize: '.8rem' }}>{t('hr:noRecord')}</Typography>}
 
       {selectedType && (
         <FieldArray name={selectedType}>

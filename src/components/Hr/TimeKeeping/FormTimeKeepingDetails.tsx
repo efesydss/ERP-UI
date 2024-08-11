@@ -1,90 +1,101 @@
-import { Accordion, AccordionDetails, AccordionSummary, Box } from '@mui/material'
-import { t } from 'i18next'
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, IconButton } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { Route } from '@/routes/_authenticated/hr/timekeeping/$id'
 import { FieldArray } from 'formik'
-import { useFormArray } from '@/components/Common/Form/useFormArray'
 import { DynamicFieldsWrapper } from '@/components/Hr/TimeKeeping/stylesTimeKeeping'
 import { FormGrid } from '@/components/Common/Form/FormGrid/FormGrid'
 import { DynamicFields } from '@/components/Common/Form/Input/DynamicFields'
-import { enumToOptions } from '@/utils/transformers'
-import { OverTimePercentage } from '@/components/Hr/TimeKeeping/typesTimeKeeping'
+import { getAccordionConfigs, initializeValues } from '@/components/Hr/TimeKeeping/utilsTimeKeeping'
+import { useConfirmDialog } from '@/utils/hooks/useConfirmDialogContext'
+import { FaRegTrashCan } from 'react-icons/fa6'
+import { MdAdd } from 'react-icons/md'
+import { t } from 'i18next'
 
 export const FormTimeKeepingDetails = () => {
-  const data = Route.useLoaderData()
-  const { setCurrentHelpers } = useFormArray<any>()
-
-  console.log('data -->', data)
+  //const data = Route.useLoaderData()
+  const accordionConfigs = getAccordionConfigs()
+  const { openDialog } = useConfirmDialog()
 
   return (
     <>
       <Box sx={{ mt: 2 }}>
-        <Accordion defaultExpanded>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls='panel1-content'
-            id='panel1-header'
+        {accordionConfigs.map((config, index) => (
+          <Accordion
+            key={config.name}
+            defaultExpanded={index === 0}
           >
-            {t('hr:overtimes')}
-          </AccordionSummary>
-          <AccordionDetails>
-            <FieldArray name={'overtimes'}>
-              {(arrayHelpers) => {
-                setCurrentHelpers(arrayHelpers)
-                return (
-                  <>
-                    {arrayHelpers.form.values['overtimes']?.map((_: any, index: number) => (
-                      <DynamicFieldsWrapper key={index}>
-                        <Box>
-                          <FormGrid widths={'forth'}>
-                            <DynamicFields
-                              prefix={`overtimes.${index}`}
-                              fields={[
-                                {
-                                  name: 'overTimePercentage',
-                                  type: 'select',
-                                  options: enumToOptions(OverTimePercentage)
-                                },
-                                { name: 'overtimeDate', type: 'date' },
-                                { name: 'workingHours', type: 'number' }
-                              ]}
-                            />
-                          </FormGrid>
-                        </Box>
-                      </DynamicFieldsWrapper>
-                    ))}
-                  </>
-                )
-              }}
-            </FieldArray>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls='panel2-content'
-            id='panel2-header'
-          >
-            {t('hr:deductions')}
-          </AccordionSummary>
-          <AccordionDetails>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit
-            leo lobortis eget.
-          </AccordionDetails>
-        </Accordion>
-        <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls='panel3-content'
-            id='panel3-header'
-          >
-            {t('hr:additionalPayments')}
-          </AccordionSummary>
-          <AccordionDetails>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit
-            leo lobortis eget.
-          </AccordionDetails>
-        </Accordion>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              id={`${config.name}-header`}
+            >
+              {config.label}
+            </AccordionSummary>
+            <AccordionDetails>
+              <FieldArray name={config.name}>
+                {(arrayHelpers) => {
+                  return (
+                    <>
+                      {arrayHelpers.form.values[config.name]?.map((_: any, index: number) => (
+                        <DynamicFieldsWrapper key={index}>
+                          <Box>
+                            <FormGrid widths={'forth'}>
+                              <DynamicFields
+                                prefix={`${config.name}.${index}`}
+                                fields={config.fields}
+                              />
+                            </FormGrid>
+                            <IconButton
+                              sx={{ position: 'absolute', right: 6, top: 6 }}
+                              size={'small'}
+                              onClick={() => {
+                                const fieldValue = arrayHelpers.form.values[config.name][index]
+                                if (fieldValue && fieldValue.id) {
+                                  openDialog(
+                                    'Confirm Deletion',
+                                    'Are you sure you want to delete this item?',
+                                    () => {
+                                      if (config.name === 'overtimes') {
+                                        console.log('overtimes')
+                                      } else if (config.name === 'additionalPayments' || config.name === 'deductions') {
+                                        console.log('additional')
+                                      }
+                                    },
+                                    () => console.log('Deletion cancelled')
+                                  )
+                                } else {
+                                  arrayHelpers.remove(index)
+                                }
+                              }}
+                              color={'error'}
+                            >
+                              <FaRegTrashCan />
+                            </IconButton>
+                          </Box>
+                        </DynamicFieldsWrapper>
+                      ))}
+                      <FieldArray name={config.name}>
+                        {(arrayHelpers) => (
+                          <Button
+                            size={'small'}
+                            variant={'outlined'}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              arrayHelpers.push(initializeValues(config.fields))
+                            }}
+                          >
+                            <MdAdd /> {t('common:addNewLine')}
+                          </Button>
+                        )}
+                      </FieldArray>
+                    </>
+                  )
+                }}
+              </FieldArray>
+            </AccordionDetails>
+          </Accordion>
+        ))}
+      </Box>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+        <Button variant={'contained'}>guncelle</Button>
       </Box>
     </>
   )
