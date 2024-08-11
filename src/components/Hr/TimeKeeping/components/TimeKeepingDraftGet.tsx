@@ -12,7 +12,7 @@ interface EmployeeTimeKeepingDateSetProps {
   isLoading: boolean
 }
 
-export const EmployeeTimeKeepingDateSet = (props: EmployeeTimeKeepingDateSetProps) => {
+export const TimeKeepingDraftGet = (props: EmployeeTimeKeepingDateSetProps) => {
   const { isLoading } = props
   const { values } = useFormikContext<EmployeeTimeKeepingSpan>()
 
@@ -58,6 +58,7 @@ export const EmployeeTimeKeepingDateSet = (props: EmployeeTimeKeepingDateSetProp
     enabled: !!timeKeepings
   })
 
+  //todo: update check for values.employee
   return (
     <>
       <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-end' }}>

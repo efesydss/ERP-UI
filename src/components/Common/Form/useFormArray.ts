@@ -9,6 +9,7 @@ interface FormikArrayHelpersProps<U> {
   setCurrentHelpers: (arrayHelpers: FormikArrayHelpers<U>) => void
 }
 
+//todo: will remove
 export const useFormArray = <T>(): FormikArrayHelpersProps<T> => {
   let currentArrayHelpers: FormikArrayHelpers<T> | null = null
 

@@ -27,6 +27,6 @@
   "year": "Yıl",
   "month": "Ay",
   "entryType": "Puantaj Türü",
-  "addNewLine": "Satır Ekle"
-
+  "addNewLine": "Satır Ekle",
+  "noRecordsFound" : "Hiç kayıt bulunamadı"
 }

@@ -51,10 +51,9 @@
   "overtimeDate": "Tarih",
   "workingHours ": "Çalışılan Saat",
   "total": "Net Ödenecek",
-  "noRecord" : "Hiç kayıt bulunamadı",
   "createTimeKeeping": "Puantaj Oluştur",
   "getDraft":"Taslağı Getir",
-  "saveDraft":"Taslak Olarak Kaydet",
+  "updateDraft":"Taslağı Güncelle",
   "removeEmployee": "Pasife Çek",
   "employeeDetails": "Çalışan Detayları",
   "timeKeepingDetails": "Puantaj Detayları"

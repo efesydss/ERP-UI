@@ -11,7 +11,6 @@ import { MdAdd } from 'react-icons/md'
 import { t } from 'i18next'
 
 export const FormTimeKeepingDetails = () => {
-  //const data = Route.useLoaderData()
   const accordionConfigs = getAccordionConfigs()
   const { openDialog } = useConfirmDialog()
 
@@ -22,6 +21,7 @@ export const FormTimeKeepingDetails = () => {
           <Accordion
             key={config.name}
             defaultExpanded={index === 0}
+            disableGutters
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}

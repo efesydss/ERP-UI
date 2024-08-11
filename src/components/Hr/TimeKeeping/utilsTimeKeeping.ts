@@ -6,35 +6,30 @@ import { DynamicInputFieldProps } from '@/components/Common/Form/Input/DynamicFi
 import { EmployeeOverTime, OverTimePercentage } from '@/components/Hr/TimeKeeping/typesTimeKeeping'
 import { EmployeePaymentProps } from '@/components/Hr/typesHr'
 
+//todo: check 'nested' type, is that still relevant for bankAccount
+/*{
+    name: 'bankAccount',
+    type: 'nested',
+    fields: bankAccountFields
+  }*/
+
 export enum EditableFields {
   'overtimes',
   'deductions',
   'additionalPayments'
 }
 
-//todo: temp
-const bankOptions = [
-  {
-    value: '1',
-    label: 'defaultBank'
-  }
-]
+export interface DynamicFieldValues {
+  overtimes: EmployeeOverTime[]
+  deductions: EmployeePaymentProps[]
+  additionalPayments: EmployeePaymentProps[]
+}
 
 export const getTypeOptions = (): OptionType[] => [
   { value: 'deductions', label: t('hr:deductions') },
   { value: 'overtimes', label: t('hr:overtimes') },
   { value: 'additionalPayments', label: t('hr:additionalPayments') }
 ]
-
-/*  const bankAccountFields = [
-  { name: 'accountNumber' },
-  { name: 'iban' },
-  {
-    name: 'currency',
-    type: 'select',
-    options: currencyCodeOptions
-  }
-]*/
 
 const getEmployeePayment = () => [
   {
@@ -56,17 +51,7 @@ const getEmployeePayment = () => [
     name: 'amountCurrency',
     type: 'select',
     options: enumToOptions(CurrencyCode)
-  },
-  {
-    name: 'bankAccount',
-    type: 'select',
-    options: bankOptions
   }
-  /*{
-      name: 'bankAccount',
-      type: 'nested',
-      fields: bankAccountFields
-    }*/
 ]
 
 export const getAdditionalPayment = () => [
@@ -117,12 +102,6 @@ export const initializeValues = (fields: Array<DynamicInputFieldProps>) => {
   )
 }
 
-interface Values {
-  overtimes: EmployeeOverTime[]
-  deductions: EmployeePaymentProps[]
-  additionalPayments: EmployeePaymentProps[]
-}
-
 export const hasAllValuesFilled = (obj: EmployeeOverTime | EmployeePaymentProps): boolean => {
   if (!obj) return false
 
@@ -157,7 +136,7 @@ export const hasItemChanged = (
   })
 }
 
-export const processRecords = (values: Values, initialValues: Values) => {
+export const processRecords = (values: DynamicFieldValues, initialValues: DynamicFieldValues) => {
   const processItems = <T extends EmployeeOverTime | EmployeePaymentProps>(items: T[], initialItems: T[]) =>
     items.reduce(
       (acc, item, index) => {

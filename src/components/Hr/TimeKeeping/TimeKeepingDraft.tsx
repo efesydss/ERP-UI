@@ -5,8 +5,8 @@ import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { apiRequest } from '@/utils/apiDefaults'
 import { BaseForm } from '@/components/Common/Form/BaseForm'
-import { EmployeeTimeKeepingDateSet } from '@/components/Hr/TimeKeeping/components/EmployeeTimeKeepingDateSet'
-import { TimeKeepingDraftDetails } from '@/components/Hr/TimeKeeping/components/TimeKeepingDraftDetails'
+import { TimeKeepingDraftGet } from '@/components/Hr/TimeKeeping/components/TimeKeepingDraftGet'
+import { TimeKeepingDraftDetails } from '@/components/Hr/TimeKeeping/TimeKeepingDraftDetails'
 
 const initialTimeKeepSelectValues: EmployeeTimeKeepingSpan = {
   employee: { id: 0, name: '' },
@@ -62,7 +62,7 @@ export const TimeKeepingDraft = () => {
             month: values.month.toString()
           })
         }}
-        component={<EmployeeTimeKeepingDateSet isLoading={isDraftDetailLoading} />}
+        component={<TimeKeepingDraftGet isLoading={isDraftDetailLoading} />}
       />
 
       {data && <TimeKeepingDraftDetails data={data} />}

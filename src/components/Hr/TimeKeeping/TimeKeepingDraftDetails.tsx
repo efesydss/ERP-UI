@@ -1,6 +1,6 @@
 import { EmployeeTimeKeepingProps } from '@/components/Hr/TimeKeeping/typesTimeKeeping'
 import { BaseForm } from '@/components/Common/Form/BaseForm'
-import { FormEmployeeTimeKeeping } from '@/components/Hr/TimeKeeping/FormEmployeeTimeKeeping'
+import { FormTimeKeepingDraft } from '@/components/Hr/TimeKeeping/FormTimeKeepingDraft'
 import { Box, Paper, Typography } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { useMutation } from '@tanstack/react-query'
@@ -79,13 +79,11 @@ export const TimeKeepingDraftDetails = (props: EmployeeTimeKeepingDetailsProps) 
           <Typography variant={'h5'}>{total}</Typography>
         </Box>
       </Paper>
-      <Paper sx={{ p: 2, mt: 2 }}>
-        <BaseForm
-          initialValues={props.data}
-          onSubmit={onFormSubmit}
-          component={<FormEmployeeTimeKeeping />}
-        />
-      </Paper>
+      <BaseForm
+        initialValues={props.data}
+        onSubmit={onFormSubmit}
+        component={<FormTimeKeepingDraft />}
+      />
     </>
   )
 }

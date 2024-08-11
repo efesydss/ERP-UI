@@ -9,6 +9,7 @@ export interface DynamicInputFieldProps {
   type?: string
   options?: OptionType[]
   fields?: Array<DynamicInputFieldProps>
+  areOptionsEnum?: boolean
 }
 
 interface DynamicInputProps {
@@ -41,14 +42,15 @@ export const DynamicFields = (props: DynamicInputProps) => {
           )
         }
 
-        //todo: isEnum should be passed as prop
         if (field.type === 'select') {
+          const isEnum = field.areOptionsEnum !== false
+
           return (
             <div key={`${prefix}.${i}.${field.name}${i}`}>
               <BaseSelect
                 name={fieldName}
                 options={field.options}
-                isEnum
+                isEnum={isEnum}
                 nameSpace={'hr'}
                 selectLabel={fieldLabel}
               />
