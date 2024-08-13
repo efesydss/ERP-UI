@@ -18,8 +18,6 @@ interface FormEmployeeProps {
 export const FormEmployee = (props: FormEmployeeProps) => {
   const isDetailPage = !!props.employeeId
 
-  console.log('isDetailPage -->', isDetailPage)
-
   const { t: hr } = useTranslation('hr')
   const [activeTab, setActiveTab] = useState(0)
 
@@ -110,7 +108,10 @@ export const FormEmployee = (props: FormEmployeeProps) => {
             content: (
               <Paper sx={{ p: 2 }}>
                 <FormGrid widths={'half'}>
-                  <Input name={'identificationNumber'} />
+                  <Input
+                    name={'identificationNumber'}
+                    type={'number'}
+                  />
                   <Input
                     name={'fathersName'}
                     isOptional
