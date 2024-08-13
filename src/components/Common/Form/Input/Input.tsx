@@ -2,7 +2,7 @@ import { InputBaseProps, Stack } from '@mui/material'
 import { useField } from 'formik'
 import { InputBaseWrapper } from '@/components/Common/Form/stylesForm'
 import { Label } from '@/components/Common/Form/Label/Label'
-import { ChangeEvent, ForwardedRef, forwardRef, useEffect } from 'react'
+import { ChangeEvent, ForwardedRef, forwardRef } from 'react'
 
 interface InputProps extends InputBaseProps {
   name: string

@@ -6,6 +6,7 @@ import { toast } from 'react-toastify'
 import { useNavigate } from '@tanstack/react-router'
 import { formatToISOString } from '@/utils/transformers'
 import { FormVacationAdd } from '@/components/Hr/Vacations/FormVacationAdd'
+import { Route } from '@/routes/_authenticated/hr/vacations/new/$id'
 
 const initialLeave: VacationBaseProps = {
   personnel: { id: 0, name: '' },
@@ -19,14 +20,15 @@ const initialLeave: VacationBaseProps = {
 
 export const VacationAdd = () => {
   const navigate = useNavigate()
+  const { id } = Route.useParams()
 
   const { mutateAsync } = useMutation({
     mutationFn: (values: VacationBaseProps) =>
       apiRequest({
         endpoint: 'employeeVacationAdd',
-        params: { employeeId: values.personnel.id.toString() },
+        params: { employeeId: id.toString() },
         payload: {
-          id: values.personnel.id,
+          id,
           startDateTime: formatToISOString(values.startDateTime),
           endDateTime: formatToISOString(values.endDateTime),
           workingDays: values.workingDays,

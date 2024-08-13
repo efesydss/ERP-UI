@@ -1,6 +1,5 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { VacationAdd } from '@/components/Hr/Vacations/VacationAdd'
+import { createFileRoute, Outlet } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_authenticated/hr/vacations/new')({
-  component: () => <VacationAdd />
+  component: () => <Outlet />
 })

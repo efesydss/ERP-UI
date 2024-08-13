@@ -46,6 +46,7 @@ export const BaseGrid = (props: BaseGridProps) => {
     {
       field: 'timeOffType',
       headerName: t('hr:timeOffType'),
+      valueGetter: (value: string) => t(`hr:${value}`),
       type: 'string',
       width: 120
     }

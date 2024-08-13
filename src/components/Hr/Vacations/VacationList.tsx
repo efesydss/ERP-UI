@@ -5,7 +5,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import { useTranslation } from 'react-i18next'
 import { Button } from '@mui/material'
-import { Route as NewVacationRoute } from '@/routes/_authenticated/hr/vacations/new'
+import { Route as NewVacationRoute } from '@/routes/_authenticated/hr/vacations/new/$id'
 import { useNavigate } from '@tanstack/react-router'
 import { MdAdd } from 'react-icons/md'
 import { BaseGrid } from '@/components/Common/DataGrid/BaseGrid'
@@ -15,20 +15,6 @@ export const VacationList = () => {
   const { t: common } = useTranslation('common')
   const { t: hr } = useTranslation('hr')
   const navigate = useNavigate()
-
-  const VacationListActions = () => {
-    return (
-      <>
-        <Button
-          variant={'contained'}
-          startIcon={<MdAdd />}
-          onClick={() => navigate({ to: NewVacationRoute.fullPath })}
-        >
-          {hr('leaveAdd')}
-        </Button>
-      </>
-    )
-  }
 
   const columns = useMemo<ColumnDef<VacationStatus>[]>(
     () => [
@@ -64,16 +50,39 @@ export const VacationList = () => {
       {
         header: hr('usable'),
         accessorKey: 'usable'
+      },
+      {
+        id: 'actions',
+        enableSorting: false,
+        enableColumnFilter: false,
+        cell: ({ row }) => {
+          const employeeId = row.original.employee.id
+
+          if (!employeeId) {
+            return null
+          }
+
+          return (
+            <Button
+              size={'small'}
+              variant={'text'}
+              startIcon={<MdAdd />}
+              onClick={(e) => {
+                e.stopPropagation()
+                navigate({ to: NewVacationRoute.fullPath, params: { id: employeeId } })
+              }}
+            >
+              {hr('leaveAdd')}
+            </Button>
+          )
+        }
       }
     ],
     [common, hr]
   )
   return (
     <>
-      <PageTitle
-        title={nav('vacations')}
-        actions={<VacationListActions />}
-      />
+      <PageTitle title={nav('vacations')} />
 
       <BaseTable<VacationStatus>
         endpoint={'employeeVacationStatuses'}
