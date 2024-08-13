@@ -5,8 +5,8 @@ export enum CivilStatus {
   Married = 'Married'
 }
 
-enum Currency {
-  TL = 'TL',
+export enum Currency {
+  TRY = 'TRY',
   Euro = 'EUR',
   Dollar = 'USD'
 }
@@ -52,8 +52,8 @@ export interface EmployeeResponse {
   companyBranch: NamedEntity
   department: NamedEntity
   profession: string
-  emergencyPhone: string
-  emergencyName: string
+  emergencyPhone?: string
+  emergencyName?: string
   startDate: string
   endDate?: string
   phone?: string
@@ -62,7 +62,7 @@ export interface EmployeeResponse {
   fathersName?: string
   mothersName?: string
   birthPlace?: string
-  birthDate?: Date
+  birthDate?: string
   civilStatus?: CivilStatus
   city?: string
   province?: string
@@ -70,4 +70,5 @@ export interface EmployeeResponse {
   street?: string
   volumeNumber?: string
   familySerial?: string
+  payrollData?: PayrollData
 }

@@ -129,7 +129,7 @@ export const hasItemChanged = (
     const initialValue = initialItem[key as keyof typeof item]
 
     if (value && typeof value === 'object' && !Array.isArray(value)) {
-      return hasItemChanged(value, initialValue as any)
+      return hasItemChanged(value as any, initialValue as any)
     }
 
     return value !== initialValue

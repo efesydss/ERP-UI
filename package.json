@@ -14,6 +14,7 @@
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.21",
     "@mui/material": "^5.15.21",
+    "@mui/x-data-grid": "^7.12.1",
     "@rsql/builder": "^1.6.0",
     "@tanstack/react-query": "^5.50.1",
     "@tanstack/react-router": "^1.43.12",

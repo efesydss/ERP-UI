@@ -19,6 +19,7 @@
   "Vacation": "Yıllık İzin",
   "ChildBirth": "Doğum",
   "infoTimeOffs": "İzinler",
+  "timeOffType": "İzin Çeșidi",
   "SICK_LEAVE": "Hastalık İzni",
   "CHILD_BIRTH": "Doğum İzni",
   "paymentType": "Ödeme Türü",
@@ -56,5 +57,6 @@
   "updateDraft":"Taslağı Güncelle",
   "removeEmployee": "Pasife Çek",
   "employeeDetails": "Çalışan Detayları",
-  "timeKeepingDetails": "Puantaj Detayları"
+  "timeKeepingDetails": "Puantaj Detayları",
+  "fathersName": "Baba Adı"
 }

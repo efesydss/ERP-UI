@@ -73,7 +73,8 @@ if (!rootElement.innerHTML) {
           <GlobalStyles
             styles={{
               body: {
-                backgroundColor: '#F9F9F9'
+                backgroundColor: '#F9F9F9',
+                overflowX: 'hidden'
               }
             }}
           />

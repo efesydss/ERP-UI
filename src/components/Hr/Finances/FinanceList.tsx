@@ -37,6 +37,32 @@ export const FinanceList = () => {
   const columns = useMemo<ColumnDef<EmployeePaymentProps>[]>(
     () => [
       {
+        header: common('name'),
+        accessorKey: 'employee.name'
+      },
+      {
+        header: common('surname'),
+        accessorKey: 'employee.surname'
+      },
+      {
+        header: common('department'),
+        accessorKey: 'department',
+        accessorFn: (row) => row.employee?.department.name,
+        meta: {
+          filterVariant: 'select',
+          filterOptionsEndpoint: 'departments'
+        }
+      },
+      {
+        header: common('companyBranch'),
+        accessorKey: 'companyBranch',
+        accessorFn: (row) => row.employee?.companyBranch.name,
+        meta: {
+          filterVariant: 'select',
+          filterOptionsEndpoint: 'branches'
+        }
+      },
+      {
         header: hr('paymentType'),
         accessorKey: 'paymentType',
         enableSorting: false,

@@ -3,7 +3,9 @@ import {
   ColumnFiltersState,
   flexRender,
   getCoreRowModel,
+  getExpandedRowModel,
   PaginationState,
+  Row,
   RowData,
   SortingState,
   useReactTable
@@ -19,7 +21,7 @@ import {
   TablePagination,
   TableRow
 } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { Fragment, ReactElement, useEffect, useState } from 'react'
 import { apiRequest, ApiResponse, HttpMethod } from '@/utils/apiDefaults'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { apiRoutes } from '@/utils/apiRoutes'
@@ -38,6 +40,8 @@ interface BaseTableProps<TData extends RowData> {
   params?: Record<string, string>
   customFilter?: string
   method?: HttpMethod
+  renderSubComponent?: (props: { row: Row<TData> }) => ReactElement
+  getRowCanExpand?: (row: Row<TData>) => boolean
 }
 
 type FilterVariant = 'text' | 'select' | 'enum'
@@ -57,7 +61,16 @@ declare module '@tanstack/react-table' {
 }
 
 export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) => {
-  const { columns, endpoint, params, customFilter, nameSpace = 'common', method = 'POST' } = props
+  const {
+    columns,
+    endpoint,
+    params,
+    customFilter,
+    nameSpace = 'common',
+    method = 'POST',
+    renderSubComponent,
+    getRowCanExpand
+  } = props
   const { setItem, getItem } = useLocalStorage(endpoint)
   const { t: feedbacks } = useTranslation('feedbacks')
 
@@ -102,7 +115,9 @@ export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) =
       setColumnFilters(newFilters)
       setPagination((prev) => ({ ...prev, pageIndex: 0 }))
     },
-    onSortingChange: setSorting
+    onSortingChange: setSorting,
+    getRowCanExpand,
+    getExpandedRowModel: getExpandedRowModel()
   })
 
   const getFilterOperator = (filterVariant: FilterVariant) => {
@@ -207,22 +222,38 @@ export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) =
                 <TableState colSpan={columns.length}>{feedbacks('noDataFound')}</TableState>
               ) : (
                 table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    hover
-                    key={row.id}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 }, backgroundColor: '#fff' }}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell
-                        component='td'
-                        scope='row'
-                        key={cell.id}
-                        sx={{ height: 45, p: 1 }}
+                  <Fragment key={row.id}>
+                    <TableRow
+                      hover
+                      key={row.id}
+                      sx={{ '&:last-child td, &:last-child th': { border: 0 }, backgroundColor: '#fff' }}
+                      onClick={() => row.toggleExpanded()}
+                    >
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell
+                          component='td'
+                          scope='row'
+                          key={cell.id}
+                          sx={{ height: 45, p: 1 }}
+                        >
+                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                    {renderSubComponent && row.getIsExpanded() && (
+                      <TableRow
+                        key={`${row.id}-expanded`}
+                        sx={{ backgroundColor: '#f9f9f9' }}
                       >
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </TableCell>
-                    ))}
-                  </TableRow>
+                        <TableCell
+                          key={`${row.id}-${row.index}-expanded`}
+                          colSpan={columns.length}
+                        >
+                          {renderSubComponent({ row })}
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </Fragment>
                 ))
               )}
             </TableBody>

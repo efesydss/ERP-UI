@@ -10,10 +10,12 @@ interface DatePickerProps {
   name: string
   isTimeEnabled?: boolean
   label?: string
+  isClearable?: boolean
+  isOptional?: boolean
 }
 
 export const DatePicker = (props: DatePickerProps) => {
-  const { name, label, isTimeEnabled = false, ...rest } = props
+  const { name, label, isTimeEnabled = false, isClearable, isOptional, ...rest } = props
   const [field, meta, helpers] = useField(name)
 
   const { value } = meta
@@ -42,10 +44,12 @@ export const DatePicker = (props: DatePickerProps) => {
         showYearDropdown
         yearDropdownItemNumber={85}
         scrollableYearDropdown
+        isClearable={isClearable}
         customInput={
           <Input
             name={name}
             label={label || t(name, { ns: 'hr' })}
+            isOptional={isOptional}
           />
         }
       />

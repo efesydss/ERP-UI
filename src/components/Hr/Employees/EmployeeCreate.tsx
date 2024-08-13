@@ -1,12 +1,13 @@
 import { BaseForm } from '@/components/Common/Form/BaseForm'
-import { CivilStatus, EmployeeResponse } from '@/components/Hr/Employees/typesEmployee'
+import { CivilStatus, Currency, EmployeeResponse } from '@/components/Hr/Employees/typesEmployee'
 import { useMutation } from '@tanstack/react-query'
 import { apiRequest } from '@/utils/apiDefaults'
 import { toast } from 'react-toastify'
 import { AxiosError } from 'axios'
-import { FormEmployeeCreate } from '@/components/Hr/Employees/FormEmployeeCreate'
+import { FormEmployee } from '@/components/Hr/Employees/FormEmployee'
 import { useNavigate } from '@tanstack/react-router'
 import { Route } from '@/routes/_authenticated/hr/employees'
+import { Container } from '@mui/material'
 
 const initialPersonnel: EmployeeResponse = {
   id: 0,
@@ -26,14 +27,19 @@ const initialPersonnel: EmployeeResponse = {
   fathersName: '',
   mothersName: '',
   birthPlace: '',
-  birthDate: new Date(),
+  birthDate: '',
   civilStatus: CivilStatus.Married,
   city: '',
   province: '',
   state: '',
   street: '',
   volumeNumber: '',
-  familySerial: ''
+  familySerial: '',
+  payrollData: {
+    currency: Currency.TRY,
+    salary: 40000,
+    iban: 'TR8080'
+  }
 }
 
 export const EmployeeCreate = () => {
@@ -68,10 +74,12 @@ export const EmployeeCreate = () => {
   }
 
   return (
-    <BaseForm
-      initialValues={initialPersonnel}
-      component={<FormEmployeeCreate />}
-      onSubmit={onFormSubmit}
-    />
+    <Container>
+      <BaseForm
+        initialValues={initialPersonnel}
+        component={<FormEmployee />}
+        onSubmit={onFormSubmit}
+      />
+    </Container>
   )
 }

@@ -3,15 +3,14 @@ import { DatePicker } from '@/components/Common/Form/DatePicker/DatePicker'
 import { Box, Button } from '@mui/material'
 import { useFormikContext } from 'formik'
 import { ReportDateRange } from '@/components/Hr/Finances/FinanceList'
+import { t } from 'i18next'
 
 interface DateRangeFormProps {
   onResetForm: (r: string) => void
 }
 
 export const DateRangeForm = (props: DateRangeFormProps) => {
-  const { isValid, isSubmitting, values, resetForm } = useFormikContext<ReportDateRange>()
-
-  const isSubmitDisabled = !isValid || isSubmitting || !values.reportStartDate || !values.reportEndDate
+  const { isValid, values, resetForm } = useFormikContext<ReportDateRange>()
 
   return (
     <FormGrid widths={'third'}>
@@ -22,9 +21,9 @@ export const DateRangeForm = (props: DateRangeFormProps) => {
           type={'submit'}
           color={'primary'}
           variant={'contained'}
-          disabled={isSubmitDisabled}
+          disabled={!isValid}
         >
-          Uygula
+          {t('common:apply')}
         </Button>
         {values.reportStartDate && values.reportEndDate && (
           <Button
@@ -35,7 +34,7 @@ export const DateRangeForm = (props: DateRangeFormProps) => {
               props.onResetForm('')
             }}
           >
-            Reset
+            {t('common:clear')}
           </Button>
         )}
       </Box>

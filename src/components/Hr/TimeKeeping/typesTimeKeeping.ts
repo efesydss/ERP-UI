@@ -9,7 +9,7 @@ export interface EmployeeTimeKeepingSpan {
   month: number
 }
 
-export interface EmployeeTimeKeepingInfo {
+export interface EmployeeRef {
   id: number
   name: string
   surname: string
@@ -31,14 +31,14 @@ export interface EmployeeOverTime {
   overtimeDate: string
   workingHours: number
   overTimePercentage: OverTimePercentage
-  employee?: EmployeeTimeKeepingInfo
+  employee?: EmployeeRef
 }
 
 export interface EmployeeTimeKeepingProps {
   id?: number
   year: number
   month: number
-  employee: EmployeeTimeKeepingInfo
+  employee: EmployeeRef
   netSalary: number
   normalWorkingDays: number
   weekendWorkingHours: number

@@ -1,4 +1,5 @@
 import { CurrencyCode, PaymentType } from '@/components/Hr/Finances/typesFinance'
+import { EmployeeRef } from '@/components/Hr/TimeKeeping/typesTimeKeeping'
 
 export interface BankAccount {
   id?: number
@@ -16,4 +17,5 @@ export interface EmployeePaymentProps {
   transactionCost: number
   amount: number
   amountCurrency: CurrencyCode //todo: will be updated with Currency Type
+  employee?: EmployeeRef
 }

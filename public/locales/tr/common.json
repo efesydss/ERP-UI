@@ -28,5 +28,8 @@
   "month": "Ay",
   "entryType": "Puantaj Türü",
   "addNewLine": "Satır Ekle",
-  "noRecordsFound" : "Hiç kayıt bulunamadı"
+  "noRecordsFound" : "Hiç kayıt bulunamadı",
+  "apply": "Uygula",
+  "clear": "Temizle",
+  "continue": "Devam et"
 }

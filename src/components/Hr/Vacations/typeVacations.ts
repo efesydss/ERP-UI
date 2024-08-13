@@ -1,16 +1,16 @@
 import { NamedEntity } from '@/utils/sharedTypes'
-import { EmployeeResponse } from '@/components/Hr/Employees/typesEmployee'
+import { EmployeeRef } from '@/components/Hr/TimeKeeping/typesTimeKeeping'
 
 export interface VacationStatus {
   entitled: number
   allTimeUsed: number
-  employee: EmployeeResponse
   transferred: number
   usedCurrentYear: number
   usable: number
   profession: string
   workingDays: number
   startDateTime: string
+  employee: EmployeeRef
 }
 
 export enum VacationType {

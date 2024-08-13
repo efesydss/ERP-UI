@@ -1,5 +1,5 @@
 import { Box, Tab, Tabs } from '@mui/material'
-import { ReactNode, SyntheticEvent, useState } from 'react'
+import { ReactNode, SyntheticEvent, useEffect, useState } from 'react'
 
 interface TabPanelWrapperProps {
   children?: ReactNode
@@ -9,6 +9,8 @@ interface TabPanelWrapperProps {
 
 interface TabPanelProps {
   tabs: Array<{ label: string; content: ReactNode }>
+  activeTab?: number
+  onTabChange?: (value: number) => void
 }
 
 const TabPanelWrapper = (props: TabPanelWrapperProps) => {
@@ -27,13 +29,22 @@ const TabPanelWrapper = (props: TabPanelWrapperProps) => {
 }
 
 export const TabPanel = (props: TabPanelProps) => {
+  const { tabs, activeTab: activeTabProp, onTabChange } = props
   const [activeTab, setActiveTab] = useState(0)
 
   const handleTabChange = (_: SyntheticEvent, newValue: number) => {
     setActiveTab(newValue)
+    if (onTabChange) {
+      onTabChange(newValue)
+    }
   }
 
-  const { tabs } = props
+  useEffect(() => {
+    if (activeTabProp !== undefined) {
+      setActiveTab(activeTabProp)
+    }
+  }, [activeTabProp])
+
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
