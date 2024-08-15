@@ -5,6 +5,7 @@ import { apiRequest, ApiResponse } from '@/utils/apiDefaults'
 import { NamedEntity } from '@/utils/sharedTypes'
 import { useQuery } from '@tanstack/react-query'
 import { FilterSelect } from '@/components/Common/Table/components/FilterSelect'
+import { t } from 'i18next'
 
 interface FilterProps {
   column: Column<any, unknown>
@@ -14,7 +15,12 @@ interface FilterProps {
 export const Filter = (props: FilterProps) => {
   const { column, onSetVisible } = props
   const columnFilterValue = column.getFilterValue()
-  const { filterVariant, filterOptions, filterOptionsEndpoint } = column.columnDef.meta || {}
+  const {
+    filterVariant,
+    filterOptions,
+    filterOptionsEndpoint,
+    filterNameSpace = 'common'
+  } = column.columnDef.meta || {}
 
   //todo: can we get rid off 'branches'
   const { data } = useQuery({
@@ -39,7 +45,12 @@ export const Filter = (props: FilterProps) => {
     enabled: !filterOptions && !!filterOptionsEndpoint
   })
 
-  const options = data || filterOptions
+  const translatedFilterOptions = filterOptions?.map((o) => ({
+    value: o.value,
+    label: t(`${filterNameSpace}:${o.label}`)
+  }))
+
+  const options = data || translatedFilterOptions
 
   if (filterVariant === 'select' || filterVariant === 'enum') {
     return (

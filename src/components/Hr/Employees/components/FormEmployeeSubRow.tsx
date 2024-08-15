@@ -28,8 +28,6 @@ export const FormEmployeeSubRow = () => {
     {} as Record<string, boolean>
   )
 
-  console.log('hasErrors -->', hasErrors)
-
   return (
     <>
       {employeeConfig.map((config, index) => (

@@ -10,6 +10,7 @@ import { FilterOperators } from '@/utils/filterOperators'
 import * as yup from 'yup'
 import { enumToOptions } from '@/utils/transformers'
 import { EmployeePaymentProps } from '@/components/Hr/typesHr'
+import { t } from 'i18next'
 
 export interface ReportDateRange {
   reportStartDate: string
@@ -65,9 +66,11 @@ export const FinanceList = () => {
       {
         header: hr('paymentType'),
         accessorKey: 'paymentType',
+        accessorFn: (row) => t(`hr:${row.paymentType}`),
         enableSorting: false,
         meta: {
           filterVariant: 'enum',
+          filterNameSpace: 'hr',
           filterOptions: paymentTypeOptions
         }
       },

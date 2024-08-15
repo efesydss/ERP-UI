@@ -9,6 +9,8 @@ import { useNavigate } from '@tanstack/react-router'
 import { Route } from '@/routes/_authenticated/hr/employees'
 import { Container } from '@mui/material'
 import { capitalizeFirstLetter } from '@/utils/transformers'
+import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
+import { t } from 'i18next'
 
 const initialPersonnel: EmployeeResponse = {
   id: 0,
@@ -79,12 +81,15 @@ export const EmployeeAdd = () => {
   }
 
   return (
-    <Container>
-      <BaseForm
-        initialValues={initialPersonnel}
-        component={<FormEmployee />}
-        onSubmit={onFormSubmit}
-      />
-    </Container>
+    <>
+      <PageTitle title={t('hr:newPersonnel')} />
+      <Container>
+        <BaseForm
+          initialValues={initialPersonnel}
+          component={<FormEmployee />}
+          onSubmit={onFormSubmit}
+        />
+      </Container>
+    </>
   )
 }
