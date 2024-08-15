@@ -12,7 +12,7 @@ import { apiRequest } from '@/utils/apiDefaults'
 import { toast } from 'react-toastify'
 import { useConfirmDialog } from '@/utils/hooks/useConfirmDialogContext'
 
-export const EmployeeVacations = () => {
+export const EmployeeVacationList = () => {
   const { t: hr } = useTranslation('hr')
   const { id } = Route.useParams()
   const queryClient = useQueryClient()

@@ -12,6 +12,7 @@ import {
 } from '@tanstack/react-table'
 import {
   CircularProgress,
+  IconButton,
   Paper,
   Stack,
   Table,
@@ -21,7 +22,7 @@ import {
   TablePagination,
   TableRow
 } from '@mui/material'
-import { Fragment, ReactElement, useEffect, useState } from 'react'
+import { Fragment, ReactElement, useEffect, useState, MouseEvent } from 'react'
 import { apiRequest, ApiResponse, HttpMethod } from '@/utils/apiDefaults'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { apiRoutes } from '@/utils/apiRoutes'
@@ -32,6 +33,7 @@ import { useTranslation } from 'react-i18next'
 import { TableState } from '@/components/Common/Table/components/TableState'
 import { TableHeader } from '@/components/Common/Table/stylesTable'
 import { FilterOperators } from '@/utils/filterOperators'
+import { FaAngleUp, FaList } from 'react-icons/fa6'
 
 interface BaseTableProps<TData extends RowData> {
   endpoint: keyof typeof apiRoutes
@@ -40,8 +42,10 @@ interface BaseTableProps<TData extends RowData> {
   params?: Record<string, string>
   customFilter?: string
   method?: HttpMethod
-  renderSubComponent?: (props: { row: Row<TData> }) => ReactElement
-  getRowCanExpand?: (row: Row<TData>) => boolean
+  renderSubComponent?: (props: {
+    row: Row<TData>
+    handleExpandRow: (e: MouseEvent | null, rowId: string) => void
+  }) => ReactElement
 }
 
 type FilterVariant = 'text' | 'select' | 'enum'
@@ -61,22 +65,14 @@ declare module '@tanstack/react-table' {
 }
 
 export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) => {
-  const {
-    columns,
-    endpoint,
-    params,
-    customFilter,
-    nameSpace = 'common',
-    method = 'POST',
-    renderSubComponent,
-    getRowCanExpand
-  } = props
+  const { columns, endpoint, params, customFilter, nameSpace = 'common', method = 'POST', renderSubComponent } = props
   const { setItem, getItem } = useLocalStorage(endpoint)
   const { t: feedbacks } = useTranslation('feedbacks')
 
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(getItem() || [])
   const [sorting, setSorting] = useState<SortingState>([])
   const [filterOperators, setFilterOperators] = useState<ColumnFilterProps[]>([])
+  const [expandedRowId, setExpandedRowId] = useState<string | null>(null)
 
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -116,7 +112,6 @@ export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) =
       setPagination((prev) => ({ ...prev, pageIndex: 0 }))
     },
     onSortingChange: setSorting,
-    getRowCanExpand,
     getExpandedRowModel: getExpandedRowModel()
   })
 
@@ -167,6 +162,13 @@ export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) =
     setPagination((prev) => ({ ...prev, pageIndex: 0 }))
   }
 
+  const handleExpandRow = (e: MouseEvent | null, rowId: string) => {
+    if (e) {
+      e.stopPropagation()
+    }
+    setExpandedRowId((prevId) => (prevId === rowId ? null : rowId))
+  }
+
   useEffect(() => {
     const newFilterOperators: ColumnFilterProps[] = table.getHeaderGroups().flatMap((headerGroup) =>
       headerGroup.headers.map((header) => ({
@@ -210,6 +212,7 @@ export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) =
                       </TableCell>
                     )
                   })}
+                  {renderSubComponent && <TableCell />}
                 </TableRow>
               ))}
             </TableHeader>
@@ -239,17 +242,27 @@ export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) =
                           {flexRender(cell.column.columnDef.cell, cell.getContext())}
                         </TableCell>
                       ))}
+                      {renderSubComponent && (
+                        <TableCell sx={{ textAlign: 'right', height: 45, p: 1 }}>
+                          <IconButton
+                            size={'small'}
+                            onClick={(e) => handleExpandRow(e, row.id)}
+                          >
+                            {expandedRowId === row.id ? <FaAngleUp /> : <FaList />}
+                          </IconButton>
+                        </TableCell>
+                      )}
                     </TableRow>
-                    {renderSubComponent && row.getIsExpanded() && (
+                    {renderSubComponent && expandedRowId === row.id && (
                       <TableRow
                         key={`${row.id}-expanded`}
                         sx={{ backgroundColor: '#f9f9f9' }}
                       >
                         <TableCell
                           key={`${row.id}-${row.index}-expanded`}
-                          colSpan={columns.length}
+                          colSpan={columns.length + 1}
                         >
-                          {renderSubComponent({ row })}
+                          {renderSubComponent({ row, handleExpandRow })}
                         </TableCell>
                       </TableRow>
                     )}

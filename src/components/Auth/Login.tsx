@@ -4,7 +4,7 @@ import { FormLogin } from '@/components/Auth/FormLogin'
 import * as yup from 'yup'
 import { useLogin } from '@/utils/hooks/useLogin'
 
-export const LoginComponent = () => {
+export const Login = () => {
   const loginFormFields = {
     email: '',
     password: ''

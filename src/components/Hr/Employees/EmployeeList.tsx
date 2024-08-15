@@ -7,8 +7,8 @@ import { Button } from '@mui/material'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
 import { useNavigate } from '@tanstack/react-router'
-import { EmployeeListEditActions } from '@/components/Hr/Employees/components/EmployeeListEditActions'
 import { Route } from '@/routes/_authenticated/hr/employees/new'
+import { DetailsSubRow } from '@/components/Hr/Employees/components/DetailsSubRow'
 
 export const EmployeeList = () => {
   const { t: common } = useTranslation('common')
@@ -42,19 +42,6 @@ export const EmployeeList = () => {
           filterVariant: 'select',
           filterOptionsEndpoint: 'branches'
         }
-      },
-      {
-        id: 'actions',
-        enableSorting: false,
-        enableColumnFilter: false,
-        cell: ({ row }) => {
-          const employeeId = row.original.id
-
-          if (!employeeId) {
-            return null
-          }
-          return <EmployeeListEditActions employeeId={employeeId} />
-        }
       }
     ],
     [common]
@@ -82,8 +69,15 @@ export const EmployeeList = () => {
       />
 
       <BaseTable<EmployeeResponse>
-        columns={columns}
         endpoint={'employees'}
+        columns={columns}
+        renderSubComponent={(props) => (
+          <DetailsSubRow
+            employeeId={props.row.original.id}
+            row={props.row}
+            handleExpandRow={props.handleExpandRow}
+          />
+        )}
       />
     </>
   )

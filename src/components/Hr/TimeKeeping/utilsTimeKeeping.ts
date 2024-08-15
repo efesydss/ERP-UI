@@ -1,6 +1,5 @@
 import { enumToOptions } from '@/utils/transformers'
 import { AdditionalPaymentType, CurrencyCode, DeductionPaymentType } from '@/components/Hr/Finances/typesFinance'
-import { OptionType } from '@/components/Common/Form/BaseSelect'
 import { t } from 'i18next'
 import { DynamicInputFieldProps } from '@/components/Common/Form/Input/DynamicFields'
 import { EmployeeOverTime, OverTimePercentage } from '@/components/Hr/TimeKeeping/typesTimeKeeping'
@@ -13,23 +12,11 @@ import { EmployeePaymentProps } from '@/components/Hr/typesHr'
     fields: bankAccountFields
   }*/
 
-export enum EditableFields {
-  'overtimes',
-  'deductions',
-  'additionalPayments'
-}
-
 export interface DynamicFieldValues {
   overtimes: EmployeeOverTime[]
   deductions: EmployeePaymentProps[]
   additionalPayments: EmployeePaymentProps[]
 }
-
-export const getTypeOptions = (): OptionType[] => [
-  { value: 'deductions', label: t('hr:deductions') },
-  { value: 'overtimes', label: t('hr:overtimes') },
-  { value: 'additionalPayments', label: t('hr:additionalPayments') }
-]
 
 const getEmployeePayment = () => [
   {

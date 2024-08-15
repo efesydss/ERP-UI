@@ -10,7 +10,7 @@ interface BaseGridProps {
   employeeId?: number
 }
 
-export const BaseGrid = (props: BaseGridProps) => {
+export const VacationGrid = (props: BaseGridProps) => {
   const { employeeId } = props
 
   const { data, isLoading } = useQuery({

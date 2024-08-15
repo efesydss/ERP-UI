@@ -7,10 +7,10 @@ export const backendURL = import.meta.env.VITE_BACKEND_ENDPOINT
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
 
-interface RequestConfig {
+interface RequestConfig<TRequest = any> {
   endpoint: keyof typeof apiRoutes
   method?: HttpMethod
-  payload?: any
+  payload?: TRequest
   headers?: AxiosHeaders
   id?: number
   params?: Record<string, string>
@@ -33,7 +33,7 @@ export const axiosBase = axios.create({
   baseURL: '/api'
 })
 
-export const apiRequest = async <T>(options: RequestConfig): Promise<T> => {
+export const apiRequest = async <TResponse, TRequest = any>(options: RequestConfig<TRequest>): Promise<TResponse> => {
   const { endpoint, payload, method = 'POST', headers = new AxiosHeaders(), id, params } = options
 
   let url = apiRoutes[endpoint]
@@ -55,7 +55,7 @@ export const apiRequest = async <T>(options: RequestConfig): Promise<T> => {
     headers
   }
 
-  const response: AxiosResponse<T> = await axiosBase(axiosParams)
+  const response: AxiosResponse<TResponse> = await axiosBase(axiosParams)
   return response.data
 }
 

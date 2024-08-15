@@ -8,7 +8,7 @@ import { Button } from '@mui/material'
 import { Route as NewVacationRoute } from '@/routes/_authenticated/hr/vacations/new/$id'
 import { useNavigate } from '@tanstack/react-router'
 import { MdAdd } from 'react-icons/md'
-import { BaseGrid } from '@/components/Common/DataGrid/BaseGrid'
+import { VacationGrid } from '@/components/Common/DataGrid/VacationGrid'
 
 export const VacationList = () => {
   const { t: nav } = useTranslation('nav')
@@ -78,7 +78,7 @@ export const VacationList = () => {
         }
       }
     ],
-    [common, hr]
+    [common, hr, navigate]
   )
   return (
     <>
@@ -87,8 +87,7 @@ export const VacationList = () => {
       <BaseTable<VacationStatus>
         endpoint={'employeeVacationStatuses'}
         columns={columns}
-        renderSubComponent={(props) => <BaseGrid employeeId={props.row.original.employee.id} />}
-        //getRowCanExpand={() => true}
+        renderSubComponent={(props) => <VacationGrid employeeId={props.row.original.employee.id} />}
       />
     </>
   )

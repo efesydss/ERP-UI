@@ -31,5 +31,6 @@
   "noRecordsFound" : "Hiç kayıt bulunamadı",
   "apply": "Uygula",
   "clear": "Temizle",
-  "continue": "Devam et"
+  "continue": "Devam et",
+  "update": "Güncelle"
 }

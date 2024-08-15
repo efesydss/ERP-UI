@@ -47,5 +47,6 @@ export const apiRoutes = {
   timeKeepingCreate: 'hr/timekeeping',
   timeKeepingUpdate: 'hr/timekeeping',
   timeKeepings: 'hr/timekeepings',
-  timeKeeping: 'hr/timekeeping'
+  timeKeeping: 'hr/timekeeping',
+  timeKeepingCalculateTotal: 'hr/timekeeping/calculateTotal'
 }

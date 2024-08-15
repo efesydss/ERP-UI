@@ -1,22 +1,71 @@
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, IconButton } from '@mui/material'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { FieldArray } from 'formik'
-import { DynamicFieldsWrapper } from '@/components/Hr/TimeKeeping/stylesTimeKeeping'
-import { FormGrid } from '@/components/Common/Form/FormGrid/FormGrid'
-import { DynamicFields } from '@/components/Common/Form/Input/DynamicFields'
-import { getAccordionConfigs, initializeValues } from '@/components/Hr/TimeKeeping/utilsTimeKeeping'
-import { useConfirmDialog } from '@/utils/hooks/useConfirmDialogContext'
-import { FaRegTrashCan } from 'react-icons/fa6'
-import { MdAdd } from 'react-icons/md'
+import { Box, Button } from '@mui/material'
+import { useFormikContext } from 'formik'
+import { EmployeeTimeKeepingProps } from '@/components/Hr/TimeKeeping/typesTimeKeeping'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { apiRequest } from '@/utils/apiDefaults'
+import { DynamicFieldsAccordion } from '@/components/Hr/TimeKeeping/components/DynamicFieldsAccordion'
+import { useEffect } from 'react'
+import { useTrackChanges } from '@/components/Hr/TimeKeeping/useTrackChanges'
 import { t } from 'i18next'
+import { toast } from 'react-toastify'
 
-export const FormTimeKeepingDetails = () => {
-  const accordionConfigs = getAccordionConfigs()
-  const { openDialog } = useConfirmDialog()
+interface FormTimeKeepingDetailsProps {
+  onSetTotalPayment: (total: number) => void
+}
+
+export const FormTimeKeepingDetails = (props: FormTimeKeepingDetailsProps) => {
+  const { onSetTotalPayment } = props
+  const { values } = useFormikContext<EmployeeTimeKeepingProps>()
+  const { updatedValues, hasChanges } = useTrackChanges(values)
+  const queryClient = useQueryClient()
+
+  const { mutateAsync: updateNetPayment } = useMutation({
+    mutationFn: (payment: EmployeeTimeKeepingProps) =>
+      apiRequest<{ total: number }, EmployeeTimeKeepingProps>({
+        endpoint: 'timeKeepingCalculateTotal',
+        payload: payment
+      }),
+    onSuccess: (res) => {
+      onSetTotalPayment(res.total)
+    }
+  })
+
+  const { mutate: deleteOvertime } = useMutation({
+    mutationFn: (id: number) =>
+      apiRequest({
+        endpoint: 'employeeDeleteOvertime',
+        method: 'DELETE',
+        params: { employeeId: values.employee.id.toString(), overtimeId: id.toString() }
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['timeKeeping'], refetchType: 'all' })
+      toast.success('Entry Deleted')
+    }
+  })
+
+  useEffect(() => {
+    if (!hasChanges) {
+      return
+    }
+
+    const handler = setTimeout(() => {
+      updateNetPayment(updatedValues)
+    }, 400)
+
+    return () => {
+      clearTimeout(handler)
+    }
+  }, [hasChanges, updateNetPayment, updatedValues])
 
   return (
     <>
       <Box sx={{ mt: 2 }}>
+        <DynamicFieldsAccordion
+          deleteEmployeePayment={() => {}}
+          deleteOvertime={deleteOvertime}
+        />
+      </Box>
+      {/*<Box sx={{ mt: 2 }}>
         {accordionConfigs.map((config, index) => (
           <Accordion
             key={config.name}
@@ -93,9 +142,9 @@ export const FormTimeKeepingDetails = () => {
             </AccordionDetails>
           </Accordion>
         ))}
-      </Box>
+      </Box>*/}
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
-        <Button variant={'contained'}>guncelle</Button>
+        <Button variant={'contained'}>{t('common:update')}</Button>
       </Box>
     </>
   )

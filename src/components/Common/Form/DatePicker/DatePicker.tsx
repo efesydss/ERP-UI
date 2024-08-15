@@ -1,10 +1,10 @@
 import { useField } from 'formik'
 import RDatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-import { Stack } from '@mui/material'
 import { t } from 'i18next'
 import { Input } from '@/components/Common/Form/Input/Input'
 import { format } from 'date-fns'
+import { DatePickerWrapper } from '@/components/Common/Form/DatePicker/stylesDatePicker'
 
 interface DatePickerProps {
   name: string
@@ -31,7 +31,7 @@ export const DatePicker = (props: DatePickerProps) => {
   }
 
   return (
-    <Stack position={'relative'}>
+    <DatePickerWrapper>
       <RDatePicker
         {...field}
         {...rest}
@@ -53,6 +53,6 @@ export const DatePicker = (props: DatePickerProps) => {
           />
         }
       />
-    </Stack>
+    </DatePickerWrapper>
   )
 }

@@ -22,6 +22,7 @@ interface BaseSelectProps {
   isEnum?: boolean
   onChange?: (option: string) => void
   selectLabel?: string
+  isOptional?: boolean
 }
 
 export const BaseSelect = (props: BaseSelectProps) => {
@@ -34,6 +35,7 @@ export const BaseSelect = (props: BaseSelectProps) => {
     endpoint,
     isMulti = false,
     isEnum = false,
+    isOptional = false,
     onChange,
     ...rest
   } = props
@@ -73,6 +75,9 @@ export const BaseSelect = (props: BaseSelectProps) => {
       } else {
         const selectedOption = newValue as OptionType
         setValue(selectedOption.value)
+        if (onChange) {
+          onChange(selectedOption.value as string)
+        }
       }
     } else {
       if (newValue === null) {
@@ -104,12 +109,10 @@ export const BaseSelect = (props: BaseSelectProps) => {
           (field.value as Array<{ id: number; name: string }>).some((val) => val.id === option.value)
         )
       }
-      const singleValue = finalOptions.find(
-        (option) => option.value === (field.value as { id: number; name: string })?.id
-      )
-      return singleValue ? singleValue : null
+      return finalOptions.find((option) => option.value === (field.value as { id: number; name: string })?.id) || null
     }
   }
+
   const hasError = !!(touched && error)
 
   const customStyles = {
@@ -143,6 +146,7 @@ export const BaseSelect = (props: BaseSelectProps) => {
         errorMessage={error}
         nameSpace={nameSpace}
         label={selectLabel}
+        isOptional={isOptional}
       />
       <Select
         {...rest}

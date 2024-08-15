@@ -3,17 +3,20 @@ import { DatePicker } from '@/components/Common/Form/DatePicker/DatePicker'
 import { BaseSelect, OptionType } from '@/components/Common/Form/BaseSelect'
 import { Box } from '@mui/material'
 import { useTranslation } from 'react-i18next'
+import { apiRoutes } from '@/utils/apiRoutes'
 
 export interface DynamicInputFieldProps {
   name: string
   type?: string
   options?: OptionType[]
+  endpoint?: keyof typeof apiRoutes
   fields?: Array<DynamicInputFieldProps>
   areOptionsEnum?: boolean
+  isOptional?: boolean
 }
 
 interface DynamicInputProps {
-  prefix: string
+  prefix?: string
   fields: Array<DynamicInputFieldProps>
 }
 
@@ -29,7 +32,7 @@ export const DynamicFields = (props: DynamicInputProps) => {
   return (
     <>
       {fields.map((field, i) => {
-        const fieldName = `${prefix}.${field.name}`
+        const fieldName = prefix ? `${prefix}.${field.name}` : field.name
         const fieldLabel = t(getLabel(field.name))
 
         if (field.type === 'date') {
@@ -38,12 +41,13 @@ export const DynamicFields = (props: DynamicInputProps) => {
               key={`${prefix}.${i}.${field.name}${i}`}
               name={fieldName}
               label={fieldLabel}
+              isOptional={field.isOptional}
             />
           )
         }
 
         if (field.type === 'select') {
-          const isEnum = field.areOptionsEnum !== false
+          const isEnum = field.endpoint ? false : field.areOptionsEnum !== false
 
           return (
             <div key={`${prefix}.${i}.${field.name}${i}`}>
@@ -53,6 +57,8 @@ export const DynamicFields = (props: DynamicInputProps) => {
                 isEnum={isEnum}
                 nameSpace={'hr'}
                 selectLabel={fieldLabel}
+                endpoint={field.endpoint}
+                isOptional={field.isOptional}
               />
             </div>
           )
@@ -77,7 +83,7 @@ export const DynamicFields = (props: DynamicInputProps) => {
             key={`${prefix}.${i}.${field.name}${i}`}
             name={fieldName}
             type={field.type || 'text'}
-            isOptional
+            isOptional={field.isOptional}
             nameSpace={'hr'}
             label={fieldLabel}
           />

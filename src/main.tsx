@@ -29,13 +29,11 @@ const router = createRouter({
   defaultNotFoundComponent: () => <span>is a 404</span>
 })
 
-/*
 declare module '@tanstack/react-router' {
   interface Register {
     router: typeof router
   }
 }
-*/
 
 function InnerApp() {
   const app = useAppContext()

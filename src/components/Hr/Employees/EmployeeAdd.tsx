@@ -8,6 +8,7 @@ import { FormEmployee } from '@/components/Hr/Employees/FormEmployee'
 import { useNavigate } from '@tanstack/react-router'
 import { Route } from '@/routes/_authenticated/hr/employees'
 import { Container } from '@mui/material'
+import { capitalizeFirstLetter } from '@/utils/transformers'
 
 const initialPersonnel: EmployeeResponse = {
   id: 0,
@@ -42,7 +43,7 @@ const initialPersonnel: EmployeeResponse = {
   }
 }
 
-export const EmployeeCreate = () => {
+export const EmployeeAdd = () => {
   const navigate = useNavigate()
 
   const { mutateAsync } = useMutation({
@@ -70,7 +71,11 @@ export const EmployeeCreate = () => {
   })
 
   const onFormSubmit = async (values: EmployeeResponse) => {
-    await mutateAsync(values)
+    await mutateAsync({
+      ...values,
+      name: capitalizeFirstLetter(values.name),
+      surname: capitalizeFirstLetter(values.surname)
+    })
   }
 
   return (

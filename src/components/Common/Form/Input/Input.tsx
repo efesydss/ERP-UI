@@ -49,7 +49,7 @@ const InputBase = (props: InputProps, ref: ForwardedRef<HTMLElement>) => {
         rows={isMultiLine ? 4 : 1}
         fullWidth
         error={hasError}
-        type={isNumber ? 'text' : name === 'password' ? 'password' : 'text'}
+        type={isNumber ? 'number' : name === 'password' ? 'password' : 'text'}
         {...field}
         {...rest}
         onChange={handleChange}

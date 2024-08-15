@@ -31,6 +31,7 @@
   "normalWorkingDays": "Normal Çalışma",
   "weekendWorkingHours": "Hafta Sonu Çalışma",
   "unpaidTimeOffHours": "Ücretsiz İzin Saat",
+  "unPaid": "Ücretsiz",
   "branchSuffix": "Şubesi",
   "departmentSuffix": "Departmanı",
   "deductions": "Ek Kesintiler",
@@ -52,7 +53,8 @@
   "employee": "Çalışan",
   "overTimePercentage": "Çarpan",
   "overtimeDate": "Tarih",
-  "workingHours ": "Çalışılan Saat",
+  "workingDays": "Çalışılan Gün",
+  "workingHours": "Çalışılan Saat",
   "total": "Net Ödenecek",
   "createTimeKeeping": "Puantaj Oluştur",
   "getDraft":"Taslağı Getir",
@@ -60,5 +62,7 @@
   "removeEmployee": "Pasife Çek",
   "employeeDetails": "Çalışan Detayları",
   "timeKeepingDetails": "Puantaj Detayları",
-  "fathersName": "Baba Adı"
+  "fathersName": "Baba Adı",
+  "city": "Şehir",
+  "street": "Sokak"
 }

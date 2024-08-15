@@ -4,16 +4,17 @@ import { t } from 'i18next'
 import { BaseForm } from '@/components/Common/Form/BaseForm'
 import { EmployeeTimeKeepingProps } from '@/components/Hr/TimeKeeping/typesTimeKeeping'
 import { FormTimeKeepingDetails } from '@/components/Hr/TimeKeeping/FormTimeKeepingDetails'
+import { useState } from 'react'
 
 export const TimeKeepingDetails = () => {
-  //const { id } = Route.useParams()
   const data = Route.useLoaderData()
-
   const {
     title,
     total,
     employee: { name, surname, companyBranch, department }
   } = data
+
+  const [totalPayment, setTotalPayment] = useState<number>(total)
 
   const onFormSubmit = async (values: EmployeeTimeKeepingProps) => {
     console.log(values)
@@ -33,13 +34,13 @@ export const TimeKeepingDetails = () => {
         </Box>
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 1 }}>
           <Typography>Net Ödenecek Tutar</Typography>
-          <Typography variant={'h5'}>{total}</Typography>
+          <Typography variant={'h5'}>{totalPayment}</Typography>
         </Box>
       </Paper>
       <BaseForm
         initialValues={data}
         onSubmit={onFormSubmit}
-        component={<FormTimeKeepingDetails />}
+        component={<FormTimeKeepingDetails onSetTotalPayment={setTotalPayment} />}
       />
     </>
   )

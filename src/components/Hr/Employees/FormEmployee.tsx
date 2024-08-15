@@ -35,56 +35,59 @@ export const FormEmployee = (props: FormEmployeeProps) => {
             label: hr('infoGeneral'),
             content: (
               <Paper sx={{ p: 2 }}>
-                <FormGrid widths={'half'}>
-                  <Input name={'name'} />
-                  <Input name={'surname'} />
-                </FormGrid>
-                <FormGrid widths={'third'}>
-                  <BaseSelect
-                    name='companyBranch'
-                    endpoint={'branches'}
-                  />
-                  <BaseSelect
-                    name='department'
-                    endpoint={'departments'}
-                  />
-                  <Input name={'profession'} />
-                </FormGrid>
-                <FormGrid widths={'third'}>
-                  <Input name={'email'} />
-                  <Input
-                    name={'phone'}
-                    isOptional
-                  />
-                  <DatePicker name={'startDate'} />
-                </FormGrid>
-                <FormGrid widths={'forth'}>
-                  <Input
-                    name={'city'}
-                    isOptional
-                  />
-                  <Input
-                    name={'province'}
-                    isOptional
-                  />
-                  <Input
-                    name={'state'}
-                    isOptional
-                  />
-                  <Input
-                    name={'street'}
-                    isOptional
-                  />
-                </FormGrid>
-                <FormGrid widths={'half'}>
-                  <Input
-                    name={'emergencyPhone'}
-                    isOptional
-                  />
-                  <Input
-                    name={'emergencyName'}
-                    isOptional
-                  />
+                <FormGrid
+                  widths={'half'}
+                  isContainer
+                >
+                  <FormGrid>
+                    <Input name={'name'} />
+                    <Input name={'surname'} />
+                    <FormGrid>
+                      <BaseSelect
+                        name='companyBranch'
+                        endpoint={'branches'}
+                      />
+                      <BaseSelect
+                        name='department'
+                        endpoint={'departments'}
+                      />
+                      <Input name={'profession'} />
+                      <Input name={'email'} />
+                      <DatePicker name={'startDate'} />
+                    </FormGrid>
+                  </FormGrid>
+                  <FormGrid>
+                    <Input
+                      name={'phone'}
+                      isOptional
+                    />
+                    <Input
+                      name={'city'}
+                      nameSpace={'hr'}
+                      isOptional
+                    />
+                    <Input
+                      name={'province'}
+                      isOptional
+                    />
+                    <Input
+                      name={'state'}
+                      isOptional
+                    />
+                    <Input
+                      name={'street'}
+                      nameSpace={'hr'}
+                      isOptional
+                    />
+                    <Input
+                      name={'emergencyPhone'}
+                      isOptional
+                    />
+                    <Input
+                      name={'emergencyName'}
+                      isOptional
+                    />
+                  </FormGrid>
                 </FormGrid>
                 {!isDetailPage && (
                   <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 4 }}>

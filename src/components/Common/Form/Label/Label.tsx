@@ -13,6 +13,7 @@ interface LabelProps {
 export const Label = (props: LabelProps) => {
   const { name, nameSpace, errorMessage, label, hasError = false, isOptional = false } = props
   const { t } = useTranslation(nameSpace || 'common')
+
   return (
     <LabelWrapper>
       <label htmlFor={name}>

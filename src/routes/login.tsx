@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { LoginComponent } from '@/components/Auth/LoginComponent'
+import { Login } from '@/components/Auth/Login'
 import { z } from 'zod'
 
 export const Route = createFileRoute('/login')({
@@ -7,5 +7,5 @@ export const Route = createFileRoute('/login')({
     redirect: z.string().optional()
   })
 }).update({
-  component: LoginComponent
+  component: Login
 })

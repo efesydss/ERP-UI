@@ -37,7 +37,7 @@ export interface PayrollData {
   currency?: Currency
   salary: number
   includedInCost?: boolean
-  monthlyProgress?: string
+  monthlyProgress?: string | null
   monthlyHour?: number
   iban: string
   children?: number
@@ -55,7 +55,7 @@ export interface EmployeeResponse {
   emergencyPhone?: string
   emergencyName?: string
   startDate: string
-  endDate?: string
+  endDate?: string | null
   phone?: string
   email?: string
   serialNumber?: string
