@@ -11,8 +11,8 @@ import {
 } from '@mui/material'
 import { AppBarProps } from '@/components/Root/typesRoot'
 
-const drawerWidth = 240
-const drawerCollapsed = 80
+export const drawerWidth = 240
+export const drawerCollapsed = 80
 export const headerHeight = 54
 
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -88,6 +88,7 @@ export const SidebarHeader = styled('div')(({ theme }) => ({
 export const Main = styled(Box)(({ theme }) => ({
   flexGrow: 1,
   padding: theme.spacing(3)
+  //width: `calc(100% - ${drawerWidth}px)`
 }))
 
 export const ListItem = styled(MuiListItem, {

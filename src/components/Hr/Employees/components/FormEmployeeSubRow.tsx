@@ -1,4 +1,4 @@
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button } from '@mui/material'
+import { AccordionDetails, Box, Button } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { t } from 'i18next'
 import { FormGrid } from '@/components/Common/Form/FormGrid/FormGrid'
@@ -9,6 +9,7 @@ import { LuRefreshCcw } from 'react-icons/lu'
 import { DynamicFields } from '@/components/Common/Form/Input/DynamicFields'
 import { employeeConfig } from '@/components/Hr/Employees/configEmployee'
 import { MdErrorOutline } from 'react-icons/md'
+import { AccordionSummary, Accordion } from '@/components/Common/Accordion/stylesAccordion'
 
 export const FormEmployeeSubRow = () => {
   const [expanded, setExpanded] = useState<string | false>('infoGeneral')

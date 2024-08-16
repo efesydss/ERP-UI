@@ -5,6 +5,7 @@ import { BaseForm } from '@/components/Common/Form/BaseForm'
 import { EmployeeTimeKeepingProps } from '@/components/Hr/TimeKeeping/typesTimeKeeping'
 import { FormTimeKeepingDetails } from '@/components/Hr/TimeKeeping/FormTimeKeepingDetails'
 import { useState } from 'react'
+import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 
 export const TimeKeepingDetails = () => {
   const data = Route.useLoaderData()
@@ -22,15 +23,13 @@ export const TimeKeepingDetails = () => {
 
   return (
     <>
+      <PageTitle
+        title={`${name} ${surname}`}
+        subTitle={`${companyBranch.name} ${t('hr:branchSuffix')}, ${department.name} ${t('hr:departmentSuffix')}`}
+      />
       <Paper sx={{ p: 2, mt: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <Box>
-          <Typography variant={'h5'}>
-            {name} {surname}
-          </Typography>
-          <Typography sx={{ mb: 2 }}>
-            {companyBranch.name} {t('hr:branchSuffix')}, {department.name} {t('hr:departmentSuffix')}
-          </Typography>
-          <Typography sx={{ fontSize: '.9rem' }}>{title}</Typography>
+          <Typography>{title}</Typography>
         </Box>
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 1 }}>
           <Typography>Net Ödenecek Tutar</Typography>

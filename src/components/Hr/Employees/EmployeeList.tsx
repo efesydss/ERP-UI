@@ -67,7 +67,6 @@ export const EmployeeList = () => {
         title={hr('personnelList')}
         actions={<PersonnelListActions />}
       />
-
       <BaseTable<EmployeeResponse>
         endpoint={'employees'}
         columns={columns}

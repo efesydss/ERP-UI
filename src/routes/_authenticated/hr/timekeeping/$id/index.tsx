@@ -21,6 +21,10 @@ export const Route = createFileRoute('/_authenticated/hr/timekeeping/$id/')({
           id
         })
     })
+    const { name, surname } = data.employee
+    const { setCrumb } = context.app
+
+    setCrumb(`${name} ${surname}`)
 
     return data
   },

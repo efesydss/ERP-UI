@@ -1,9 +1,6 @@
-import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
-import { AppBar } from '@/components/Root/components/AppBar/AppBar'
-import { AppDrawer } from '@/components/Root/components/AppDrawer/AppDrawer'
-import { DrawerHeader, Main, RootWrapper } from '@/components/Root/stylesRoot'
+import { createFileRoute, redirect } from '@tanstack/react-router'
 import { getRefreshToken, setAuthToken, tokenGlobal } from '@/utils/apiDefaults'
-import { Box } from '@mui/material'
+import { Authenticated } from '@/components/Root/Authenticated'
 
 export const Route = createFileRoute('/_authenticated')({
   beforeLoad: async ({ context, location }) => {
@@ -37,19 +34,5 @@ export const Route = createFileRoute('/_authenticated')({
       throw redirect({ to: '/login' })
     }
   },
-  component: () => (
-    <>
-      <RootWrapper>
-        <AppDrawer />
-        <Box sx={{ width: '100%' }}>
-          <AppBar />
-          <Main component={'main'}>
-            <DrawerHeader />
-
-            <Outlet />
-          </Main>
-        </Box>
-      </RootWrapper>
-    </>
-  )
+  component: () => <Authenticated />
 })

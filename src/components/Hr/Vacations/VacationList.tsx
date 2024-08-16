@@ -4,11 +4,11 @@ import { useMemo } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import { useTranslation } from 'react-i18next'
-import { Button } from '@mui/material'
+import { Box, IconButton } from '@mui/material'
 import { Route as NewVacationRoute } from '@/routes/_authenticated/hr/vacations/new/$id'
 import { useNavigate } from '@tanstack/react-router'
-import { MdAdd } from 'react-icons/md'
 import { VacationGrid } from '@/components/Common/DataGrid/VacationGrid'
+import { GrNewWindow } from 'react-icons/gr'
 
 export const VacationList = () => {
   const { t: nav } = useTranslation('nav')
@@ -63,17 +63,17 @@ export const VacationList = () => {
           }
 
           return (
-            <Button
-              size={'small'}
-              variant={'text'}
-              startIcon={<MdAdd />}
-              onClick={(e) => {
-                e.stopPropagation()
-                navigate({ to: NewVacationRoute.fullPath, params: { id: employeeId } })
-              }}
-            >
-              {hr('leaveAdd')}
-            </Button>
+            <Box sx={{ textAlign: 'right' }}>
+              <IconButton
+                size={'small'}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  navigate({ to: NewVacationRoute.fullPath, params: { id: employeeId } })
+                }}
+              >
+                <GrNewWindow />
+              </IconButton>
+            </Box>
           )
         }
       }

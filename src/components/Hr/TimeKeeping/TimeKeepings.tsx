@@ -6,8 +6,8 @@ export const TimeKeepings = () => {
   return (
     <TabPanel
       tabs={[
-        { label: 'Taslaklar', content: <TimeKeepingDraft /> },
-        { label: 'Puantaj Listesi', content: <TimeKeepingList /> }
+        { label: 'Puantaj Listesi', content: <TimeKeepingList /> },
+        { label: 'Taslaklar', content: <TimeKeepingDraft /> }
       ]}
     />
   )

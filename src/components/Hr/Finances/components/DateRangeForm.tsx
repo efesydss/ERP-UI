@@ -14,8 +14,14 @@ export const DateRangeForm = (props: DateRangeFormProps) => {
 
   return (
     <FormGrid widths={'third'}>
-      <DatePicker name={'reportStartDate'} />
-      <DatePicker name={'reportEndDate'} />
+      <DatePicker
+        name={'reportStartDate'}
+        label={t('hr:reportStartDate')}
+      />
+      <DatePicker
+        name={'reportEndDate'}
+        label={t('hr:reportEndDate')}
+      />
       <Box sx={{ pt: 3, gap: 1, display: 'flex', alignItems: 'center' }}>
         <Button
           type={'submit'}

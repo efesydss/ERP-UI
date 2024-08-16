@@ -7,8 +7,9 @@ import { useNavigate } from '@tanstack/react-router'
 import { formatToISOString } from '@/utils/transformers'
 import { FormVacationAdd } from '@/components/Hr/Vacations/FormVacationAdd'
 import { Route } from '@/routes/_authenticated/hr/vacations/new/$id'
-import { Container, Paper } from '@mui/material'
+import { Paper } from '@mui/material'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
+import { t } from 'i18next'
 
 const initialLeave: VacationBaseProps = {
   personnel: { id: 0, name: '' },
@@ -31,7 +32,6 @@ export const VacationAdd = () => {
         endpoint: 'employeeVacationAdd',
         params: { employeeId: id.toString() },
         payload: {
-          id,
           startDateTime: formatToISOString(values.startDateTime),
           endDateTime: formatToISOString(values.endDateTime),
           workingDays: values.workingDays,
@@ -43,16 +43,21 @@ export const VacationAdd = () => {
     onSuccess: () => {
       toast.success('Vacation Created')
       navigate({ to: '/hr/vacations' })
-    }
+    },
+    onError: (err) => console.log(err)
   })
 
   const onFormSubmit = async (values: VacationBaseProps) => {
+    console.log(values)
     await mutateAsync(values)
   }
 
   return (
-    <Container>
-      <PageTitle title={`${data.name} ${data.surname}`} />
+    <>
+      <PageTitle
+        title={`${data.name} ${data.surname}`}
+        subTitle={`${data.companyBranch.name} ${t('hr:branchSuffix')}, ${data.department.name} ${t('hr:departmentSuffix')}`}
+      />
       <Paper sx={{ p: 2 }}>
         <BaseForm
           initialValues={initialLeave}
@@ -60,6 +65,6 @@ export const VacationAdd = () => {
           component={<FormVacationAdd />}
         />
       </Paper>
-    </Container>
+    </>
   )
 }

@@ -2,9 +2,10 @@ import { useField } from 'formik'
 import RDatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { t } from 'i18next'
-import { Input } from '@/components/Common/Form/Input/Input'
 import { format } from 'date-fns'
 import { DatePickerWrapper } from '@/components/Common/Form/DatePicker/stylesDatePicker'
+import { Label } from '@/components/Common/Form/Label/Label'
+import { Stack } from '@mui/material'
 
 interface DatePickerProps {
   name: string
@@ -32,6 +33,14 @@ export const DatePicker = (props: DatePickerProps) => {
 
   return (
     <DatePickerWrapper>
+      <Stack>
+        <Label
+          name={name}
+          label={label}
+          isOptional={isOptional}
+          hasError={false}
+        />
+      </Stack>
       <RDatePicker
         {...field}
         {...rest}
@@ -45,13 +54,13 @@ export const DatePicker = (props: DatePickerProps) => {
         yearDropdownItemNumber={85}
         scrollableYearDropdown
         isClearable={isClearable}
-        customInput={
+        /*customInput={
           <Input
             name={name}
             label={label || t(name, { ns: 'hr' })}
             isOptional={isOptional}
           />
-        }
+        }*/
       />
     </DatePickerWrapper>
   )

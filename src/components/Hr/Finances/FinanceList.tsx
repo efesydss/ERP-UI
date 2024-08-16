@@ -77,7 +77,8 @@ export const FinanceList = () => {
       {
         header: common('date'),
         accessorKey: 'paymentDate',
-        enableColumnFilter: false
+        enableColumnFilter: false,
+        enableSorting: false
       },
       {
         header: common('amount'),

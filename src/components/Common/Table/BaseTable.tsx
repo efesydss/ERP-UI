@@ -244,7 +244,7 @@ export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) =
                         </TableCell>
                       ))}
                       {renderSubComponent && (
-                        <TableCell sx={{ textAlign: 'right', height: 45, p: 1 }}>
+                        <TableCell sx={{ textAlign: 'right', height: 45, p: 1, width: 45 }}>
                           <IconButton
                             size={'small'}
                             onClick={(e) => handleExpandRow(e, row.id)}
@@ -257,7 +257,7 @@ export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) =
                     {renderSubComponent && expandedRowId === row.id && (
                       <TableRow
                         key={`${row.id}-expanded`}
-                        sx={{ backgroundColor: '#f9f9f9' }}
+                        sx={{ backgroundColor: 'secondary.light' }}
                       >
                         <TableCell
                           key={`${row.id}-${row.index}-expanded`}

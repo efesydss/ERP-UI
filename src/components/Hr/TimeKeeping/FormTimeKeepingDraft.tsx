@@ -18,6 +18,8 @@ export const FormTimeKeepingDraft = () => {
 
   const { values, initialValues } = useFormikContext<EmployeeTimeKeepingProps>()
 
+  console.log('values -->', values)
+
   const { mutateAsync: addOvertime, isPending: isAddOvertimePending } = useMutation({
     mutationFn: (overtimesToAdd: EmployeeOverTime[]) =>
       apiRequest({
