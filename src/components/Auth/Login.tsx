@@ -44,7 +44,7 @@ export const Login = () => {
           <Typography sx={{ fontWeight: 600 }}>Şahinler Denizcilik ERP</Typography>
         </Stack>
 
-        <Paper sx={{ p: 2, backdropFilter: 'blur(6px)', backgroundColor: 'rgba(255, 255, 255, 0.4)' }}>
+        <Paper sx={{ p: 2, backdropFilter: 'blur(6px)', backgroundColor: 'rgba(255, 255, 255, 0.5)' }}>
           <BaseForm
             initialValues={loginFormFields}
             component={<FormLogin />}

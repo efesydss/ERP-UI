@@ -32,21 +32,21 @@ export const VacationGrid = (props: BaseGridProps) => {
     {
       field: 'startDateTime',
       valueGetter: (value) => formatToDateReadable(value),
-      headerName: t('hr:vacationStart'),
+      headerName: t('common:vacationStart'),
       type: 'string',
       width: 200
     },
     {
       field: 'endDateTime',
       valueGetter: (value) => formatToDateReadable(value),
-      headerName: t('hr:vacationEnd'),
+      headerName: t('common:vacationEnd'),
       type: 'string',
       width: 200
     },
     {
       field: 'timeOffType',
-      headerName: t('hr:timeOffType'),
-      valueGetter: (value: string) => t(`hr:${value}`),
+      headerName: t('common:timeOffType'),
+      valueGetter: (value: string) => t(`common:${value}`),
       type: 'string',
       width: 120
     }

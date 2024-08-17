@@ -24,17 +24,17 @@ export const DynamicFieldsAccordion = (props: DynamicFieldsAccordionProps) => {
   const accordionConfigs = [
     {
       name: 'overtimes',
-      label: t('hr:overtimes'),
+      label: t('common:overtimes'),
       fields: fieldConfigurations['overtimes']
     },
     {
       name: 'deductions',
-      label: t('hr:deductions'),
+      label: t('common:deductions'),
       fields: fieldConfigurations['deductions']
     },
     {
       name: 'additionalPayments',
-      label: t('hr:additionalPayments'),
+      label: t('common:additionalPayments'),
       fields: fieldConfigurations['additionalPayments']
     }
   ]

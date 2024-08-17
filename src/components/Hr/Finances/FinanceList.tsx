@@ -11,25 +11,21 @@ import * as yup from 'yup'
 import { enumToOptions } from '@/utils/transformers'
 import { EmployeePaymentProps } from '@/components/Hr/typesHr'
 import { t } from 'i18next'
-
-export interface ReportDateRange {
-  reportStartDate: string
-  reportEndDate: string
-}
-
-const initialDateRange: ReportDateRange = {
-  reportStartDate: '',
-  reportEndDate: ''
-}
+import { InferType } from 'yup'
 
 const validationSchema = yup.object({
   reportStartDate: yup.string().required(),
   reportEndDate: yup.string().required()
 })
 
+export type ReportDateRange = InferType<typeof validationSchema>
+
+const initialDateRange: ReportDateRange = {
+  reportStartDate: '',
+  reportEndDate: ''
+}
+
 export const FinanceList = () => {
-  const { t: hr } = useTranslation('hr')
-  const { t: common } = useTranslation('common')
   const { t: nav } = useTranslation('nav')
   const [reportRange, setReportRange] = useState('')
 
@@ -38,15 +34,15 @@ export const FinanceList = () => {
   const columns = useMemo<ColumnDef<EmployeePaymentProps>[]>(
     () => [
       {
-        header: common('name'),
+        header: t('common:name'),
         accessorKey: 'employee.name'
       },
       {
-        header: common('surname'),
+        header: t('common:surname'),
         accessorKey: 'employee.surname'
       },
       {
-        header: common('department'),
+        header: t('common:department'),
         accessorKey: 'department',
         accessorFn: (row) => row.employee?.department.name,
         meta: {
@@ -55,7 +51,7 @@ export const FinanceList = () => {
         }
       },
       {
-        header: common('companyBranch'),
+        header: t('common:companyBranch'),
         accessorKey: 'companyBranch',
         accessorFn: (row) => row.employee?.companyBranch.name,
         meta: {
@@ -64,24 +60,23 @@ export const FinanceList = () => {
         }
       },
       {
-        header: hr('paymentType'),
+        header: t('common:paymentType'),
         accessorKey: 'paymentType',
-        accessorFn: (row) => t(`hr:${row.paymentType}`),
+        accessorFn: (row) => t(`common:${row.paymentType}`),
         enableSorting: false,
         meta: {
           filterVariant: 'enum',
-          filterNameSpace: 'hr',
           filterOptions: paymentTypeOptions
         }
       },
       {
-        header: common('date'),
+        header: t('common:date'),
         accessorKey: 'paymentDate',
         enableColumnFilter: false,
         enableSorting: false
       },
       {
-        header: common('amount'),
+        header: t('common:amount'),
         accessorKey: 'amount',
         cell: ({ row }) => {
           const { amount, amountCurrency } = row.original
@@ -90,12 +85,12 @@ export const FinanceList = () => {
         enableColumnFilter: false
       },
       {
-        header: common('description'),
+        header: t('common:description'),
         accessorKey: 'description',
         enableSorting: false
       }
     ],
-    [common, hr, paymentTypeOptions]
+    [paymentTypeOptions]
   )
   return (
     <>

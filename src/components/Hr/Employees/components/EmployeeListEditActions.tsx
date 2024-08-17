@@ -46,11 +46,11 @@ export const EmployeeListEditActions = (props: PersonnelListEditActionsProps) =>
       >
         <MenuItem onClick={() => navigate({ to: '/hr/employees/$id', params: { id: props.employeeId } })}>
           <CgProfile />
-          <Typography>{t('hr:employeeDetails')}</Typography>
+          <Typography>{t('common:employeeDetails')}</Typography>
         </MenuItem>
         <MenuItem>
           <AiOutlineStop />
-          <Typography>{t('hr:removeEmployee')}</Typography>
+          <Typography>{t('common:removeEmployee')}</Typography>
         </MenuItem>
       </Menu>
     </Box>

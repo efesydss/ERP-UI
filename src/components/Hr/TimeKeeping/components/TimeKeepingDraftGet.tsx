@@ -1,6 +1,6 @@
 import { Input } from '@/components/Common/Form/Input/Input'
 import { Box, Button } from '@mui/material'
-import { BaseSelect, OptionType } from '@/components/Common/Form/BaseSelect'
+import { BaseSelect, OptionType } from '@/components/Common/Form/Select/BaseSelect'
 import { apiRequest, ApiResponse } from '@/utils/apiDefaults'
 import { EmployeeResponse } from '@/components/Hr/Employees/typesEmployee'
 import { useQuery } from '@tanstack/react-query'
@@ -83,7 +83,7 @@ export const TimeKeepingDraftGet = (props: EmployeeTimeKeepingDateSetProps) => {
           size={'small'}
           disabled={isLoading || values.employee.id === 0}
         >
-          {t('hr:getDraft')}
+          {t('common:getDraft')}
         </Button>
       </Box>
     </>

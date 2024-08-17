@@ -82,7 +82,7 @@ export const EmployeeAdd = () => {
 
   return (
     <>
-      <PageTitle title={t('hr:newPersonnel')} />
+      <PageTitle title={t('common:newPersonnel')} />
       <Container>
         <BaseForm
           initialValues={initialPersonnel}

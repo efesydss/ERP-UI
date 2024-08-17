@@ -177,7 +177,7 @@ export const FormTimeKeepingDraft = () => {
             }
           }}
         >
-          {t('hr:updateDraft')}
+          {t('common:updateDraft')}
         </Button>
         <Button
           startIcon={<FaCheck />}
@@ -187,7 +187,7 @@ export const FormTimeKeepingDraft = () => {
           variant={'contained'}
           disabled={isUpdateEnabled}
         >
-          {t('hr:createTimeKeeping')}
+          {t('common:createTimeKeeping')}
         </Button>
       </Box>
     </>

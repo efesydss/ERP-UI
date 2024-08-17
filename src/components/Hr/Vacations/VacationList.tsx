@@ -9,29 +9,28 @@ import { Route as NewVacationRoute } from '@/routes/_authenticated/hr/vacations/
 import { useNavigate } from '@tanstack/react-router'
 import { VacationGrid } from '@/components/Common/DataGrid/VacationGrid'
 import { GrNewWindow } from 'react-icons/gr'
+import { t } from 'i18next'
 
 export const VacationList = () => {
   const { t: nav } = useTranslation('nav')
-  const { t: common } = useTranslation('common')
-  const { t: hr } = useTranslation('hr')
   const navigate = useNavigate()
 
   const columns = useMemo<ColumnDef<VacationStatus>[]>(
     () => [
       {
-        header: common('name'),
+        header: t('common:name'),
         accessorKey: 'employee.name'
       },
       {
-        header: common('surname'),
+        header: t('common:surname'),
         accessorKey: 'employee.surname'
       },
       {
-        header: common('profession'),
+        header: t('common:profession'),
         accessorKey: 'profession'
       },
       {
-        header: hr('department'),
+        header: t('common:department'),
         accessorKey: 'employee.department',
         accessorFn: (row) => row.employee.department.name,
         meta: {
@@ -40,16 +39,19 @@ export const VacationList = () => {
         }
       },
       {
-        header: hr('transferred'),
-        accessorKey: 'transferred'
+        header: t('common:transferred'),
+        accessorKey: 'transferred',
+        enableSorting: false
       },
       {
-        header: hr('usedCurrentYear'),
-        accessorKey: 'usedCurrentYear'
+        header: t('common:usedCurrentYear'),
+        accessorKey: 'usedCurrentYear',
+        enableSorting: false
       },
       {
-        header: hr('usable'),
-        accessorKey: 'usable'
+        header: t('common:usable'),
+        accessorKey: 'usable',
+        enableSorting: false
       },
       {
         id: 'actions',
@@ -78,7 +80,7 @@ export const VacationList = () => {
         }
       }
     ],
-    [common, hr, navigate]
+    [navigate]
   )
   return (
     <>

@@ -153,17 +153,17 @@ export const processRecords = (values: DynamicFieldValues, initialValues: Dynami
 export const getAccordionConfigs = () => [
   {
     name: 'overtimes',
-    label: t('hr:overtimes'),
+    label: t('common:overtimes'),
     fields: getFieldConfigurations()['overtimes']
   },
   {
     name: 'deductions',
-    label: t('hr:deductions'),
+    label: t('common:deductions'),
     fields: getFieldConfigurations()['deductions']
   },
   {
     name: 'additionalPayments',
-    label: t('hr:additionalPayments'),
+    label: t('common:additionalPayments'),
     fields: getFieldConfigurations()['additionalPayments']
   }
 ]

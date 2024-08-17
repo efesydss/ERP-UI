@@ -56,7 +56,7 @@ export const VacationAdd = () => {
     <>
       <PageTitle
         title={`${data.name} ${data.surname}`}
-        subTitle={`${data.companyBranch.name} ${t('hr:branchSuffix')}, ${data.department.name} ${t('hr:departmentSuffix')}`}
+        subTitle={`${data.companyBranch.name} ${t('common:branchSuffix')}, ${data.department.name} ${t('common:departmentSuffix')}`}
       />
       <Paper sx={{ p: 2 }}>
         <BaseForm

@@ -17,6 +17,7 @@ export const TimeKeepingList = () => {
       { header: common('department'), accessorKey: 'employee.department.name' },
       {
         header: common('date'),
+        enableSorting: false,
         accessorKey: 'year',
         cell: ({ row }) => {
           const { year, month } = row.original

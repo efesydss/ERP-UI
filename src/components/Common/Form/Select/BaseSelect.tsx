@@ -1,4 +1,4 @@
-import Select, { MultiValue, SingleValue, StylesConfig } from 'react-select'
+import Select, { MultiValue, SingleValue } from 'react-select'
 import { useField } from 'formik'
 import { Stack, useTheme } from '@mui/material'
 import { Label } from '@/components/Common/Form/Label/Label'
@@ -6,6 +6,7 @@ import { apiRequest, ApiResponse } from '@/utils/apiDefaults'
 import { NamedEntity } from '@/utils/sharedTypes'
 import { useQuery } from '@tanstack/react-query'
 import { apiRoutes } from '@/utils/apiRoutes'
+import { getSelectStyles } from '@/components/Common/Form/Select/stylesBaseSelect'
 
 export interface OptionType {
   value: number | string
@@ -115,56 +116,6 @@ export const BaseSelect = (props: BaseSelectProps) => {
 
   const hasError = !!(touched && error)
 
-  const customStyles: StylesConfig<OptionType, boolean> = {
-    control: (provided) => ({
-      ...provided,
-      cursor: 'pointer',
-      borderColor: hasError ? theme.palette.error.main : theme.palette.divider,
-      fontSize: '.9rem',
-      minHeight: 34,
-      height: 34,
-      '&:hover': {
-        borderColor: hasError ? theme.palette.error.main : theme.palette.primary.main
-      }
-    }),
-    valueContainer: (provided) => ({
-      ...provided,
-      padding: theme.spacing(0, 1),
-      height: 34
-    }),
-    placeholder: (provided) => ({
-      ...provided,
-      color: hasError ? theme.palette.error.main : provided.color
-    }),
-    indicatorsContainer: (provided) => ({
-      ...provided,
-      height: 34
-    }),
-    singleValue: (provided) => ({
-      ...provided,
-      color: hasError ? theme.palette.error.main : provided.color
-    }),
-    menu: (provided) => ({
-      ...provided,
-      zIndex: 1001,
-      padding: theme.spacing(0, 1)
-    }),
-    option: (provided, state) => ({
-      ...provided,
-      backgroundColor: state.isSelected
-        ? theme.palette.primary.main
-        : state.isFocused
-          ? theme.palette.action.hover
-          : undefined,
-      color: state.isSelected ? theme.palette.primary.contrastText : provided.color,
-      padding: theme.spacing(1),
-      margin: theme.spacing(1, 0),
-      cursor: 'pointer',
-      borderRadius: theme.shape.borderRadius,
-      fontSize: '.9rem'
-    })
-  }
-
   return (
     <Stack sx={{ minWidth: 250 }}>
       <Label
@@ -183,7 +134,7 @@ export const BaseSelect = (props: BaseSelectProps) => {
         onChange={handleChange}
         options={options || fetchedOptions}
         isMulti={isMulti}
-        styles={customStyles}
+        styles={getSelectStyles(theme, hasError)}
         placeholder={''}
         isLoading={isLoading || isFetching}
       />

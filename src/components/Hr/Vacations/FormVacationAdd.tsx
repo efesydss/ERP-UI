@@ -1,5 +1,5 @@
 import { FormGrid } from '@/components/Common/Form/FormGrid/FormGrid'
-import { BaseSelect } from '@/components/Common/Form/BaseSelect'
+import { BaseSelect } from '@/components/Common/Form/Select/BaseSelect'
 import { Box, Button } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { VacationType } from '@/components/Hr/Vacations/typeVacations'
@@ -33,7 +33,7 @@ export const FormVacationAdd = () => {
             />
             <Checkbox
               name={'unPaid'}
-              label={t('hr:unPaid')}
+              label={t('common:unPaid')}
             />
           </FormGrid>
 

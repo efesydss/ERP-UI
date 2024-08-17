@@ -1,6 +1,6 @@
 import { Column } from '@tanstack/react-table'
 import { FilterInput } from '@/components/Common/Table/components/FilterInput'
-import { OptionType } from '@/components/Common/Form/BaseSelect'
+import { OptionType } from '@/components/Common/Form/Select/BaseSelect'
 import { apiRequest, ApiResponse } from '@/utils/apiDefaults'
 import { NamedEntity } from '@/utils/sharedTypes'
 import { useQuery } from '@tanstack/react-query'
@@ -45,9 +45,11 @@ export const Filter = (props: FilterProps) => {
     enabled: !filterOptions && !!filterOptionsEndpoint
   })
 
+  console.log('filterOptions -->', filterOptions)
+
   const translatedFilterOptions = filterOptions?.map((o) => ({
     value: o.value,
-    label: t(`${filterNameSpace}:${o.label}`)
+    label: t(`${filterNameSpace}:${o.value}`)
   }))
 
   const options = data || translatedFilterOptions

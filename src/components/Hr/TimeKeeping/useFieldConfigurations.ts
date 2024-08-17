@@ -1,6 +1,6 @@
 import { DynamicInputFieldProps } from '@/components/Common/Form/Input/DynamicFields'
 import { useBankList } from '@/utils/hooks/useBankList'
-import { OptionType } from '@/components/Common/Form/BaseSelect'
+import { OptionType } from '@/components/Common/Form/Select/BaseSelect'
 import { enumToOptions } from '@/utils/transformers'
 import { AdditionalPaymentType, CurrencyCode, DeductionPaymentType } from '@/components/Hr/Finances/typesFinance'
 import { OverTimePercentage } from '@/components/Hr/TimeKeeping/typesTimeKeeping'

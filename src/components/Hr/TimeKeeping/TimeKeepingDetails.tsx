@@ -25,7 +25,7 @@ export const TimeKeepingDetails = () => {
     <>
       <PageTitle
         title={`${name} ${surname}`}
-        subTitle={`${companyBranch.name} ${t('hr:branchSuffix')}, ${department.name} ${t('hr:departmentSuffix')}`}
+        subTitle={`${companyBranch.name} ${t('common:branchSuffix')}, ${department.name} ${t('common:departmentSuffix')}`}
       />
       <Paper sx={{ p: 2, mt: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <Box>

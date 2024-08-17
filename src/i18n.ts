@@ -13,6 +13,6 @@ export const initI18n = () => {
       backend: {
         loadPath: '/locales/{{lng}}/{{ns}}.json'
       },
-      ns: ['common', 'hr']
+      ns: ['common']
     })
 }

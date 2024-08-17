@@ -1,4 +1,4 @@
-import { OptionType } from '@/components/Common/Form/BaseSelect'
+import { OptionType } from '@/components/Common/Form/Select/BaseSelect'
 
 interface FilterSelectProps {
   options: OptionType[]

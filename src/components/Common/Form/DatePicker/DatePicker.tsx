@@ -6,6 +6,7 @@ import { format } from 'date-fns'
 import { DatePickerWrapper } from '@/components/Common/Form/DatePicker/stylesDatePicker'
 import { Label } from '@/components/Common/Form/Label/Label'
 import { Stack } from '@mui/material'
+import { FaRegCalendarAlt } from 'react-icons/fa'
 
 interface DatePickerProps {
   name: string
@@ -52,6 +53,8 @@ export const DatePicker = (props: DatePickerProps) => {
         showTimeInput={isTimeEnabled}
         timeInputLabel={t('timePick', { ns: 'common' })}
         locale={'tr'}
+        showIcon
+        icon={<FaRegCalendarAlt />}
         showYearDropdown
         yearDropdownItemNumber={85}
         scrollableYearDropdown

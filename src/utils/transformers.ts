@@ -25,3 +25,8 @@ export const capitalizeFirstLetter = (str: string): string => {
   if (!str) return str
   return str.charAt(0).toUpperCase() + str.slice(1)
 }
+
+export const labelParser = (str: string, separator: string): string => {
+  const parts = str.split(separator)
+  return parts.length > 1 ? parts[parts.length - 1] : str
+}

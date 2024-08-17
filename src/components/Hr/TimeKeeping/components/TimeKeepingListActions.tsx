@@ -46,7 +46,7 @@ export const TimeKeepingListActions = (props: TimeKeepingListActionsProps) => {
       >
         <MenuItem onClick={() => navigate({ to: '/hr/timekeeping/$id', params: { id: props.timeKeepingId } })}>
           <CiViewList />
-          <Typography>{t('hr:timeKeepingDetails')}</Typography>
+          <Typography>{t('common:timeKeepingDetails')}</Typography>
         </MenuItem>
       </Menu>
     </Box>

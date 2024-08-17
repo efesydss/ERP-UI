@@ -1,9 +1,10 @@
 import { Input } from '@/components/Common/Form/Input/Input'
 import { DatePicker } from '@/components/Common/Form/DatePicker/DatePicker'
-import { BaseSelect, OptionType } from '@/components/Common/Form/BaseSelect'
+import { BaseSelect, OptionType } from '@/components/Common/Form/Select/BaseSelect'
 import { Box } from '@mui/material'
 import { apiRoutes } from '@/utils/apiRoutes'
 import { t } from 'i18next'
+import { labelParser } from '@/utils/transformers'
 
 export interface DynamicInputFieldProps {
   name: string
@@ -24,16 +25,11 @@ interface DynamicInputProps {
 export const DynamicFields = (props: DynamicInputProps) => {
   const { prefix, fields, nameSpace = 'common' } = props
 
-  const getLabel = (str: string): string => {
-    const parts = str.split('.')
-    return parts[parts.length - 1]
-  }
-
   return (
     <>
       {fields.map((field, i) => {
         const fieldName = prefix ? `${prefix}.${field.name}` : field.name
-        const fieldLabel = t(`${nameSpace}:${getLabel(field.name)}`)
+        const fieldLabel = t(`${nameSpace}:${labelParser(field.name, '.')}`)
 
         if (field.type === 'date') {
           return (

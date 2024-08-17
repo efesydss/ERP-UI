@@ -44,7 +44,7 @@ export const FormEmployeeSubRow = () => {
             expandIcon={<ExpandMoreIcon />}
           >
             <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-              {t(`hr:${config.id}`)}
+              {t(`common:${config.id}`)}
               {hasErrors[config.id] && (
                 <Box sx={{ display: 'flex', color: 'error.main' }}>
                   <MdErrorOutline />
