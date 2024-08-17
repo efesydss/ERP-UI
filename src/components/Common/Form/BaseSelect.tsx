@@ -1,4 +1,4 @@
-import Select, { MultiValue, SingleValue } from 'react-select'
+import Select, { MultiValue, SingleValue, StylesConfig } from 'react-select'
 import { useField } from 'formik'
 import { Stack, useTheme } from '@mui/material'
 import { Label } from '@/components/Common/Form/Label/Label'
@@ -115,26 +115,52 @@ export const BaseSelect = (props: BaseSelectProps) => {
 
   const hasError = !!(touched && error)
 
-  const customStyles = {
-    control: (provided: any) => ({
+  const customStyles: StylesConfig<OptionType, boolean> = {
+    control: (provided) => ({
       ...provided,
       cursor: 'pointer',
       borderColor: hasError ? theme.palette.error.main : theme.palette.divider,
+      fontSize: '.9rem',
+      minHeight: 34,
+      height: 34,
       '&:hover': {
         borderColor: hasError ? theme.palette.error.main : theme.palette.primary.main
       }
     }),
-    placeholder: (provided: any) => ({
+    valueContainer: (provided) => ({
+      ...provided,
+      padding: '0 8px',
+      height: '34px'
+    }),
+    placeholder: (provided) => ({
       ...provided,
       color: hasError ? theme.palette.error.main : provided.color
     }),
-    singleValue: (provided: any) => ({
+    indicatorsContainer: (provided) => ({
+      ...provided,
+      height: 34
+    }),
+    singleValue: (provided) => ({
       ...provided,
       color: hasError ? theme.palette.error.main : provided.color
     }),
-    menu: (provided: any) => ({
+    menu: (provided) => ({
       ...provided,
-      zIndex: 1001
+      zIndex: 1001,
+      padding: theme.spacing(0, 1)
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isSelected
+        ? theme.palette.primary.main
+        : state.isFocused
+          ? theme.palette.action.hover
+          : undefined,
+      color: state.isSelected ? theme.palette.primary.contrastText : provided.color,
+      padding: theme.spacing(1),
+      margin: theme.spacing(1, 0),
+      cursor: 'pointer',
+      borderRadius: theme.shape.borderRadius
     })
   }
 

@@ -4,7 +4,12 @@ import { FormLogin } from '@/components/Auth/FormLogin'
 import * as yup from 'yup'
 import { useLogin } from '@/utils/hooks/useLogin'
 import logo from '@/assets/images/sahinler_logo.png'
-import bckg from '@/assets/images/lgnBckg.jpg'
+import loginBackground from '@/assets/images/lgnBckg.jpg'
+
+export const validationSchema = yup.object({
+  email: yup.string().required(),
+  password: yup.string().required()
+})
 
 export const Login = () => {
   const loginFormFields = {
@@ -17,11 +22,6 @@ export const Login = () => {
   const onFormSubmit = (values: typeof loginFormFields) => {
     mutate(values)
   }
-
-  const validationSchema = yup.object({
-    email: yup.string().required(),
-    password: yup.string().required()
-  })
 
   return (
     <>
@@ -55,7 +55,7 @@ export const Login = () => {
       </Container>
       <Box
         sx={{
-          backgroundImage: `url(${bckg})`,
+          backgroundImage: `url(${loginBackground})`,
           position: 'fixed',
           top: 0,
           left: 0,

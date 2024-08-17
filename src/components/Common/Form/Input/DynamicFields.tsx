@@ -2,8 +2,8 @@ import { Input } from '@/components/Common/Form/Input/Input'
 import { DatePicker } from '@/components/Common/Form/DatePicker/DatePicker'
 import { BaseSelect, OptionType } from '@/components/Common/Form/BaseSelect'
 import { Box } from '@mui/material'
-import { useTranslation } from 'react-i18next'
 import { apiRoutes } from '@/utils/apiRoutes'
+import { t } from 'i18next'
 
 export interface DynamicInputFieldProps {
   name: string
@@ -17,12 +17,12 @@ export interface DynamicInputFieldProps {
 
 interface DynamicInputProps {
   prefix?: string
+  nameSpace?: string
   fields: Array<DynamicInputFieldProps>
 }
 
 export const DynamicFields = (props: DynamicInputProps) => {
-  const { prefix, fields } = props
-  const { t } = useTranslation('hr')
+  const { prefix, fields, nameSpace = 'common' } = props
 
   const getLabel = (str: string): string => {
     const parts = str.split('.')
@@ -33,7 +33,7 @@ export const DynamicFields = (props: DynamicInputProps) => {
     <>
       {fields.map((field, i) => {
         const fieldName = prefix ? `${prefix}.${field.name}` : field.name
-        const fieldLabel = t(getLabel(field.name))
+        const fieldLabel = t(`${nameSpace}:${getLabel(field.name)}`)
 
         if (field.type === 'date') {
           return (
@@ -42,6 +42,7 @@ export const DynamicFields = (props: DynamicInputProps) => {
               name={fieldName}
               label={fieldLabel}
               isOptional={field.isOptional}
+              nameSpace={nameSpace}
             />
           )
         }
@@ -55,7 +56,7 @@ export const DynamicFields = (props: DynamicInputProps) => {
                 name={fieldName}
                 options={field.options}
                 isEnum={isEnum}
-                nameSpace={'hr'}
+                nameSpace={nameSpace}
                 selectLabel={fieldLabel}
                 endpoint={field.endpoint}
                 isOptional={field.isOptional}
@@ -73,6 +74,7 @@ export const DynamicFields = (props: DynamicInputProps) => {
               <DynamicFields
                 prefix={fieldName}
                 fields={field.fields}
+                nameSpace={nameSpace}
               />
             </Box>
           )
@@ -84,7 +86,7 @@ export const DynamicFields = (props: DynamicInputProps) => {
             name={fieldName}
             type={field.type || 'text'}
             isOptional={field.isOptional}
-            nameSpace={'hr'}
+            nameSpace={nameSpace}
             label={fieldLabel}
           />
         )

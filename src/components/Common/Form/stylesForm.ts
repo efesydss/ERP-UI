@@ -10,6 +10,8 @@ export const InputBaseWrapper = styled(MUIInputBase)(({ theme }) => ({
   borderColor: theme.palette.divider,
   borderRadius: theme.shape.borderRadius,
   padding: theme.spacing(0.25, 1),
+  fontSize: '0.9rem',
+  height: 34,
 
   '&.Mui-error': {
     borderColor: theme.palette.error.main

@@ -13,10 +13,11 @@ interface DatePickerProps {
   label?: string
   isClearable?: boolean
   isOptional?: boolean
+  nameSpace?: string
 }
 
 export const DatePicker = (props: DatePickerProps) => {
-  const { name, label, isTimeEnabled = false, isClearable, isOptional, ...rest } = props
+  const { name, label, isTimeEnabled = false, isClearable, nameSpace, isOptional, ...rest } = props
   const [field, meta, helpers] = useField(name)
 
   const { value } = meta
@@ -39,6 +40,7 @@ export const DatePicker = (props: DatePickerProps) => {
           label={label}
           isOptional={isOptional}
           hasError={false}
+          nameSpace={nameSpace}
         />
       </Stack>
       <RDatePicker
@@ -54,13 +56,6 @@ export const DatePicker = (props: DatePickerProps) => {
         yearDropdownItemNumber={85}
         scrollableYearDropdown
         isClearable={isClearable}
-        /*customInput={
-          <Input
-            name={name}
-            label={label || t(name, { ns: 'hr' })}
-            isOptional={isOptional}
-          />
-        }*/
       />
     </DatePickerWrapper>
   )
