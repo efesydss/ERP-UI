@@ -15,7 +15,17 @@ export const PageTitle = (props: PageTitleProps) => {
   const { history } = useRouter()
 
   return (
-    <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+    <Box
+      sx={{
+        mb: 2,
+        pb: 2,
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderBottom: `1px solid`,
+        borderColor: 'divider'
+      }}
+    >
       <Box>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           {showBackButton && (

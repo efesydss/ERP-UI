@@ -26,6 +26,7 @@ export const DateRangeForm = (props: DateRangeFormProps) => {
         <Button
           type={'submit'}
           color={'primary'}
+          size={'small'}
           variant={'contained'}
           disabled={!isValid}
         >
@@ -35,6 +36,7 @@ export const DateRangeForm = (props: DateRangeFormProps) => {
           <Button
             type={'button'}
             variant={'outlined'}
+            size={'small'}
             onClick={() => {
               resetForm()
               props.onResetForm('')

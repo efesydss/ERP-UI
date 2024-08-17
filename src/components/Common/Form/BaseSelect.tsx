@@ -129,8 +129,8 @@ export const BaseSelect = (props: BaseSelectProps) => {
     }),
     valueContainer: (provided) => ({
       ...provided,
-      padding: '0 8px',
-      height: '34px'
+      padding: theme.spacing(0, 1),
+      height: 34
     }),
     placeholder: (provided) => ({
       ...provided,
@@ -160,7 +160,8 @@ export const BaseSelect = (props: BaseSelectProps) => {
       padding: theme.spacing(1),
       margin: theme.spacing(1, 0),
       cursor: 'pointer',
-      borderRadius: theme.shape.borderRadius
+      borderRadius: theme.shape.borderRadius,
+      fontSize: '.9rem'
     })
   }
 

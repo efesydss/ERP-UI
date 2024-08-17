@@ -80,6 +80,7 @@ export const TimeKeepingDraftGet = (props: EmployeeTimeKeepingDateSetProps) => {
           type={'submit'}
           color={'primary'}
           variant={'contained'}
+          size={'small'}
           disabled={isLoading || values.employee.id === 0}
         >
           {t('hr:getDraft')}

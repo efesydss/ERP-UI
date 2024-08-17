@@ -52,6 +52,7 @@ export const EmployeeList = () => {
       <>
         <Button
           variant={'contained'}
+          size={'small'}
           startIcon={<PersonAddAlt1Icon />}
           onClick={() => navigate({ to: Route.fullPath })}
         >
