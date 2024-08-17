@@ -16,11 +16,7 @@ import { DynamicFieldsAccordion } from '@/components/Hr/TimeKeeping/components/D
 export const FormTimeKeepingDraft = () => {
   const queryClient = useQueryClient()
 
-  const { values, initialValues, errors } = useFormikContext<EmployeeTimeKeepingProps>()
-
-  console.log('values -->', values)
-
-  console.log('errors -->', errors)
+  const { values, initialValues } = useFormikContext<EmployeeTimeKeepingProps>()
 
   const { mutateAsync: addOvertime, isPending: isAddOvertimePending } = useMutation({
     mutationFn: (overtimesToAdd: EmployeeOverTime[]) =>

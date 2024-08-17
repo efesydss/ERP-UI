@@ -19,9 +19,7 @@ export const AppliedFilters = (props: AppliedFiltersProps) => {
       gap={2}
     >
       {columnFilters.map((f) => {
-        const getLabel = `${t(labelParser(f.id, '_'))}: ${t(f.value as string)}`
-
-        console.log('f -->', f)
+        const getLabel = `${t(labelParser(f.id, '_'))}: ${t(labelParser(f.value as string, '_'))}`
 
         return (
           <Chip

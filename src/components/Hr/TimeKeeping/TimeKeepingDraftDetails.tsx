@@ -11,7 +11,7 @@ interface EmployeeTimeKeepingDetailsProps {
 }
 
 export const TimeKeepingDraftDetails = (props: EmployeeTimeKeepingDetailsProps) => {
-  const { t: hr } = useTranslation('hr')
+  const { t } = useTranslation('common')
 
   const {
     data: {
@@ -70,7 +70,7 @@ export const TimeKeepingDraftDetails = (props: EmployeeTimeKeepingDetailsProps) 
             {name} {surname}
           </Typography>
           <Typography sx={{ mb: 2 }}>
-            {companyBranch.name} {hr('branchSuffix')}, {department.name} {hr('departmentSuffix')}
+            {companyBranch.name} {t('branchSuffix')}, {department.name} {t('departmentSuffix')}
           </Typography>
           <Typography sx={{ fontSize: '.9rem' }}>{title}</Typography>
         </Box>

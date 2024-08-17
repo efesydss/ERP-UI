@@ -1,22 +1,40 @@
 import { EmployeeTimeKeepingProps } from '@/components/Hr/TimeKeeping/typesTimeKeeping'
 import { useMemo } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
-import { useTranslation } from 'react-i18next'
 import { BaseTable } from '@/components/Common/Table/BaseTable'
 import { TimeKeepingListActions } from '@/components/Hr/TimeKeeping/components/TimeKeepingListActions'
+import { t } from 'i18next'
 
 export const TimeKeepingList = () => {
-  const { t: common } = useTranslation('common')
-  const { t: hr } = useTranslation('hr')
-
   const columns = useMemo<ColumnDef<EmployeeTimeKeepingProps>[]>(
     () => [
-      { header: common('name'), accessorKey: 'employee.name' },
-      { header: common('surname'), accessorKey: 'employee.surname' },
-      { header: common('companyBranch'), accessorKey: 'employee.companyBranch.name' },
-      { header: common('department'), accessorKey: 'employee.department.name' },
+      { header: t('common:name'), accessorKey: 'employee.name' },
+      { header: t('common:surname'), accessorKey: 'employee.surname' },
       {
-        header: common('date'),
+        header: t('common:companyBranch'),
+        accessorKey: 'companyBranch',
+        accessorFn: (row) => row.employee.companyBranch.name,
+        enableColumnFilter: false,
+        enableSorting: false,
+        meta: {
+          filterVariant: 'select',
+          filterOptionsEndpoint: 'branches'
+        }
+      },
+      {
+        header: t('common:department'),
+        accessorKey: 'employee.department',
+        accessorFn: (row) => row.employee.department.name,
+        enableColumnFilter: false,
+        enableSorting: false,
+        meta: {
+          filterVariant: 'select',
+          filterOptionsEndpoint: 'departments'
+        }
+      },
+
+      {
+        header: t('common:date'),
         enableSorting: false,
         accessorKey: 'year',
         cell: ({ row }) => {
@@ -24,8 +42,8 @@ export const TimeKeepingList = () => {
           return `${month} / ${year}`
         }
       },
-      { header: hr('netSalary'), accessorKey: 'netSalary' },
-      { header: hr('total'), accessorKey: 'total' },
+      { header: t('common:netSalary'), accessorKey: 'netSalary' },
+      { header: t('common:total'), accessorKey: 'total' },
       {
         id: 'actions',
         enableSorting: false,
@@ -40,7 +58,7 @@ export const TimeKeepingList = () => {
         }
       }
     ],
-    [common, hr]
+    []
   )
 
   return (

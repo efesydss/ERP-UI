@@ -36,16 +36,16 @@ export const Filter = (props: FilterProps) => {
       }),
     select: (res): OptionType[] => {
       return res.data.map((r) => {
+        console.log('r -->', r)
+
         return {
-          value: r.id,
+          value: `${r.id}_${r.name}`,
           label: r.name
         }
       })
     },
     enabled: !filterOptions && !!filterOptionsEndpoint
   })
-
-  console.log('filterOptions -->', filterOptions)
 
   const translatedFilterOptions = filterOptions?.map((o) => ({
     value: o.value,

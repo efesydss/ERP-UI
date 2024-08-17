@@ -34,6 +34,7 @@ import { TableState } from '@/components/Common/Table/components/TableState'
 import { TableHeader } from '@/components/Common/Table/stylesTable'
 import { FilterOperators } from '@/utils/filterOperators'
 import { FaAngleUp, FaList } from 'react-icons/fa6'
+import { labelParser } from '@/utils/transformers'
 
 interface BaseTableProps<TData extends RowData> {
   endpoint: keyof typeof apiRoutes
@@ -137,7 +138,7 @@ export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) =
         //todo: check how we should handle this in backend
         const originalId = filter.id.replace(/.*_/, '')
 
-        return `${originalId}${filterOperator}${filter.value as string}`
+        return `${originalId}${filterOperator}${labelParser(filter.value as string, '_', 'before')}`
       })
       .join(';')
 
@@ -155,7 +156,7 @@ export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) =
     const selected = sorting[0]
     const isDescending = selected.desc
 
-    return `${selected.id},${isDescending ? 'desc' : 'asc'}`
+    return `${labelParser(selected.id, '_')},${isDescending ? 'desc' : 'asc'}`
   }
 
   const handleDeleteFilter = (id: string) => {

@@ -4,6 +4,8 @@ import { tr } from 'date-fns/locale'
 
 type EnumToOptions<T> = Array<{ value: T[keyof T]; label: string }>
 
+type SplitPosition = 'before' | 'after'
+
 export const enumToOptions = <T extends object>(enumObj: T, namespace: string = 'common'): EnumToOptions<T> => {
   return Object.entries(enumObj).map(([key, value]) => ({
     value,
@@ -26,7 +28,11 @@ export const capitalizeFirstLetter = (str: string): string => {
   return str.charAt(0).toUpperCase() + str.slice(1)
 }
 
-export const labelParser = (str: string, separator: string): string => {
+export const labelParser = (str: string, separator: string, position: SplitPosition = 'after'): string => {
   const parts = str.split(separator)
-  return parts.length > 1 ? parts[parts.length - 1] : str
+  if (position === 'after') {
+    return parts.length > 1 ? parts[parts.length - 1] : str
+  } else {
+    return parts.length > 1 ? parts[0] : str
+  }
 }

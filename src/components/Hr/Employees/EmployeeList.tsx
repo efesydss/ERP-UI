@@ -11,22 +11,21 @@ import { Route } from '@/routes/_authenticated/hr/employees/new'
 import { DetailsSubRow } from '@/components/Hr/Employees/components/DetailsSubRow'
 
 export const EmployeeList = () => {
-  const { t: common } = useTranslation('common')
-  const { t: hr } = useTranslation('hr')
+  const { t } = useTranslation('common')
   const navigate = useNavigate()
 
   const columns = useMemo<ColumnDef<EmployeeResponse>[]>(
     () => [
       {
-        header: common('name'),
+        header: t('name'),
         accessorKey: 'name'
       },
       {
-        header: common('surname'),
+        header: t('surname'),
         accessorKey: 'surname'
       },
       {
-        header: common('department'),
+        header: t('department'),
         accessorKey: 'department',
         accessorFn: (row) => row.department.name,
         meta: {
@@ -35,7 +34,7 @@ export const EmployeeList = () => {
         }
       },
       {
-        header: common('companyBranch'),
+        header: t('companyBranch'),
         accessorKey: 'companyBranch',
         accessorFn: (row) => row.companyBranch.name,
         meta: {
@@ -44,7 +43,7 @@ export const EmployeeList = () => {
         }
       }
     ],
-    [common]
+    [t]
   )
 
   const PersonnelListActions = () => {
@@ -56,7 +55,7 @@ export const EmployeeList = () => {
           startIcon={<PersonAddAlt1Icon />}
           onClick={() => navigate({ to: Route.fullPath })}
         >
-          {hr('newPersonnel')}
+          {t('newPersonnel')}
         </Button>
       </>
     )
@@ -65,7 +64,7 @@ export const EmployeeList = () => {
   return (
     <>
       <PageTitle
-        title={hr('personnelList')}
+        title={t('personnelList')}
         actions={<PersonnelListActions />}
       />
       <BaseTable<EmployeeResponse>

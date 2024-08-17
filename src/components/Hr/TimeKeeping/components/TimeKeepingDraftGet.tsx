@@ -73,7 +73,6 @@ export const TimeKeepingDraftGet = (props: EmployeeTimeKeepingDateSetProps) => {
         <BaseSelect
           name={'employee'}
           options={data}
-          nameSpace={'hr'}
           isLoading={isEmployeeListLoading}
         />
         <Button

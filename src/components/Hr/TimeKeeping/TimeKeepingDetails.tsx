@@ -1,13 +1,14 @@
 import { Route } from '@/routes/_authenticated/hr/timekeeping/$id'
 import { Box, Paper, Typography } from '@mui/material'
-import { t } from 'i18next'
 import { BaseForm } from '@/components/Common/Form/BaseForm'
 import { EmployeeTimeKeepingProps } from '@/components/Hr/TimeKeeping/typesTimeKeeping'
 import { FormTimeKeepingDetails } from '@/components/Hr/TimeKeeping/FormTimeKeepingDetails'
 import { useState } from 'react'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
+import { useTranslation } from 'react-i18next'
 
 export const TimeKeepingDetails = () => {
+  const { t } = useTranslation('common')
   const data = Route.useLoaderData()
   const {
     title,
@@ -25,7 +26,7 @@ export const TimeKeepingDetails = () => {
     <>
       <PageTitle
         title={`${name} ${surname}`}
-        subTitle={`${companyBranch.name} ${t('common:branchSuffix')}, ${department.name} ${t('common:departmentSuffix')}`}
+        subTitle={`${companyBranch.name} ${t('branchSuffix')}, ${department.name} ${t('departmentSuffix')}`}
       />
       <Paper sx={{ p: 2, mt: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <Box>
