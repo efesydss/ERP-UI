@@ -5,6 +5,7 @@ import { Box } from '@mui/material'
 import { apiRoutes } from '@/utils/apiRoutes'
 import { t } from 'i18next'
 import { labelParser } from '@/utils/transformers'
+import { Checkbox } from '@/components/Common/Form/Checkbox/Checkbox'
 
 export interface DynamicInputFieldProps {
   name: string
@@ -58,6 +59,16 @@ export const DynamicFields = (props: DynamicInputProps) => {
                 isOptional={field.isOptional}
               />
             </div>
+          )
+        }
+
+        if (field.type === 'boolean') {
+          return (
+            <Checkbox
+              key={`${prefix}.${i}.${field.name}${i}`}
+              name={fieldName}
+              label={fieldLabel}
+            />
           )
         }
 

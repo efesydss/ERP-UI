@@ -108,5 +108,10 @@
   "updateDraft":"Taslağı Güncelle",
   "removeEmployee": "Pasife Çek",
   "employeeDetails": "Çalışan Detayları",
-  "timeKeepingDetails": "Puantaj Detayları"
+  "timeKeepingDetails": "Puantaj Detayları",
+  "includedInCost": "Maliyete Dahil Et",
+  "spouseWorking": "Eşi Çalışan",
+  "monthlyHour": "Aylık Çalışma Saati",
+  "children": "Çocuk Sayısı",
+  "monthlyProgress": "Aylık Hakediş Günū"
 }

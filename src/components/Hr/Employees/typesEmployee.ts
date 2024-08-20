@@ -41,7 +41,7 @@ export interface PayrollData {
   monthlyHour?: number
   iban: string
   children?: number
-  wifeWorking?: boolean
+  spouseWorking?: boolean
 }
 
 export interface EmployeeResponse {

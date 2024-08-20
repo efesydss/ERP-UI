@@ -1,5 +1,5 @@
 import { MdOutlineBeachAccess } from 'react-icons/md'
-import { TbReportAnalytics, TbUserStar } from 'react-icons/tb'
+import { TbUserStar } from 'react-icons/tb'
 import { MenuItemProps } from '@/components/Root/typesRoot'
 import { FaPeopleRoof } from 'react-icons/fa6'
 import { RiAdminLine } from 'react-icons/ri'
@@ -18,10 +18,6 @@ export const navMenuItems: MenuItemProps[] = [
       {
         label: 'vacations',
         icon: MdOutlineBeachAccess
-      },
-      {
-        label: 'debitCreditAnalysis',
-        icon: TbReportAnalytics
       },
       {
         label: 'finances',

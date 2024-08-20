@@ -8,9 +8,12 @@ import { enumToOptions } from '@/utils/transformers'
 import { Input } from '@/components/Common/Form/Input/Input'
 import { Checkbox } from '@/components/Common/Form/Checkbox/Checkbox'
 import { t } from 'i18next'
+import { useNavigate } from '@tanstack/react-router'
+import { Route } from '@/routes/_authenticated/hr/vacations'
 
 export const FormVacationAdd = () => {
   const { t: common } = useTranslation('common')
+  const navigate = useNavigate()
 
   return (
     <>
@@ -40,18 +43,25 @@ export const FormVacationAdd = () => {
           <FormGrid widths={'half'}>
             <Input
               name={'workingDays'}
-              nameSpace={'hr'}
               type={'number'}
             />
             <Input
               name={'workingHours'}
-              nameSpace={'hr'}
               type={'number'}
             />
           </FormGrid>
         </FormGrid>
       </FormGrid>
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
+        <Button
+          type={'button'}
+          variant={'outlined'}
+          onClick={() => {
+            navigate({ to: Route.fullPath })
+          }}
+        >
+          {common('cancel')}
+        </Button>
         <Button
           type={'submit'}
           color={'primary'}

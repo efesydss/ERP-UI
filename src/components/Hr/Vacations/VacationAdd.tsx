@@ -32,8 +32,8 @@ export const VacationAdd = () => {
         endpoint: 'employeeVacationAdd',
         params: { employeeId: id.toString() },
         payload: {
-          startDateTime: formatToISOString(values.startDateTime),
-          endDateTime: formatToISOString(values.endDateTime),
+          startDateTime: formatToISOString(values.startDateTime as string),
+          endDateTime: formatToISOString(values.endDateTime as string),
           workingDays: values.workingDays,
           workingHours: values.workingHours,
           timeOffType: values.timeOffType,

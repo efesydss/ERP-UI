@@ -18,6 +18,7 @@ export const apiRoutes = {
   employeeVacation: 'hr/employee/{employeeId}/timeoffs',
   employeeVacationAdd: 'hr/employee/{employeeId}/timeoff',
   employeeVacationDelete: 'hr/employee/{employeeId}/timeoff/{timeOffId}',
+  employeeVacationUpdate: 'hr/employee/{employeeId}/timeoff/{timeOffId}',
 
   // Employee Payroll Management
   employeePayrollData: 'hr/employee/payrollData',

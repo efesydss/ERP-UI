@@ -23,8 +23,8 @@ export enum VacationType {
 
 export interface VacationBaseProps {
   personnel: NamedEntity
-  startDateTime: string
-  endDateTime: string
+  startDateTime: string | Date
+  endDateTime: string | Date
   workingDays: number
   workingHours: number
   timeOffType: VacationType

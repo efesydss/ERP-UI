@@ -10,7 +10,7 @@ const payrollDataSchema = yup.object().shape({
   monthlyHour: yup.number(),
   iban: yup.string().required('IBAN is required'),
   children: yup.number(),
-  wifeWorking: yup.boolean()
+  spouseWorking: yup.boolean()
 })
 
 export const employeeValidationSchema = yup.object().shape({

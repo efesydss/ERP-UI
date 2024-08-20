@@ -102,7 +102,30 @@ export const employeeConfig = [
       },
       {
         name: 'payrollData.currency',
-        options: enumToOptions(Currency)
+        options: enumToOptions(Currency),
+        isOptional: true
+      },
+      {
+        name: 'payrollData.monthlyHour',
+        type: 'number',
+        isOptional: true
+      },
+      {
+        name: 'payrollData.monthlyProgress',
+        isOptional: true
+      },
+      {
+        name: 'payrollData.children',
+        type: 'number',
+        isOptional: true
+      },
+      {
+        name: 'payrollData.includedInCost',
+        type: 'boolean'
+      },
+      {
+        name: 'payrollData.spouseWorking',
+        type: 'boolean'
       }
     ]
   }
