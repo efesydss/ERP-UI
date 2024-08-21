@@ -37,7 +37,7 @@ export interface PayrollData {
   currency?: Currency
   salary: number
   includedInCost?: boolean
-  monthlyProgress?: string | null
+  monthlyProgress?: number
   monthlyHour?: number
   iban: string
   children?: number

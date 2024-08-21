@@ -11,7 +11,7 @@ import { Paper } from '@mui/material'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import { t } from 'i18next'
 
-const initialLeave: VacationBaseProps = {
+export const initialLeave: VacationBaseProps = {
   personnel: { id: 0, name: '' },
   startDateTime: '',
   endDateTime: '',

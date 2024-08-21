@@ -6,7 +6,7 @@ const payrollDataSchema = yup.object().shape({
   currency: yup.string().oneOf(Object.values(Currency)),
   salary: yup.number().required('Salary is required'),
   includedInCost: yup.boolean(),
-  monthlyProgress: yup.string().nullable(),
+  monthlyProgress: yup.number(),
   monthlyHour: yup.number(),
   iban: yup.string().required('IBAN is required'),
   children: yup.number(),

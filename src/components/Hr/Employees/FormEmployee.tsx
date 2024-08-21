@@ -6,7 +6,6 @@ import { Input } from '@/components/Common/Form/Input/Input'
 import { BaseSelect } from '@/components/Common/Form/Select/BaseSelect'
 import { DatePicker } from '@/components/Common/Form/DatePicker/DatePicker'
 import { FaAngleRight, FaCheck } from 'react-icons/fa6'
-import { t } from 'i18next'
 import { useState } from 'react'
 import { Currency } from '@/components/Hr/Employees/typesEmployee'
 import { enumToOptions } from '@/utils/transformers'
@@ -18,7 +17,7 @@ interface FormEmployeeProps {
 export const FormEmployee = (props: FormEmployeeProps) => {
   const isDetailPage = !!props.employeeId
 
-  const { t: hr } = useTranslation('hr')
+  const { t } = useTranslation()
   const [activeTab, setActiveTab] = useState(0)
 
   const handleTabChange = (newValue: number) => {
@@ -32,7 +31,7 @@ export const FormEmployee = (props: FormEmployeeProps) => {
         onTabChange={handleTabChange}
         tabs={[
           {
-            label: hr('infoGeneral'),
+            label: t('common:infoGeneral'),
             content: (
               <Paper sx={{ p: 2 }}>
                 <FormGrid
@@ -107,7 +106,7 @@ export const FormEmployee = (props: FormEmployeeProps) => {
             )
           },
           {
-            label: hr('infoIdentity'),
+            label: t('common:infoIdentity'),
             content: (
               <Paper sx={{ p: 2 }}>
                 <FormGrid widths={'half'}>
@@ -146,17 +145,22 @@ export const FormEmployee = (props: FormEmployeeProps) => {
             )
           },
           {
-            label: hr('infoPayroll'),
+            label: t('common:infoPayroll'),
             content: (
               <Paper sx={{ p: 2 }}>
                 <FormGrid widths={'third'}>
                   <Input
                     name={'payrollData.salary'}
+                    label={t('common:salary')}
                     type={'number'}
                   />
-                  <Input name={'payrollData.iban'} />
+                  <Input
+                    name={'payrollData.iban'}
+                    label={t('common:iban')}
+                  />
                   <BaseSelect
                     name={'payrollData.currency'}
+                    selectLabel={t('common:currency')}
                     isEnum
                     options={enumToOptions(Currency)}
                   />

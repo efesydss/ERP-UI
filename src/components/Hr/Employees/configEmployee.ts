@@ -112,6 +112,7 @@ export const employeeConfig = [
       },
       {
         name: 'payrollData.monthlyProgress',
+        type: 'number',
         isOptional: true
       },
       {

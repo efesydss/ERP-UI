@@ -4,16 +4,10 @@ import { useMemo } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import { useTranslation } from 'react-i18next'
-import { Box, IconButton } from '@mui/material'
-import { Route as NewVacationRoute } from '@/routes/_authenticated/hr/vacations/new/$id'
-import { useNavigate } from '@tanstack/react-router'
 import { VacationGrid } from '@/components/Common/DataGrid/VacationGrid'
-import { GrNewWindow } from 'react-icons/gr'
-import { t } from 'i18next'
 
 export const VacationList = () => {
-  const { t: nav } = useTranslation('nav')
-  const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const columns = useMemo<ColumnDef<VacationStatus>[]>(
     () => [
@@ -52,39 +46,13 @@ export const VacationList = () => {
         header: t('common:usable'),
         accessorKey: 'usable',
         enableSorting: false
-      },
-      {
-        id: 'actions',
-        enableSorting: false,
-        enableColumnFilter: false,
-        cell: ({ row }) => {
-          const employeeId = row.original.employee.id
-
-          if (!employeeId) {
-            return null
-          }
-
-          return (
-            <Box sx={{ textAlign: 'right' }}>
-              <IconButton
-                size={'small'}
-                onClick={(e) => {
-                  e.stopPropagation()
-                  navigate({ to: NewVacationRoute.fullPath, params: { id: employeeId } })
-                }}
-              >
-                <GrNewWindow />
-              </IconButton>
-            </Box>
-          )
-        }
       }
     ],
-    [navigate]
+    [t]
   )
   return (
     <>
-      <PageTitle title={nav('vacations')} />
+      <PageTitle title={t('nav:vacations')} />
 
       <BaseTable<VacationStatus>
         endpoint={'employeeVacationStatuses'}
