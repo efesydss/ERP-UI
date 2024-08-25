@@ -11,13 +11,7 @@ import { FaRegTrashCan } from 'react-icons/fa6'
 import { initializeValues } from '@/components/Hr/TimeKeeping/utilsTimeKeeping'
 import { MdAdd } from 'react-icons/md'
 
-interface DynamicFieldsAccordionProps {
-  deleteOvertime: (id: number) => void
-  deleteEmployeePayment: (id: number) => void
-}
-
-export const DynamicFieldsAccordion = (props: DynamicFieldsAccordionProps) => {
-  const { deleteOvertime, deleteEmployeePayment } = props
+export const DynamicFieldsAccordion = () => {
   const { openDialog } = useConfirmDialog()
   const fieldConfigurations = useFieldConfigurations()
 
@@ -74,7 +68,13 @@ export const DynamicFieldsAccordion = (props: DynamicFieldsAccordionProps) => {
                               sx={{ position: 'absolute', right: 6, top: 6 }}
                               size={'small'}
                               onClick={() => {
-                                const fieldValue = items[index]
+                                openDialog(
+                                  'Confirm Deletion',
+                                  'Are you sure you want to delete this item?',
+                                  () => arrayHelpers.remove(index),
+                                  () => console.log('cancelled')
+                                )
+                                /* const fieldValue = items[index]
                                 if (fieldValue && fieldValue.id) {
                                   openDialog(
                                     'Confirm Deletion',
@@ -90,7 +90,7 @@ export const DynamicFieldsAccordion = (props: DynamicFieldsAccordionProps) => {
                                   )
                                 } else {
                                   arrayHelpers.remove(index)
-                                }
+                                }*/
                               }}
                               color={'error'}
                             >

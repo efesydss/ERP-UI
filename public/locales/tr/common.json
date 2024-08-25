@@ -60,6 +60,8 @@
   "usable": "Kullanılabilir",
   "SickLeave": "Hastalık İzni",
   "Marriage": "Evlilik",
+  "Married": "Evli",
+  "Single": "Bekar",
   "MARRIAGE": "Evlilik",
   "OnDemand": "On Demand",
   "Vacation": "Yıllık İzin",
@@ -84,7 +86,6 @@
   "deductions": "Ek Kesintiler",
   "overtimes": "Ek Mesailer",
   "additionalPayments": "Ek Ödemeler",
-  "addTimeKeeping": "Puantaj Ekle",
   "TRAVEL_PAYMENT": "Yol Parası",
   "ADDITIONAL_PAYMENT": "Ek Ödeme",
   "SALARY_PAYMENT": "Maaş Ödemesi",
@@ -109,10 +110,15 @@
   "removeEmployee": "Pasife Çek",
   "employeeDetails": "Çalışan Detayları",
   "timeKeepingDetails": "Puantaj Detayları",
+  "timeKeepingList": "Puantaj Listesi",
   "includedInCost": "Maliyete Dahil Et",
   "spouseWorking": "Eşi Çalışan",
   "monthlyHour": "Aylık Çalışma Saati",
   "children": "Çocuk Sayısı",
   "monthlyProgress": "Aylık Hakediş Günū",
-  "confirm": "Onayla"
+  "confirm": "Onayla",
+  "togglePassive": "Pasif",
+  "placeholders": {
+    "employeeSelect": "Çalışan Seçiniz"
+  }
 }

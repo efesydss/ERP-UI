@@ -1,8 +1,5 @@
-import { enumToOptions } from '@/utils/transformers'
-import { AdditionalPaymentType, CurrencyCode, DeductionPaymentType } from '@/components/Hr/Finances/typesFinance'
-import { t } from 'i18next'
 import { DynamicInputFieldProps } from '@/components/Common/Form/Input/DynamicFields'
-import { EmployeeOverTime, OverTimePercentage } from '@/components/Hr/TimeKeeping/typesTimeKeeping'
+import { EmployeeOverTime } from '@/components/Hr/TimeKeeping/typesTimeKeeping'
 import { EmployeePaymentProps } from '@/components/Hr/typesHr'
 
 //todo: check 'nested' type, is that still relevant for bankAccount
@@ -16,63 +13,6 @@ export interface DynamicFieldValues {
   overtimes: EmployeeOverTime[]
   deductions: EmployeePaymentProps[]
   additionalPayments: EmployeePaymentProps[]
-}
-
-const getEmployeePayment = () => [
-  {
-    name: 'paymentDate',
-    type: 'date'
-  },
-  {
-    name: 'description'
-  },
-  {
-    name: 'transactionCost',
-    type: 'number'
-  },
-  {
-    name: 'amount',
-    type: 'number'
-  },
-  {
-    name: 'amountCurrency',
-    type: 'select',
-    options: enumToOptions(CurrencyCode)
-  }
-]
-
-export const getAdditionalPayment = () => [
-  ...getEmployeePayment(),
-  {
-    name: 'paymentType',
-    type: 'select',
-    options: enumToOptions(AdditionalPaymentType, 'hr')
-  }
-]
-
-export const getDeductionPayment = () => [
-  ...getEmployeePayment(),
-  {
-    name: 'paymentType',
-    type: 'select',
-    options: enumToOptions(DeductionPaymentType, 'hr')
-  }
-]
-
-export const getFieldConfigurations = (): { [key: string]: Array<DynamicInputFieldProps> } => {
-  return {
-    deductions: getDeductionPayment(),
-    additionalPayments: getAdditionalPayment(),
-    overtimes: [
-      {
-        name: 'overTimePercentage',
-        type: 'select',
-        options: enumToOptions(OverTimePercentage)
-      },
-      { name: 'overtimeDate', type: 'date' },
-      { name: 'workingHours', type: 'number' }
-    ]
-  }
 }
 
 export const initializeValues = (fields: Array<DynamicInputFieldProps>) => {
@@ -149,21 +89,3 @@ export const processRecords = (values: DynamicFieldValues, initialValues: Dynami
     paymentRecordsToUpdate: [...deductionsResult.toUpdate, ...additionalPaymentsResult.toUpdate]
   }
 }
-
-export const getAccordionConfigs = () => [
-  {
-    name: 'overtimes',
-    label: t('common:overtimes'),
-    fields: getFieldConfigurations()['overtimes']
-  },
-  {
-    name: 'deductions',
-    label: t('common:deductions'),
-    fields: getFieldConfigurations()['deductions']
-  },
-  {
-    name: 'additionalPayments',
-    label: t('common:additionalPayments'),
-    fields: getFieldConfigurations()['additionalPayments']
-  }
-]

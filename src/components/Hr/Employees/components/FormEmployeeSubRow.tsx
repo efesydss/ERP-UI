@@ -7,9 +7,9 @@ import { SyntheticEvent, useState } from 'react'
 import { useFormikContext } from 'formik'
 import { LuRefreshCcw } from 'react-icons/lu'
 import { DynamicFields } from '@/components/Common/Form/Input/DynamicFields'
-import { employeeConfig } from '@/components/Hr/Employees/configEmployee'
+import { getEmployeeConfig } from '@/components/Hr/Employees/configEmployee'
 import { MdErrorOutline } from 'react-icons/md'
-import { AccordionSummary, Accordion } from '@/components/Common/Accordion/stylesAccordion'
+import { Accordion, AccordionSummary } from '@/components/Common/Accordion/stylesAccordion'
 
 export const FormEmployeeSubRow = () => {
   const [expanded, setExpanded] = useState<string | false>('infoGeneral')
@@ -21,7 +21,7 @@ export const FormEmployeeSubRow = () => {
   const { errors, dirty } = useFormikContext<EmployeeResponse>()
   const isSubmitDisabled = !!Object.keys(errors).length || !dirty
 
-  const hasErrors = employeeConfig.reduce(
+  const hasErrors = getEmployeeConfig().reduce(
     (acc, section) => {
       acc[section.id] = section.fields.some((field) => !!errors[field.name as keyof EmployeeResponse])
       return acc
@@ -31,7 +31,7 @@ export const FormEmployeeSubRow = () => {
 
   return (
     <>
-      {employeeConfig.map((config, index) => (
+      {getEmployeeConfig().map((config, index) => (
         <Accordion
           disableGutters
           key={`${config.id}-${index}`}

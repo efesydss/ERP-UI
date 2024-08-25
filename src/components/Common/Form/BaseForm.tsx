@@ -15,7 +15,10 @@ export const BaseForm = <T extends FormikValues>(props: BaseFormProps<T>) => {
   return (
     <Formik
       initialValues={initialValues}
-      onSubmit={onSubmit}
+      onSubmit={(values, formikHelpers) => {
+        onSubmit(values)
+        formikHelpers.resetForm()
+      }}
       validationSchema={validationSchema}
       validateOnBlur={false}
       enableReinitialize

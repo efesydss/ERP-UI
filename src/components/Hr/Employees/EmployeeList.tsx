@@ -1,9 +1,9 @@
 import { BaseTable } from '@/components/Common/Table/BaseTable'
-import { useMemo } from 'react'
+import { ChangeEvent, useMemo, useState } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { EmployeeResponse } from '@/components/Hr/Employees/typesEmployee'
 import { useTranslation } from 'react-i18next'
-import { Button } from '@mui/material'
+import { Box, Button, FormControlLabel, Switch } from '@mui/material'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
 import { useNavigate } from '@tanstack/react-router'
@@ -13,6 +13,7 @@ import { DetailsSubRow } from '@/components/Hr/Employees/components/DetailsSubRo
 export const EmployeeList = () => {
   const { t } = useTranslation('common')
   const navigate = useNavigate()
+  const [checked, setChecked] = useState(false)
 
   const columns = useMemo<ColumnDef<EmployeeResponse>[]>(
     () => [
@@ -61,14 +62,31 @@ export const EmployeeList = () => {
     )
   }
 
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setChecked(event.target.checked)
+  }
+
   return (
     <>
       <PageTitle
         title={t('personnelList')}
         actions={<PersonnelListActions />}
       />
+      <Box>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={checked}
+              onChange={handleChange}
+              size='small'
+            />
+          }
+          label={t('togglePassive')}
+        />
+      </Box>
       <BaseTable<EmployeeResponse>
         endpoint={'employees'}
+        namedFilters={checked ? ['show_passives'] : []}
         columns={columns}
         renderSubComponent={(props) => (
           <DetailsSubRow

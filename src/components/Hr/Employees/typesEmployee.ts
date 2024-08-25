@@ -1,16 +1,5 @@
 import { NamedEntity } from '@/utils/sharedTypes'
 
-export enum CivilStatus {
-  Single = 'Single',
-  Married = 'Married'
-}
-
-export enum Currency {
-  TRY = 'TRY',
-  Euro = 'EUR',
-  Dollar = 'USD'
-}
-
 export enum BloodType {
   A_Positive = 'A+',
   A_Negative = 'A-',
@@ -32,12 +21,23 @@ export enum BloodType {
   WAGE_CUT = 'WAGE_CUT'
 }*/
 
+export enum CivilStatus {
+  Single = 'Single',
+  Married = 'Married'
+}
+
+export enum Currency {
+  TRY = 'TRY',
+  Euro = 'EUR',
+  Dollar = 'USD'
+}
+
 export interface PayrollData {
   id?: number
   currency?: Currency
   salary: number
   includedInCost?: boolean
-  monthlyProgress?: number
+  monthlyProgress?: number | null
   monthlyHour?: number
   iban: string
   children?: number
@@ -56,6 +56,7 @@ export interface EmployeeResponse {
   emergencyName?: string
   startDate: string
   endDate?: string | null
+  passive?: boolean
   phone?: string
   email?: string
   serialNumber?: string
@@ -63,7 +64,7 @@ export interface EmployeeResponse {
   mothersName?: string
   birthPlace?: string
   birthDate?: string
-  civilStatus?: CivilStatus
+  civilStatus?: CivilStatus | null
   city?: string
   province?: string
   state?: string

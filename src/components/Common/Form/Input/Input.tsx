@@ -22,7 +22,7 @@ const InputBase = (props: InputProps, ref: ForwardedRef<HTMLElement>) => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (isNumber) {
       const value = e.target.value
-      const numericValue = value.replace(/[^0-9.,]/g, '') // Remove any non-numeric characters except . and ,
+      const numericValue = value.replace(/[^0-9.,]/g, '')
       setValue(numericValue)
     } else {
       setValue(e.target.value)

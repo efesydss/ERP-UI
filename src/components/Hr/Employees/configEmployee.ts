@@ -1,8 +1,8 @@
 import { apiRoutes } from '@/utils/apiRoutes'
 import { enumToOptions } from '@/utils/transformers'
-import { Currency } from '@/components/Hr/Employees/typesEmployee'
+import { CivilStatus, Currency } from '@/components/Hr/Employees/typesEmployee'
 
-export const employeeConfig = [
+export const getEmployeeConfig = () => [
   {
     id: 'infoGeneral',
     fields: [
@@ -20,8 +20,7 @@ export const employeeConfig = [
       {
         name: 'department',
         type: 'select',
-        endpoint: 'departments' as keyof typeof apiRoutes,
-        areOptionsEnum: false
+        endpoint: 'departments' as keyof typeof apiRoutes
       },
       {
         name: 'profession'
@@ -65,6 +64,11 @@ export const employeeConfig = [
       {
         name: 'emergencyPhone',
         isOptional: true
+      },
+      {
+        name: 'passive',
+        isOptional: true,
+        type: 'boolean'
       }
     ]
   },
@@ -87,6 +91,12 @@ export const employeeConfig = [
         name: 'birthDate',
         type: 'date',
         isOptional: true
+      },
+      {
+        name: 'civilStatus',
+        type: 'select',
+        isOptional: true,
+        options: enumToOptions(CivilStatus)
       }
     ]
   },
@@ -103,6 +113,7 @@ export const employeeConfig = [
       {
         name: 'payrollData.currency',
         options: enumToOptions(Currency),
+        type: 'select',
         isOptional: true
       },
       {

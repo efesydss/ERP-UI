@@ -49,7 +49,7 @@ export const useFieldConfigurations = () => {
     {
       name: 'paymentType',
       type: 'select',
-      options: enumToOptions(AdditionalPaymentType, 'hr')
+      options: enumToOptions(AdditionalPaymentType)
     }
   ]
 

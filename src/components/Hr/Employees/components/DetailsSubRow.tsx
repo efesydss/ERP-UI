@@ -58,6 +58,8 @@ export const DetailsSubRow = <TData,>(props: DetailsSubRowProps<TData>) => {
   })
 
   const onFormSubmit = async (values: EmployeeResponse) => {
+    console.log('values -->', values)
+
     await mutateAsync(values)
   }
 
@@ -67,7 +69,7 @@ export const DetailsSubRow = <TData,>(props: DetailsSubRowProps<TData>) => {
 
   return (
     <>
-      <BaseForm
+      <BaseForm<EmployeeResponse>
         initialValues={data}
         validationSchema={employeeValidationSchema}
         component={<FormEmployeeSubRow />}

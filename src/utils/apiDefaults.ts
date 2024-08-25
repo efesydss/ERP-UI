@@ -80,6 +80,7 @@ export const getRefreshToken = async () => {
     } else {
       console.error('An unexpected error occurred', err)
     }
+    return undefined
   }
 }
 
@@ -93,17 +94,19 @@ export const setAuthToken = (token: string | undefined) => {
 }
 
 export const refreshAuth = async (failedRequest: AxiosError) => {
-  return axiosBase
-    .post<TokenResponse>(apiRoutes.userRefresh)
-    .then((tokenRefreshResponse: AxiosResponse<TokenResponse>) => {
-      const newAccessToken = tokenRefreshResponse.data.token
-      setAuthToken(newAccessToken)
+  try {
+    const tokenRefreshResponse = await axiosBase.post<TokenResponse>(apiRoutes.userRefresh)
+    const newAccessToken = tokenRefreshResponse.data.token
+    setAuthToken(newAccessToken)
 
-      if (failedRequest.response && failedRequest.response.config) {
-        failedRequest.response.config.headers['Authorization'] = `Bearer ${newAccessToken}`
-      }
-      return Promise.resolve()
-    })
+    if (failedRequest.response && failedRequest.response.config) {
+      failedRequest.response.config.headers['Authorization'] = `Bearer ${newAccessToken}`
+    }
+
+    return Promise.resolve()
+  } catch (error) {
+    return Promise.reject(error)
+  }
 }
 
 export const skipRefreshAuth: CustomAxiosRequestConfig = {

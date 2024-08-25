@@ -24,6 +24,7 @@ interface BaseSelectProps {
   onChange?: (option: string) => void
   selectLabel?: string
   isOptional?: boolean
+  placeholder?: string
 }
 
 export const BaseSelect = (props: BaseSelectProps) => {
@@ -38,6 +39,7 @@ export const BaseSelect = (props: BaseSelectProps) => {
     isEnum = false,
     isOptional = false,
     onChange,
+    placeholder = '',
     ...rest
   } = props
   const [field, { touched, error }, { setValue }] = useField(name)
@@ -97,6 +99,7 @@ export const BaseSelect = (props: BaseSelectProps) => {
 
   const getValue = (): MultiValue<OptionType> | SingleValue<OptionType> | null => {
     const finalOptions = options || fetchedOptions || []
+
     if (isEnum) {
       if (isMulti) {
         const values = (field.value as string).split(',')
@@ -135,7 +138,7 @@ export const BaseSelect = (props: BaseSelectProps) => {
         options={options || fetchedOptions}
         isMulti={isMulti}
         styles={getSelectStyles(theme, hasError)}
-        placeholder={''}
+        placeholder={placeholder}
         isLoading={isLoading || isFetching}
       />
     </Stack>

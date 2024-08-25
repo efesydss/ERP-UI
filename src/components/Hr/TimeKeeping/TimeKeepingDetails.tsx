@@ -40,7 +40,12 @@ export const TimeKeepingDetails = () => {
       <BaseForm
         initialValues={data}
         onSubmit={onFormSubmit}
-        component={<FormTimeKeepingDetails onSetTotalPayment={setTotalPayment} />}
+        component={
+          <FormTimeKeepingDetails
+            onSetTotalPayment={setTotalPayment}
+            totalPayment={totalPayment}
+          />
+        }
       />
     </>
   )

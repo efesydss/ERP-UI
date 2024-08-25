@@ -47,6 +47,7 @@ interface BaseTableProps<TData extends RowData> {
     row: Row<TData>
     handleExpandRow: (e: MouseEvent | null, rowId: string) => void
   }) => ReactElement
+  namedFilters?: string[]
 }
 
 type FilterVariant = 'text' | 'select' | 'enum'
@@ -67,7 +68,16 @@ declare module '@tanstack/react-table' {
 }
 
 export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) => {
-  const { columns, endpoint, params, customFilter, nameSpace = 'common', method = 'POST', renderSubComponent } = props
+  const {
+    columns,
+    endpoint,
+    params,
+    customFilter,
+    nameSpace = 'common',
+    method = 'POST',
+    renderSubComponent,
+    namedFilters = []
+  } = props
   const { setItem, getItem } = useLocalStorage(endpoint)
   const { t: feedbacks } = useTranslation('feedbacks')
 
@@ -82,7 +92,7 @@ export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) =
   })
 
   const { data, isLoading } = useQuery({
-    queryKey: [endpoint, pagination, columnFilters, sorting, customFilter, params],
+    queryKey: [endpoint, pagination, columnFilters, sorting, customFilter, params, namedFilters],
     queryFn: () =>
       apiRequest<ApiResponse<TData>>({
         endpoint,
@@ -92,7 +102,8 @@ export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) =
           filter: createFilterQuery(),
           sort: sortingOptions(),
           page: pagination.pageIndex,
-          pageSize: pagination.pageSize
+          pageSize: pagination.pageSize,
+          namedFilters
         }
       }),
     placeholderData: keepPreviousData

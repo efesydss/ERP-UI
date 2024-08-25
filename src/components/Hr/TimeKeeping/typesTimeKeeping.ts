@@ -4,9 +4,15 @@ import { EmployeePaymentProps } from '@/components/Hr/typesHr'
 
 //todo: employee can be null
 export interface EmployeeTimeKeepingSpan {
-  employee: NamedEntity
+  employee?: NamedEntity
   year: number
   month: number
+}
+
+export interface TimeKeepingDraftProps {
+  id?: string
+  year: string
+  month: string
 }
 
 export interface EmployeeRef {
