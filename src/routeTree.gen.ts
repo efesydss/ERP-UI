@@ -27,6 +27,7 @@ import { Route as AuthenticatedHrVacationsIndexImport } from './routes/_authenti
 import { Route as AuthenticatedHrTimekeepingIndexImport } from './routes/_authenticated/hr/timekeeping/index'
 import { Route as AuthenticatedHrFinancesIndexImport } from './routes/_authenticated/hr/finances/index'
 import { Route as AuthenticatedHrEmployeesIndexImport } from './routes/_authenticated/hr/employees/index'
+import { Route as AuthenticatedAccountingCashAccountsIndexImport } from './routes/_authenticated/accounting/cashAccounts/index'
 import { Route as AuthenticatedHrVacationsNewImport } from './routes/_authenticated/hr/vacations/new'
 import { Route as AuthenticatedHrTimekeepingNewImport } from './routes/_authenticated/hr/timekeeping/new'
 import { Route as AuthenticatedHrEmployeesNewImport } from './routes/_authenticated/hr/employees/new'
@@ -121,6 +122,12 @@ const AuthenticatedHrEmployeesIndexRoute =
   AuthenticatedHrEmployeesIndexImport.update({
     path: '/',
     getParentRoute: () => AuthenticatedHrEmployeesRoute,
+  } as any)
+
+const AuthenticatedAccountingCashAccountsIndexRoute =
+  AuthenticatedAccountingCashAccountsIndexImport.update({
+    path: '/accounting/cashAccounts/',
+    getParentRoute: () => AuthenticatedRoute,
   } as any)
 
 const AuthenticatedHrVacationsNewRoute =
@@ -268,6 +275,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHrVacationsNewImport
       parentRoute: typeof AuthenticatedHrVacationsImport
     }
+    '/_authenticated/accounting/cashAccounts/': {
+      id: '/_authenticated/accounting/cashAccounts/'
+      path: '/accounting/cashAccounts'
+      fullPath: '/accounting/cashAccounts'
+      preLoaderRoute: typeof AuthenticatedAccountingCashAccountsIndexImport
+      parentRoute: typeof AuthenticatedImport
+    }
     '/_authenticated/hr/employees/': {
       id: '/_authenticated/hr/employees/'
       path: '/'
@@ -352,6 +366,7 @@ export const routeTree = rootRoute.addChildren({
       }),
       AuthenticatedHrIndexRoute,
     }),
+    AuthenticatedAccountingCashAccountsIndexRoute,
   }),
   LoginRoute,
 })
@@ -377,7 +392,8 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/_authenticated/admin",
         "/_authenticated/dashboard",
-        "/_authenticated/hr"
+        "/_authenticated/hr",
+        "/_authenticated/accounting/cashAccounts/"
       ]
     },
     "/login": {
@@ -458,6 +474,10 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/_authenticated/hr/vacations/new/$id"
       ]
+    },
+    "/_authenticated/accounting/cashAccounts/": {
+      "filePath": "_authenticated/accounting/cashAccounts/index.tsx",
+      "parent": "/_authenticated"
     },
     "/_authenticated/hr/employees/": {
       "filePath": "_authenticated/hr/employees/index.tsx",
