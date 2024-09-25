@@ -6,15 +6,15 @@ import { Box, Button, FormControlLabel, Switch } from '@mui/material';
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { useNavigate } from '@tanstack/react-router';
-import { Route } from '@/routes/_authenticated/accounting/cashAccounts';  // Route kısmını kendine göre düzenle
-import { CashAccountResponse } from './typesAccounting';  // CashAccountResponse tipini de tanımla veya import et
+import { Route } from '@/routes/_authenticated/accounting/cashAccounts';  
+import { CashAccount } from './typesCashAccount';  
 
 export const CashAccounts = () => {
   const { t } = useTranslation('common');
   const navigate = useNavigate();
   const [checked, setChecked] = useState(false);
 
-  const columns = useMemo<ColumnDef<CashAccountResponse>[]>(
+  const columns = useMemo<ColumnDef<CashAccount>[]>(
     () => [
       {
         header: t('accountName'),
@@ -25,13 +25,9 @@ export const CashAccounts = () => {
         accessorKey: 'balance'
       },
       {
-        header: t('currency'),
-        accessorKey: 'currency',
-        accessorFn: (row) => row.currency.code,
-        meta: {
-          filterVariant: 'select',
-          filterOptionsEndpoint: 'currencies'
-        }
+        header: t('common:name'),
+        accessorKey: 'name',
+        enableSorting:false
       }
     ],
     [t]
@@ -58,28 +54,14 @@ export const CashAccounts = () => {
 
   return (
     <>
-      <PageTitle
-        title={t('cashAccountList')}
-        actions={<CashAccountListActions />}
-      />
-      <Box>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={checked}
-              onChange={handleChange}
-              size='small'
-            />
-          }
-          label={t('toggleInactiveAccounts')}
-        />
-      </Box>
-      <BaseTable<CashAccountResponse>
-        endpoint={'cashAccounts'}
-        namedFilters={checked ? ['show_inactives'] : []}
+      <PageTitle title={t('nav:vacations')} />
+
+      <BaseTable<CashAccount>
+        endpoint={'cashAccount'}
         columns={columns}
+        renderSubComponent={(props) => <CashAccounts cashAccountId={props.row.original.cashAccount.id} />}
       />
     </>
-  );
-};
+  )
+}
 

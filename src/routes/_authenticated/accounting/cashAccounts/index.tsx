@@ -1,6 +1,6 @@
 import { createFileRoute, redirect } from '@tanstack/react-router';
 import { getRefreshToken, setAuthToken, tokenGlobal } from '@/utils/apiDefaults';
-import { CashAccounts } from '@/components/Accounting/CashAccount';
+import { CashAccounts } from '@/components/Accounting/CashAccountList';
 
 export const Route = createFileRoute('/_authenticated/accounting/cashAccounts/')({
   beforeLoad: async ({ context, location }) => {
