@@ -13,6 +13,9 @@ export const apiRoutes = {
   // Banks
   banks: 'finance/banks',
 
+  //Cash Account
+  cashAccounts:'accounting/cashAccounts',
+  
   // Employee Vacation Management
   employeeVacationStatuses: 'hr/employees/timeoffstatuses',
   employeeVacation: 'hr/employee/{employeeId}/timeoffs',

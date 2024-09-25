@@ -9,3 +9,10 @@ export interface CashAccount{
     name: string
     currency: Currency
 }
+
+export interface CashAccountBaseProps {
+    id?: number
+    code: string
+    name: string
+    currency: Currency
+  }

@@ -1,18 +1,14 @@
-import { BaseTable } from '@/components/Common/Table/BaseTable';
-import { ChangeEvent, useMemo, useState } from 'react';
-import { ColumnDef } from '@tanstack/react-table';
-import { useTranslation } from 'react-i18next';
-import { Box, Button, FormControlLabel, Switch } from '@mui/material';
-import { PageTitle } from '@/components/Common/PageTitle/PageTitle';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import { useNavigate } from '@tanstack/react-router';
-import { Route } from '@/routes/_authenticated/accounting/cashAccounts';  
-import { CashAccount } from './typesCashAccount';  
+import { BaseTable } from '@/components/Common/Table/BaseTable'
+import { VacationStatus } from 'components/Hr/Vacations/typeVacations'
+import { useMemo } from 'react'
+import { ColumnDef } from '@tanstack/react-table'
+import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
+import { useTranslation } from 'react-i18next'
+import { VacationGrid } from '@/components/Common/DataGrid/VacationGrid'
+import { CashAccount, CashAccountBaseProps } from './typesCashAccount'
 
-export const CashAccounts = () => {
-  const { t } = useTranslation('common');
-  const navigate = useNavigate();
-  const [checked, setChecked] = useState(false);
+export const CashAccountList = () => {
+  const { t } = useTranslation()
 
   const columns = useMemo<ColumnDef<CashAccount>[]>(
     () => [
@@ -31,37 +27,16 @@ export const CashAccounts = () => {
       }
     ],
     [t]
-  );
-
-  const CashAccountListActions = () => {
-    return (
-      <>
-        <Button
-          variant={'contained'}
-          size={'small'}
-          startIcon={<AddCircleOutlineIcon />}
-          onClick={() => navigate({ to: Route.fullPath })}  // Route kısmını düzenlemelisin
-        >
-          {t('newCashAccount')}
-        </Button>
-      </>
-    );
-  };
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setChecked(event.target.checked);
-  };
-
+  )
   return (
     <>
-      <PageTitle title={t('nav:vacations')} />
+      <PageTitle title={t('nav:cashAccounts')} />
 
-      <BaseTable<CashAccount>
-        endpoint={'cashAccount'}
+      <BaseTable<CashAccountBaseProps>//CashAccount nesnesi ile VacationStatus nesnesi temsili olarak eşittir kontrol et!
+        endpoint={'cashAccounts'}
         columns={columns}
-        renderSubComponent={(props) => <CashAccounts cashAccountId={props.row.original.cashAccount.id} />}
+        renderSubComponent={(props) => <CashAccountGrid cashAccountId={props.row.original.cashAccount.id} />}
       />
     </>
   )
 }
-
