@@ -15,7 +15,12 @@ export const apiRoutes = {
 
   //Cash Account
   cashAccounts:'accounting/cashAccounts',
-  
+  cashAccount:'accounting/cashAccount/{cashAccountId}',
+  cashAccountAdd:'accounting/cashAccount',
+  cashAccountDelete:'accounting/cashAccount/{cashAccountId}',
+  cashAccountUpdate:'accounting/cashAccount/{cashAccountId}',
+
+
   // Employee Vacation Management
   employeeVacationStatuses: 'hr/employees/timeoffstatuses',
   employeeVacation: 'hr/employee/{employeeId}/timeoffs',

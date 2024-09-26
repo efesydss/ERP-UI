@@ -20,7 +20,6 @@ import {
 } from '@mui/x-data-grid'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { apiRequest, ApiResponse } from '@/utils/apiDefaults'
-import { CashAccountBaseProps, CashAccount } from '@/components/Accounting/typesCashAccount'
 import { Box, Button, InputBase, InputBaseProps, styled, TextFieldProps } from '@mui/material'
 import { AiOutlineSave } from 'react-icons/ai'
 import { MdDeleteOutline, MdModeEdit, MdOutlineAdd } from 'react-icons/md'
@@ -30,6 +29,11 @@ import { toast } from 'react-toastify'
 import { DatePicker, DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { tr as locale } from 'date-fns/locale'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3'
+import { useTranslation } from 'react-i18next'
+import { useConfirmDialog } from '@/utils/hooks/useConfirmDialogContext'
+import { formatToISOString, enumToOptions } from '@/utils/transformers'
+import { Currency } from '@/components/Hr/Employees/typesEmployee'
+import { CashAccountBaseProps } from '@/components/Accounting/typesCashAccount'
 
 interface BaseGridProps {
   cashAccountId?: number
@@ -87,8 +91,8 @@ export const CashAccountGrid = (props: BaseGridProps) => {
         {
           id,
           code: '1',
-          name:'efe',
-          currency:'TRY'
+          name: 'efe',
+          currency: Currency.TRY
         }
       ])
       setRowModesModel((oldModel) => ({
@@ -96,7 +100,6 @@ export const CashAccountGrid = (props: BaseGridProps) => {
         [id]: { mode: GridRowModes.Edit, fieldToFocus: 'startDateTime' }
       }))
     }
-    //ya bu ne be 
 
     return (
       <GridToolbarContainer sx={{ p: 2 }}>
@@ -113,62 +116,63 @@ export const CashAccountGrid = (props: BaseGridProps) => {
       </GridToolbarContainer>
     )
   }
-
-  const { mutate: deleteVacation } = useMutation({
-    mutationFn: async (timeOffId: string) => {
+  const { mutate: deleteCashAccount } = useMutation({
+    mutationFn: async (cashAccountId: string) => {
       return await apiRequest({
-        endpoint: 'employeeVacationDelete',
+        endpoint: 'cashAccountDelete',
         method: 'DELETE',
-        params: { employeeId: employeeId?.toString() ?? '0', timeOffId }
+        params: { cashAccountId: cashAccountId?.toString() ?? '0' }
       })
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['employeeVacation'] })
-      toast.success('Vacation Deleted')
+      queryClient.invalidateQueries({ queryKey: ['cashAccount'] })
+      toast.success('Cash Account Deleted')
     }
   })
 
-  const { mutate: updateVacation } = useMutation({
-    mutationFn: async (timeOff: VacationBaseProps) => {
+  const { mutate: updateCashAccount } = useMutation({
+    mutationFn: async (cashAccount: CashAccountBaseProps) => {
       return await apiRequest({
-        endpoint: 'employeeVacationUpdate',
+        endpoint: 'cashAccountUpdate',
         method: 'PUT',
-        params: { employeeId: employeeId?.toString() ?? '0', timeOffId: timeOff.id?.toString() ?? '' },
-        payload: timeOff
+        params: {
+          cashAccountId: cashAccount.id?.toString() ?? '0'
+        },
+        payload: cashAccount
       })
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['employeeVacation'] })
-      toast.success('Vacation Updated')
+      queryClient.invalidateQueries({ queryKey: ['cashAccount'] })
+      toast.success('Cash Account Updated')
     }
   })
 
-  const { mutateAsync: addVacation } = useMutation({
-    mutationFn: (values: VacationBaseProps) =>
+  const { mutateAsync: addCashAccount } = useMutation({
+    mutationFn: (values: CashAccountBaseProps) =>
       apiRequest({
-        endpoint: 'employeeVacationAdd',
-        params: { employeeId: employeeId?.toString() ?? '0' },
+        endpoint: 'cashAccount',
+        params: {
+          cashAccountId: values.id?.toString() ?? '0'
+        },
         payload: {
-          startDateTime: formatToISOString(values.startDateTime as string),
-          endDateTime: formatToISOString(values.endDateTime as string),
-          workingDays: values.workingDays,
-          workingHours: values.workingHours,
-          timeOffType: values.timeOffType,
-          unPaid: values.unPaid
+          code: values.code,
+          name: values.name,
+          currency: values.currency
         }
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['employeeVacation'] })
-      toast.success('Vacation Created')
+      queryClient.invalidateQueries({ queryKey: ['cashAccount'] })
+      toast.success('Cash Account Created')
     },
     onError: (err) => console.log(err)
   })
+
 
   const handleEditClick = (id: GridRowId) => () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } })
   }
 
-  const handleSaveClick = (newRow: EditableEmployeeVacationProps) => () => {
+  const handleSaveClick = (newRow: EditableCashAccountProps) => () => {
     const id = newRow.id ?? 0
 
     setRowModesModel((prevModel) => ({
@@ -182,7 +186,7 @@ export const CashAccountGrid = (props: BaseGridProps) => {
       'Confirm Deletion',
       'Are you sure you want to delete this item?',
       () => {
-        deleteVacation(id.toString())
+        deleteCashAccount(id.toString())
       },
       () => {
         console.log('Deletion cancelled')
@@ -211,24 +215,22 @@ export const CashAccountGrid = (props: BaseGridProps) => {
     }
   }
 
-  const processRowUpdate = (newRow: GridRowModel<EditableEmployeeVacationProps>) => {
+  const processRowUpdate = (newRow: GridRowModel<EditableCashAccountProps>) => {
     const id = newRow.id ?? 0
 
-    const vacationDetails: VacationBaseProps = {
+    const cashAccountDetails: CashAccountBaseProps = {
       id,
-      personnel: { id: employeeId || 0, name: '' },
-      startDateTime: newRow.startDateTime instanceof Date ? newRow.startDateTime.toISOString() : newRow.startDateTime,
-      endDateTime: newRow.endDateTime instanceof Date ? newRow.endDateTime.toISOString() : newRow.endDateTime,
-      workingDays: newRow.workingDays,
-      workingHours: newRow.workingHours,
-      timeOffType: newRow.timeOffType,
-      unPaid: newRow.unPaid
+      code: newRow.code, // yeni satırdan code bilgisi
+      name: newRow.name, // yeni satırdan name bilgisi
+      currency: newRow.currency, // yeni satırdan currency bilgisi
+      // Eğer CashAccount için gerekli başka alanlar varsa buraya ekle
     }
 
+
     if (newRow.isNew) {
-      addVacation(vacationDetails)
+      addCashAccount(cashAccountDetails)
     } else {
-      updateVacation(vacationDetails)
+      updateCashAccount(cashAccountDetails)
     }
 
     const updatedRow = { ...newRow, isNew: false }
@@ -238,28 +240,10 @@ export const CashAccountGrid = (props: BaseGridProps) => {
 
   useEffect(() => {
     if (data) {
-      setRows(data as GridRowsProp<VacationBaseProps>)
+      setRows(data as GridRowsProp<CashAccountBaseProps>)
     }
   }, [data])
 
-  /*  const dateColumnType: GridColTypeDef<Date, string> = {
-    ...GRID_DATE_COL_DEF,
-    resizable: false,
-    renderEditCell: (params) => {
-      return <GridEditDateCell {...params} />
-    },
-    filterOperators: getGridDateOperators(false).map((item) => ({
-      ...item,
-      InputComponent: GridFilterDateInput,
-      InputComponentProps: { showTime: false }
-    })),
-    valueFormatter: (value) => {
-      if (value) {
-        return dateAdapter.format(value, 'keyboardDate')
-      }
-      return ''
-    }
-  }*/
 
   const GridEditDateInput = styled(InputBase)({
     fontSize: 'inherit',
@@ -277,6 +261,7 @@ export const CashAccountGrid = (props: BaseGridProps) => {
     )
   }
 
+  //TODO erkanAbi buraya beraber bakalımmı ? 
   function GridEditDateCell({ id, field, value, colDef }: GridRenderEditCellParams<any, Date | null, string>) {
     const apiRef = useGridApiContext()
 
@@ -348,47 +333,25 @@ export const CashAccountGrid = (props: BaseGridProps) => {
 
   const columns: GridColDef[] = [
     {
-      field: 'startDateTime',
-      valueGetter: (value) => new Date(value),
-      headerName: t('common:vacationStart'),
-      ...dateTimeColumnType,
+      field: 'code',
+      headerName: t('common:cashAccountCode'),
+      width: 150,
+      editable: true
+    },
+    {
+      field: 'name',
+      headerName: t('common:cashAccountName'),
       width: 230,
       editable: true
     },
     {
-      field: 'endDateTime',
-      valueGetter: (value) => new Date(value),
-      headerName: t('common:vacationEnd'),
-      ...dateTimeColumnType,
-      width: 200,
-      editable: true
-    },
-    {
-      field: 'timeOffType',
-      headerName: t('common:timeOffType'),
-      //valueGetter: (value: string) => t(`common:${value}`),
-      valueOptions: enumToOptions(VacationType),
+      field: 'currency',
+      headerName: t('common:currency'),
+      valueOptions: enumToOptions(Currency), // Currency enum'undan değerler
       type: 'singleSelect',
-      width: 230,
+      width: 150,
       editable: true
     },
-    {
-      field: 'workingDays',
-      headerName: t('common:workingDays'),
-      type: 'number',
-      editable: true,
-      align: 'left',
-      headerAlign: 'left'
-    },
-    {
-      field: 'workingHours',
-      headerName: t('common:workingHours'),
-      type: 'number',
-      editable: true,
-      align: 'left',
-      headerAlign: 'left'
-    },
-    { field: 'unPaid', headerName: t('common:unPaid'), type: 'boolean', editable: true },
     {
       field: 'actions',
       type: 'actions',

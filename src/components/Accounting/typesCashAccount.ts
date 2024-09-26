@@ -1,10 +1,9 @@
 //code	string
 //name	string
 //currency
-import { NamedEntity } from '@/utils/sharedTypes'
-import { Currency } from "../Hr/Finances/typesFinance"
+import { Currency } from '../Hr/Employees/typesEmployee'
 
-export interface CashAccount{
+export interface CashAccount {
     code: string
     name: string
     currency: Currency
@@ -15,4 +14,4 @@ export interface CashAccountBaseProps {
     code: string
     name: string
     currency: Currency
-  }
+}

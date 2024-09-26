@@ -1,11 +1,10 @@
 import { BaseTable } from '@/components/Common/Table/BaseTable'
-import { VacationStatus } from 'components/Hr/Vacations/typeVacations'
 import { useMemo } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import { useTranslation } from 'react-i18next'
-import { VacationGrid } from '@/components/Common/DataGrid/VacationGrid'
 import { CashAccount, CashAccountBaseProps } from './typesCashAccount'
+import { CashAccountGrid } from '../Common/DataGrid/CashAccountGrid'
 
 export const CashAccountList = () => {
   const { t } = useTranslation()
@@ -23,7 +22,7 @@ export const CashAccountList = () => {
       {
         header: t('common:name'),
         accessorKey: 'name',
-        enableSorting:false
+        enableSorting: false
       }
     ],
     [t]
@@ -35,7 +34,7 @@ export const CashAccountList = () => {
       <BaseTable<CashAccountBaseProps>//CashAccount nesnesi ile VacationStatus nesnesi temsili olarak eşittir kontrol et!
         endpoint={'cashAccounts'}
         columns={columns}
-        renderSubComponent={(props) => <CashAccountGrid cashAccountId={props.row.original.cashAccount.id} />}
+        renderSubComponent={(props) => <CashAccountGrid cashAccountId={props.row.original.id} />}
       />
     </>
   )
