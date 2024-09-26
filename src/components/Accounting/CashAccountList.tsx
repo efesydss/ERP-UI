@@ -12,26 +12,26 @@ export const CashAccountList = () => {
   const columns = useMemo<ColumnDef<CashAccount>[]>(
     () => [
       {
-        header: t('accountName'),
-        accessorKey: 'accountName'
+        header: t('Name'),
+        accessorKey: 'name'
       },
       {
-        header: t('balance'),
-        accessorKey: 'balance'
+        header: t('Code'),
+        accessorKey: 'code'
       },
       {
-        header: t('common:name'),
-        accessorKey: 'name',
-        enableSorting: false
+        header: t('currency'),
+        accessorKey: 'currency',
+        enableSorting: true
       }
     ],
     [t]
   )
   return (
     <>
-      <PageTitle title={t('nav:cashAccounts')} />
+      <PageTitle title={t('Cash Accounts')} />
 
-      <BaseTable<CashAccountBaseProps>//CashAccount nesnesi ile VacationStatus nesnesi temsili olarak eşittir kontrol et!
+      <BaseTable<CashAccountBaseProps>
         endpoint={'cashAccounts'}
         columns={columns}
         renderSubComponent={(props) => <CashAccountGrid cashAccountId={props.row.original.id} />}
