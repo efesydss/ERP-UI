@@ -1,7 +1,7 @@
 import { MdOutlineBeachAccess } from 'react-icons/md'
 import { TbUserStar } from 'react-icons/tb'
 import { MenuItemProps } from '@/components/Root/typesRoot'
-import { FaPeopleRoof } from 'react-icons/fa6'
+import { FaPeopleRoof, FaRProject } from 'react-icons/fa6'
 import { RiAdminLine } from 'react-icons/ri'
 import { HiOutlineCash } from 'react-icons/hi'
 import { PiFlag } from 'react-icons/pi'
@@ -32,5 +32,15 @@ export const navMenuItems: MenuItemProps[] = [
   {
     label: 'admin',
     icon: RiAdminLine
+  },
+  {
+    label: 'accounting',
+    icon: FaRProject,
+    sub: [
+      {
+        label: 'Cash Accounts',
+        icon: TbUserStar
+      }
+    ]
   }
 ]
