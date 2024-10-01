@@ -3,19 +3,17 @@ import { Currency } from "../Hr/Employees/typesEmployee";
 import { CashAccountResponse } from "./typesCashAccount";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/utils/apiDefaults";
-import { values } from "lodash";
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
-import { Route } from '@/routes/_authenticated/hr/employees'
+import { Route } from '@/routes/_authenticated/accounting/cashAccounts'
 import { capitalizeFirstLetter } from "@/utils/transformers";
 import { PageTitle } from "../Common/PageTitle/PageTitle";
 import { BaseForm } from "../Common/Form/BaseForm";
 import { Container } from "@mui/material";
+import { FormCashAccount } from "./FormCashAccount";
+import { t } from "i18next";
 
-/*id?: number
-    code: string
-    name: string
-    currency: Currency*/
+
 const initialCashAccount: CashAccountResponse = {
   id: 0,
   code: '',
@@ -28,7 +26,7 @@ export const CashAccountAdd = () => {
   const navigate = useNavigate()
 
   const { mutateAsync } = useMutation({
-    mutationFn: (value: CashAccountResponse) =>
+    mutationFn: (values: CashAccountResponse) =>
       apiRequest({
         endpoint: 'cashAccount',
         payload: values
@@ -44,18 +42,29 @@ export const CashAccountAdd = () => {
     ) => {
       if (err.response?.status === 409) {
         console.log(err.response)
-        toast.error('exists')
+        console.log(err.cause)
+        toast.error('exist')
       } else {
-        toast.error('error')
+        toast.error('error'+err.cause)
+        console.log(err.response)
+        console.log(err.request)
+        console.log(err.code)
+        console.log(err.message)
+        console.log(err.status)
+
       }
     }
   })
 
   const onFormSubmit = async (values: CashAccountResponse) => {
+    console.log('Form values before mutation:', values);
+
+    //TODO ef : buraya değerler boş geliyor.
     await mutateAsync({
       ...values,
       name: capitalizeFirstLetter(values.name),
-      code: capitalizeFirstLetter(values.code)
+      code: capitalizeFirstLetter(values.code),
+      currency: values.currency,
 
     })
   }
