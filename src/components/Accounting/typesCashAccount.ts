@@ -12,3 +12,10 @@ export interface CashAccountBaseProps {
     name: string
     currency: Currency
 }
+
+export interface CashAccountResponse {
+    id?: number
+    code: string
+    name: string
+    currency: Currency
+}

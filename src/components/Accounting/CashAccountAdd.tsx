@@ -1,53 +1,74 @@
-import { useTranslation } from "react-i18next"
-import { FormGrid } from "../Common/Form/FormGrid/FormGrid"
-import { Box, Button, Input } from "@mui/material"
-import { Route } from '@/routes/_authenticated/accounting/cashAccounts'
-import { useNavigate } from '@tanstack/react-router'
+import { useNavigate } from "@tanstack/react-router";
+import { Currency } from "../Hr/Employees/typesEmployee";
+import { CashAccountResponse } from "./typesCashAccount";
+import { useMutation } from "@tanstack/react-query";
+import { apiRequest } from "@/utils/apiDefaults";
+import { values } from "lodash";
+import { toast } from "react-toastify";
+import { AxiosError } from "axios";
+import { Route } from '@/routes/_authenticated/hr/employees'
+import { capitalizeFirstLetter } from "@/utils/transformers";
+import { PageTitle } from "../Common/PageTitle/PageTitle";
+import { BaseForm } from "../Common/Form/BaseForm";
+import { Container } from "@mui/material";
 
-export const FormCashAccountAdd = ()=>{
-    const { t:common } = useTranslation('common')
-    const navigate = useNavigate()
+/*id?: number
+    code: string
+    name: string
+    currency: Currency*/
+const initialCashAccount: CashAccountResponse = {
+  id: 0,
+  code: '',
+  name: '',
+  currency: Currency.TRY
+}
 
-    return (
-        <>
-        <FormGrid>
+export const CashAccountAdd = () => {
 
-        <FormGrid widths={'half'}>
-        <Input
-        name={'code'}
-        type={'string'}
+  const navigate = useNavigate()
+
+  const { mutateAsync } = useMutation({
+    mutationFn: (value: CashAccountResponse) =>
+      apiRequest({
+        endpoint: 'cashAccount',
+        payload: values
+      }),
+    onSuccess: () => {
+      navigate({ to: Route.fullPath })
+      toast.success('Cash Account Created')
+    },
+    onError: (
+      err: AxiosError<{
+        err?: string
+      }>
+    ) => {
+      if (err.response?.status === 409) {
+        console.log(err.response)
+        toast.error('exists')
+      } else {
+        toast.error('error')
+      }
+    }
+  })
+
+  const onFormSubmit = async (values: CashAccountResponse) => {
+    await mutateAsync({
+      ...values,
+      name: capitalizeFirstLetter(values.name),
+      code: capitalizeFirstLetter(values.code)
+
+    })
+  }
+  return (
+    <>
+      <PageTitle title={t('common:newCashAccount')} />
+      <Container>
+        <BaseForm
+          initialValues={initialCashAccount}
+          component={<FormCashAccount />}
+          onSubmit={onFormSubmit}
         />
-        
-            <Input
-              name={'name'}
-              type={'string'}
-            />
-              <Input
-              name={'currency'}
-              type={'string'}
-            />
-           
-        </FormGrid>
-
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
-        <Button
-          type={'button'}
-          variant={'outlined'}
-          onClick={() => {
-            navigate({ to: Route.fullPath })
-          }}
-        >
-          {common('cancel')}
-        </Button>
-        <Button
-          type={'submit'}
-          color={'primary'}
-          variant={'contained'}
-        >
-          {common('save')}
-        </Button>
-      </Box>
-        </FormGrid>
-        </>
-    )
+      </Container>
+    </>
+  )
 }
