@@ -38,7 +38,7 @@ export const navMenuItems: MenuItemProps[] = [
     icon: FaRProject,
     sub: [
       {
-        label: 'Cash Accounts',
+        label: 'CashAccounts',
         icon: TbUserStar
       }
     ]

@@ -1,6 +1,3 @@
-//code	string
-//name	string
-//currency
 import { Currency } from '../Hr/Employees/typesEmployee'
 
 export interface CashAccount {
