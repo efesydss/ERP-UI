@@ -36,6 +36,7 @@ export const CashAccountDetail = () => {
         toast.success('Cash Account Updated')
       }
     })
+    
   
     const onFormSubmit = async (values: CashAccountResponse) => {
       await mutateAsync(values)

@@ -31,14 +31,20 @@ export const navMenuItems: MenuItemProps[] = [
   },
   {
     label: 'admin',
-    icon: RiAdminLine
+    icon: RiAdminLine,
+    sub: [ // Admin menüsünün altına yeni bir alt menü ekliyoruz
+      {
+        label: 'Depot',
+        icon: FaRProject // İstediğin bir ikonla değiştirebilirsin
+      }
+    ]
   },
   {
     label: 'accounting',
     icon: FaRProject,
     sub: [
       {
-        label: 'CashAccounts',
+        label: 'CashAccounts',//TODO erkanAbi : diğer labels accounting mesela otomatik olarak ui kısmında Muhasebe yazıyor ama benimki olmadı onun tanımlaması nerede?
         icon: TbUserStar
       }
     ]

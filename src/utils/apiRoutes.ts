@@ -20,6 +20,12 @@ export const apiRoutes = {
   cashAccountDelete:'accounting/cashAccount/{cashAccountId}',
   cashAccountUpdate:'accounting/cashAccount/{cashAccountId}',
 
+  //Admin / Depot 
+  depots:'admin/depots',
+  depot:'admin/depot/{depotId}',
+  depotAdd:'admin/depot',
+  depotDelete:'admin/depot/{depotId}',
+  depotUpdate: 'admin/depot/{depotId}',
 
   // Employee Vacation Management
   employeeVacationStatuses: 'hr/employees/timeoffstatuses',

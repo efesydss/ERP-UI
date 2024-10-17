@@ -51,7 +51,7 @@ export const CashAccountList = () => {
 
   return (
     <>
-      <PageTitle title={t('Cash Accounts')}
+      <PageTitle title={t('Cash Account')}
       actions={<CashAccountListActions />} 
       />
       <BaseTable<CashAccountBaseProps>
