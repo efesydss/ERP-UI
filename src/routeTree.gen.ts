@@ -36,6 +36,7 @@ import { Route as AuthenticatedHrTimekeepingIdIndexImport } from './routes/_auth
 import { Route as AuthenticatedHrEmployeesIdIndexImport } from './routes/_authenticated/hr/employees/$id/index'
 import { Route as AuthenticatedAccountingCashAccountsIdIndexImport } from './routes/_authenticated/accounting/cashAccounts/$id/index'
 import { Route as AuthenticatedHrVacationsNewIdImport } from './routes/_authenticated/hr/vacations/new/$id'
+import { Route as AuthenticatedAdminDepotsNewRoute } from './routes/_authenticated/admin/new/$id' 
 
 // Create/Update Routes
 
@@ -282,6 +283,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHrEmployeesNewImport
       parentRoute: typeof AuthenticatedHrEmployeesImport
     }
+    '/_authenticated/admin/depots/new': {
+      id: '/_authenticated/admin/depots/new'
+      path: '/new'
+      fullPath: '/admin/depots/new'
+      preLoaderRoute: typeof AuthenticatedAdminDepotsNewImport
+      parentRoute: typeof AuthenticatedAdminDepotsImport
+    }
     '/_authenticated/hr/timekeeping/new': {
       id: '/_authenticated/hr/timekeeping/new'
       path: '/new'
@@ -397,6 +405,7 @@ export const routeTree = rootRoute.addChildren({
     AuthenticatedAccountingCashAccountsNewRoute,
     AuthenticatedAccountingCashAccountsIndexRoute,
     AuthenticatedAccountingCashAccountsIdIndexRoute,
+    AuthenticatedAdminDepotsNewRoute,
   }),
   LoginRoute,
 })
