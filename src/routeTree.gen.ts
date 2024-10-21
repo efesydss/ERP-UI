@@ -181,6 +181,12 @@ const AuthenticatedAccountingCashAccountsIdIndexRoute =
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
+  const AuthenticatedAdminDepotsIdIndexRoute =
+  AuthenticatedAdminDepotsIdIndexImport.update({
+    path: '/admin/depots/$id/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
 const AuthenticatedHrVacationsNewIdRoute =
   AuthenticatedHrVacationsNewIdImport.update({
     path: '/$id',
@@ -323,6 +329,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/hr/employees/'
       preLoaderRoute: typeof AuthenticatedHrEmployeesIndexImport
       parentRoute: typeof AuthenticatedHrEmployeesImport
+    }
+    '/_authenticated/admin/depots/': {
+      id: '/_authenticated/admin/depots/'
+      path: '/'
+      fullPath: '/admin/depots/'
+      preLoaderRoute: typeof AuthenticatedAdminDepotsIndexImport
+      parentRoute: typeof AuthenticatedAdminDepotsImport
     }
     '/_authenticated/hr/finances/': {
       id: '/_authenticated/hr/finances/'
