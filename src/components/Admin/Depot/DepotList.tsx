@@ -1,11 +1,14 @@
 import { useNavigate } from "@tanstack/react-router"
-import { useMemo, useState } from "react"
+import { ChangeEvent, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { DepotResponse } from "./typesDepot"
 import { ColumnDef } from "@tanstack/react-table"
-import { Button } from "@mui/material"
+import { Box, Button, FormControlLabel, Switch } from "@mui/material"
 import { PersonAddAlt1Sharp } from "@mui/icons-material"
 import { Route } from "@/routes/_authenticated/admin"
+import { PageTitle } from "@/components/Common/PageTitle/PageTitle"
+import { BaseTable } from "@/components/Common/Table/BaseTable"
+import { DetailsSubRow } from "@/components/Admin/Depot/DetailSubRow"
 
 export const DepotList = () => {
   const { t } = useTranslation('common')
@@ -38,4 +41,42 @@ export const DepotList = () => {
   }
 
   ///Buradan devam edecek  // EmployeeList.tsx satır:66
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setChecked(event.target.checked)
+  }
+
+  return (
+    <>
+      <PageTitle
+        title={t('depotList')}
+        actions={<DepotListActions />}
+      />
+      <Box>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={checked}
+              onChange={handleChange}
+              size='small'
+            />
+
+          }
+          label={t('togglePassive')}
+        />
+      </Box>
+
+      <BaseTable<DepotResponse>
+        endpoint={'depots'}
+        namedFilters={checked ? ['show_passives'] : []}
+        columns={columns}
+        renderSubComponent={(props) => (
+          <DetailsSubRow
+            depotId={props.row.original.id}
+            row={props.row}
+          />
+        )}
+      />
+    </>
+  )
+
 }

@@ -34,7 +34,7 @@ export const navMenuItems: MenuItemProps[] = [
     icon: RiAdminLine,
     sub: [ // Admin menüsünün altına yeni bir alt menü ekliyoruz
       {
-        label: 'Depot',
+        label: 'depot',
         icon: FaRProject // İstediğin bir ikonla değiştirebilirsin
       }
     ]
