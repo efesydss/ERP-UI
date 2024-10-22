@@ -48,7 +48,7 @@ export const DepotList = () => {
   return (
     <>
       <PageTitle
-        title={t('depotList')}
+        title={t('DepotList')}
         actions={<DepotListActions />}
       />
       <Box>

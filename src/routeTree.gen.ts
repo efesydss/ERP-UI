@@ -17,8 +17,8 @@ import { Route as IndexImport } from './routes/index'
 import { Route as AuthenticatedHrImport } from './routes/_authenticated/hr'
 import { Route as AuthenticatedDashboardImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedAdminImport } from './routes/_authenticated/admin'
-import { Route as AdminIdIndexImport } from './routes/admin/$id/index'
 import { Route as AuthenticatedHrIndexImport } from './routes/_authenticated/hr/index'
+import { Route as AuthenticatedAdminIndexImport } from './routes/_authenticated/admin/index'
 import { Route as AuthenticatedHrVacationsImport } from './routes/_authenticated/hr/vacations'
 import { Route as AuthenticatedHrTimekeepingImport } from './routes/_authenticated/hr/timekeeping'
 import { Route as AuthenticatedHrFinancesImport } from './routes/_authenticated/hr/finances'
@@ -35,9 +35,9 @@ import { Route as AuthenticatedHrEmployeesNewImport } from './routes/_authentica
 import { Route as AuthenticatedAccountingCashAccountsNewImport } from './routes/_authenticated/accounting/cashAccounts/new'
 import { Route as AuthenticatedHrTimekeepingIdIndexImport } from './routes/_authenticated/hr/timekeeping/$id/index'
 import { Route as AuthenticatedHrEmployeesIdIndexImport } from './routes/_authenticated/hr/employees/$id/index'
+import { Route as AuthenticatedAdminDepotsIdIndexImport } from './routes/_authenticated/admin/depots/$id/index'
 import { Route as AuthenticatedAccountingCashAccountsIdIndexImport } from './routes/_authenticated/accounting/cashAccounts/$id/index'
 import { Route as AuthenticatedHrVacationsNewIdImport } from './routes/_authenticated/hr/vacations/new/$id'
-import { Route as AuthenticatedAdminDepotsNewRoute } from './routes/_authenticated/admin/new/$id' 
 
 // Create/Update Routes
 
@@ -71,14 +71,14 @@ const AuthenticatedAdminRoute = AuthenticatedAdminImport.update({
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 
-const AdminIdIndexRoute = AdminIdIndexImport.update({
-  path: '/admin/$id/',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const AuthenticatedHrIndexRoute = AuthenticatedHrIndexImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedHrRoute,
+} as any)
+
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexImport.update({
+  path: '/',
+  getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
 
 const AuthenticatedHrVacationsRoute = AuthenticatedHrVacationsImport.update({
@@ -175,15 +175,15 @@ const AuthenticatedHrEmployeesIdIndexRoute =
     getParentRoute: () => AuthenticatedHrEmployeesRoute,
   } as any)
 
+const AuthenticatedAdminDepotsIdIndexRoute =
+  AuthenticatedAdminDepotsIdIndexImport.update({
+    path: '/depots/$id/',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+
 const AuthenticatedAccountingCashAccountsIdIndexRoute =
   AuthenticatedAccountingCashAccountsIdIndexImport.update({
     path: '/accounting/cashAccounts/$id/',
-    getParentRoute: () => AuthenticatedRoute,
-  } as any)
-
-  const AuthenticatedAdminDepotsIdIndexRoute =
-  AuthenticatedAdminDepotsIdIndexImport.update({
-    path: '/admin/depots/$id/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
@@ -274,19 +274,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHrVacationsImport
       parentRoute: typeof AuthenticatedHrImport
     }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexImport
+      parentRoute: typeof AuthenticatedAdminImport
+    }
     '/_authenticated/hr/': {
       id: '/_authenticated/hr/'
       path: '/'
       fullPath: '/hr/'
       preLoaderRoute: typeof AuthenticatedHrIndexImport
       parentRoute: typeof AuthenticatedHrImport
-    }
-    '/admin/$id/': {
-      id: '/admin/$id/'
-      path: '/admin/$id'
-      fullPath: '/admin/$id'
-      preLoaderRoute: typeof AdminIdIndexImport
-      parentRoute: typeof rootRoute
     }
     '/_authenticated/accounting/cashAccounts/new': {
       id: '/_authenticated/accounting/cashAccounts/new'
@@ -330,13 +330,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHrEmployeesIndexImport
       parentRoute: typeof AuthenticatedHrEmployeesImport
     }
-    '/_authenticated/admin/depots/': {
-      id: '/_authenticated/admin/depots/'
-      path: '/'
-      fullPath: '/admin/depots/'
-      preLoaderRoute: typeof AuthenticatedAdminDepotsIndexImport
-      parentRoute: typeof AuthenticatedAdminDepotsImport
-    }
     '/_authenticated/hr/finances/': {
       id: '/_authenticated/hr/finances/'
       path: '/'
@@ -372,6 +365,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAccountingCashAccountsIdIndexImport
       parentRoute: typeof AuthenticatedImport
     }
+    '/_authenticated/admin/depots/$id/': {
+      id: '/_authenticated/admin/depots/$id/'
+      path: '/depots/$id'
+      fullPath: '/admin/depots/$id'
+      preLoaderRoute: typeof AuthenticatedAdminDepotsIdIndexImport
+      parentRoute: typeof AuthenticatedAdminImport
+    }
     '/_authenticated/hr/employees/$id/': {
       id: '/_authenticated/hr/employees/$id/'
       path: '/$id'
@@ -394,7 +394,10 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren({
   IndexRoute,
   AuthenticatedRoute: AuthenticatedRoute.addChildren({
-    AuthenticatedAdminRoute,
+    AuthenticatedAdminRoute: AuthenticatedAdminRoute.addChildren({
+      AuthenticatedAdminIndexRoute,
+      AuthenticatedAdminDepotsIdIndexRoute,
+    }),
     AuthenticatedDashboardRoute,
     AuthenticatedHrRoute: AuthenticatedHrRoute.addChildren({
       AuthenticatedHrDebitCreditAnalysisRoute,
@@ -426,7 +429,6 @@ export const routeTree = rootRoute.addChildren({
     AuthenticatedAccountingCashAccountsIdIndexRoute,
   }),
   LoginRoute,
-  AdminIdIndexRoute,
 })
 
 /* prettier-ignore-end */
@@ -439,8 +441,7 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/",
         "/_authenticated",
-        "/login",
-        "/admin/$id/"
+        "/login"
       ]
     },
     "/": {
@@ -462,7 +463,11 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_authenticated/admin": {
       "filePath": "_authenticated/admin.tsx",
-      "parent": "/_authenticated"
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/admin/",
+        "/_authenticated/admin/depots/$id/"
+      ]
     },
     "/_authenticated/dashboard": {
       "filePath": "_authenticated/dashboard.tsx",
@@ -517,12 +522,13 @@ export const routeTree = rootRoute.addChildren({
         "/_authenticated/hr/vacations/"
       ]
     },
+    "/_authenticated/admin/": {
+      "filePath": "_authenticated/admin/index.tsx",
+      "parent": "/_authenticated/admin"
+    },
     "/_authenticated/hr/": {
       "filePath": "_authenticated/hr/index.tsx",
       "parent": "/_authenticated/hr"
-    },
-    "/admin/$id/": {
-      "filePath": "admin/$id/index.tsx"
     },
     "/_authenticated/accounting/cashAccounts/new": {
       "filePath": "_authenticated/accounting/cashAccounts/new.tsx",
@@ -570,6 +576,10 @@ export const routeTree = rootRoute.addChildren({
     "/_authenticated/accounting/cashAccounts/$id/": {
       "filePath": "_authenticated/accounting/cashAccounts/$id/index.tsx",
       "parent": "/_authenticated"
+    },
+    "/_authenticated/admin/depots/$id/": {
+      "filePath": "_authenticated/admin/depots/$id/index.tsx",
+      "parent": "/_authenticated/admin"
     },
     "/_authenticated/hr/employees/$id/": {
       "filePath": "_authenticated/hr/employees/$id/index.tsx",
