@@ -26,6 +26,11 @@ export const apiRoutes = {
   depotAdd:'admin/depot',
   depotDelete:'admin/depot/{depotId}',
   depotUpdate: 'admin/depot/{depotId}',
+  machines:'admin/machines',
+  machine:'admin/machine/{machineId}',
+  machineAdd:'admin/machine',
+  machineDelete:'admin/machine/{machineId}',
+  machineUpdate:'admin/machine/{machineId}',
 
   // Employee Vacation Management
   employeeVacationStatuses: 'hr/employees/timeoffstatuses',

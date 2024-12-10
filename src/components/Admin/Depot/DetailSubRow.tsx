@@ -18,6 +18,7 @@ interface DetailsSubRowProps<TData> {
 export const DetailsSubRow = <TData,>(props: DetailsSubRowProps<TData>) => {
     const { depotId, handleExpandRow, row } = props
     const queryClient = useQueryClient()
+    console.log(queryClient.getQueryData(['depots']));
     const navigate = useNavigate()
 
     const { data } = useQuery({
@@ -29,8 +30,10 @@ export const DetailsSubRow = <TData,>(props: DetailsSubRowProps<TData>) => {
                 id: depotId
             }),
         enabled: !!depotId
-    })
 
+
+    });
+    console.log('API Response:', data);
     const updateDepot = async (depot: DepotResponse) => {
         return await apiRequest<DepotResponse>({
             endpoint: 'depot',

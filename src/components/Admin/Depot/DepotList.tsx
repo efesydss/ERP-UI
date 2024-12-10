@@ -1,14 +1,14 @@
-import { useNavigate } from "@tanstack/react-router"
-import { ChangeEvent, useMemo, useState } from "react"
-import { useTranslation } from "react-i18next"
-import { DepotResponse } from "./typesDepot"
-import { ColumnDef } from "@tanstack/react-table"
-import { Box, Button, FormControlLabel, Switch } from "@mui/material"
-import { PersonAddAlt1Sharp } from "@mui/icons-material"
-import { Route } from "@/routes/_authenticated/admin"
-import { PageTitle } from "@/components/Common/PageTitle/PageTitle"
-import { BaseTable } from "@/components/Common/Table/BaseTable"
-import { DetailsSubRow } from "@/components/Admin/Depot/DetailSubRow"
+import { useNavigate } from '@tanstack/react-router'
+import { ChangeEvent, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { DepotResponse } from './typesDepot'
+import { ColumnDef } from '@tanstack/react-table'
+import { Box, Button, FormControlLabel, Switch } from '@mui/material'
+import { PersonAddAlt1Sharp } from '@mui/icons-material'
+import { Route } from '@/routes/_authenticated/admin'
+import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
+import { BaseTable } from '@/components/Common/Table/BaseTable'
+import { DetailsSubRow } from '@/components/Admin/Depot/DetailSubRow'
 
 export const DepotList = () => {
   const { t } = useTranslation('common')
@@ -57,7 +57,7 @@ export const DepotList = () => {
             <Switch
               checked={checked}
               onChange={handleChange}
-              size='small'
+              size="small"
             />
 
           }

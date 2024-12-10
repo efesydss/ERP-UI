@@ -48,8 +48,6 @@ export const EmployeeList = () => {
     [t]
   )
 
-  //Yeni Çalışan Ekleme Butonu: Bu buton, yeni bir çalışan eklemek için kullanılır ve simge olarak PersonAddAlt1Icon eklenmiştir.
-//navigate Fonksiyonu: Butona tıklandığında, yeni bir çalışan ekleme sayfasına yönlendirme yapar.
   const PersonnelListActions = () => {
     return (
       <>
@@ -71,7 +69,6 @@ export const EmployeeList = () => {
 
   return (
     <>
-    //****PageTitle: Sayfanın başlığını ve aksiyon butonlarını render eder.*/
 
       <PageTitle
         title={t('personnelList')}
@@ -97,12 +94,9 @@ export const EmployeeList = () => {
         columns={columns}//columns: Önceden tanımlanmış sütun yapılandırmaları burada kullanılıyor.
         renderSubComponent={(props) => (
           <DetailsSubRow
-          //renderSubComponent: Her satırın altında detay bilgileri göstermek için kullanılan bir alt bileşen (DetailsSubRow) render ediliyor.
 
             employeeId={props.row.original.id}//props.row.original, tabloya sağlanan verinin orijinal haliyle temsil edildiği bir nesnedir.
             row={props.row}
-            /**row, tablo bileşenindeki tek bir satırı temsil eder. Bu satır, çalışana ait verileri içerir ve tablo içinde neler gösterileceğini tanımlayan bilgilere sahiptir.
-            Bu prop, alt bileşenin (DetailsSubRow) çalışanın tüm verilerine erişmesini sağlar, böylece detay bilgileri bu veriye dayanarak gösterilebilir. */
             handleExpandRow={props.handleExpandRow}
           />
         )}

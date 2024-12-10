@@ -36,6 +36,10 @@ export const navMenuItems: MenuItemProps[] = [
       {
         label: 'depot',
         icon: FaRProject // İstediğin bir ikonla değiştirebilirsin
+      },
+      {
+      label:'machines',
+      icon: FaRProject
       }
     ]
   },
