@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { CashAccount, CashAccountBaseProps } from './typesCashAccount'
 import { CashAccountGrid } from '../Common/DataGrid/CashAccountGrid'
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
-import { Route } from '@/routes/_authenticated/accounting/cashAccounts/new'//TODO ef : bunu formun yoluyla değiştirirsen biticek galiba.
+import { Route } from '@/routes/_authenticated/accounting/cashAccounts/new'
 import { useNavigate } from '@tanstack/react-router'
 import { Button } from '@mui/material'
 
