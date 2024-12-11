@@ -72,7 +72,8 @@ export const MachineList = () => {
           />
         }
         label={t('togglePassive')}
-      />*/}
+      />*/
+      }
     </Box>
     <BaseTable<Machines> endpoint={endpoint} columns={columns}
                          renderSubComponent={(props) => (
