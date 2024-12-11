@@ -26,6 +26,8 @@ export const apiRoutes = {
   depotAdd:'admin/depot',
   depotDelete:'admin/depot/{depotId}',
   depotUpdate: 'admin/depot/{depotId}',
+
+  //Admin / Machine
   machines:'admin/machines',
   machine:'admin/machine/{machineId}',
   machineAdd:'admin/machine',

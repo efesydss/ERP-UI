@@ -1,4 +1,3 @@
-import { DepotList } from "@/components/Admin/Depot/DepotList";
 import { DepotResponse } from "@/components/Admin/Depot/typesDepot";
 import { apiRequest } from "@/utils/apiDefaults";
 import { createFileRoute } from "@tanstack/react-router";
@@ -25,5 +24,5 @@ export const Route = createFileRoute('/_authenticated/admin/depots/$id/')({
         setCrumb(`${name}`)
         return data
     },
-    component: () => <DepotList />
+    component: () => <DepotDetails/>//todo ef: create this page...
 })
