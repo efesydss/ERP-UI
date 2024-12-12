@@ -17,8 +17,10 @@ import { Route as IndexImport } from './routes/index'
 import { Route as AuthenticatedHrImport } from './routes/_authenticated/hr'
 import { Route as AuthenticatedDashboardImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedAdminImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedStorageIndexImport } from './routes/_authenticated/storage/index'
 import { Route as AuthenticatedHrIndexImport } from './routes/_authenticated/hr/index'
 import { Route as AuthenticatedAdminIndexImport } from './routes/_authenticated/admin/index'
+import { Route as AuthenticatedStorageAssignmentCardsImport } from './routes/_authenticated/storage/assignmentCards'
 import { Route as AuthenticatedHrVacationsImport } from './routes/_authenticated/hr/vacations'
 import { Route as AuthenticatedHrTimekeepingImport } from './routes/_authenticated/hr/timekeeping'
 import { Route as AuthenticatedHrFinancesImport } from './routes/_authenticated/hr/finances'
@@ -26,6 +28,7 @@ import { Route as AuthenticatedHrEmployeesImport } from './routes/_authenticated
 import { Route as AuthenticatedHrDebitCreditAnalysisImport } from './routes/_authenticated/hr/debitCreditAnalysis'
 import { Route as AuthenticatedAdminMachinesImport } from './routes/_authenticated/admin/machines'
 import { Route as AuthenticatedAdminDepotsImport } from './routes/_authenticated/admin/depots'
+import { Route as AuthenticatedStorageAssignmentCardIndexImport } from './routes/_authenticated/storage/assignmentCard/index'
 import { Route as AuthenticatedHrVacationsIndexImport } from './routes/_authenticated/hr/vacations/index'
 import { Route as AuthenticatedHrTimekeepingIndexImport } from './routes/_authenticated/hr/timekeeping/index'
 import { Route as AuthenticatedHrFinancesIndexImport } from './routes/_authenticated/hr/finances/index'
@@ -33,12 +36,14 @@ import { Route as AuthenticatedHrEmployeesIndexImport } from './routes/_authenti
 import { Route as AuthenticatedAdminMachinesIndexImport } from './routes/_authenticated/admin/machines/index'
 import { Route as AuthenticatedAdminDepotsIndexImport } from './routes/_authenticated/admin/depots/index'
 import { Route as AuthenticatedAccountingCashAccountsIndexImport } from './routes/_authenticated/accounting/cashAccounts/index'
+import { Route as AuthenticatedStorageAssignmentCardNewImport } from './routes/_authenticated/storage/assignmentCard/new'
 import { Route as AuthenticatedHrVacationsNewImport } from './routes/_authenticated/hr/vacations/new'
 import { Route as AuthenticatedHrTimekeepingNewImport } from './routes/_authenticated/hr/timekeeping/new'
 import { Route as AuthenticatedHrEmployeesNewImport } from './routes/_authenticated/hr/employees/new'
 import { Route as AuthenticatedAdminMachinesNewImport } from './routes/_authenticated/admin/machines/new'
 import { Route as AuthenticatedAdminDepotsNewImport } from './routes/_authenticated/admin/depots/new'
 import { Route as AuthenticatedAccountingCashAccountsNewImport } from './routes/_authenticated/accounting/cashAccounts/new'
+import { Route as AuthenticatedStorageAssignmentCardIdIndexImport } from './routes/_authenticated/storage/assignmentCard/$id/index'
 import { Route as AuthenticatedHrTimekeepingIdIndexImport } from './routes/_authenticated/hr/timekeeping/$id/index'
 import { Route as AuthenticatedHrEmployeesIdIndexImport } from './routes/_authenticated/hr/employees/$id/index'
 import { Route as AuthenticatedAdminMachinesIdIndexImport } from './routes/_authenticated/admin/machines/$id/index'
@@ -78,6 +83,11 @@ const AuthenticatedAdminRoute = AuthenticatedAdminImport.update({
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 
+const AuthenticatedStorageIndexRoute = AuthenticatedStorageIndexImport.update({
+  path: '/storage/',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
 const AuthenticatedHrIndexRoute = AuthenticatedHrIndexImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedHrRoute,
@@ -87,6 +97,12 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+
+const AuthenticatedStorageAssignmentCardsRoute =
+  AuthenticatedStorageAssignmentCardsImport.update({
+    path: '/storage/assignmentCards',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 
 const AuthenticatedHrVacationsRoute = AuthenticatedHrVacationsImport.update({
   path: '/vacations',
@@ -127,6 +143,12 @@ const AuthenticatedAdminDepotsRoute = AuthenticatedAdminDepotsImport.update({
   path: '/depots',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+
+const AuthenticatedStorageAssignmentCardIndexRoute =
+  AuthenticatedStorageAssignmentCardIndexImport.update({
+    path: '/storage/assignmentCard/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 
 const AuthenticatedHrVacationsIndexRoute =
   AuthenticatedHrVacationsIndexImport.update({
@@ -170,6 +192,12 @@ const AuthenticatedAccountingCashAccountsIndexRoute =
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
+const AuthenticatedStorageAssignmentCardNewRoute =
+  AuthenticatedStorageAssignmentCardNewImport.update({
+    path: '/storage/assignmentCard/new',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
 const AuthenticatedHrVacationsNewRoute =
   AuthenticatedHrVacationsNewImport.update({
     path: '/new',
@@ -203,6 +231,12 @@ const AuthenticatedAdminDepotsNewRoute =
 const AuthenticatedAccountingCashAccountsNewRoute =
   AuthenticatedAccountingCashAccountsNewImport.update({
     path: '/accounting/cashAccounts/new',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
+const AuthenticatedStorageAssignmentCardIdIndexRoute =
+  AuthenticatedStorageAssignmentCardIdIndexImport.update({
+    path: '/storage/assignmentCard/$id/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
@@ -337,6 +371,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHrVacationsImport
       parentRoute: typeof AuthenticatedHrImport
     }
+    '/_authenticated/storage/assignmentCards': {
+      id: '/_authenticated/storage/assignmentCards'
+      path: '/storage/assignmentCards'
+      fullPath: '/storage/assignmentCards'
+      preLoaderRoute: typeof AuthenticatedStorageAssignmentCardsImport
+      parentRoute: typeof AuthenticatedImport
+    }
     '/_authenticated/admin/': {
       id: '/_authenticated/admin/'
       path: '/'
@@ -350,6 +391,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/hr/'
       preLoaderRoute: typeof AuthenticatedHrIndexImport
       parentRoute: typeof AuthenticatedHrImport
+    }
+    '/_authenticated/storage/': {
+      id: '/_authenticated/storage/'
+      path: '/storage'
+      fullPath: '/storage'
+      preLoaderRoute: typeof AuthenticatedStorageIndexImport
+      parentRoute: typeof AuthenticatedImport
     }
     '/_authenticated/accounting/cashAccounts/new': {
       id: '/_authenticated/accounting/cashAccounts/new'
@@ -392,6 +440,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/hr/vacations/new'
       preLoaderRoute: typeof AuthenticatedHrVacationsNewImport
       parentRoute: typeof AuthenticatedHrVacationsImport
+    }
+    '/_authenticated/storage/assignmentCard/new': {
+      id: '/_authenticated/storage/assignmentCard/new'
+      path: '/storage/assignmentCard/new'
+      fullPath: '/storage/assignmentCard/new'
+      preLoaderRoute: typeof AuthenticatedStorageAssignmentCardNewImport
+      parentRoute: typeof AuthenticatedImport
     }
     '/_authenticated/accounting/cashAccounts/': {
       id: '/_authenticated/accounting/cashAccounts/'
@@ -442,6 +497,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHrVacationsIndexImport
       parentRoute: typeof AuthenticatedHrVacationsImport
     }
+    '/_authenticated/storage/assignmentCard/': {
+      id: '/_authenticated/storage/assignmentCard/'
+      path: '/storage/assignmentCard'
+      fullPath: '/storage/assignmentCard'
+      preLoaderRoute: typeof AuthenticatedStorageAssignmentCardIndexImport
+      parentRoute: typeof AuthenticatedImport
+    }
     '/_authenticated/hr/vacations/new/$id': {
       id: '/_authenticated/hr/vacations/new/$id'
       path: '/$id'
@@ -483,6 +545,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/hr/timekeeping/$id'
       preLoaderRoute: typeof AuthenticatedHrTimekeepingIdIndexImport
       parentRoute: typeof AuthenticatedHrTimekeepingImport
+    }
+    '/_authenticated/storage/assignmentCard/$id/': {
+      id: '/_authenticated/storage/assignmentCard/$id/'
+      path: '/storage/assignmentCard/$id'
+      fullPath: '/storage/assignmentCard/$id'
+      preLoaderRoute: typeof AuthenticatedStorageAssignmentCardIdIndexImport
+      parentRoute: typeof AuthenticatedImport
     }
   }
 }
@@ -532,9 +601,14 @@ export const routeTree = rootRoute.addChildren({
       }),
       AuthenticatedHrIndexRoute,
     }),
+    AuthenticatedStorageAssignmentCardsRoute,
+    AuthenticatedStorageIndexRoute,
     AuthenticatedAccountingCashAccountsNewRoute,
+    AuthenticatedStorageAssignmentCardNewRoute,
     AuthenticatedAccountingCashAccountsIndexRoute,
+    AuthenticatedStorageAssignmentCardIndexRoute,
     AuthenticatedAccountingCashAccountsIdIndexRoute,
+    AuthenticatedStorageAssignmentCardIdIndexRoute,
   }),
   LoginRoute,
 })
@@ -561,9 +635,14 @@ export const routeTree = rootRoute.addChildren({
         "/_authenticated/admin",
         "/_authenticated/dashboard",
         "/_authenticated/hr",
+        "/_authenticated/storage/assignmentCards",
+        "/_authenticated/storage/",
         "/_authenticated/accounting/cashAccounts/new",
+        "/_authenticated/storage/assignmentCard/new",
         "/_authenticated/accounting/cashAccounts/",
-        "/_authenticated/accounting/cashAccounts/$id/"
+        "/_authenticated/storage/assignmentCard/",
+        "/_authenticated/accounting/cashAccounts/$id/",
+        "/_authenticated/storage/assignmentCard/$id/"
       ]
     },
     "/login": {
@@ -649,6 +728,10 @@ export const routeTree = rootRoute.addChildren({
         "/_authenticated/hr/vacations/"
       ]
     },
+    "/_authenticated/storage/assignmentCards": {
+      "filePath": "_authenticated/storage/assignmentCards.tsx",
+      "parent": "/_authenticated"
+    },
     "/_authenticated/admin/": {
       "filePath": "_authenticated/admin/index.tsx",
       "parent": "/_authenticated/admin"
@@ -656,6 +739,10 @@ export const routeTree = rootRoute.addChildren({
     "/_authenticated/hr/": {
       "filePath": "_authenticated/hr/index.tsx",
       "parent": "/_authenticated/hr"
+    },
+    "/_authenticated/storage/": {
+      "filePath": "_authenticated/storage/index.tsx",
+      "parent": "/_authenticated"
     },
     "/_authenticated/accounting/cashAccounts/new": {
       "filePath": "_authenticated/accounting/cashAccounts/new.tsx",
@@ -683,6 +770,10 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/_authenticated/hr/vacations/new/$id"
       ]
+    },
+    "/_authenticated/storage/assignmentCard/new": {
+      "filePath": "_authenticated/storage/assignmentCard/new.tsx",
+      "parent": "/_authenticated"
     },
     "/_authenticated/accounting/cashAccounts/": {
       "filePath": "_authenticated/accounting/cashAccounts/index.tsx",
@@ -712,6 +803,10 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_authenticated/hr/vacations/index.tsx",
       "parent": "/_authenticated/hr/vacations"
     },
+    "/_authenticated/storage/assignmentCard/": {
+      "filePath": "_authenticated/storage/assignmentCard/index.tsx",
+      "parent": "/_authenticated"
+    },
     "/_authenticated/hr/vacations/new/$id": {
       "filePath": "_authenticated/hr/vacations/new/$id.tsx",
       "parent": "/_authenticated/hr/vacations/new"
@@ -735,6 +830,10 @@ export const routeTree = rootRoute.addChildren({
     "/_authenticated/hr/timekeeping/$id/": {
       "filePath": "_authenticated/hr/timekeeping/$id/index.tsx",
       "parent": "/_authenticated/hr/timekeeping"
+    },
+    "/_authenticated/storage/assignmentCard/$id/": {
+      "filePath": "_authenticated/storage/assignmentCard/$id/index.tsx",
+      "parent": "/_authenticated"
     }
   }
 }

@@ -1,6 +1,6 @@
-import { DepotResponse } from "@/components/Admin/Depot/typesDepot";
+import { Depot } from "@/components/Admin/Depot/typesDepot";
 import { apiRequest } from "@/utils/apiDefaults";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Outlet } from '@tanstack/react-router'
 import { z } from 'zod'
 export const Route = createFileRoute('/_authenticated/admin/depots/$id/')({
     params: {
@@ -13,7 +13,7 @@ export const Route = createFileRoute('/_authenticated/admin/depots/$id/')({
         const data = await context.queryClient.ensureQueryData({
             queryKey: ['depot', id],
             queryFn: () =>
-                apiRequest<DepotResponse>({
+                apiRequest<Depot>({
                     method: 'GET',
                     endpoint: 'depot',
                     id
@@ -24,5 +24,5 @@ export const Route = createFileRoute('/_authenticated/admin/depots/$id/')({
         setCrumb(`${name}`)
         return data
     },
-    component: () => <DepotDetails/>//todo ef: create this page...
+    component: () => <Outlet/>//todo ef: create this page...
 })
