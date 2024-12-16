@@ -10,7 +10,7 @@ import { AssignmentCard } from '@/components/Storage/typesAssignmentCard'
 import { useMemo } from 'react'
 import { Button } from '@mui/material'
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
-import { Route } from '@/routes/_authenticated/admin/machines/new'
+import { Route } from '@/routes/_authenticated/storage/assignmentCard/new'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import { BaseTable } from '@/components/Common/Table/BaseTable'
 import { MachineSubRow } from '@/components/Admin/machine/MachineSubRow'
@@ -39,14 +39,14 @@ export const AssignmentCardList = () => {
   const { mutate: deleteMachine } = useMutation({
     mutationFn: async (machineId: string) => {
       return await apiRequest({
-        endpoint: 'machineDelete',
+        endpoint: 'assignmentCardDelete',
         method: 'DELETE',
         params: { machineId: machineId?.toString() ?? '0' }
       })
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['machines'] })
-      toast.success('Machine Deleted')
+      queryClient.invalidateQueries({ queryKey: ['assignmentCards'] })
+      toast.success('Assignment Card Deleted')
     }
   })
 
@@ -209,6 +209,7 @@ export const AssignmentCardList = () => {
 
   return (
     <>
+      <h1>Bu tabloyu optimize et bazı columns görünsün diğerleri detay da olsun yani 4 tane içerdiği Entity detayı invoice fln filan 1 tane de assignment card details diye olsun orada da buradan sildiğin kolonları taşı</h1>
       <PageTitle
         title={t('assignmentCardList')}
         actions={<AssignmentCardListActions />}
@@ -226,5 +227,4 @@ export const AssignmentCardList = () => {
 
     </>
   )
-
 }
