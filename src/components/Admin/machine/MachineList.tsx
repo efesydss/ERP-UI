@@ -3,7 +3,6 @@ import { Machines } from '@/components/Admin/typesMachines'
 import { ColumnDef } from '@tanstack/react-table'
 import { BaseTable } from '@/components/Common/Table/BaseTable'
 import { useMemo } from 'react'
-import { DetailsSubRow } from '@/components/Hr/Employees/components/DetailsSubRow'
 import { Button } from '@mui/material'
 import { useNavigate } from '@tanstack/react-router'
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
@@ -14,6 +13,7 @@ import { useConfirmDialog } from '@/utils/hooks/useConfirmDialogContext'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { apiRequest } from '@/utils/apiDefaults'
 import { toast } from 'react-toastify'
+import { MachineSubRow } from '@/components/Admin/machine/MachineSubRow'
 
 export const MachineList = () => {
   const { t } = useTranslation('common')
@@ -52,6 +52,7 @@ export const MachineList = () => {
       {
         header: t('code'),
         accessorKey: 'code'
+
       },
       {
         header: t('description'),
@@ -105,7 +106,7 @@ export const MachineList = () => {
 
     <BaseTable<Machines> endpoint={endpoint} columns={columns}
                          renderSubComponent={(props) => (
-                           <DetailsSubRow
+                           <MachineSubRow
 
                              employeeId={props.row.original.id}
                              row={props.row}
