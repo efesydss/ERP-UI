@@ -34,6 +34,28 @@ export const apiRoutes = {
   machineDelete:'admin/machine/{machineId}',
   machineUpdate:'admin/machine/{machineId}',
 
+  //Storage / AssignmentCard
+  assignmentCards:'storage/assignmentCards',
+  assignmentCard:'storage/assignmentCard/{assignmentCardId}',
+  assignmentCardAdd:'storage/assignmentCard',
+  assignmentCardDelete:'storage/assignmentCard/{assignmentCardId}',
+  assignmentCardUpdate:'storage/assignmentCard/{assignmentCardId}',
+
+  //Storage / FixtureCard
+  fixtureCards: 'storage/fixtureCards',
+  //Storage / Invoice
+  invoices: 'storage/invoices',
+
+  //Storage / AssignmentTransaction
+  assignmentTransactions:'storage/assignmentTransactions',
+  assignmentTransaction:'storage/assignmentTransaction/{assignmentTransactionId}',
+  assignmentTransactionAdd:'storage/assignmentTransaction',
+  assignmentTransactionDelete:'storage/assignmentTransaction/{assignmentTransactionId}',
+  assignmentTransactionUpdate:'storage/assignmentTransaction/{assignmentTransactionId}',
+
+
+  //todo ef bunu tamamla ben bikaç tane  base select için koydum
+
   // Employee Vacation Management
   employeeVacationStatuses: 'hr/employees/timeoffstatuses',
   employeeVacation: 'hr/employee/{employeeId}/timeoffs',

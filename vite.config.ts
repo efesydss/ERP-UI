@@ -12,10 +12,11 @@ export default defineConfig({
   },
 
   //todo: this is a temp fix for cors
+  //https://falcons-erp-api-dev.sd.iafl.net/api/ todo ef bunu tekrar koymalısın şuan localhost için değiştirdim..
   server: {
     proxy: {
       '/api': {
-        target: 'https://falcons-erp-api-dev.sd.iafl.net/api/',
+        target: 'https://falcons-erp-api-dev.sd.iafl.net/api',
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/api/, '')

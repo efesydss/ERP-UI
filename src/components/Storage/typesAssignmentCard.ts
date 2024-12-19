@@ -1,44 +1,26 @@
 import {
   AssignmentStatusEnum,
-  FixtureType,
-  DefaultUnit,
-  InvoiceTypeEnum,
   WarrantyPeriodEnum,
   MaintenancePeriodEnum
 } from './typesEnum';
 
 
-import { FixtureGroup } from './typesFixtureGroup'
 import { FixtureCard } from './typesFixtureCard'
-import { FixtureCardUnit } from './typesFixtureCardUnit'
+import { Invoice } from './typesInvoice'
+
 
 export interface AssignmentCard {
     id: number,
     assignmentStatusEnum:AssignmentStatusEnum,
     code:string,
     name:string,
-    fixtureCard:FixtureCard,
-    fixtureGroup:FixtureGroup,
-    defaultUnit:DefaultUnit,
-    fixtureType:FixtureType,
-    optimalLevel:number,
-    minimumLevel:number,
-    specialCode:string,
-    shelfLocation:string,
-    fixtureCardUnit:FixtureCardUnit,
+    fixtureCard?:FixtureCard,
     insuranceCompany:string,
     insurance:boolean,
     insurancePolicyNo:string,
     insuranceDuration:number,
     info:string,
-    invoice:invoice,
-    generalDiscount:number,
-    unitDiscount:number,
-    totalVat:number,
-    totalAdditionalCosts:number,
-    subTotal:number,
-    finalTotal:number,
-    invoiceTypeEnum:InvoiceTypeEnum,
+    invoice?:Invoice,
     warrantyPeriodEnum:WarrantyPeriodEnum,
     warrantyDay:number,
     underMaintenance:boolean,

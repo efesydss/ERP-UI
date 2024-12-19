@@ -91,7 +91,7 @@ export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) =
     pageSize: 20
   })
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading ,error} = useQuery({
     queryKey: [endpoint, pagination, columnFilters, sorting, customFilter, params, namedFilters],
     queryFn: () =>
       apiRequest<ApiResponse<TData>>({
@@ -106,8 +106,23 @@ export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) =
           namedFilters
         }
       }),
-    placeholderData: keepPreviousData
+
+    placeholderData: keepPreviousData,
+
   })
+// useEffect ile loglama
+  useEffect(() => {
+    if (data) console.log('API cevabı:', data);
+  }, [data]);
+
+  useEffect(() => {
+    if (error) console.error('API hatası:', error);
+    console.log('Gönderilen filter:', createFilterQuery());
+    console.log('Gönderilen sort:', sortingOptions());
+    console.log('Sayfa indexi:', pagination.pageIndex);
+    console.log('Sayfa boyutu:', pagination.pageSize);
+  }, [error]);
+
 
   const table = useReactTable<TData>({
     columns,

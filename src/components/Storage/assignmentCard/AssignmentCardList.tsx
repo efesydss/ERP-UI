@@ -10,10 +10,10 @@ import { AssignmentCard } from '@/components/Storage/typesAssignmentCard'
 import { useMemo } from 'react'
 import { Button } from '@mui/material'
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
-import { Route } from '@/routes/_authenticated/storage/assignmentCard/new'
+import { Route } from '@/routes/_authenticated/storage/assignmentCards/new'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import { BaseTable } from '@/components/Common/Table/BaseTable'
-import { MachineSubRow } from '@/components/Admin/machine/MachineSubRow'
+//import { MachineSubRow } from '@/components/Admin/machine/MachineSubRow'
 
 
 export const AssignmentCardList = () => {
@@ -49,146 +49,93 @@ export const AssignmentCardList = () => {
       toast.success('Assignment Card Deleted')
     }
   })
-
-  const columns = useMemo<ColumnDef<AssignmentCard>[]>(//todo ef create
+  const safeAccessor = (accessorFn: (row: any) => any, columnName: string) => {
+    return (row: any) => {
+      try {
+        const result = accessorFn(row);
+        return result;
+      } catch (error) {
+        console.error(`Error in column "${columnName}"`, error, row);
+        return 'Error';
+      }
+    };
+  };
+  const columns = useMemo<ColumnDef<AssignmentCard>[]>(
     () =>[
       {
         header: t('assignmentStatusEnum'),
-        accessorKey: 'assignmentStatusEnum'
+        accessorFn: safeAccessor((row) => row.assignmentStatusEnum || t('-'), 'assignmentStatusEnum'),
       },
       {
         header: t('code'),
-        accessorKey: 'code'
+        accessorFn: safeAccessor((row) => row.code || t('-'), 'code'),
       },
       {
         header: t('name'),
-        accessorKey: 'name'
-      },
-      {
-        header: t('fixtureCard'),
-        accessorFn: (row)=>row.fixtureCard?.fixtureName || t('-Fixture Card Not Found-')
-      },
-      {
-        header: t('fixtureGroup'),
-        accessorFn: (row)=>row.fixtureGroup?.code || t('-Fixture Group Not Found-')
-      },
-      {
-        header: t('defaultUnit'),
-        accessorKey: 'defaultUnit'
-      },
-      {
-        header: t('fixtureType'),
-        accessorKey: 'fixtureType'
-      },
-      {
-        header: t('optimalLevel'),
-        accessorKey: 'optimalLevel'
-      },
-      {
-        header: t('minimumLevel'),
-        accessorKey: 'minimumLevel'
-      },
-      {
-        header: t('specialCode'),
-        accessorKey: 'specialCode'
-      },
-      {
-        header: t('shelfLocation'),
-        accessorKey: 'shelfLocation'
-      },
-      {
-        header: t('fixtureCardUnit'),
-        accessorFn: (row)=>row.fixtureCardUnit?.unit || t('-Fixture Card Unit Not Found-')
+        accessorFn: safeAccessor((row) => row.name || t('-'), 'name'),
       },
       {
         header: t('insuranceCompany'),
-        accessorKey: 'insuranceCompany'
+        accessorFn: safeAccessor((row) => row.insuranceCompany || t('-'), 'insuranceCompany'),
       },
       {
         header: t('insurance'),
-        accessorKey: 'insurance'
+        accessorFn: safeAccessor((row) => (row.insurance ? t('Yes') : t('No')), 'insurance'),
       },
       {
         header: t('insurancePolicyNo'),
-        accessorKey: 'insurancePolicyNo'
+        accessorFn: safeAccessor((row) => row.insurancePolicyNo || t('-'), 'insurancePolicyNo'),
       },
       {
         header: t('insuranceDuration'),
-        accessorKey: 'insuranceDuration'
+        accessorFn: safeAccessor((row) => row.insuranceDuration || t('-'), 'insuranceDuration'),
       },
       {
         header: t('info'),
-        accessorKey: 'info'
-      },
-      {
-        header: t('invoice'),
-        accessorFn: (row)=>row.invoice?.code || t('-Invoice Not Found-')
-      },
-      {
-        header: t('generalDiscount'),
-        accessorKey: 'generalDiscount'
-      },
-      {
-        header: t('unitDiscount'),
-        accessorKey: 'unitDiscount'
-      },
-      {
-        header: t('totalVat'),
-        accessorKey: 'totalVat'
-      },
-      {
-        header: t('totalAdditionalCosts'),
-        accessorKey: 'totalAdditionalCosts'
-      },
-      {
-        header: t('subTotal'),
-        accessorKey: 'subTotal'
-      },
-      {
-        header: t('finalTotal'),
-        accessorKey: 'finalTotal'
-      },
-      {
-        header: t('invoiceTypeEnum'),
-        accessorKey: 'invoiceTypeEnum'
+        accessorFn: safeAccessor((row) => row.info || t('-'), 'info'),
       },
       {
         header: t('warrantyPeriodEnum'),
-        accessorKey: 'warrantyPeriodEnum'
+        accessorFn: safeAccessor((row) => row.warrantyPeriodEnum || t('-'), 'warrantyPeriodEnum'),
       },
       {
         header: t('warrantyDay'),
-        accessorKey: 'warrantyDay'
+        accessorFn: safeAccessor((row) => row.warrantyDay || t('-'), 'warrantyDay'),
       },
       {
         header: t('underMaintenance'),
-        accessorKey: 'underMaintenance'
+        accessorFn: safeAccessor((row) => (row.underMaintenance ? t('true') : t('false')), 'underMaintenance'),
       },
       {
         header: t('maintenanceDuration'),
-        accessorKey: 'maintenanceDuration'
+        accessorFn: safeAccessor((row) => row.maintenanceDuration || t('-'), 'maintenanceDuration'),
       },
       {
         header: t('maintenancePeriodEnum'),
-        accessorKey: 'maintenancePeriodEnum'
+        accessorFn: safeAccessor((row) => row.maintenancePeriodEnum || t('-'), 'maintenancePeriodEnum'),
       },
       {
         header: t('actions'),  // Actions başlığı
         id: 'actions',
         cell: ({ row }) => (
-          <Button
+
+      <Button
             variant="outlined"
             color="error"
             size="small"
             onClick={handleDeleteClick(row.original.id)}
           >
             {t('delete')}
-          </Button>
+        console.log('Satır verisi:', row.original);
+
+      </Button>
         )
       }
     ],
     [t]
-  )
+  );
+  console.log('Columns tanımı:', columns);
+
   const AssignmentCardListActions = () => {
     return (
       <>
@@ -209,22 +156,26 @@ export const AssignmentCardList = () => {
 
   return (
     <>
-      <h1>Bu tabloyu optimize et bazı columns görünsün diğerleri detay da olsun yani 4 tane içerdiği Entity detayı invoice fln filan 1 tane de assignment card details diye olsun orada da buradan sildiğin kolonları taşı</h1>
+      <h4>Details ile Optimize et</h4>
       <PageTitle
-        title={t('assignmentCardList')}
+        title={t('assignmentCards')}
         actions={<AssignmentCardListActions />}
       />
-      <BaseTable<AssignmentCard> endpoint={endpoint} columns={columns}//todo Ef git endpoint tanımla..
-                           renderSubComponent={(props) => (
-                             <MachineSubRow//todo ef git bundan create et.. 4 tane genişletilebilir menü olsun yada başka bok..
-
-                               employeeId={props.row.original.id}
-                               row={props.row}
-                               handleExpandRow={props.handleExpandRow}
-                             />
-                           )}
+      <BaseTable<AssignmentCard> endpoint={endpoint} columns={columns}
+                           /*renderSubComponent={(props) => (
+                             // <MachineSubRow//todo ef git bundan create et.. 4 tane genişletilebilir menü olsun yada başka bi bok..
+                             //
+                             //   employeeId={props.row.original.id}
+                             //   row={props.row}
+                             //   handleExpandRow={props.handleExpandRow}
+                             // />
+                           )}*/
       ></BaseTable>
 
+
     </>
+
   )
+  console.log('BaseTable için kullanılan endpoint:', endpoint);
+  console.log('BaseTable için kullanılan columns:', columns);
 }

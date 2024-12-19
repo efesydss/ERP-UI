@@ -1,6 +1,13 @@
 {
   "hr": "İnsan Kaynakları",
   "employees": "Personel Listesi",
+  "depots": "Depolar",
+  "machines": "Makineler",
+  "assignmentCards": "Zimmet Kartları",
+  "assignmentTransactions": "Zimmet İşlemleri",
+  "CashAccounts": "Kasa Hesapları",
+  "cashAccounts": "Kasa Hesapları",
+
   "vacations": "İzinler",
   "finances": "Personel Ödemeleri",
   "timekeeping": "Puantaj",
