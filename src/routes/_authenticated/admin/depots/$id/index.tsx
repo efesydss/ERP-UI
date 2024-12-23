@@ -24,5 +24,5 @@ export const Route = createFileRoute('/_authenticated/admin/depots/$id/')({
         setCrumb(`${name}`)
         return data
     },
-    component: () => <Outlet/>//todo ef: create this page...
+    component: () => <Outlet/>
 })

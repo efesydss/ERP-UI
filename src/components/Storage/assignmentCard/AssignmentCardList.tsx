@@ -163,7 +163,7 @@ export const AssignmentCardList = () => {
       />
       <BaseTable<AssignmentCard> endpoint={endpoint} columns={columns}
                            /*renderSubComponent={(props) => (
-                             // <MachineSubRow//todo ef git bundan create et.. 4 tane genişletilebilir menü olsun yada başka bi bok..
+                             // <MachineSubRow
                              //
                              //   employeeId={props.row.original.id}
                              //   row={props.row}

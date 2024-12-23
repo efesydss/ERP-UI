@@ -43,8 +43,17 @@ export const apiRoutes = {
 
   //Storage / FixtureCard
   fixtureCards: 'storage/fixtureCards',
+  fixtureCard:'storage/fixtureCard/{fixtureCardId}',
+  fixtureCardAdd:'storage/fixtureCard',
+  fixtureCardDelete:'storage/fixtureCard/{fixtureCardId}',
+  fixtureCardUpdate:'storage/fixtureCard/{fixtureCardId}',
+
   //Storage / Invoice
   invoices: 'storage/invoices',
+  invoice:'storage/invoice/{invoiceId}',
+  invoiceAdd:'storage/invoice',
+  invoiceDelete:'storage/invoice/{invoiceId}',
+  invoiceUpdate:'storage/invoice/{invoiceId}',
 
   //Storage / AssignmentTransaction
   assignmentTransactions:'storage/assignmentTransactions',
@@ -53,8 +62,6 @@ export const apiRoutes = {
   assignmentTransactionDelete:'storage/assignmentTransaction/{assignmentTransactionId}',
   assignmentTransactionUpdate:'storage/assignmentTransaction/{assignmentTransactionId}',
 
-
-  //todo ef bunu tamamla ben bikaç tane  base select için koydum
 
   // Employee Vacation Management
   employeeVacationStatuses: 'hr/employees/timeoffstatuses',

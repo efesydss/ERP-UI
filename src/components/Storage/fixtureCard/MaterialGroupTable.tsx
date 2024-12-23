@@ -86,7 +86,7 @@ const MaterialGroupTable = () => {
     columns,
     getCoreRowModel: getCoreRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
-    getRowCanExpand: (row) => !!row.original.parent, // Sadece parent varsa expandable yap
+    getRowCanExpand: (row) => !!row.original.parent,
   });
 
   return (
