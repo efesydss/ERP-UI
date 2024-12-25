@@ -4,7 +4,7 @@ import { FormLogin } from '@/components/Auth/FormLogin'
 import * as yup from 'yup'
 import { useLogin } from '@/utils/hooks/useLogin'
 import logo from '@/assets/images/sahinler_logo.png'
-import loginBackground from '@/assets/images/lgnBckg.jpg'
+import loginBackground from '@/assets/images/lgnBckg.jpeg'
 
 export const validationSchema = yup.object({
   email: yup.string().required(),
