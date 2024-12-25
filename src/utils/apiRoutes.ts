@@ -69,6 +69,12 @@ export const apiRoutes = {
     shelfDelete:'storage/shelf/{shelfId}',
     shelfUpdate:'storage/shelf/{shelfId}',
 
+  //Storage / Unit
+    units:'storage/units',
+    unit:'storage/unit/{unitId}',
+    unitAdd:'storage/unit',
+    unitDelete:'storage/unit/{unitId}',
+    unitUpdate:'storage/unit/{unitId}',
 
   // Employee Vacation Management
   employeeVacationStatuses: 'hr/employees/timeoffstatuses',

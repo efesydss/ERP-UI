@@ -65,6 +65,10 @@ export const navMenuItems: MenuItemProps[] = [
               label: 'assignmentTransactions',
               icon: TbUserStar
         },
+        {
+        label: 'shelves',
+        icon: TbUserStar
+        },
       ]
     },
 ]
