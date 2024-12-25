@@ -38,9 +38,9 @@ rl.question('Lütfen ENTITY adını girin: ', (entityName) => {
     }
 
     // index.tsx, new.tsx ve $id/index.tsx dosyalarını oluştur
-    fs.writeFileSync(path.join(entityDir, 'index.tsx'), `// ${entityName} index.tsx`);
-    fs.writeFileSync(path.join(entityDir, 'new.tsx'), `// ${entityName} new.tsx`);
-    fs.writeFileSync(path.join(idDir, 'index.tsx'), `// ${entityName} $id index.tsx`);
+    fs.writeFileSync(path.join(entityDir, 'index.tsx'), ``);
+    fs.writeFileSync(path.join(entityDir, 'new.tsx'), ``);
+    fs.writeFileSync(path.join(idDir, 'index.tsx'), ``);
 
     console.log(`Yapı başarıyla oluşturuldu: ${entityDir}`);
   } catch (err) {
