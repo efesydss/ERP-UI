@@ -74,6 +74,7 @@ export const EmployeeList = () => {
         title={t('personnelList')}
         actions={<PersonnelListActions />}
       />
+
       <Box>
         <FormControlLabel
           control={
@@ -86,6 +87,8 @@ export const EmployeeList = () => {
           label={t('togglePassive')}
         />
       </Box>
+
+
 
       <BaseTable<EmployeeResponse>
         endpoint={'employees'}

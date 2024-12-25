@@ -14,6 +14,9 @@ interface MaterialGroup {
   parent?: MaterialGroup;
 }
 
+// initial data for the table
+
+
 const initialMaterialGroups: MaterialGroup[] = [
   {
     id: 1,

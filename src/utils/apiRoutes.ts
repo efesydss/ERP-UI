@@ -62,6 +62,13 @@ export const apiRoutes = {
   assignmentTransactionDelete:'storage/assignmentTransaction/{assignmentTransactionId}',
   assignmentTransactionUpdate:'storage/assignmentTransaction/{assignmentTransactionId}',
 
+  //Storage / Shelf
+    shelves:'storage/shelves',
+    shelf:'storage/shelf/{shelfId}',
+    shelfAdd:'storage/shelf',
+    shelfDelete:'storage/shelf/{shelfId}',
+    shelfUpdate:'storage/shelf/{shelfId}',
+
 
   // Employee Vacation Management
   employeeVacationStatuses: 'hr/employees/timeoffstatuses',
