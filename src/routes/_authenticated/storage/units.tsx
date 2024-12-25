@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { UnitList } from '@/components/Storage/unit/UnitList'
 
 export const Route = createFileRoute('/_authenticated/storage/units')({
-  component: () => <div>Hello /_authenticated/storage/units!</div>
+  component: () => <UnitList />
 })

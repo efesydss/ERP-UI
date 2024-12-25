@@ -1,31 +1,51 @@
 const fs = require('fs');
 const path = require('path');
+const readline = require('readline');
 
-// Yapıyı oluşturacak fonksiyon
-function createStructure(rootName) {
-  const rootPath = path.join(__dirname, rootName);
+// Sağ tıklanarak seçilen dizin
+const targetDir = process.argv[2];
 
-  // Kök klasörü oluştur
-  fs.mkdirSync(rootPath, { recursive: true });
-
-  // $id klasörünü oluştur
-  const idPath = path.join(rootPath, '$id');
-  fs.mkdirSync(idPath, { recursive: true });
-
-  // Dosyaları oluştur
-  fs.writeFileSync(path.join(rootPath, 'index.tsx'), '// Root index file');
-  fs.writeFileSync(path.join(rootPath, 'new.tsx'), '// New file');
-  fs.writeFileSync(path.join(idPath, 'index.tsx'), '// ID index file');
-
-  console.log(`Yapı başarıyla oluşturuldu: ${rootName}`);
-}
-
-// Komut satırından parametre al
-const args = process.argv.slice(2);
-if (args.length === 0) {
-  console.error('Lütfen bir kök klasör adı girin!');
+if (!targetDir) {
+  console.error('Hedef klasör belirtilmedi. Lütfen betiği doğru şekilde çalıştırın.');
   process.exit(1);
 }
 
-// Fonksiyonu çağır
-createStructure(args[0]);
+// Kullanıcıdan ENTITY adını almak için readline kullanalım
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.question('Lütfen ENTITY adını girin: ', (entityName) => {
+  if (!entityName) {
+    console.error('ENTITY adı boş bırakılamaz.');
+    rl.close();
+    process.exit(1);
+  }
+
+  const entityDir = path.join(targetDir, entityName);
+
+  try {
+    // Ana klasörü oluştur
+    if (!fs.existsSync(entityDir)) {
+      fs.mkdirSync(entityDir);
+    }
+
+    // $id klasörünü oluştur
+    const idDir = path.join(entityDir, '$id');
+    if (!fs.existsSync(idDir)) {
+      fs.mkdirSync(idDir);
+    }
+
+    // index.tsx, new.tsx ve $id/index.tsx dosyalarını oluştur
+    fs.writeFileSync(path.join(entityDir, 'index.tsx'), `// ${entityName} index.tsx`);
+    fs.writeFileSync(path.join(entityDir, 'new.tsx'), `// ${entityName} new.tsx`);
+    fs.writeFileSync(path.join(idDir, 'index.tsx'), `// ${entityName} $id index.tsx`);
+
+    console.log(`Yapı başarıyla oluşturuldu: ${entityDir}`);
+  } catch (err) {
+    console.error('Bir hata oluştu:', err);
+  } finally {
+    rl.close();
+  }
+});

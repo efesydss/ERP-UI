@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
-import { Route } from '@/routes/_authenticated/storage/shelf/new'
+import { Route } from '@/routes/_authenticated/storage/unit/new'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import { BaseTable } from '@/components/Common/Table/BaseTable'
 import React, { useMemo } from 'react'
@@ -12,9 +12,9 @@ import { useMutation } from '@tanstack/react-query'
 import { GridRowId } from '@mui/x-data-grid'
 import { Button } from '@mui/material'
 import { toast } from 'react-toastify'
-import { Shelf } from '@/components/Storage/shelf/types/typesShelf'
+import { Unit } from '@/components/Storage/unit/types/typesUnit'
 import { ColumnDef } from '@tanstack/react-table'
-export const ShelfList = () => {
+export const UnitList = () => {
   const { t } = useTranslation('common')
   const { openDialog } = useConfirmDialog()
   const queryClient = useQueryClient()
@@ -26,35 +26,31 @@ export const ShelfList = () => {
       'Confirm Deletion',
       'Are you sure you want to delete this item?',
       () => {
-        deleteShelf(id.toString())
+        deleteUnit(id.toString())
       },
       () => {
         console.log('Deletion cancelled')
       }
     )
-  const { mutate: deleteShelf } = useMutation({
-    mutationFn: async (shelfId: string) => {
+  const { mutate: deleteUnit } = useMutation({
+    mutationFn: async (UnitId: string) => {
       return await apiRequest({
-        endpoint: 'shelfDelete',
+        endpoint: 'unitDelete',
         method: 'DELETE',
-        params: { shelfId: shelfId?.toString() ?? '0' }
+        params: { UnitId: UnitId?.toString() ?? '0' }
       })
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['shelves'] })
-      toast.success('Shelf Deleted')
+      queryClient.invalidateQueries({ queryKey: ['units'] })
+      toast.success('Unit Deleted')
     }
   })
   // 2. Tablo sütunlarını tanımlama
-  const columns = useMemo<ColumnDef<Shelf>[]>(
+  const columns = useMemo<ColumnDef<Unit>[]>(
     () => [
       {
         header: t('name'),
         accessorKey: 'name'
-      },
-      {
-        header: t('description'),
-        accessorKey: 'description'
       },
       {
         header: t('actions'),
@@ -74,7 +70,7 @@ export const ShelfList = () => {
     [t]
   )
 
-  const ShelfListActions = () => {
+  const UnitListActions = () => {
     return (
       <>
         <Button
@@ -83,22 +79,22 @@ export const ShelfList = () => {
           startIcon={<PersonAddAlt1Icon />}
           onClick={() => navigate({ to: Route.fullPath })}
         >
-          {t('newShelf')}
+          {t('newUnit')}
         </Button>
       </>
     )
   }
-  const endpoint = 'shelves'
+  const endpoint = 'units'
   console.log(`Fetching data from endpoint: ${endpoint}`)
 
   return (
     <>
       <PageTitle
-        title={t('shelfList')}
-        actions={<ShelfListActions />}
+        title={t('UnitList')}
+        actions={<UnitListActions />}
       />
 
-      <BaseTable<Shelf> endpoint={endpoint} columns={columns}
+      <BaseTable<Unit> endpoint={endpoint} columns={columns}
 
       ></BaseTable>
 
