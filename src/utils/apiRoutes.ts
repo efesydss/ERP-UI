@@ -27,6 +27,23 @@ export const apiRoutes = {
   depotDelete:'admin/depot/{depotId}',
   depotUpdate: 'admin/depot/{depotId}',
 
+    //Admin / Company
+    companies:'admin/companies',
+    company:'admin/company/{companyId}',
+    companyAdd:'admin/company',
+    companyDelete:'admin/company/{companyId}',
+    companyUpdate:'admin/company/{companyId}',
+
+
+//Admin / PaymentMethod
+paymentMethods:'admin/paymentMethods',
+paymentMethod:'admin/paymentMethod/{paymentMethodId}',
+paymentMethodAdd:'admin/paymentMethod',
+paymentMethodDelete:'admin/paymentMethod/{paymentMethodId}',
+paymentMethodUpdate:'admin/paymentMethod/{paymentMethodId}',
+
+
+
   //Admin / Machine
   machines:'admin/machines',
   machine:'admin/machine/{machineId}',
