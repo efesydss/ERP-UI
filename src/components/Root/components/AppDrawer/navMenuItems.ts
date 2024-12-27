@@ -38,6 +38,10 @@ export const navMenuItems: MenuItemProps[] = [
         icon: FaRProject
       },
       {
+              label:'roles',
+              icon: FaRProject
+      },
+      {
       label:'machines',
       icon: FaRProject
       },
@@ -48,6 +52,14 @@ export const navMenuItems: MenuItemProps[] = [
       {
           label:'paymentMethods',
           icon: FaRProject
+      },
+      {
+            label:'publicHolidays',
+            icon: FaRProject
+      },
+      {
+              label:'sections',
+              icon: FaRProject
       },
 
     ]

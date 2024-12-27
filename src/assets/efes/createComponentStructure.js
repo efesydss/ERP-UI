@@ -134,6 +134,18 @@ export const ChangeMeList = () => {
         console.log('Deletion cancelled')
       }
     )
+    const safeAccessor = (accessorFn: (row: any) => any, columnName: string) => {
+    return (row: any) => {
+      try {
+        const result = accessorFn(row)
+        console.log(columnName, result)
+        return result
+      } catch (error) {
+        console.error(error)
+        return 'Error'
+      }
+    }
+  }
   const { mutate: deleteChangeMe } = useMutation({
     mutationFn: async (ChangeMeId: string) => {
       return await apiRequest({

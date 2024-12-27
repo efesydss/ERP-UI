@@ -29,6 +29,9 @@ import { Route as AuthenticatedHrTimekeepingImport } from './routes/_authenticat
 import { Route as AuthenticatedHrFinancesImport } from './routes/_authenticated/hr/finances'
 import { Route as AuthenticatedHrEmployeesImport } from './routes/_authenticated/hr/employees'
 import { Route as AuthenticatedHrDebitCreditAnalysisImport } from './routes/_authenticated/hr/debitCreditAnalysis'
+import { Route as AuthenticatedAdminSectionsImport } from './routes/_authenticated/admin/sections'
+import { Route as AuthenticatedAdminRolesImport } from './routes/_authenticated/admin/roles'
+import { Route as AuthenticatedAdminPublicHolidaysImport } from './routes/_authenticated/admin/publicHolidays'
 import { Route as AuthenticatedAdminPaymentMethodsImport } from './routes/_authenticated/admin/paymentMethods'
 import { Route as AuthenticatedAdminMachinesImport } from './routes/_authenticated/admin/machines'
 import { Route as AuthenticatedAdminDepotsImport } from './routes/_authenticated/admin/depots'
@@ -42,6 +45,9 @@ import { Route as AuthenticatedHrVacationsIndexImport } from './routes/_authenti
 import { Route as AuthenticatedHrTimekeepingIndexImport } from './routes/_authenticated/hr/timekeeping/index'
 import { Route as AuthenticatedHrFinancesIndexImport } from './routes/_authenticated/hr/finances/index'
 import { Route as AuthenticatedHrEmployeesIndexImport } from './routes/_authenticated/hr/employees/index'
+import { Route as AuthenticatedAdminSectionsIndexImport } from './routes/_authenticated/admin/sections/index'
+import { Route as AuthenticatedAdminRolesIndexImport } from './routes/_authenticated/admin/roles/index'
+import { Route as AuthenticatedAdminPublicHolidaysIndexImport } from './routes/_authenticated/admin/publicHolidays/index'
 import { Route as AuthenticatedAdminPaymentMethodsIndexImport } from './routes/_authenticated/admin/paymentMethods/index'
 import { Route as AuthenticatedAdminMachinesIndexImport } from './routes/_authenticated/admin/machines/index'
 import { Route as AuthenticatedAdminDepotsIndexImport } from './routes/_authenticated/admin/depots/index'
@@ -55,6 +61,9 @@ import { Route as AuthenticatedStorageAssignmentCardsNewImport } from './routes/
 import { Route as AuthenticatedHrVacationsNewImport } from './routes/_authenticated/hr/vacations/new'
 import { Route as AuthenticatedHrTimekeepingNewImport } from './routes/_authenticated/hr/timekeeping/new'
 import { Route as AuthenticatedHrEmployeesNewImport } from './routes/_authenticated/hr/employees/new'
+import { Route as AuthenticatedAdminSectionsNewImport } from './routes/_authenticated/admin/sections/new'
+import { Route as AuthenticatedAdminRolesNewImport } from './routes/_authenticated/admin/roles/new'
+import { Route as AuthenticatedAdminPublicHolidaysNewImport } from './routes/_authenticated/admin/publicHolidays/new'
 import { Route as AuthenticatedAdminPaymentMethodsNewImport } from './routes/_authenticated/admin/paymentMethods/new'
 import { Route as AuthenticatedAdminMachinesNewImport } from './routes/_authenticated/admin/machines/new'
 import { Route as AuthenticatedAdminDepotsNewImport } from './routes/_authenticated/admin/depots/new'
@@ -67,6 +76,9 @@ import { Route as AuthenticatedStorageAssignmentTransactionsIdIndexImport } from
 import { Route as AuthenticatedStorageAssignmentCardsIdIndexImport } from './routes/_authenticated/storage/assignmentCards/$id/index'
 import { Route as AuthenticatedHrTimekeepingIdIndexImport } from './routes/_authenticated/hr/timekeeping/$id/index'
 import { Route as AuthenticatedHrEmployeesIdIndexImport } from './routes/_authenticated/hr/employees/$id/index'
+import { Route as AuthenticatedAdminSectionsIdIndexImport } from './routes/_authenticated/admin/sections/$id/index'
+import { Route as AuthenticatedAdminRolesIdIndexImport } from './routes/_authenticated/admin/roles/$id/index'
+import { Route as AuthenticatedAdminPublicHolidaysIdIndexImport } from './routes/_authenticated/admin/publicHolidays/$id/index'
 import { Route as AuthenticatedAdminPaymentMethodsIdIndexImport } from './routes/_authenticated/admin/paymentMethods/$id/index'
 import { Route as AuthenticatedAdminMachinesIdIndexImport } from './routes/_authenticated/admin/machines/$id/index'
 import { Route as AuthenticatedAdminDepotsIdIndexImport } from './routes/_authenticated/admin/depots/$id/index'
@@ -172,6 +184,24 @@ const AuthenticatedHrDebitCreditAnalysisRoute =
     getParentRoute: () => AuthenticatedHrRoute,
   } as any)
 
+const AuthenticatedAdminSectionsRoute = AuthenticatedAdminSectionsImport.update(
+  {
+    path: '/sections',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any,
+)
+
+const AuthenticatedAdminRolesRoute = AuthenticatedAdminRolesImport.update({
+  path: '/roles',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
+
+const AuthenticatedAdminPublicHolidaysRoute =
+  AuthenticatedAdminPublicHolidaysImport.update({
+    path: '/publicHolidays',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+
 const AuthenticatedAdminPaymentMethodsRoute =
   AuthenticatedAdminPaymentMethodsImport.update({
     path: '/paymentMethods',
@@ -248,6 +278,24 @@ const AuthenticatedHrEmployeesIndexRoute =
   AuthenticatedHrEmployeesIndexImport.update({
     path: '/',
     getParentRoute: () => AuthenticatedHrEmployeesRoute,
+  } as any)
+
+const AuthenticatedAdminSectionsIndexRoute =
+  AuthenticatedAdminSectionsIndexImport.update({
+    path: '/',
+    getParentRoute: () => AuthenticatedAdminSectionsRoute,
+  } as any)
+
+const AuthenticatedAdminRolesIndexRoute =
+  AuthenticatedAdminRolesIndexImport.update({
+    path: '/',
+    getParentRoute: () => AuthenticatedAdminRolesRoute,
+  } as any)
+
+const AuthenticatedAdminPublicHolidaysIndexRoute =
+  AuthenticatedAdminPublicHolidaysIndexImport.update({
+    path: '/',
+    getParentRoute: () => AuthenticatedAdminPublicHolidaysRoute,
   } as any)
 
 const AuthenticatedAdminPaymentMethodsIndexRoute =
@@ -328,6 +376,25 @@ const AuthenticatedHrEmployeesNewRoute =
     getParentRoute: () => AuthenticatedHrEmployeesRoute,
   } as any)
 
+const AuthenticatedAdminSectionsNewRoute =
+  AuthenticatedAdminSectionsNewImport.update({
+    path: '/new',
+    getParentRoute: () => AuthenticatedAdminSectionsRoute,
+  } as any)
+
+const AuthenticatedAdminRolesNewRoute = AuthenticatedAdminRolesNewImport.update(
+  {
+    path: '/new',
+    getParentRoute: () => AuthenticatedAdminRolesRoute,
+  } as any,
+)
+
+const AuthenticatedAdminPublicHolidaysNewRoute =
+  AuthenticatedAdminPublicHolidaysNewImport.update({
+    path: '/new',
+    getParentRoute: () => AuthenticatedAdminPublicHolidaysRoute,
+  } as any)
+
 const AuthenticatedAdminPaymentMethodsNewRoute =
   AuthenticatedAdminPaymentMethodsNewImport.update({
     path: '/new',
@@ -398,6 +465,24 @@ const AuthenticatedHrEmployeesIdIndexRoute =
   AuthenticatedHrEmployeesIdIndexImport.update({
     path: '/$id/',
     getParentRoute: () => AuthenticatedHrEmployeesRoute,
+  } as any)
+
+const AuthenticatedAdminSectionsIdIndexRoute =
+  AuthenticatedAdminSectionsIdIndexImport.update({
+    path: '/$id/',
+    getParentRoute: () => AuthenticatedAdminSectionsRoute,
+  } as any)
+
+const AuthenticatedAdminRolesIdIndexRoute =
+  AuthenticatedAdminRolesIdIndexImport.update({
+    path: '/$id/',
+    getParentRoute: () => AuthenticatedAdminRolesRoute,
+  } as any)
+
+const AuthenticatedAdminPublicHolidaysIdIndexRoute =
+  AuthenticatedAdminPublicHolidaysIdIndexImport.update({
+    path: '/$id/',
+    getParentRoute: () => AuthenticatedAdminPublicHolidaysRoute,
   } as any)
 
 const AuthenticatedAdminPaymentMethodsIdIndexRoute =
@@ -508,6 +593,27 @@ declare module '@tanstack/react-router' {
       path: '/paymentMethods'
       fullPath: '/admin/paymentMethods'
       preLoaderRoute: typeof AuthenticatedAdminPaymentMethodsImport
+      parentRoute: typeof AuthenticatedAdminImport
+    }
+    '/_authenticated/admin/publicHolidays': {
+      id: '/_authenticated/admin/publicHolidays'
+      path: '/publicHolidays'
+      fullPath: '/admin/publicHolidays'
+      preLoaderRoute: typeof AuthenticatedAdminPublicHolidaysImport
+      parentRoute: typeof AuthenticatedAdminImport
+    }
+    '/_authenticated/admin/roles': {
+      id: '/_authenticated/admin/roles'
+      path: '/roles'
+      fullPath: '/admin/roles'
+      preLoaderRoute: typeof AuthenticatedAdminRolesImport
+      parentRoute: typeof AuthenticatedAdminImport
+    }
+    '/_authenticated/admin/sections': {
+      id: '/_authenticated/admin/sections'
+      path: '/sections'
+      fullPath: '/admin/sections'
+      preLoaderRoute: typeof AuthenticatedAdminSectionsImport
       parentRoute: typeof AuthenticatedAdminImport
     }
     '/_authenticated/hr/debitCreditAnalysis': {
@@ -629,6 +735,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminPaymentMethodsNewImport
       parentRoute: typeof AuthenticatedAdminPaymentMethodsImport
     }
+    '/_authenticated/admin/publicHolidays/new': {
+      id: '/_authenticated/admin/publicHolidays/new'
+      path: '/new'
+      fullPath: '/admin/publicHolidays/new'
+      preLoaderRoute: typeof AuthenticatedAdminPublicHolidaysNewImport
+      parentRoute: typeof AuthenticatedAdminPublicHolidaysImport
+    }
+    '/_authenticated/admin/roles/new': {
+      id: '/_authenticated/admin/roles/new'
+      path: '/new'
+      fullPath: '/admin/roles/new'
+      preLoaderRoute: typeof AuthenticatedAdminRolesNewImport
+      parentRoute: typeof AuthenticatedAdminRolesImport
+    }
+    '/_authenticated/admin/sections/new': {
+      id: '/_authenticated/admin/sections/new'
+      path: '/new'
+      fullPath: '/admin/sections/new'
+      preLoaderRoute: typeof AuthenticatedAdminSectionsNewImport
+      parentRoute: typeof AuthenticatedAdminSectionsImport
+    }
     '/_authenticated/hr/employees/new': {
       id: '/_authenticated/hr/employees/new'
       path: '/new'
@@ -719,6 +846,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/paymentMethods/'
       preLoaderRoute: typeof AuthenticatedAdminPaymentMethodsIndexImport
       parentRoute: typeof AuthenticatedAdminPaymentMethodsImport
+    }
+    '/_authenticated/admin/publicHolidays/': {
+      id: '/_authenticated/admin/publicHolidays/'
+      path: '/'
+      fullPath: '/admin/publicHolidays/'
+      preLoaderRoute: typeof AuthenticatedAdminPublicHolidaysIndexImport
+      parentRoute: typeof AuthenticatedAdminPublicHolidaysImport
+    }
+    '/_authenticated/admin/roles/': {
+      id: '/_authenticated/admin/roles/'
+      path: '/'
+      fullPath: '/admin/roles/'
+      preLoaderRoute: typeof AuthenticatedAdminRolesIndexImport
+      parentRoute: typeof AuthenticatedAdminRolesImport
+    }
+    '/_authenticated/admin/sections/': {
+      id: '/_authenticated/admin/sections/'
+      path: '/'
+      fullPath: '/admin/sections/'
+      preLoaderRoute: typeof AuthenticatedAdminSectionsIndexImport
+      parentRoute: typeof AuthenticatedAdminSectionsImport
     }
     '/_authenticated/hr/employees/': {
       id: '/_authenticated/hr/employees/'
@@ -825,6 +973,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminPaymentMethodsIdIndexImport
       parentRoute: typeof AuthenticatedAdminPaymentMethodsImport
     }
+    '/_authenticated/admin/publicHolidays/$id/': {
+      id: '/_authenticated/admin/publicHolidays/$id/'
+      path: '/$id'
+      fullPath: '/admin/publicHolidays/$id'
+      preLoaderRoute: typeof AuthenticatedAdminPublicHolidaysIdIndexImport
+      parentRoute: typeof AuthenticatedAdminPublicHolidaysImport
+    }
+    '/_authenticated/admin/roles/$id/': {
+      id: '/_authenticated/admin/roles/$id/'
+      path: '/$id'
+      fullPath: '/admin/roles/$id'
+      preLoaderRoute: typeof AuthenticatedAdminRolesIdIndexImport
+      parentRoute: typeof AuthenticatedAdminRolesImport
+    }
+    '/_authenticated/admin/sections/$id/': {
+      id: '/_authenticated/admin/sections/$id/'
+      path: '/$id'
+      fullPath: '/admin/sections/$id'
+      preLoaderRoute: typeof AuthenticatedAdminSectionsIdIndexImport
+      parentRoute: typeof AuthenticatedAdminSectionsImport
+    }
     '/_authenticated/hr/employees/$id/': {
       id: '/_authenticated/hr/employees/$id/'
       path: '/$id'
@@ -905,6 +1074,23 @@ export const routeTree = rootRoute.addChildren({
           AuthenticatedAdminPaymentMethodsNewRoute,
           AuthenticatedAdminPaymentMethodsIndexRoute,
           AuthenticatedAdminPaymentMethodsIdIndexRoute,
+        }),
+      AuthenticatedAdminPublicHolidaysRoute:
+        AuthenticatedAdminPublicHolidaysRoute.addChildren({
+          AuthenticatedAdminPublicHolidaysNewRoute,
+          AuthenticatedAdminPublicHolidaysIndexRoute,
+          AuthenticatedAdminPublicHolidaysIdIndexRoute,
+        }),
+      AuthenticatedAdminRolesRoute: AuthenticatedAdminRolesRoute.addChildren({
+        AuthenticatedAdminRolesNewRoute,
+        AuthenticatedAdminRolesIndexRoute,
+        AuthenticatedAdminRolesIdIndexRoute,
+      }),
+      AuthenticatedAdminSectionsRoute:
+        AuthenticatedAdminSectionsRoute.addChildren({
+          AuthenticatedAdminSectionsNewRoute,
+          AuthenticatedAdminSectionsIndexRoute,
+          AuthenticatedAdminSectionsIdIndexRoute,
         }),
       AuthenticatedAdminIndexRoute,
     }),
@@ -1017,6 +1203,9 @@ export const routeTree = rootRoute.addChildren({
         "/_authenticated/admin/depots",
         "/_authenticated/admin/machines",
         "/_authenticated/admin/paymentMethods",
+        "/_authenticated/admin/publicHolidays",
+        "/_authenticated/admin/roles",
+        "/_authenticated/admin/sections",
         "/_authenticated/admin/"
       ]
     },
@@ -1070,6 +1259,33 @@ export const routeTree = rootRoute.addChildren({
         "/_authenticated/admin/paymentMethods/new",
         "/_authenticated/admin/paymentMethods/",
         "/_authenticated/admin/paymentMethods/$id/"
+      ]
+    },
+    "/_authenticated/admin/publicHolidays": {
+      "filePath": "_authenticated/admin/publicHolidays.tsx",
+      "parent": "/_authenticated/admin",
+      "children": [
+        "/_authenticated/admin/publicHolidays/new",
+        "/_authenticated/admin/publicHolidays/",
+        "/_authenticated/admin/publicHolidays/$id/"
+      ]
+    },
+    "/_authenticated/admin/roles": {
+      "filePath": "_authenticated/admin/roles.tsx",
+      "parent": "/_authenticated/admin",
+      "children": [
+        "/_authenticated/admin/roles/new",
+        "/_authenticated/admin/roles/",
+        "/_authenticated/admin/roles/$id/"
+      ]
+    },
+    "/_authenticated/admin/sections": {
+      "filePath": "_authenticated/admin/sections.tsx",
+      "parent": "/_authenticated/admin",
+      "children": [
+        "/_authenticated/admin/sections/new",
+        "/_authenticated/admin/sections/",
+        "/_authenticated/admin/sections/$id/"
       ]
     },
     "/_authenticated/hr/debitCreditAnalysis": {
@@ -1167,6 +1383,18 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_authenticated/admin/paymentMethods/new.tsx",
       "parent": "/_authenticated/admin/paymentMethods"
     },
+    "/_authenticated/admin/publicHolidays/new": {
+      "filePath": "_authenticated/admin/publicHolidays/new.tsx",
+      "parent": "/_authenticated/admin/publicHolidays"
+    },
+    "/_authenticated/admin/roles/new": {
+      "filePath": "_authenticated/admin/roles/new.tsx",
+      "parent": "/_authenticated/admin/roles"
+    },
+    "/_authenticated/admin/sections/new": {
+      "filePath": "_authenticated/admin/sections/new.tsx",
+      "parent": "/_authenticated/admin/sections"
+    },
     "/_authenticated/hr/employees/new": {
       "filePath": "_authenticated/hr/employees/new.tsx",
       "parent": "/_authenticated/hr/employees"
@@ -1221,6 +1449,18 @@ export const routeTree = rootRoute.addChildren({
     "/_authenticated/admin/paymentMethods/": {
       "filePath": "_authenticated/admin/paymentMethods/index.tsx",
       "parent": "/_authenticated/admin/paymentMethods"
+    },
+    "/_authenticated/admin/publicHolidays/": {
+      "filePath": "_authenticated/admin/publicHolidays/index.tsx",
+      "parent": "/_authenticated/admin/publicHolidays"
+    },
+    "/_authenticated/admin/roles/": {
+      "filePath": "_authenticated/admin/roles/index.tsx",
+      "parent": "/_authenticated/admin/roles"
+    },
+    "/_authenticated/admin/sections/": {
+      "filePath": "_authenticated/admin/sections/index.tsx",
+      "parent": "/_authenticated/admin/sections"
     },
     "/_authenticated/hr/employees/": {
       "filePath": "_authenticated/hr/employees/index.tsx",
@@ -1281,6 +1521,18 @@ export const routeTree = rootRoute.addChildren({
     "/_authenticated/admin/paymentMethods/$id/": {
       "filePath": "_authenticated/admin/paymentMethods/$id/index.tsx",
       "parent": "/_authenticated/admin/paymentMethods"
+    },
+    "/_authenticated/admin/publicHolidays/$id/": {
+      "filePath": "_authenticated/admin/publicHolidays/$id/index.tsx",
+      "parent": "/_authenticated/admin/publicHolidays"
+    },
+    "/_authenticated/admin/roles/$id/": {
+      "filePath": "_authenticated/admin/roles/$id/index.tsx",
+      "parent": "/_authenticated/admin/roles"
+    },
+    "/_authenticated/admin/sections/$id/": {
+      "filePath": "_authenticated/admin/sections/$id/index.tsx",
+      "parent": "/_authenticated/admin/sections"
     },
     "/_authenticated/hr/employees/$id/": {
       "filePath": "_authenticated/hr/employees/$id/index.tsx",

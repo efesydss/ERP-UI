@@ -18,7 +18,9 @@
   "UnitList": "Birimler",
   "units": "Birimler",
   "admin": "Yönetici",
+  "publicHolidays": "Resmi Tatiller",
   "create": "Yeni Personel",
+  "roles": "Roller",
   "new": "Yeni",
   "new-leave": "İzin Ekle",
   "accounting": "Muhasebe"

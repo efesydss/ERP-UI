@@ -35,12 +35,33 @@ export const apiRoutes = {
     companyUpdate:'admin/company/{companyId}',
 
 
-//Admin / PaymentMethod
-paymentMethods:'admin/paymentMethods',
-paymentMethod:'admin/paymentMethod/{paymentMethodId}',
-paymentMethodAdd:'admin/paymentMethod',
-paymentMethodDelete:'admin/paymentMethod/{paymentMethodId}',
-paymentMethodUpdate:'admin/paymentMethod/{paymentMethodId}',
+  //Admin / PaymentMethod
+  paymentMethods:'admin/paymentMethods',
+  paymentMethod:'admin/paymentMethod/{paymentMethodId}',
+  paymentMethodAdd:'admin/paymentMethod',
+  paymentMethodDelete:'admin/paymentMethod/{paymentMethodId}',
+  paymentMethodUpdate:'admin/paymentMethod/{paymentMethodId}',
+
+    //Admin / Section
+    sections:'admin/sections',
+    section:'admin/section/{sectionId}',
+    sectionAdd:'admin/section',
+    sectionDelete:'admin/section/{sectionId}',
+    sectionUpdate:'admin/section/{sectionId}',
+
+  //Admin / Role
+    roles:'admin/roles',
+    role:'admin/role/{roleId}',
+    roleAdd:'admin/role',
+    roleDelete:'admin/role/{roleId}',
+    roleUpdate:'admin/role/{roleId}',
+
+  //Admin / PublicHoliday
+  publicHolidays:'admin/publicHolidays',
+  publicHoliday:'admin/publicHoliday/{publicHolidayId}',
+  publicHolidayAdd:'admin/publicHoliday',
+  publicHolidayDelete:'admin/publicHoliday/{publicHolidayId}',
+  publicHolidayUpdate:'admin/publicHoliday/{publicHolidayId}',
 
 
 
