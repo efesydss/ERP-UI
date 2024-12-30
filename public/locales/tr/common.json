@@ -199,6 +199,8 @@
   "DepartmentList": "Departmanlar",
   "newDepartment": "Yeni Departman Ekle",
   "departmentAdd": "Departman Ekle",
+  "newBank": "Yeni Banka Ekle",
+  "BankList": "Banka Listesi",
   "confirm": "Onayla",
   "togglePassive": "Pasif",
   "placeholders": {
