@@ -86,6 +86,14 @@ export const apiRoutes = {
     departmentAdd:'company/department',
     departmentDelete:'company/department/{departmentId}',
     departmentUpdate:'company/department/{departmentId}',
+
+    //Finance / Banks
+    banks:'finance/banks',
+    bank:'finance/bank/{bankId}',
+    bankAdd:'finance/bank',
+    bankDelete:'finance/bank/{bankId}',
+    bankUpdate:'finance/bank/{bankId}',
+
   //Storage / AssignmentCard
   assignmentCards:'storage/assignmentCards',
   assignmentCard:'storage/assignmentCard/{assignmentCardId}',

@@ -15,6 +15,7 @@ import { Route as LoginImport } from './routes/login'
 import { Route as AuthenticatedImport } from './routes/_authenticated'
 import { Route as IndexImport } from './routes/index'
 import { Route as AuthenticatedHrImport } from './routes/_authenticated/hr'
+import { Route as AuthenticatedFinanceImport } from './routes/_authenticated/finance'
 import { Route as AuthenticatedDashboardImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedCompanyImport } from './routes/_authenticated/company'
 import { Route as AuthenticatedAdminImport } from './routes/_authenticated/admin'
@@ -46,6 +47,7 @@ import { Route as AuthenticatedHrVacationsIndexImport } from './routes/_authenti
 import { Route as AuthenticatedHrTimekeepingIndexImport } from './routes/_authenticated/hr/timekeeping/index'
 import { Route as AuthenticatedHrFinancesIndexImport } from './routes/_authenticated/hr/finances/index'
 import { Route as AuthenticatedHrEmployeesIndexImport } from './routes/_authenticated/hr/employees/index'
+import { Route as AuthenticatedFinanceBanksIndexImport } from './routes/_authenticated/finance/banks/index'
 import { Route as AuthenticatedCompanyDepartmentsIndexImport } from './routes/_authenticated/company/departments/index'
 import { Route as AuthenticatedCompanyBranchesIndexImport } from './routes/_authenticated/company/branches/index'
 import { Route as AuthenticatedAdminSectionsIndexImport } from './routes/_authenticated/admin/sections/index'
@@ -64,6 +66,7 @@ import { Route as AuthenticatedStorageAssignmentCardsNewImport } from './routes/
 import { Route as AuthenticatedHrVacationsNewImport } from './routes/_authenticated/hr/vacations/new'
 import { Route as AuthenticatedHrTimekeepingNewImport } from './routes/_authenticated/hr/timekeeping/new'
 import { Route as AuthenticatedHrEmployeesNewImport } from './routes/_authenticated/hr/employees/new'
+import { Route as AuthenticatedFinanceBanksNewImport } from './routes/_authenticated/finance/banks/new'
 import { Route as AuthenticatedCompanyDepartmentsNewImport } from './routes/_authenticated/company/departments/new'
 import { Route as AuthenticatedCompanyBranchesNewImport } from './routes/_authenticated/company/branches/new'
 import { Route as AuthenticatedAdminSectionsNewImport } from './routes/_authenticated/admin/sections/new'
@@ -81,6 +84,7 @@ import { Route as AuthenticatedStorageAssignmentTransactionsIdIndexImport } from
 import { Route as AuthenticatedStorageAssignmentCardsIdIndexImport } from './routes/_authenticated/storage/assignmentCards/$id/index'
 import { Route as AuthenticatedHrTimekeepingIdIndexImport } from './routes/_authenticated/hr/timekeeping/$id/index'
 import { Route as AuthenticatedHrEmployeesIdIndexImport } from './routes/_authenticated/hr/employees/$id/index'
+import { Route as AuthenticatedFinanceBanksIdIndexImport } from './routes/_authenticated/finance/banks/$id/index'
 import { Route as AuthenticatedCompanyDepartmentsIdIndexImport } from './routes/_authenticated/company/departments/$id/index'
 import { Route as AuthenticatedCompanyBranchesIdIndexImport } from './routes/_authenticated/company/branches/$id/index'
 import { Route as AuthenticatedAdminSectionsIdIndexImport } from './routes/_authenticated/admin/sections/$id/index'
@@ -112,6 +116,11 @@ const IndexRoute = IndexImport.update({
 
 const AuthenticatedHrRoute = AuthenticatedHrImport.update({
   path: '/hr',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
+const AuthenticatedFinanceRoute = AuthenticatedFinanceImport.update({
+  path: '/finance',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 
@@ -292,6 +301,12 @@ const AuthenticatedHrEmployeesIndexRoute =
     getParentRoute: () => AuthenticatedHrEmployeesRoute,
   } as any)
 
+const AuthenticatedFinanceBanksIndexRoute =
+  AuthenticatedFinanceBanksIndexImport.update({
+    path: '/banks/',
+    getParentRoute: () => AuthenticatedFinanceRoute,
+  } as any)
+
 const AuthenticatedCompanyDepartmentsIndexRoute =
   AuthenticatedCompanyDepartmentsIndexImport.update({
     path: '/departments/',
@@ -400,6 +415,12 @@ const AuthenticatedHrEmployeesNewRoute =
     getParentRoute: () => AuthenticatedHrEmployeesRoute,
   } as any)
 
+const AuthenticatedFinanceBanksNewRoute =
+  AuthenticatedFinanceBanksNewImport.update({
+    path: '/banks/new',
+    getParentRoute: () => AuthenticatedFinanceRoute,
+  } as any)
+
 const AuthenticatedCompanyDepartmentsNewRoute =
   AuthenticatedCompanyDepartmentsNewImport.update({
     path: '/departments/new',
@@ -501,6 +522,12 @@ const AuthenticatedHrEmployeesIdIndexRoute =
   AuthenticatedHrEmployeesIdIndexImport.update({
     path: '/$id/',
     getParentRoute: () => AuthenticatedHrEmployeesRoute,
+  } as any)
+
+const AuthenticatedFinanceBanksIdIndexRoute =
+  AuthenticatedFinanceBanksIdIndexImport.update({
+    path: '/banks/$id/',
+    getParentRoute: () => AuthenticatedFinanceRoute,
   } as any)
 
 const AuthenticatedCompanyDepartmentsIdIndexRoute =
@@ -613,6 +640,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof AuthenticatedDashboardImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/finance': {
+      id: '/_authenticated/finance'
+      path: '/finance'
+      fullPath: '/finance'
+      preLoaderRoute: typeof AuthenticatedFinanceImport
       parentRoute: typeof AuthenticatedImport
     }
     '/_authenticated/hr': {
@@ -825,6 +859,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCompanyDepartmentsNewImport
       parentRoute: typeof AuthenticatedCompanyImport
     }
+    '/_authenticated/finance/banks/new': {
+      id: '/_authenticated/finance/banks/new'
+      path: '/banks/new'
+      fullPath: '/finance/banks/new'
+      preLoaderRoute: typeof AuthenticatedFinanceBanksNewImport
+      parentRoute: typeof AuthenticatedFinanceImport
+    }
     '/_authenticated/hr/employees/new': {
       id: '/_authenticated/hr/employees/new'
       path: '/new'
@@ -950,6 +991,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/company/departments'
       preLoaderRoute: typeof AuthenticatedCompanyDepartmentsIndexImport
       parentRoute: typeof AuthenticatedCompanyImport
+    }
+    '/_authenticated/finance/banks/': {
+      id: '/_authenticated/finance/banks/'
+      path: '/banks'
+      fullPath: '/finance/banks'
+      preLoaderRoute: typeof AuthenticatedFinanceBanksIndexImport
+      parentRoute: typeof AuthenticatedFinanceImport
     }
     '/_authenticated/hr/employees/': {
       id: '/_authenticated/hr/employees/'
@@ -1091,6 +1139,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCompanyDepartmentsIdIndexImport
       parentRoute: typeof AuthenticatedCompanyImport
     }
+    '/_authenticated/finance/banks/$id/': {
+      id: '/_authenticated/finance/banks/$id/'
+      path: '/banks/$id'
+      fullPath: '/finance/banks/$id'
+      preLoaderRoute: typeof AuthenticatedFinanceBanksIdIndexImport
+      parentRoute: typeof AuthenticatedFinanceImport
+    }
     '/_authenticated/hr/employees/$id/': {
       id: '/_authenticated/hr/employees/$id/'
       path: '/$id'
@@ -1200,6 +1255,11 @@ export const routeTree = rootRoute.addChildren({
       AuthenticatedCompanyDepartmentsIdIndexRoute,
     }),
     AuthenticatedDashboardRoute,
+    AuthenticatedFinanceRoute: AuthenticatedFinanceRoute.addChildren({
+      AuthenticatedFinanceBanksNewRoute,
+      AuthenticatedFinanceBanksIndexRoute,
+      AuthenticatedFinanceBanksIdIndexRoute,
+    }),
     AuthenticatedHrRoute: AuthenticatedHrRoute.addChildren({
       AuthenticatedHrDebitCreditAnalysisRoute,
       AuthenticatedHrEmployeesRoute: AuthenticatedHrEmployeesRoute.addChildren({
@@ -1278,6 +1338,7 @@ export const routeTree = rootRoute.addChildren({
         "/_authenticated/admin",
         "/_authenticated/company",
         "/_authenticated/dashboard",
+        "/_authenticated/finance",
         "/_authenticated/hr",
         "/_authenticated/storage/assignmentCards",
         "/_authenticated/storage/assignmentTransactions",
@@ -1330,6 +1391,15 @@ export const routeTree = rootRoute.addChildren({
     "/_authenticated/dashboard": {
       "filePath": "_authenticated/dashboard.tsx",
       "parent": "/_authenticated"
+    },
+    "/_authenticated/finance": {
+      "filePath": "_authenticated/finance.tsx",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/finance/banks/new",
+        "/_authenticated/finance/banks/",
+        "/_authenticated/finance/banks/$id/"
+      ]
     },
     "/_authenticated/hr": {
       "filePath": "_authenticated/hr.tsx",
@@ -1521,6 +1591,10 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_authenticated/company/departments/new.tsx",
       "parent": "/_authenticated/company"
     },
+    "/_authenticated/finance/banks/new": {
+      "filePath": "_authenticated/finance/banks/new.tsx",
+      "parent": "/_authenticated/finance"
+    },
     "/_authenticated/hr/employees/new": {
       "filePath": "_authenticated/hr/employees/new.tsx",
       "parent": "/_authenticated/hr/employees"
@@ -1595,6 +1669,10 @@ export const routeTree = rootRoute.addChildren({
     "/_authenticated/company/departments/": {
       "filePath": "_authenticated/company/departments/index.tsx",
       "parent": "/_authenticated/company"
+    },
+    "/_authenticated/finance/banks/": {
+      "filePath": "_authenticated/finance/banks/index.tsx",
+      "parent": "/_authenticated/finance"
     },
     "/_authenticated/hr/employees/": {
       "filePath": "_authenticated/hr/employees/index.tsx",
@@ -1675,6 +1753,10 @@ export const routeTree = rootRoute.addChildren({
     "/_authenticated/company/departments/$id/": {
       "filePath": "_authenticated/company/departments/$id/index.tsx",
       "parent": "/_authenticated/company"
+    },
+    "/_authenticated/finance/banks/$id/": {
+      "filePath": "_authenticated/finance/banks/$id/index.tsx",
+      "parent": "/_authenticated/finance"
     },
     "/_authenticated/hr/employees/$id/": {
       "filePath": "_authenticated/hr/employees/$id/index.tsx",
