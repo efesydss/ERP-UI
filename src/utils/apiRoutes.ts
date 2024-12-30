@@ -72,6 +72,20 @@ export const apiRoutes = {
   machineDelete:'admin/machine/{machineId}',
   machineUpdate:'admin/machine/{machineId}',
 
+
+  //Company / Branch
+    branches:'company/branches',
+    branch:'company/branch/{branchId}',
+    branchAdd:'company/branch',
+    branchDelete:'company/branch/{branchId}',
+    branchUpdate:'company/branch/{branchId}',
+
+    //Company / Department
+    departments:'company/departments',
+    department:'company/department/{departmentId}',
+    departmentAdd:'company/department',
+    departmentDelete:'company/department/{departmentId}',
+    departmentUpdate:'company/department/{departmentId}',
   //Storage / AssignmentCard
   assignmentCards:'storage/assignmentCards',
   assignmentCard:'storage/assignmentCard/{assignmentCardId}',

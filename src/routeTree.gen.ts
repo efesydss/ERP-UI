@@ -16,6 +16,7 @@ import { Route as AuthenticatedImport } from './routes/_authenticated'
 import { Route as IndexImport } from './routes/index'
 import { Route as AuthenticatedHrImport } from './routes/_authenticated/hr'
 import { Route as AuthenticatedDashboardImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedCompanyImport } from './routes/_authenticated/company'
 import { Route as AuthenticatedAdminImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedStorageIndexImport } from './routes/_authenticated/storage/index'
 import { Route as AuthenticatedHrIndexImport } from './routes/_authenticated/hr/index'
@@ -45,6 +46,7 @@ import { Route as AuthenticatedHrVacationsIndexImport } from './routes/_authenti
 import { Route as AuthenticatedHrTimekeepingIndexImport } from './routes/_authenticated/hr/timekeeping/index'
 import { Route as AuthenticatedHrFinancesIndexImport } from './routes/_authenticated/hr/finances/index'
 import { Route as AuthenticatedHrEmployeesIndexImport } from './routes/_authenticated/hr/employees/index'
+import { Route as AuthenticatedCompanyBranchesIndexImport } from './routes/_authenticated/company/branches/index'
 import { Route as AuthenticatedAdminSectionsIndexImport } from './routes/_authenticated/admin/sections/index'
 import { Route as AuthenticatedAdminRolesIndexImport } from './routes/_authenticated/admin/roles/index'
 import { Route as AuthenticatedAdminPublicHolidaysIndexImport } from './routes/_authenticated/admin/publicHolidays/index'
@@ -61,6 +63,7 @@ import { Route as AuthenticatedStorageAssignmentCardsNewImport } from './routes/
 import { Route as AuthenticatedHrVacationsNewImport } from './routes/_authenticated/hr/vacations/new'
 import { Route as AuthenticatedHrTimekeepingNewImport } from './routes/_authenticated/hr/timekeeping/new'
 import { Route as AuthenticatedHrEmployeesNewImport } from './routes/_authenticated/hr/employees/new'
+import { Route as AuthenticatedCompanyBranchesNewImport } from './routes/_authenticated/company/branches/new'
 import { Route as AuthenticatedAdminSectionsNewImport } from './routes/_authenticated/admin/sections/new'
 import { Route as AuthenticatedAdminRolesNewImport } from './routes/_authenticated/admin/roles/new'
 import { Route as AuthenticatedAdminPublicHolidaysNewImport } from './routes/_authenticated/admin/publicHolidays/new'
@@ -76,6 +79,7 @@ import { Route as AuthenticatedStorageAssignmentTransactionsIdIndexImport } from
 import { Route as AuthenticatedStorageAssignmentCardsIdIndexImport } from './routes/_authenticated/storage/assignmentCards/$id/index'
 import { Route as AuthenticatedHrTimekeepingIdIndexImport } from './routes/_authenticated/hr/timekeeping/$id/index'
 import { Route as AuthenticatedHrEmployeesIdIndexImport } from './routes/_authenticated/hr/employees/$id/index'
+import { Route as AuthenticatedCompanyBranchesIdIndexImport } from './routes/_authenticated/company/branches/$id/index'
 import { Route as AuthenticatedAdminSectionsIdIndexImport } from './routes/_authenticated/admin/sections/$id/index'
 import { Route as AuthenticatedAdminRolesIdIndexImport } from './routes/_authenticated/admin/roles/$id/index'
 import { Route as AuthenticatedAdminPublicHolidaysIdIndexImport } from './routes/_authenticated/admin/publicHolidays/$id/index'
@@ -110,6 +114,11 @@ const AuthenticatedHrRoute = AuthenticatedHrImport.update({
 
 const AuthenticatedDashboardRoute = AuthenticatedDashboardImport.update({
   path: '/dashboard',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
+const AuthenticatedCompanyRoute = AuthenticatedCompanyImport.update({
+  path: '/company',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 
@@ -280,6 +289,12 @@ const AuthenticatedHrEmployeesIndexRoute =
     getParentRoute: () => AuthenticatedHrEmployeesRoute,
   } as any)
 
+const AuthenticatedCompanyBranchesIndexRoute =
+  AuthenticatedCompanyBranchesIndexImport.update({
+    path: '/branches/',
+    getParentRoute: () => AuthenticatedCompanyRoute,
+  } as any)
+
 const AuthenticatedAdminSectionsIndexRoute =
   AuthenticatedAdminSectionsIndexImport.update({
     path: '/',
@@ -376,6 +391,12 @@ const AuthenticatedHrEmployeesNewRoute =
     getParentRoute: () => AuthenticatedHrEmployeesRoute,
   } as any)
 
+const AuthenticatedCompanyBranchesNewRoute =
+  AuthenticatedCompanyBranchesNewImport.update({
+    path: '/branches/new',
+    getParentRoute: () => AuthenticatedCompanyRoute,
+  } as any)
+
 const AuthenticatedAdminSectionsNewRoute =
   AuthenticatedAdminSectionsNewImport.update({
     path: '/new',
@@ -467,6 +488,12 @@ const AuthenticatedHrEmployeesIdIndexRoute =
     getParentRoute: () => AuthenticatedHrEmployeesRoute,
   } as any)
 
+const AuthenticatedCompanyBranchesIdIndexRoute =
+  AuthenticatedCompanyBranchesIdIndexImport.update({
+    path: '/branches/$id/',
+    getParentRoute: () => AuthenticatedCompanyRoute,
+  } as any)
+
 const AuthenticatedAdminSectionsIdIndexRoute =
   AuthenticatedAdminSectionsIdIndexImport.update({
     path: '/$id/',
@@ -551,6 +578,13 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AuthenticatedAdminImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/company': {
+      id: '/_authenticated/company'
+      path: '/company'
+      fullPath: '/company'
+      preLoaderRoute: typeof AuthenticatedCompanyImport
       parentRoute: typeof AuthenticatedImport
     }
     '/_authenticated/dashboard': {
@@ -756,6 +790,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminSectionsNewImport
       parentRoute: typeof AuthenticatedAdminSectionsImport
     }
+    '/_authenticated/company/branches/new': {
+      id: '/_authenticated/company/branches/new'
+      path: '/branches/new'
+      fullPath: '/company/branches/new'
+      preLoaderRoute: typeof AuthenticatedCompanyBranchesNewImport
+      parentRoute: typeof AuthenticatedCompanyImport
+    }
     '/_authenticated/hr/employees/new': {
       id: '/_authenticated/hr/employees/new'
       path: '/new'
@@ -867,6 +908,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/sections/'
       preLoaderRoute: typeof AuthenticatedAdminSectionsIndexImport
       parentRoute: typeof AuthenticatedAdminSectionsImport
+    }
+    '/_authenticated/company/branches/': {
+      id: '/_authenticated/company/branches/'
+      path: '/branches'
+      fullPath: '/company/branches'
+      preLoaderRoute: typeof AuthenticatedCompanyBranchesIndexImport
+      parentRoute: typeof AuthenticatedCompanyImport
     }
     '/_authenticated/hr/employees/': {
       id: '/_authenticated/hr/employees/'
@@ -994,6 +1042,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminSectionsIdIndexImport
       parentRoute: typeof AuthenticatedAdminSectionsImport
     }
+    '/_authenticated/company/branches/$id/': {
+      id: '/_authenticated/company/branches/$id/'
+      path: '/branches/$id'
+      fullPath: '/company/branches/$id'
+      preLoaderRoute: typeof AuthenticatedCompanyBranchesIdIndexImport
+      parentRoute: typeof AuthenticatedCompanyImport
+    }
     '/_authenticated/hr/employees/$id/': {
       id: '/_authenticated/hr/employees/$id/'
       path: '/$id'
@@ -1094,6 +1149,11 @@ export const routeTree = rootRoute.addChildren({
         }),
       AuthenticatedAdminIndexRoute,
     }),
+    AuthenticatedCompanyRoute: AuthenticatedCompanyRoute.addChildren({
+      AuthenticatedCompanyBranchesNewRoute,
+      AuthenticatedCompanyBranchesIndexRoute,
+      AuthenticatedCompanyBranchesIdIndexRoute,
+    }),
     AuthenticatedDashboardRoute,
     AuthenticatedHrRoute: AuthenticatedHrRoute.addChildren({
       AuthenticatedHrDebitCreditAnalysisRoute,
@@ -1171,6 +1231,7 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_authenticated.tsx",
       "children": [
         "/_authenticated/admin",
+        "/_authenticated/company",
         "/_authenticated/dashboard",
         "/_authenticated/hr",
         "/_authenticated/storage/assignmentCards",
@@ -1207,6 +1268,15 @@ export const routeTree = rootRoute.addChildren({
         "/_authenticated/admin/roles",
         "/_authenticated/admin/sections",
         "/_authenticated/admin/"
+      ]
+    },
+    "/_authenticated/company": {
+      "filePath": "_authenticated/company.tsx",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/company/branches/new",
+        "/_authenticated/company/branches/",
+        "/_authenticated/company/branches/$id/"
       ]
     },
     "/_authenticated/dashboard": {
@@ -1395,6 +1465,10 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_authenticated/admin/sections/new.tsx",
       "parent": "/_authenticated/admin/sections"
     },
+    "/_authenticated/company/branches/new": {
+      "filePath": "_authenticated/company/branches/new.tsx",
+      "parent": "/_authenticated/company"
+    },
     "/_authenticated/hr/employees/new": {
       "filePath": "_authenticated/hr/employees/new.tsx",
       "parent": "/_authenticated/hr/employees"
@@ -1461,6 +1535,10 @@ export const routeTree = rootRoute.addChildren({
     "/_authenticated/admin/sections/": {
       "filePath": "_authenticated/admin/sections/index.tsx",
       "parent": "/_authenticated/admin/sections"
+    },
+    "/_authenticated/company/branches/": {
+      "filePath": "_authenticated/company/branches/index.tsx",
+      "parent": "/_authenticated/company"
     },
     "/_authenticated/hr/employees/": {
       "filePath": "_authenticated/hr/employees/index.tsx",
@@ -1533,6 +1611,10 @@ export const routeTree = rootRoute.addChildren({
     "/_authenticated/admin/sections/$id/": {
       "filePath": "_authenticated/admin/sections/$id/index.tsx",
       "parent": "/_authenticated/admin/sections"
+    },
+    "/_authenticated/company/branches/$id/": {
+      "filePath": "_authenticated/company/branches/$id/index.tsx",
+      "parent": "/_authenticated/company"
     },
     "/_authenticated/hr/employees/$id/": {
       "filePath": "_authenticated/hr/employees/$id/index.tsx",

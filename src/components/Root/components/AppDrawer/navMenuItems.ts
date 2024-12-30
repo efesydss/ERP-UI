@@ -64,6 +64,22 @@ export const navMenuItems: MenuItemProps[] = [
 
     ]
   },
+   {
+      label: 'company',
+      icon: RiAdminLine,
+      sub: [
+        {
+          label: 'branches',
+          icon: FaRProject
+        },
+        {
+           label: 'departments',
+           icon: FaRProject
+        },
+
+      ]
+    },
+
   {
     label: 'accounting',
     icon: FaRProject,
@@ -74,6 +90,25 @@ export const navMenuItems: MenuItemProps[] = [
       }
     ]
   },
+  {
+        label: 'finance',
+        icon: RiAdminLine,
+        sub: [
+          {
+            label: 'banks',
+            icon: FaRProject
+          },
+          {
+             label: 'bankAccounts',
+             icon: FaRProject
+          },
+          {
+              label: 'bankBranches',
+              icon: FaRProject
+          },
+
+        ]
+      },
   {
       label: 'storage',
       icon: FaPeopleRoof,

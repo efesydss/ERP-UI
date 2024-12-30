@@ -1,5 +1,5 @@
 import { Employee } from './typesEmployee';
-import { Department } from './typesDepartment';//todo ef create this file
+import { Department } from './Admin/typesDepartment';
 export interface Section {
   id: number;
   name: string;
