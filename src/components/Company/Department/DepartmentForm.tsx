@@ -4,12 +4,12 @@ import { FormGrid } from '@/components/Common/Form/FormGrid/FormGrid'
 import { Input } from '@/components/Common/Form/Input/Input'
 import { Box, Button, Paper } from '@mui/material'
 import { FaCheck } from 'react-icons/fa6'
-interface FormBranchProps {
-  branchId?: number
+interface FormDepartmentProps {
+  departmentId?: number
 
 }
 
-export const BranchForm = (props: FormBranchProps) => {
+export const DepartmentForm = (props: FormDepartmentProps) => {
   console.log(props)
   const { t } = useTranslation()
 

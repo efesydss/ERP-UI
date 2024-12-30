@@ -196,6 +196,9 @@
   "companyBranchAdd": "Şirket Şubesi Ekle",
   "companyBranchCode": "Şube Kodu",
   "companyBranchName": "Şube Adı",
+  "DepartmentList": "Departmanlar",
+  "newDepartment": "Yeni Departman Ekle",
+  "departmentAdd": "Departman Ekle",
   "confirm": "Onayla",
   "togglePassive": "Pasif",
   "placeholders": {

@@ -46,6 +46,7 @@ import { Route as AuthenticatedHrVacationsIndexImport } from './routes/_authenti
 import { Route as AuthenticatedHrTimekeepingIndexImport } from './routes/_authenticated/hr/timekeeping/index'
 import { Route as AuthenticatedHrFinancesIndexImport } from './routes/_authenticated/hr/finances/index'
 import { Route as AuthenticatedHrEmployeesIndexImport } from './routes/_authenticated/hr/employees/index'
+import { Route as AuthenticatedCompanyDepartmentsIndexImport } from './routes/_authenticated/company/departments/index'
 import { Route as AuthenticatedCompanyBranchesIndexImport } from './routes/_authenticated/company/branches/index'
 import { Route as AuthenticatedAdminSectionsIndexImport } from './routes/_authenticated/admin/sections/index'
 import { Route as AuthenticatedAdminRolesIndexImport } from './routes/_authenticated/admin/roles/index'
@@ -63,6 +64,7 @@ import { Route as AuthenticatedStorageAssignmentCardsNewImport } from './routes/
 import { Route as AuthenticatedHrVacationsNewImport } from './routes/_authenticated/hr/vacations/new'
 import { Route as AuthenticatedHrTimekeepingNewImport } from './routes/_authenticated/hr/timekeeping/new'
 import { Route as AuthenticatedHrEmployeesNewImport } from './routes/_authenticated/hr/employees/new'
+import { Route as AuthenticatedCompanyDepartmentsNewImport } from './routes/_authenticated/company/departments/new'
 import { Route as AuthenticatedCompanyBranchesNewImport } from './routes/_authenticated/company/branches/new'
 import { Route as AuthenticatedAdminSectionsNewImport } from './routes/_authenticated/admin/sections/new'
 import { Route as AuthenticatedAdminRolesNewImport } from './routes/_authenticated/admin/roles/new'
@@ -79,6 +81,7 @@ import { Route as AuthenticatedStorageAssignmentTransactionsIdIndexImport } from
 import { Route as AuthenticatedStorageAssignmentCardsIdIndexImport } from './routes/_authenticated/storage/assignmentCards/$id/index'
 import { Route as AuthenticatedHrTimekeepingIdIndexImport } from './routes/_authenticated/hr/timekeeping/$id/index'
 import { Route as AuthenticatedHrEmployeesIdIndexImport } from './routes/_authenticated/hr/employees/$id/index'
+import { Route as AuthenticatedCompanyDepartmentsIdIndexImport } from './routes/_authenticated/company/departments/$id/index'
 import { Route as AuthenticatedCompanyBranchesIdIndexImport } from './routes/_authenticated/company/branches/$id/index'
 import { Route as AuthenticatedAdminSectionsIdIndexImport } from './routes/_authenticated/admin/sections/$id/index'
 import { Route as AuthenticatedAdminRolesIdIndexImport } from './routes/_authenticated/admin/roles/$id/index'
@@ -289,6 +292,12 @@ const AuthenticatedHrEmployeesIndexRoute =
     getParentRoute: () => AuthenticatedHrEmployeesRoute,
   } as any)
 
+const AuthenticatedCompanyDepartmentsIndexRoute =
+  AuthenticatedCompanyDepartmentsIndexImport.update({
+    path: '/departments/',
+    getParentRoute: () => AuthenticatedCompanyRoute,
+  } as any)
+
 const AuthenticatedCompanyBranchesIndexRoute =
   AuthenticatedCompanyBranchesIndexImport.update({
     path: '/branches/',
@@ -391,6 +400,12 @@ const AuthenticatedHrEmployeesNewRoute =
     getParentRoute: () => AuthenticatedHrEmployeesRoute,
   } as any)
 
+const AuthenticatedCompanyDepartmentsNewRoute =
+  AuthenticatedCompanyDepartmentsNewImport.update({
+    path: '/departments/new',
+    getParentRoute: () => AuthenticatedCompanyRoute,
+  } as any)
+
 const AuthenticatedCompanyBranchesNewRoute =
   AuthenticatedCompanyBranchesNewImport.update({
     path: '/branches/new',
@@ -486,6 +501,12 @@ const AuthenticatedHrEmployeesIdIndexRoute =
   AuthenticatedHrEmployeesIdIndexImport.update({
     path: '/$id/',
     getParentRoute: () => AuthenticatedHrEmployeesRoute,
+  } as any)
+
+const AuthenticatedCompanyDepartmentsIdIndexRoute =
+  AuthenticatedCompanyDepartmentsIdIndexImport.update({
+    path: '/departments/$id/',
+    getParentRoute: () => AuthenticatedCompanyRoute,
   } as any)
 
 const AuthenticatedCompanyBranchesIdIndexRoute =
@@ -797,6 +818,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCompanyBranchesNewImport
       parentRoute: typeof AuthenticatedCompanyImport
     }
+    '/_authenticated/company/departments/new': {
+      id: '/_authenticated/company/departments/new'
+      path: '/departments/new'
+      fullPath: '/company/departments/new'
+      preLoaderRoute: typeof AuthenticatedCompanyDepartmentsNewImport
+      parentRoute: typeof AuthenticatedCompanyImport
+    }
     '/_authenticated/hr/employees/new': {
       id: '/_authenticated/hr/employees/new'
       path: '/new'
@@ -914,6 +942,13 @@ declare module '@tanstack/react-router' {
       path: '/branches'
       fullPath: '/company/branches'
       preLoaderRoute: typeof AuthenticatedCompanyBranchesIndexImport
+      parentRoute: typeof AuthenticatedCompanyImport
+    }
+    '/_authenticated/company/departments/': {
+      id: '/_authenticated/company/departments/'
+      path: '/departments'
+      fullPath: '/company/departments'
+      preLoaderRoute: typeof AuthenticatedCompanyDepartmentsIndexImport
       parentRoute: typeof AuthenticatedCompanyImport
     }
     '/_authenticated/hr/employees/': {
@@ -1049,6 +1084,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCompanyBranchesIdIndexImport
       parentRoute: typeof AuthenticatedCompanyImport
     }
+    '/_authenticated/company/departments/$id/': {
+      id: '/_authenticated/company/departments/$id/'
+      path: '/departments/$id'
+      fullPath: '/company/departments/$id'
+      preLoaderRoute: typeof AuthenticatedCompanyDepartmentsIdIndexImport
+      parentRoute: typeof AuthenticatedCompanyImport
+    }
     '/_authenticated/hr/employees/$id/': {
       id: '/_authenticated/hr/employees/$id/'
       path: '/$id'
@@ -1151,8 +1193,11 @@ export const routeTree = rootRoute.addChildren({
     }),
     AuthenticatedCompanyRoute: AuthenticatedCompanyRoute.addChildren({
       AuthenticatedCompanyBranchesNewRoute,
+      AuthenticatedCompanyDepartmentsNewRoute,
       AuthenticatedCompanyBranchesIndexRoute,
+      AuthenticatedCompanyDepartmentsIndexRoute,
       AuthenticatedCompanyBranchesIdIndexRoute,
+      AuthenticatedCompanyDepartmentsIdIndexRoute,
     }),
     AuthenticatedDashboardRoute,
     AuthenticatedHrRoute: AuthenticatedHrRoute.addChildren({
@@ -1275,8 +1320,11 @@ export const routeTree = rootRoute.addChildren({
       "parent": "/_authenticated",
       "children": [
         "/_authenticated/company/branches/new",
+        "/_authenticated/company/departments/new",
         "/_authenticated/company/branches/",
-        "/_authenticated/company/branches/$id/"
+        "/_authenticated/company/departments/",
+        "/_authenticated/company/branches/$id/",
+        "/_authenticated/company/departments/$id/"
       ]
     },
     "/_authenticated/dashboard": {
@@ -1469,6 +1517,10 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_authenticated/company/branches/new.tsx",
       "parent": "/_authenticated/company"
     },
+    "/_authenticated/company/departments/new": {
+      "filePath": "_authenticated/company/departments/new.tsx",
+      "parent": "/_authenticated/company"
+    },
     "/_authenticated/hr/employees/new": {
       "filePath": "_authenticated/hr/employees/new.tsx",
       "parent": "/_authenticated/hr/employees"
@@ -1538,6 +1590,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_authenticated/company/branches/": {
       "filePath": "_authenticated/company/branches/index.tsx",
+      "parent": "/_authenticated/company"
+    },
+    "/_authenticated/company/departments/": {
+      "filePath": "_authenticated/company/departments/index.tsx",
       "parent": "/_authenticated/company"
     },
     "/_authenticated/hr/employees/": {
@@ -1614,6 +1670,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_authenticated/company/branches/$id/": {
       "filePath": "_authenticated/company/branches/$id/index.tsx",
+      "parent": "/_authenticated/company"
+    },
+    "/_authenticated/company/departments/$id/": {
+      "filePath": "_authenticated/company/departments/$id/index.tsx",
       "parent": "/_authenticated/company"
     },
     "/_authenticated/hr/employees/$id/": {

@@ -1,4 +1,3 @@
-
 import { useTranslation } from 'react-i18next'
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
 
@@ -14,9 +13,9 @@ import { GridRowId } from '@mui/x-data-grid'
 import { Button } from '@mui/material'
 import { toast } from 'react-toastify'
 import { ColumnDef } from '@tanstack/react-table'
-import { Branch } from '@/components/Company/Branch/types/typesBranch'
-import {Route } from '@/routes/_authenticated/company/branches/new'
-export const BranchList = () => {
+import { Department } from '@/components/Company/Department/types/typesDepartment'
+import { Route } from '@/routes/_authenticated/company/departments/new'
+export const DepartmentList = () => {
   const { t } = useTranslation('common')
   const { openDialog } = useConfirmDialog()
   const queryClient = useQueryClient()
@@ -28,13 +27,13 @@ export const BranchList = () => {
       'Confirm Deletion',
       'Are you sure you want to delete this item?',
       () => {
-        deleteBranch(id.toString())
+        deleteDepartment(id.toString())
       },
       () => {
         console.log('Deletion cancelled')
       }
     )
-    const safeAccessor = (accessorFn: (row: any) => any, columnName: string) => {
+  const safeAccessor = (accessorFn: (row: any) => any, columnName: string) => {
     return (row: any) => {
       try {
         const result = accessorFn(row)
@@ -46,25 +45,25 @@ export const BranchList = () => {
       }
     }
   }
-  const { mutate: deleteBranch } = useMutation({
-    mutationFn: async (branchId: string) => {
+  const { mutate: deleteDepartment } = useMutation({
+    mutationFn: async (DepartmentId: string) => {
       return await apiRequest({
-        endpoint: 'branchDelete',
+        endpoint: 'departmentDelete',
         method: 'DELETE',
-        params: { branchId: branchId?.toString() ?? '0' }
+        params: { DepartmentId: DepartmentId?.toString() ?? '0' }
       })
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['branches'] })
-      toast.success('Branch Deleted')
+      queryClient.invalidateQueries({ queryKey: ['departments'] })
+      toast.success('Department Deleted')
     }
   })
-  
-  const columns = useMemo<ColumnDef<Branch>[]>(
+
+  const columns = useMemo<ColumnDef<Department>[]>(
     () => [
       {
         header: t('name'),
-        accessorFn: safeAccessor((row) => row.name || t('-'), 'name'),
+        accessorFn: safeAccessor((row) => row.name, 'name')
       },
       {
         header: t('actions'),
@@ -84,7 +83,7 @@ export const BranchList = () => {
     [t]
   )
 
-  const BranchListActions = () => {
+  const DepartmentListActions = () => {
     return (
       <>
         <Button
@@ -93,21 +92,21 @@ export const BranchList = () => {
           startIcon={<PersonAddAlt1Icon />}
           onClick={() => navigate({ to: Route.fullPath })}
         >
-          {t('newBranch')}
+          {t('newDepartment')}
         </Button>
       </>
     )
   }
-  const endpoint = 'branches'
+  const endpoint = 'departments'
 
   return (
     <>
       <PageTitle
-        title={t('BranchList')}
-        actions={<BranchListActions />}
+        title={t('DepartmentList')}
+        actions={<DepartmentListActions />}
       />
 
-      <BaseTable<Branch> endpoint={endpoint} columns={columns}
+      <BaseTable<Department> endpoint={endpoint} columns={columns}
 
       ></BaseTable>
 
