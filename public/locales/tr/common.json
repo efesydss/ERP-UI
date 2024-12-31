@@ -201,6 +201,10 @@
   "departmentAdd": "Departman Ekle",
   "newBank": "Yeni Banka Ekle",
   "BankList": "Banka Listesi",
+  "expenseCardAdd": "Gider Kartı Ekle",
+  "ExpenseCardList": "Gider Kartları",
+  "newExpenseCard": "Yeni Gider Kartı Ekle",
+  "expenseCard": "Gider Kartı",
   "confirm": "Onayla",
   "togglePassive": "Pasif",
   "placeholders": {

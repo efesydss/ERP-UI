@@ -38,6 +38,7 @@ import { Route as AuthenticatedAdminPaymentMethodsImport } from './routes/_authe
 import { Route as AuthenticatedAdminMachinesImport } from './routes/_authenticated/admin/machines'
 import { Route as AuthenticatedAdminDepotsImport } from './routes/_authenticated/admin/depots'
 import { Route as AuthenticatedAdminCompaniesImport } from './routes/_authenticated/admin/companies'
+import { Route as AuthenticatedAccountingExpenseCardsImport } from './routes/_authenticated/accounting/expenseCards'
 import { Route as AuthenticatedStorageUnitIndexImport } from './routes/_authenticated/storage/unit/index'
 import { Route as AuthenticatedStorageShelfIndexImport } from './routes/_authenticated/storage/shelf/index'
 import { Route as AuthenticatedStorageFixtureCardsIndexImport } from './routes/_authenticated/storage/fixtureCards/index'
@@ -58,6 +59,7 @@ import { Route as AuthenticatedAdminPaymentMethodsIndexImport } from './routes/_
 import { Route as AuthenticatedAdminMachinesIndexImport } from './routes/_authenticated/admin/machines/index'
 import { Route as AuthenticatedAdminDepotsIndexImport } from './routes/_authenticated/admin/depots/index'
 import { Route as AuthenticatedAdminCompaniesIndexImport } from './routes/_authenticated/admin/companies/index'
+import { Route as AuthenticatedAccountingExpenseCardsIndexImport } from './routes/_authenticated/accounting/expenseCards/index'
 import { Route as AuthenticatedAccountingCashAccountsIndexImport } from './routes/_authenticated/accounting/cashAccounts/index'
 import { Route as AuthenticatedStorageUnitNewImport } from './routes/_authenticated/storage/unit/new'
 import { Route as AuthenticatedStorageShelfNewImport } from './routes/_authenticated/storage/shelf/new'
@@ -78,6 +80,7 @@ import { Route as AuthenticatedAdminPaymentMethodsNewImport } from './routes/_au
 import { Route as AuthenticatedAdminMachinesNewImport } from './routes/_authenticated/admin/machines/new'
 import { Route as AuthenticatedAdminDepotsNewImport } from './routes/_authenticated/admin/depots/new'
 import { Route as AuthenticatedAdminCompaniesNewImport } from './routes/_authenticated/admin/companies/new'
+import { Route as AuthenticatedAccountingExpenseCardsNewImport } from './routes/_authenticated/accounting/expenseCards/new'
 import { Route as AuthenticatedAccountingCashAccountsNewImport } from './routes/_authenticated/accounting/cashAccounts/new'
 import { Route as AuthenticatedStorageUnitIdIndexImport } from './routes/_authenticated/storage/unit/$id/index'
 import { Route as AuthenticatedStorageShelfIdIndexImport } from './routes/_authenticated/storage/shelf/$id/index'
@@ -98,6 +101,7 @@ import { Route as AuthenticatedAdminPaymentMethodsIdIndexImport } from './routes
 import { Route as AuthenticatedAdminMachinesIdIndexImport } from './routes/_authenticated/admin/machines/$id/index'
 import { Route as AuthenticatedAdminDepotsIdIndexImport } from './routes/_authenticated/admin/depots/$id/index'
 import { Route as AuthenticatedAdminCompaniesIdIndexImport } from './routes/_authenticated/admin/companies/$id/index'
+import { Route as AuthenticatedAccountingExpenseCardsIdIndexImport } from './routes/_authenticated/accounting/expenseCards/$id/index'
 import { Route as AuthenticatedAccountingCashAccountsIdIndexImport } from './routes/_authenticated/accounting/cashAccounts/$id/index'
 import { Route as AuthenticatedHrVacationsNewIdImport } from './routes/_authenticated/hr/vacations/new/$id'
 import { Route as AuthenticatedFinanceBankBranchesNewImport } from './routes/_authenticated/finance/bank/branches/new'
@@ -253,6 +257,12 @@ const AuthenticatedAdminCompaniesRoute =
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
 
+const AuthenticatedAccountingExpenseCardsRoute =
+  AuthenticatedAccountingExpenseCardsImport.update({
+    path: '/accounting/expenseCards',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
 const AuthenticatedStorageUnitIndexRoute =
   AuthenticatedStorageUnitIndexImport.update({
     path: '/storage/unit/',
@@ -371,6 +381,12 @@ const AuthenticatedAdminCompaniesIndexRoute =
   AuthenticatedAdminCompaniesIndexImport.update({
     path: '/',
     getParentRoute: () => AuthenticatedAdminCompaniesRoute,
+  } as any)
+
+const AuthenticatedAccountingExpenseCardsIndexRoute =
+  AuthenticatedAccountingExpenseCardsIndexImport.update({
+    path: '/',
+    getParentRoute: () => AuthenticatedAccountingExpenseCardsRoute,
   } as any)
 
 const AuthenticatedAccountingCashAccountsIndexRoute =
@@ -494,6 +510,12 @@ const AuthenticatedAdminCompaniesNewRoute =
     getParentRoute: () => AuthenticatedAdminCompaniesRoute,
   } as any)
 
+const AuthenticatedAccountingExpenseCardsNewRoute =
+  AuthenticatedAccountingExpenseCardsNewImport.update({
+    path: '/new',
+    getParentRoute: () => AuthenticatedAccountingExpenseCardsRoute,
+  } as any)
+
 const AuthenticatedAccountingCashAccountsNewRoute =
   AuthenticatedAccountingCashAccountsNewImport.update({
     path: '/accounting/cashAccounts/new',
@@ -614,6 +636,12 @@ const AuthenticatedAdminCompaniesIdIndexRoute =
     getParentRoute: () => AuthenticatedAdminCompaniesRoute,
   } as any)
 
+const AuthenticatedAccountingExpenseCardsIdIndexRoute =
+  AuthenticatedAccountingExpenseCardsIdIndexImport.update({
+    path: '/$id/',
+    getParentRoute: () => AuthenticatedAccountingExpenseCardsRoute,
+  } as any)
+
 const AuthenticatedAccountingCashAccountsIdIndexRoute =
   AuthenticatedAccountingCashAccountsIdIndexImport.update({
     path: '/accounting/cashAccounts/$id/',
@@ -696,6 +724,13 @@ declare module '@tanstack/react-router' {
       path: '/hr'
       fullPath: '/hr'
       preLoaderRoute: typeof AuthenticatedHrImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/accounting/expenseCards': {
+      id: '/_authenticated/accounting/expenseCards'
+      path: '/accounting/expenseCards'
+      fullPath: '/accounting/expenseCards'
+      preLoaderRoute: typeof AuthenticatedAccountingExpenseCardsImport
       parentRoute: typeof AuthenticatedImport
     }
     '/_authenticated/admin/companies': {
@@ -838,6 +873,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAccountingCashAccountsNewImport
       parentRoute: typeof AuthenticatedImport
     }
+    '/_authenticated/accounting/expenseCards/new': {
+      id: '/_authenticated/accounting/expenseCards/new'
+      path: '/new'
+      fullPath: '/accounting/expenseCards/new'
+      preLoaderRoute: typeof AuthenticatedAccountingExpenseCardsNewImport
+      parentRoute: typeof AuthenticatedAccountingExpenseCardsImport
+    }
     '/_authenticated/admin/companies/new': {
       id: '/_authenticated/admin/companies/new'
       path: '/new'
@@ -977,6 +1019,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/accounting/cashAccounts'
       preLoaderRoute: typeof AuthenticatedAccountingCashAccountsIndexImport
       parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/accounting/expenseCards/': {
+      id: '/_authenticated/accounting/expenseCards/'
+      path: '/'
+      fullPath: '/accounting/expenseCards/'
+      preLoaderRoute: typeof AuthenticatedAccountingExpenseCardsIndexImport
+      parentRoute: typeof AuthenticatedAccountingExpenseCardsImport
     }
     '/_authenticated/admin/companies/': {
       id: '/_authenticated/admin/companies/'
@@ -1138,6 +1187,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/accounting/cashAccounts/$id'
       preLoaderRoute: typeof AuthenticatedAccountingCashAccountsIdIndexImport
       parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/accounting/expenseCards/$id/': {
+      id: '/_authenticated/accounting/expenseCards/$id/'
+      path: '/$id'
+      fullPath: '/accounting/expenseCards/$id'
+      preLoaderRoute: typeof AuthenticatedAccountingExpenseCardsIdIndexImport
+      parentRoute: typeof AuthenticatedAccountingExpenseCardsImport
     }
     '/_authenticated/admin/companies/$id/': {
       id: '/_authenticated/admin/companies/$id/'
@@ -1375,6 +1431,12 @@ export const routeTree = rootRoute.addChildren({
       }),
       AuthenticatedHrIndexRoute,
     }),
+    AuthenticatedAccountingExpenseCardsRoute:
+      AuthenticatedAccountingExpenseCardsRoute.addChildren({
+        AuthenticatedAccountingExpenseCardsNewRoute,
+        AuthenticatedAccountingExpenseCardsIndexRoute,
+        AuthenticatedAccountingExpenseCardsIdIndexRoute,
+      }),
     AuthenticatedStorageAssignmentCardsRoute:
       AuthenticatedStorageAssignmentCardsRoute.addChildren({
         AuthenticatedStorageAssignmentCardsNewRoute,
@@ -1430,6 +1492,7 @@ export const routeTree = rootRoute.addChildren({
         "/_authenticated/dashboard",
         "/_authenticated/finance",
         "/_authenticated/hr",
+        "/_authenticated/accounting/expenseCards",
         "/_authenticated/storage/assignmentCards",
         "/_authenticated/storage/assignmentTransactions",
         "/_authenticated/storage/shelves",
@@ -1507,6 +1570,15 @@ export const routeTree = rootRoute.addChildren({
         "/_authenticated/hr/timekeeping",
         "/_authenticated/hr/vacations",
         "/_authenticated/hr/"
+      ]
+    },
+    "/_authenticated/accounting/expenseCards": {
+      "filePath": "_authenticated/accounting/expenseCards.tsx",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/accounting/expenseCards/new",
+        "/_authenticated/accounting/expenseCards/",
+        "/_authenticated/accounting/expenseCards/$id/"
       ]
     },
     "/_authenticated/admin/companies": {
@@ -1651,6 +1723,10 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_authenticated/accounting/cashAccounts/new.tsx",
       "parent": "/_authenticated"
     },
+    "/_authenticated/accounting/expenseCards/new": {
+      "filePath": "_authenticated/accounting/expenseCards/new.tsx",
+      "parent": "/_authenticated/accounting/expenseCards"
+    },
     "/_authenticated/admin/companies/new": {
       "filePath": "_authenticated/admin/companies/new.tsx",
       "parent": "/_authenticated/admin/companies"
@@ -1733,6 +1809,10 @@ export const routeTree = rootRoute.addChildren({
     "/_authenticated/accounting/cashAccounts/": {
       "filePath": "_authenticated/accounting/cashAccounts/index.tsx",
       "parent": "/_authenticated"
+    },
+    "/_authenticated/accounting/expenseCards/": {
+      "filePath": "_authenticated/accounting/expenseCards/index.tsx",
+      "parent": "/_authenticated/accounting/expenseCards"
     },
     "/_authenticated/admin/companies/": {
       "filePath": "_authenticated/admin/companies/index.tsx",
@@ -1825,6 +1905,10 @@ export const routeTree = rootRoute.addChildren({
     "/_authenticated/accounting/cashAccounts/$id/": {
       "filePath": "_authenticated/accounting/cashAccounts/$id/index.tsx",
       "parent": "/_authenticated"
+    },
+    "/_authenticated/accounting/expenseCards/$id/": {
+      "filePath": "_authenticated/accounting/expenseCards/$id/index.tsx",
+      "parent": "/_authenticated/accounting/expenseCards"
     },
     "/_authenticated/admin/companies/$id/": {
       "filePath": "_authenticated/admin/companies/$id/index.tsx",

@@ -72,6 +72,12 @@ export const apiRoutes = {
   machineDelete:'admin/machine/{machineId}',
   machineUpdate:'admin/machine/{machineId}',
 
+     //Accounting / ExpenseCard
+        expenseCards:'accounting/expenseCards',
+        expenseCard:'accounting/expenseCard/{expenseCardId}',
+        expenseCardAdd:'accounting/expenseCard',
+        expenseCardDelete:'accounting/expenseCard/{expenseCardId}',
+        expenseCardUpdate:'accounting/expenseCard/{expenseCardId}',
 
   //Company / Branch
     branches:'company/branches',
@@ -93,6 +99,7 @@ export const apiRoutes = {
     bankAdd:'finance/bank',
     bankDelete:'finance/bank/{bankId}',
     bankUpdate:'finance/bank/{bankId}',
+
 
     //Finance / BankAccount
     bankAccounts:'finance/bankAccounts',
