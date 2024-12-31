@@ -94,6 +94,12 @@ export const apiRoutes = {
     bankDelete:'finance/bank/{bankId}',
     bankUpdate:'finance/bank/{bankId}',
 
+    //Finance / BankAccount
+    bankAccounts:'finance/bankAccounts',
+    bankAccount:'finance/bankAccount/{bankAccountId}',
+    bankAccountAdd:'finance/bankAccount',
+    bankAccountDelete:'finance/bankAccount/{bankAccountId}',
+    bankAccountUpdate:'finance/bankAccount/{bankAccountId}',
   //Storage / AssignmentCard
   assignmentCards:'storage/assignmentCards',
   assignmentCard:'storage/assignmentCard/{assignmentCardId}',
