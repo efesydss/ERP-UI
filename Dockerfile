@@ -1,5 +1,6 @@
 # use the official Bun image
 # see all versions at https://hub.docker.com/r/oven/bun/tags
+# original backend (ef)endpoint = https://falcons-erp-api-dev.sd.iafl.net/
 FROM oven/bun:1-debian AS bun
 
 WORKDIR /usr/src/app

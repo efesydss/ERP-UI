@@ -15,24 +15,93 @@ import { Route as LoginImport } from './routes/login'
 import { Route as AuthenticatedImport } from './routes/_authenticated'
 import { Route as IndexImport } from './routes/index'
 import { Route as AuthenticatedHrImport } from './routes/_authenticated/hr'
+import { Route as AuthenticatedFinanceImport } from './routes/_authenticated/finance'
 import { Route as AuthenticatedDashboardImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedCompanyImport } from './routes/_authenticated/company'
 import { Route as AuthenticatedAdminImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedStorageIndexImport } from './routes/_authenticated/storage/index'
 import { Route as AuthenticatedHrIndexImport } from './routes/_authenticated/hr/index'
+import { Route as AuthenticatedAdminIndexImport } from './routes/_authenticated/admin/index'
+import { Route as AuthenticatedStorageUnitsImport } from './routes/_authenticated/storage/units'
+import { Route as AuthenticatedStorageShelvesImport } from './routes/_authenticated/storage/shelves'
+import { Route as AuthenticatedStorageAssignmentTransactionsImport } from './routes/_authenticated/storage/assignmentTransactions'
+import { Route as AuthenticatedStorageAssignmentCardsImport } from './routes/_authenticated/storage/assignmentCards'
 import { Route as AuthenticatedHrVacationsImport } from './routes/_authenticated/hr/vacations'
 import { Route as AuthenticatedHrTimekeepingImport } from './routes/_authenticated/hr/timekeeping'
 import { Route as AuthenticatedHrFinancesImport } from './routes/_authenticated/hr/finances'
 import { Route as AuthenticatedHrEmployeesImport } from './routes/_authenticated/hr/employees'
 import { Route as AuthenticatedHrDebitCreditAnalysisImport } from './routes/_authenticated/hr/debitCreditAnalysis'
+import { Route as AuthenticatedAdminSectionsImport } from './routes/_authenticated/admin/sections'
+import { Route as AuthenticatedAdminRolesImport } from './routes/_authenticated/admin/roles'
+import { Route as AuthenticatedAdminPublicHolidaysImport } from './routes/_authenticated/admin/publicHolidays'
+import { Route as AuthenticatedAdminPaymentMethodsImport } from './routes/_authenticated/admin/paymentMethods'
+import { Route as AuthenticatedAdminMachinesImport } from './routes/_authenticated/admin/machines'
+import { Route as AuthenticatedAdminDepotsImport } from './routes/_authenticated/admin/depots'
+import { Route as AuthenticatedAdminCompaniesImport } from './routes/_authenticated/admin/companies'
+import { Route as AuthenticatedStorageUnitIndexImport } from './routes/_authenticated/storage/unit/index'
+import { Route as AuthenticatedStorageShelfIndexImport } from './routes/_authenticated/storage/shelf/index'
+import { Route as AuthenticatedStorageFixtureCardsIndexImport } from './routes/_authenticated/storage/fixtureCards/index'
+import { Route as AuthenticatedStorageAssignmentTransactionsIndexImport } from './routes/_authenticated/storage/assignmentTransactions/index'
+import { Route as AuthenticatedStorageAssignmentCardsIndexImport } from './routes/_authenticated/storage/assignmentCards/index'
 import { Route as AuthenticatedHrVacationsIndexImport } from './routes/_authenticated/hr/vacations/index'
 import { Route as AuthenticatedHrTimekeepingIndexImport } from './routes/_authenticated/hr/timekeeping/index'
 import { Route as AuthenticatedHrFinancesIndexImport } from './routes/_authenticated/hr/finances/index'
 import { Route as AuthenticatedHrEmployeesIndexImport } from './routes/_authenticated/hr/employees/index'
+import { Route as AuthenticatedFinanceBanksIndexImport } from './routes/_authenticated/finance/banks/index'
+import { Route as AuthenticatedFinanceBankAccountsIndexImport } from './routes/_authenticated/finance/bankAccounts/index'
+import { Route as AuthenticatedCompanyDepartmentsIndexImport } from './routes/_authenticated/company/departments/index'
+import { Route as AuthenticatedCompanyBranchesIndexImport } from './routes/_authenticated/company/branches/index'
+import { Route as AuthenticatedAdminSectionsIndexImport } from './routes/_authenticated/admin/sections/index'
+import { Route as AuthenticatedAdminRolesIndexImport } from './routes/_authenticated/admin/roles/index'
+import { Route as AuthenticatedAdminPublicHolidaysIndexImport } from './routes/_authenticated/admin/publicHolidays/index'
+import { Route as AuthenticatedAdminPaymentMethodsIndexImport } from './routes/_authenticated/admin/paymentMethods/index'
+import { Route as AuthenticatedAdminMachinesIndexImport } from './routes/_authenticated/admin/machines/index'
+import { Route as AuthenticatedAdminDepotsIndexImport } from './routes/_authenticated/admin/depots/index'
+import { Route as AuthenticatedAdminCompaniesIndexImport } from './routes/_authenticated/admin/companies/index'
+import { Route as AuthenticatedAccountingCashAccountsIndexImport } from './routes/_authenticated/accounting/cashAccounts/index'
+import { Route as AuthenticatedStorageUnitNewImport } from './routes/_authenticated/storage/unit/new'
+import { Route as AuthenticatedStorageShelfNewImport } from './routes/_authenticated/storage/shelf/new'
+import { Route as AuthenticatedStorageFixtureCardsNewImport } from './routes/_authenticated/storage/fixtureCards/new'
+import { Route as AuthenticatedStorageAssignmentTransactionsNewImport } from './routes/_authenticated/storage/assignmentTransactions/new'
+import { Route as AuthenticatedStorageAssignmentCardsNewImport } from './routes/_authenticated/storage/assignmentCards/new'
 import { Route as AuthenticatedHrVacationsNewImport } from './routes/_authenticated/hr/vacations/new'
 import { Route as AuthenticatedHrTimekeepingNewImport } from './routes/_authenticated/hr/timekeeping/new'
 import { Route as AuthenticatedHrEmployeesNewImport } from './routes/_authenticated/hr/employees/new'
+import { Route as AuthenticatedFinanceBanksNewImport } from './routes/_authenticated/finance/banks/new'
+import { Route as AuthenticatedFinanceBankAccountsNewImport } from './routes/_authenticated/finance/bankAccounts/new'
+import { Route as AuthenticatedCompanyDepartmentsNewImport } from './routes/_authenticated/company/departments/new'
+import { Route as AuthenticatedCompanyBranchesNewImport } from './routes/_authenticated/company/branches/new'
+import { Route as AuthenticatedAdminSectionsNewImport } from './routes/_authenticated/admin/sections/new'
+import { Route as AuthenticatedAdminRolesNewImport } from './routes/_authenticated/admin/roles/new'
+import { Route as AuthenticatedAdminPublicHolidaysNewImport } from './routes/_authenticated/admin/publicHolidays/new'
+import { Route as AuthenticatedAdminPaymentMethodsNewImport } from './routes/_authenticated/admin/paymentMethods/new'
+import { Route as AuthenticatedAdminMachinesNewImport } from './routes/_authenticated/admin/machines/new'
+import { Route as AuthenticatedAdminDepotsNewImport } from './routes/_authenticated/admin/depots/new'
+import { Route as AuthenticatedAdminCompaniesNewImport } from './routes/_authenticated/admin/companies/new'
+import { Route as AuthenticatedAccountingCashAccountsNewImport } from './routes/_authenticated/accounting/cashAccounts/new'
+import { Route as AuthenticatedStorageUnitIdIndexImport } from './routes/_authenticated/storage/unit/$id/index'
+import { Route as AuthenticatedStorageShelfIdIndexImport } from './routes/_authenticated/storage/shelf/$id/index'
+import { Route as AuthenticatedStorageFixtureCardsIdIndexImport } from './routes/_authenticated/storage/fixtureCards/$id/index'
+import { Route as AuthenticatedStorageAssignmentTransactionsIdIndexImport } from './routes/_authenticated/storage/assignmentTransactions/$id/index'
+import { Route as AuthenticatedStorageAssignmentCardsIdIndexImport } from './routes/_authenticated/storage/assignmentCards/$id/index'
 import { Route as AuthenticatedHrTimekeepingIdIndexImport } from './routes/_authenticated/hr/timekeeping/$id/index'
 import { Route as AuthenticatedHrEmployeesIdIndexImport } from './routes/_authenticated/hr/employees/$id/index'
+import { Route as AuthenticatedFinanceBanksIdIndexImport } from './routes/_authenticated/finance/banks/$id/index'
+import { Route as AuthenticatedFinanceBankAccountsIdIndexImport } from './routes/_authenticated/finance/bankAccounts/$id/index'
+import { Route as AuthenticatedFinanceBankBranchesIndexImport } from './routes/_authenticated/finance/bank/branches/index'
+import { Route as AuthenticatedCompanyDepartmentsIdIndexImport } from './routes/_authenticated/company/departments/$id/index'
+import { Route as AuthenticatedCompanyBranchesIdIndexImport } from './routes/_authenticated/company/branches/$id/index'
+import { Route as AuthenticatedAdminSectionsIdIndexImport } from './routes/_authenticated/admin/sections/$id/index'
+import { Route as AuthenticatedAdminRolesIdIndexImport } from './routes/_authenticated/admin/roles/$id/index'
+import { Route as AuthenticatedAdminPublicHolidaysIdIndexImport } from './routes/_authenticated/admin/publicHolidays/$id/index'
+import { Route as AuthenticatedAdminPaymentMethodsIdIndexImport } from './routes/_authenticated/admin/paymentMethods/$id/index'
+import { Route as AuthenticatedAdminMachinesIdIndexImport } from './routes/_authenticated/admin/machines/$id/index'
+import { Route as AuthenticatedAdminDepotsIdIndexImport } from './routes/_authenticated/admin/depots/$id/index'
+import { Route as AuthenticatedAdminCompaniesIdIndexImport } from './routes/_authenticated/admin/companies/$id/index'
+import { Route as AuthenticatedAccountingCashAccountsIdIndexImport } from './routes/_authenticated/accounting/cashAccounts/$id/index'
 import { Route as AuthenticatedHrVacationsNewIdImport } from './routes/_authenticated/hr/vacations/new/$id'
+import { Route as AuthenticatedFinanceBankBranchesNewImport } from './routes/_authenticated/finance/bank/branches/new'
+import { Route as AuthenticatedFinanceBankBranchesIdIndexImport } from './routes/_authenticated/finance/bank/branches/$id/index'
 
 // Create/Update Routes
 
@@ -56,8 +125,18 @@ const AuthenticatedHrRoute = AuthenticatedHrImport.update({
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 
+const AuthenticatedFinanceRoute = AuthenticatedFinanceImport.update({
+  path: '/finance',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
 const AuthenticatedDashboardRoute = AuthenticatedDashboardImport.update({
   path: '/dashboard',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
+const AuthenticatedCompanyRoute = AuthenticatedCompanyImport.update({
+  path: '/company',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 
@@ -66,10 +145,43 @@ const AuthenticatedAdminRoute = AuthenticatedAdminImport.update({
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 
+const AuthenticatedStorageIndexRoute = AuthenticatedStorageIndexImport.update({
+  path: '/storage/',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
 const AuthenticatedHrIndexRoute = AuthenticatedHrIndexImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedHrRoute,
 } as any)
+
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexImport.update({
+  path: '/',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
+
+const AuthenticatedStorageUnitsRoute = AuthenticatedStorageUnitsImport.update({
+  path: '/storage/units',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
+const AuthenticatedStorageShelvesRoute =
+  AuthenticatedStorageShelvesImport.update({
+    path: '/storage/shelves',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
+const AuthenticatedStorageAssignmentTransactionsRoute =
+  AuthenticatedStorageAssignmentTransactionsImport.update({
+    path: '/storage/assignmentTransactions',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
+const AuthenticatedStorageAssignmentCardsRoute =
+  AuthenticatedStorageAssignmentCardsImport.update({
+    path: '/storage/assignmentCards',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 
 const AuthenticatedHrVacationsRoute = AuthenticatedHrVacationsImport.update({
   path: '/vacations',
@@ -99,6 +211,78 @@ const AuthenticatedHrDebitCreditAnalysisRoute =
     getParentRoute: () => AuthenticatedHrRoute,
   } as any)
 
+const AuthenticatedAdminSectionsRoute = AuthenticatedAdminSectionsImport.update(
+  {
+    path: '/sections',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any,
+)
+
+const AuthenticatedAdminRolesRoute = AuthenticatedAdminRolesImport.update({
+  path: '/roles',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
+
+const AuthenticatedAdminPublicHolidaysRoute =
+  AuthenticatedAdminPublicHolidaysImport.update({
+    path: '/publicHolidays',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+
+const AuthenticatedAdminPaymentMethodsRoute =
+  AuthenticatedAdminPaymentMethodsImport.update({
+    path: '/paymentMethods',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+
+const AuthenticatedAdminMachinesRoute = AuthenticatedAdminMachinesImport.update(
+  {
+    path: '/machines',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any,
+)
+
+const AuthenticatedAdminDepotsRoute = AuthenticatedAdminDepotsImport.update({
+  path: '/depots',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
+
+const AuthenticatedAdminCompaniesRoute =
+  AuthenticatedAdminCompaniesImport.update({
+    path: '/companies',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+
+const AuthenticatedStorageUnitIndexRoute =
+  AuthenticatedStorageUnitIndexImport.update({
+    path: '/storage/unit/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
+const AuthenticatedStorageShelfIndexRoute =
+  AuthenticatedStorageShelfIndexImport.update({
+    path: '/storage/shelf/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
+const AuthenticatedStorageFixtureCardsIndexRoute =
+  AuthenticatedStorageFixtureCardsIndexImport.update({
+    path: '/storage/fixtureCards/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
+const AuthenticatedStorageAssignmentTransactionsIndexRoute =
+  AuthenticatedStorageAssignmentTransactionsIndexImport.update({
+    path: '/',
+    getParentRoute: () => AuthenticatedStorageAssignmentTransactionsRoute,
+  } as any)
+
+const AuthenticatedStorageAssignmentCardsIndexRoute =
+  AuthenticatedStorageAssignmentCardsIndexImport.update({
+    path: '/',
+    getParentRoute: () => AuthenticatedStorageAssignmentCardsRoute,
+  } as any)
+
 const AuthenticatedHrVacationsIndexRoute =
   AuthenticatedHrVacationsIndexImport.update({
     path: '/',
@@ -123,6 +307,108 @@ const AuthenticatedHrEmployeesIndexRoute =
     getParentRoute: () => AuthenticatedHrEmployeesRoute,
   } as any)
 
+const AuthenticatedFinanceBanksIndexRoute =
+  AuthenticatedFinanceBanksIndexImport.update({
+    path: '/banks/',
+    getParentRoute: () => AuthenticatedFinanceRoute,
+  } as any)
+
+const AuthenticatedFinanceBankAccountsIndexRoute =
+  AuthenticatedFinanceBankAccountsIndexImport.update({
+    path: '/bankAccounts/',
+    getParentRoute: () => AuthenticatedFinanceRoute,
+  } as any)
+
+const AuthenticatedCompanyDepartmentsIndexRoute =
+  AuthenticatedCompanyDepartmentsIndexImport.update({
+    path: '/departments/',
+    getParentRoute: () => AuthenticatedCompanyRoute,
+  } as any)
+
+const AuthenticatedCompanyBranchesIndexRoute =
+  AuthenticatedCompanyBranchesIndexImport.update({
+    path: '/branches/',
+    getParentRoute: () => AuthenticatedCompanyRoute,
+  } as any)
+
+const AuthenticatedAdminSectionsIndexRoute =
+  AuthenticatedAdminSectionsIndexImport.update({
+    path: '/',
+    getParentRoute: () => AuthenticatedAdminSectionsRoute,
+  } as any)
+
+const AuthenticatedAdminRolesIndexRoute =
+  AuthenticatedAdminRolesIndexImport.update({
+    path: '/',
+    getParentRoute: () => AuthenticatedAdminRolesRoute,
+  } as any)
+
+const AuthenticatedAdminPublicHolidaysIndexRoute =
+  AuthenticatedAdminPublicHolidaysIndexImport.update({
+    path: '/',
+    getParentRoute: () => AuthenticatedAdminPublicHolidaysRoute,
+  } as any)
+
+const AuthenticatedAdminPaymentMethodsIndexRoute =
+  AuthenticatedAdminPaymentMethodsIndexImport.update({
+    path: '/',
+    getParentRoute: () => AuthenticatedAdminPaymentMethodsRoute,
+  } as any)
+
+const AuthenticatedAdminMachinesIndexRoute =
+  AuthenticatedAdminMachinesIndexImport.update({
+    path: '/',
+    getParentRoute: () => AuthenticatedAdminMachinesRoute,
+  } as any)
+
+const AuthenticatedAdminDepotsIndexRoute =
+  AuthenticatedAdminDepotsIndexImport.update({
+    path: '/',
+    getParentRoute: () => AuthenticatedAdminDepotsRoute,
+  } as any)
+
+const AuthenticatedAdminCompaniesIndexRoute =
+  AuthenticatedAdminCompaniesIndexImport.update({
+    path: '/',
+    getParentRoute: () => AuthenticatedAdminCompaniesRoute,
+  } as any)
+
+const AuthenticatedAccountingCashAccountsIndexRoute =
+  AuthenticatedAccountingCashAccountsIndexImport.update({
+    path: '/accounting/cashAccounts/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
+const AuthenticatedStorageUnitNewRoute =
+  AuthenticatedStorageUnitNewImport.update({
+    path: '/storage/unit/new',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
+const AuthenticatedStorageShelfNewRoute =
+  AuthenticatedStorageShelfNewImport.update({
+    path: '/storage/shelf/new',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
+const AuthenticatedStorageFixtureCardsNewRoute =
+  AuthenticatedStorageFixtureCardsNewImport.update({
+    path: '/storage/fixtureCards/new',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
+const AuthenticatedStorageAssignmentTransactionsNewRoute =
+  AuthenticatedStorageAssignmentTransactionsNewImport.update({
+    path: '/new',
+    getParentRoute: () => AuthenticatedStorageAssignmentTransactionsRoute,
+  } as any)
+
+const AuthenticatedStorageAssignmentCardsNewRoute =
+  AuthenticatedStorageAssignmentCardsNewImport.update({
+    path: '/new',
+    getParentRoute: () => AuthenticatedStorageAssignmentCardsRoute,
+  } as any)
+
 const AuthenticatedHrVacationsNewRoute =
   AuthenticatedHrVacationsNewImport.update({
     path: '/new',
@@ -141,6 +427,109 @@ const AuthenticatedHrEmployeesNewRoute =
     getParentRoute: () => AuthenticatedHrEmployeesRoute,
   } as any)
 
+const AuthenticatedFinanceBanksNewRoute =
+  AuthenticatedFinanceBanksNewImport.update({
+    path: '/banks/new',
+    getParentRoute: () => AuthenticatedFinanceRoute,
+  } as any)
+
+const AuthenticatedFinanceBankAccountsNewRoute =
+  AuthenticatedFinanceBankAccountsNewImport.update({
+    path: '/bankAccounts/new',
+    getParentRoute: () => AuthenticatedFinanceRoute,
+  } as any)
+
+const AuthenticatedCompanyDepartmentsNewRoute =
+  AuthenticatedCompanyDepartmentsNewImport.update({
+    path: '/departments/new',
+    getParentRoute: () => AuthenticatedCompanyRoute,
+  } as any)
+
+const AuthenticatedCompanyBranchesNewRoute =
+  AuthenticatedCompanyBranchesNewImport.update({
+    path: '/branches/new',
+    getParentRoute: () => AuthenticatedCompanyRoute,
+  } as any)
+
+const AuthenticatedAdminSectionsNewRoute =
+  AuthenticatedAdminSectionsNewImport.update({
+    path: '/new',
+    getParentRoute: () => AuthenticatedAdminSectionsRoute,
+  } as any)
+
+const AuthenticatedAdminRolesNewRoute = AuthenticatedAdminRolesNewImport.update(
+  {
+    path: '/new',
+    getParentRoute: () => AuthenticatedAdminRolesRoute,
+  } as any,
+)
+
+const AuthenticatedAdminPublicHolidaysNewRoute =
+  AuthenticatedAdminPublicHolidaysNewImport.update({
+    path: '/new',
+    getParentRoute: () => AuthenticatedAdminPublicHolidaysRoute,
+  } as any)
+
+const AuthenticatedAdminPaymentMethodsNewRoute =
+  AuthenticatedAdminPaymentMethodsNewImport.update({
+    path: '/new',
+    getParentRoute: () => AuthenticatedAdminPaymentMethodsRoute,
+  } as any)
+
+const AuthenticatedAdminMachinesNewRoute =
+  AuthenticatedAdminMachinesNewImport.update({
+    path: '/new',
+    getParentRoute: () => AuthenticatedAdminMachinesRoute,
+  } as any)
+
+const AuthenticatedAdminDepotsNewRoute =
+  AuthenticatedAdminDepotsNewImport.update({
+    path: '/new',
+    getParentRoute: () => AuthenticatedAdminDepotsRoute,
+  } as any)
+
+const AuthenticatedAdminCompaniesNewRoute =
+  AuthenticatedAdminCompaniesNewImport.update({
+    path: '/new',
+    getParentRoute: () => AuthenticatedAdminCompaniesRoute,
+  } as any)
+
+const AuthenticatedAccountingCashAccountsNewRoute =
+  AuthenticatedAccountingCashAccountsNewImport.update({
+    path: '/accounting/cashAccounts/new',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
+const AuthenticatedStorageUnitIdIndexRoute =
+  AuthenticatedStorageUnitIdIndexImport.update({
+    path: '/storage/unit/$id/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
+const AuthenticatedStorageShelfIdIndexRoute =
+  AuthenticatedStorageShelfIdIndexImport.update({
+    path: '/storage/shelf/$id/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
+const AuthenticatedStorageFixtureCardsIdIndexRoute =
+  AuthenticatedStorageFixtureCardsIdIndexImport.update({
+    path: '/storage/fixtureCards/$id/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
+const AuthenticatedStorageAssignmentTransactionsIdIndexRoute =
+  AuthenticatedStorageAssignmentTransactionsIdIndexImport.update({
+    path: '/$id/',
+    getParentRoute: () => AuthenticatedStorageAssignmentTransactionsRoute,
+  } as any)
+
+const AuthenticatedStorageAssignmentCardsIdIndexRoute =
+  AuthenticatedStorageAssignmentCardsIdIndexImport.update({
+    path: '/$id/',
+    getParentRoute: () => AuthenticatedStorageAssignmentCardsRoute,
+  } as any)
+
 const AuthenticatedHrTimekeepingIdIndexRoute =
   AuthenticatedHrTimekeepingIdIndexImport.update({
     path: '/$id/',
@@ -153,10 +542,100 @@ const AuthenticatedHrEmployeesIdIndexRoute =
     getParentRoute: () => AuthenticatedHrEmployeesRoute,
   } as any)
 
+const AuthenticatedFinanceBanksIdIndexRoute =
+  AuthenticatedFinanceBanksIdIndexImport.update({
+    path: '/banks/$id/',
+    getParentRoute: () => AuthenticatedFinanceRoute,
+  } as any)
+
+const AuthenticatedFinanceBankAccountsIdIndexRoute =
+  AuthenticatedFinanceBankAccountsIdIndexImport.update({
+    path: '/bankAccounts/$id/',
+    getParentRoute: () => AuthenticatedFinanceRoute,
+  } as any)
+
+const AuthenticatedFinanceBankBranchesIndexRoute =
+  AuthenticatedFinanceBankBranchesIndexImport.update({
+    path: '/bank/branches/',
+    getParentRoute: () => AuthenticatedFinanceRoute,
+  } as any)
+
+const AuthenticatedCompanyDepartmentsIdIndexRoute =
+  AuthenticatedCompanyDepartmentsIdIndexImport.update({
+    path: '/departments/$id/',
+    getParentRoute: () => AuthenticatedCompanyRoute,
+  } as any)
+
+const AuthenticatedCompanyBranchesIdIndexRoute =
+  AuthenticatedCompanyBranchesIdIndexImport.update({
+    path: '/branches/$id/',
+    getParentRoute: () => AuthenticatedCompanyRoute,
+  } as any)
+
+const AuthenticatedAdminSectionsIdIndexRoute =
+  AuthenticatedAdminSectionsIdIndexImport.update({
+    path: '/$id/',
+    getParentRoute: () => AuthenticatedAdminSectionsRoute,
+  } as any)
+
+const AuthenticatedAdminRolesIdIndexRoute =
+  AuthenticatedAdminRolesIdIndexImport.update({
+    path: '/$id/',
+    getParentRoute: () => AuthenticatedAdminRolesRoute,
+  } as any)
+
+const AuthenticatedAdminPublicHolidaysIdIndexRoute =
+  AuthenticatedAdminPublicHolidaysIdIndexImport.update({
+    path: '/$id/',
+    getParentRoute: () => AuthenticatedAdminPublicHolidaysRoute,
+  } as any)
+
+const AuthenticatedAdminPaymentMethodsIdIndexRoute =
+  AuthenticatedAdminPaymentMethodsIdIndexImport.update({
+    path: '/$id/',
+    getParentRoute: () => AuthenticatedAdminPaymentMethodsRoute,
+  } as any)
+
+const AuthenticatedAdminMachinesIdIndexRoute =
+  AuthenticatedAdminMachinesIdIndexImport.update({
+    path: '/$id/',
+    getParentRoute: () => AuthenticatedAdminMachinesRoute,
+  } as any)
+
+const AuthenticatedAdminDepotsIdIndexRoute =
+  AuthenticatedAdminDepotsIdIndexImport.update({
+    path: '/$id/',
+    getParentRoute: () => AuthenticatedAdminDepotsRoute,
+  } as any)
+
+const AuthenticatedAdminCompaniesIdIndexRoute =
+  AuthenticatedAdminCompaniesIdIndexImport.update({
+    path: '/$id/',
+    getParentRoute: () => AuthenticatedAdminCompaniesRoute,
+  } as any)
+
+const AuthenticatedAccountingCashAccountsIdIndexRoute =
+  AuthenticatedAccountingCashAccountsIdIndexImport.update({
+    path: '/accounting/cashAccounts/$id/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
 const AuthenticatedHrVacationsNewIdRoute =
   AuthenticatedHrVacationsNewIdImport.update({
     path: '/$id',
     getParentRoute: () => AuthenticatedHrVacationsNewRoute,
+  } as any)
+
+const AuthenticatedFinanceBankBranchesNewRoute =
+  AuthenticatedFinanceBankBranchesNewImport.update({
+    path: '/bank/branches/new',
+    getParentRoute: () => AuthenticatedFinanceRoute,
+  } as any)
+
+const AuthenticatedFinanceBankBranchesIdIndexRoute =
+  AuthenticatedFinanceBankBranchesIdIndexImport.update({
+    path: '/bank/branches/$id/',
+    getParentRoute: () => AuthenticatedFinanceRoute,
   } as any)
 
 // Populate the FileRoutesByPath interface
@@ -191,11 +670,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminImport
       parentRoute: typeof AuthenticatedImport
     }
+    '/_authenticated/company': {
+      id: '/_authenticated/company'
+      path: '/company'
+      fullPath: '/company'
+      preLoaderRoute: typeof AuthenticatedCompanyImport
+      parentRoute: typeof AuthenticatedImport
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof AuthenticatedDashboardImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/finance': {
+      id: '/_authenticated/finance'
+      path: '/finance'
+      fullPath: '/finance'
+      preLoaderRoute: typeof AuthenticatedFinanceImport
       parentRoute: typeof AuthenticatedImport
     }
     '/_authenticated/hr': {
@@ -204,6 +697,55 @@ declare module '@tanstack/react-router' {
       fullPath: '/hr'
       preLoaderRoute: typeof AuthenticatedHrImport
       parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/admin/companies': {
+      id: '/_authenticated/admin/companies'
+      path: '/companies'
+      fullPath: '/admin/companies'
+      preLoaderRoute: typeof AuthenticatedAdminCompaniesImport
+      parentRoute: typeof AuthenticatedAdminImport
+    }
+    '/_authenticated/admin/depots': {
+      id: '/_authenticated/admin/depots'
+      path: '/depots'
+      fullPath: '/admin/depots'
+      preLoaderRoute: typeof AuthenticatedAdminDepotsImport
+      parentRoute: typeof AuthenticatedAdminImport
+    }
+    '/_authenticated/admin/machines': {
+      id: '/_authenticated/admin/machines'
+      path: '/machines'
+      fullPath: '/admin/machines'
+      preLoaderRoute: typeof AuthenticatedAdminMachinesImport
+      parentRoute: typeof AuthenticatedAdminImport
+    }
+    '/_authenticated/admin/paymentMethods': {
+      id: '/_authenticated/admin/paymentMethods'
+      path: '/paymentMethods'
+      fullPath: '/admin/paymentMethods'
+      preLoaderRoute: typeof AuthenticatedAdminPaymentMethodsImport
+      parentRoute: typeof AuthenticatedAdminImport
+    }
+    '/_authenticated/admin/publicHolidays': {
+      id: '/_authenticated/admin/publicHolidays'
+      path: '/publicHolidays'
+      fullPath: '/admin/publicHolidays'
+      preLoaderRoute: typeof AuthenticatedAdminPublicHolidaysImport
+      parentRoute: typeof AuthenticatedAdminImport
+    }
+    '/_authenticated/admin/roles': {
+      id: '/_authenticated/admin/roles'
+      path: '/roles'
+      fullPath: '/admin/roles'
+      preLoaderRoute: typeof AuthenticatedAdminRolesImport
+      parentRoute: typeof AuthenticatedAdminImport
+    }
+    '/_authenticated/admin/sections': {
+      id: '/_authenticated/admin/sections'
+      path: '/sections'
+      fullPath: '/admin/sections'
+      preLoaderRoute: typeof AuthenticatedAdminSectionsImport
+      parentRoute: typeof AuthenticatedAdminImport
     }
     '/_authenticated/hr/debitCreditAnalysis': {
       id: '/_authenticated/hr/debitCreditAnalysis'
@@ -240,12 +782,138 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHrVacationsImport
       parentRoute: typeof AuthenticatedHrImport
     }
+    '/_authenticated/storage/assignmentCards': {
+      id: '/_authenticated/storage/assignmentCards'
+      path: '/storage/assignmentCards'
+      fullPath: '/storage/assignmentCards'
+      preLoaderRoute: typeof AuthenticatedStorageAssignmentCardsImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/storage/assignmentTransactions': {
+      id: '/_authenticated/storage/assignmentTransactions'
+      path: '/storage/assignmentTransactions'
+      fullPath: '/storage/assignmentTransactions'
+      preLoaderRoute: typeof AuthenticatedStorageAssignmentTransactionsImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/storage/shelves': {
+      id: '/_authenticated/storage/shelves'
+      path: '/storage/shelves'
+      fullPath: '/storage/shelves'
+      preLoaderRoute: typeof AuthenticatedStorageShelvesImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/storage/units': {
+      id: '/_authenticated/storage/units'
+      path: '/storage/units'
+      fullPath: '/storage/units'
+      preLoaderRoute: typeof AuthenticatedStorageUnitsImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexImport
+      parentRoute: typeof AuthenticatedAdminImport
+    }
     '/_authenticated/hr/': {
       id: '/_authenticated/hr/'
       path: '/'
       fullPath: '/hr/'
       preLoaderRoute: typeof AuthenticatedHrIndexImport
       parentRoute: typeof AuthenticatedHrImport
+    }
+    '/_authenticated/storage/': {
+      id: '/_authenticated/storage/'
+      path: '/storage'
+      fullPath: '/storage'
+      preLoaderRoute: typeof AuthenticatedStorageIndexImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/accounting/cashAccounts/new': {
+      id: '/_authenticated/accounting/cashAccounts/new'
+      path: '/accounting/cashAccounts/new'
+      fullPath: '/accounting/cashAccounts/new'
+      preLoaderRoute: typeof AuthenticatedAccountingCashAccountsNewImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/admin/companies/new': {
+      id: '/_authenticated/admin/companies/new'
+      path: '/new'
+      fullPath: '/admin/companies/new'
+      preLoaderRoute: typeof AuthenticatedAdminCompaniesNewImport
+      parentRoute: typeof AuthenticatedAdminCompaniesImport
+    }
+    '/_authenticated/admin/depots/new': {
+      id: '/_authenticated/admin/depots/new'
+      path: '/new'
+      fullPath: '/admin/depots/new'
+      preLoaderRoute: typeof AuthenticatedAdminDepotsNewImport
+      parentRoute: typeof AuthenticatedAdminDepotsImport
+    }
+    '/_authenticated/admin/machines/new': {
+      id: '/_authenticated/admin/machines/new'
+      path: '/new'
+      fullPath: '/admin/machines/new'
+      preLoaderRoute: typeof AuthenticatedAdminMachinesNewImport
+      parentRoute: typeof AuthenticatedAdminMachinesImport
+    }
+    '/_authenticated/admin/paymentMethods/new': {
+      id: '/_authenticated/admin/paymentMethods/new'
+      path: '/new'
+      fullPath: '/admin/paymentMethods/new'
+      preLoaderRoute: typeof AuthenticatedAdminPaymentMethodsNewImport
+      parentRoute: typeof AuthenticatedAdminPaymentMethodsImport
+    }
+    '/_authenticated/admin/publicHolidays/new': {
+      id: '/_authenticated/admin/publicHolidays/new'
+      path: '/new'
+      fullPath: '/admin/publicHolidays/new'
+      preLoaderRoute: typeof AuthenticatedAdminPublicHolidaysNewImport
+      parentRoute: typeof AuthenticatedAdminPublicHolidaysImport
+    }
+    '/_authenticated/admin/roles/new': {
+      id: '/_authenticated/admin/roles/new'
+      path: '/new'
+      fullPath: '/admin/roles/new'
+      preLoaderRoute: typeof AuthenticatedAdminRolesNewImport
+      parentRoute: typeof AuthenticatedAdminRolesImport
+    }
+    '/_authenticated/admin/sections/new': {
+      id: '/_authenticated/admin/sections/new'
+      path: '/new'
+      fullPath: '/admin/sections/new'
+      preLoaderRoute: typeof AuthenticatedAdminSectionsNewImport
+      parentRoute: typeof AuthenticatedAdminSectionsImport
+    }
+    '/_authenticated/company/branches/new': {
+      id: '/_authenticated/company/branches/new'
+      path: '/branches/new'
+      fullPath: '/company/branches/new'
+      preLoaderRoute: typeof AuthenticatedCompanyBranchesNewImport
+      parentRoute: typeof AuthenticatedCompanyImport
+    }
+    '/_authenticated/company/departments/new': {
+      id: '/_authenticated/company/departments/new'
+      path: '/departments/new'
+      fullPath: '/company/departments/new'
+      preLoaderRoute: typeof AuthenticatedCompanyDepartmentsNewImport
+      parentRoute: typeof AuthenticatedCompanyImport
+    }
+    '/_authenticated/finance/bankAccounts/new': {
+      id: '/_authenticated/finance/bankAccounts/new'
+      path: '/bankAccounts/new'
+      fullPath: '/finance/bankAccounts/new'
+      preLoaderRoute: typeof AuthenticatedFinanceBankAccountsNewImport
+      parentRoute: typeof AuthenticatedFinanceImport
+    }
+    '/_authenticated/finance/banks/new': {
+      id: '/_authenticated/finance/banks/new'
+      path: '/banks/new'
+      fullPath: '/finance/banks/new'
+      preLoaderRoute: typeof AuthenticatedFinanceBanksNewImport
+      parentRoute: typeof AuthenticatedFinanceImport
     }
     '/_authenticated/hr/employees/new': {
       id: '/_authenticated/hr/employees/new'
@@ -267,6 +935,125 @@ declare module '@tanstack/react-router' {
       fullPath: '/hr/vacations/new'
       preLoaderRoute: typeof AuthenticatedHrVacationsNewImport
       parentRoute: typeof AuthenticatedHrVacationsImport
+    }
+    '/_authenticated/storage/assignmentCards/new': {
+      id: '/_authenticated/storage/assignmentCards/new'
+      path: '/new'
+      fullPath: '/storage/assignmentCards/new'
+      preLoaderRoute: typeof AuthenticatedStorageAssignmentCardsNewImport
+      parentRoute: typeof AuthenticatedStorageAssignmentCardsImport
+    }
+    '/_authenticated/storage/assignmentTransactions/new': {
+      id: '/_authenticated/storage/assignmentTransactions/new'
+      path: '/new'
+      fullPath: '/storage/assignmentTransactions/new'
+      preLoaderRoute: typeof AuthenticatedStorageAssignmentTransactionsNewImport
+      parentRoute: typeof AuthenticatedStorageAssignmentTransactionsImport
+    }
+    '/_authenticated/storage/fixtureCards/new': {
+      id: '/_authenticated/storage/fixtureCards/new'
+      path: '/storage/fixtureCards/new'
+      fullPath: '/storage/fixtureCards/new'
+      preLoaderRoute: typeof AuthenticatedStorageFixtureCardsNewImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/storage/shelf/new': {
+      id: '/_authenticated/storage/shelf/new'
+      path: '/storage/shelf/new'
+      fullPath: '/storage/shelf/new'
+      preLoaderRoute: typeof AuthenticatedStorageShelfNewImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/storage/unit/new': {
+      id: '/_authenticated/storage/unit/new'
+      path: '/storage/unit/new'
+      fullPath: '/storage/unit/new'
+      preLoaderRoute: typeof AuthenticatedStorageUnitNewImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/accounting/cashAccounts/': {
+      id: '/_authenticated/accounting/cashAccounts/'
+      path: '/accounting/cashAccounts'
+      fullPath: '/accounting/cashAccounts'
+      preLoaderRoute: typeof AuthenticatedAccountingCashAccountsIndexImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/admin/companies/': {
+      id: '/_authenticated/admin/companies/'
+      path: '/'
+      fullPath: '/admin/companies/'
+      preLoaderRoute: typeof AuthenticatedAdminCompaniesIndexImport
+      parentRoute: typeof AuthenticatedAdminCompaniesImport
+    }
+    '/_authenticated/admin/depots/': {
+      id: '/_authenticated/admin/depots/'
+      path: '/'
+      fullPath: '/admin/depots/'
+      preLoaderRoute: typeof AuthenticatedAdminDepotsIndexImport
+      parentRoute: typeof AuthenticatedAdminDepotsImport
+    }
+    '/_authenticated/admin/machines/': {
+      id: '/_authenticated/admin/machines/'
+      path: '/'
+      fullPath: '/admin/machines/'
+      preLoaderRoute: typeof AuthenticatedAdminMachinesIndexImport
+      parentRoute: typeof AuthenticatedAdminMachinesImport
+    }
+    '/_authenticated/admin/paymentMethods/': {
+      id: '/_authenticated/admin/paymentMethods/'
+      path: '/'
+      fullPath: '/admin/paymentMethods/'
+      preLoaderRoute: typeof AuthenticatedAdminPaymentMethodsIndexImport
+      parentRoute: typeof AuthenticatedAdminPaymentMethodsImport
+    }
+    '/_authenticated/admin/publicHolidays/': {
+      id: '/_authenticated/admin/publicHolidays/'
+      path: '/'
+      fullPath: '/admin/publicHolidays/'
+      preLoaderRoute: typeof AuthenticatedAdminPublicHolidaysIndexImport
+      parentRoute: typeof AuthenticatedAdminPublicHolidaysImport
+    }
+    '/_authenticated/admin/roles/': {
+      id: '/_authenticated/admin/roles/'
+      path: '/'
+      fullPath: '/admin/roles/'
+      preLoaderRoute: typeof AuthenticatedAdminRolesIndexImport
+      parentRoute: typeof AuthenticatedAdminRolesImport
+    }
+    '/_authenticated/admin/sections/': {
+      id: '/_authenticated/admin/sections/'
+      path: '/'
+      fullPath: '/admin/sections/'
+      preLoaderRoute: typeof AuthenticatedAdminSectionsIndexImport
+      parentRoute: typeof AuthenticatedAdminSectionsImport
+    }
+    '/_authenticated/company/branches/': {
+      id: '/_authenticated/company/branches/'
+      path: '/branches'
+      fullPath: '/company/branches'
+      preLoaderRoute: typeof AuthenticatedCompanyBranchesIndexImport
+      parentRoute: typeof AuthenticatedCompanyImport
+    }
+    '/_authenticated/company/departments/': {
+      id: '/_authenticated/company/departments/'
+      path: '/departments'
+      fullPath: '/company/departments'
+      preLoaderRoute: typeof AuthenticatedCompanyDepartmentsIndexImport
+      parentRoute: typeof AuthenticatedCompanyImport
+    }
+    '/_authenticated/finance/bankAccounts/': {
+      id: '/_authenticated/finance/bankAccounts/'
+      path: '/bankAccounts'
+      fullPath: '/finance/bankAccounts'
+      preLoaderRoute: typeof AuthenticatedFinanceBankAccountsIndexImport
+      parentRoute: typeof AuthenticatedFinanceImport
+    }
+    '/_authenticated/finance/banks/': {
+      id: '/_authenticated/finance/banks/'
+      path: '/banks'
+      fullPath: '/finance/banks'
+      preLoaderRoute: typeof AuthenticatedFinanceBanksIndexImport
+      parentRoute: typeof AuthenticatedFinanceImport
     }
     '/_authenticated/hr/employees/': {
       id: '/_authenticated/hr/employees/'
@@ -296,12 +1083,145 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHrVacationsIndexImport
       parentRoute: typeof AuthenticatedHrVacationsImport
     }
+    '/_authenticated/storage/assignmentCards/': {
+      id: '/_authenticated/storage/assignmentCards/'
+      path: '/'
+      fullPath: '/storage/assignmentCards/'
+      preLoaderRoute: typeof AuthenticatedStorageAssignmentCardsIndexImport
+      parentRoute: typeof AuthenticatedStorageAssignmentCardsImport
+    }
+    '/_authenticated/storage/assignmentTransactions/': {
+      id: '/_authenticated/storage/assignmentTransactions/'
+      path: '/'
+      fullPath: '/storage/assignmentTransactions/'
+      preLoaderRoute: typeof AuthenticatedStorageAssignmentTransactionsIndexImport
+      parentRoute: typeof AuthenticatedStorageAssignmentTransactionsImport
+    }
+    '/_authenticated/storage/fixtureCards/': {
+      id: '/_authenticated/storage/fixtureCards/'
+      path: '/storage/fixtureCards'
+      fullPath: '/storage/fixtureCards'
+      preLoaderRoute: typeof AuthenticatedStorageFixtureCardsIndexImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/storage/shelf/': {
+      id: '/_authenticated/storage/shelf/'
+      path: '/storage/shelf'
+      fullPath: '/storage/shelf'
+      preLoaderRoute: typeof AuthenticatedStorageShelfIndexImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/storage/unit/': {
+      id: '/_authenticated/storage/unit/'
+      path: '/storage/unit'
+      fullPath: '/storage/unit'
+      preLoaderRoute: typeof AuthenticatedStorageUnitIndexImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/finance/bank/branches/new': {
+      id: '/_authenticated/finance/bank/branches/new'
+      path: '/bank/branches/new'
+      fullPath: '/finance/bank/branches/new'
+      preLoaderRoute: typeof AuthenticatedFinanceBankBranchesNewImport
+      parentRoute: typeof AuthenticatedFinanceImport
+    }
     '/_authenticated/hr/vacations/new/$id': {
       id: '/_authenticated/hr/vacations/new/$id'
       path: '/$id'
       fullPath: '/hr/vacations/new/$id'
       preLoaderRoute: typeof AuthenticatedHrVacationsNewIdImport
       parentRoute: typeof AuthenticatedHrVacationsNewImport
+    }
+    '/_authenticated/accounting/cashAccounts/$id/': {
+      id: '/_authenticated/accounting/cashAccounts/$id/'
+      path: '/accounting/cashAccounts/$id'
+      fullPath: '/accounting/cashAccounts/$id'
+      preLoaderRoute: typeof AuthenticatedAccountingCashAccountsIdIndexImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/admin/companies/$id/': {
+      id: '/_authenticated/admin/companies/$id/'
+      path: '/$id'
+      fullPath: '/admin/companies/$id'
+      preLoaderRoute: typeof AuthenticatedAdminCompaniesIdIndexImport
+      parentRoute: typeof AuthenticatedAdminCompaniesImport
+    }
+    '/_authenticated/admin/depots/$id/': {
+      id: '/_authenticated/admin/depots/$id/'
+      path: '/$id'
+      fullPath: '/admin/depots/$id'
+      preLoaderRoute: typeof AuthenticatedAdminDepotsIdIndexImport
+      parentRoute: typeof AuthenticatedAdminDepotsImport
+    }
+    '/_authenticated/admin/machines/$id/': {
+      id: '/_authenticated/admin/machines/$id/'
+      path: '/$id'
+      fullPath: '/admin/machines/$id'
+      preLoaderRoute: typeof AuthenticatedAdminMachinesIdIndexImport
+      parentRoute: typeof AuthenticatedAdminMachinesImport
+    }
+    '/_authenticated/admin/paymentMethods/$id/': {
+      id: '/_authenticated/admin/paymentMethods/$id/'
+      path: '/$id'
+      fullPath: '/admin/paymentMethods/$id'
+      preLoaderRoute: typeof AuthenticatedAdminPaymentMethodsIdIndexImport
+      parentRoute: typeof AuthenticatedAdminPaymentMethodsImport
+    }
+    '/_authenticated/admin/publicHolidays/$id/': {
+      id: '/_authenticated/admin/publicHolidays/$id/'
+      path: '/$id'
+      fullPath: '/admin/publicHolidays/$id'
+      preLoaderRoute: typeof AuthenticatedAdminPublicHolidaysIdIndexImport
+      parentRoute: typeof AuthenticatedAdminPublicHolidaysImport
+    }
+    '/_authenticated/admin/roles/$id/': {
+      id: '/_authenticated/admin/roles/$id/'
+      path: '/$id'
+      fullPath: '/admin/roles/$id'
+      preLoaderRoute: typeof AuthenticatedAdminRolesIdIndexImport
+      parentRoute: typeof AuthenticatedAdminRolesImport
+    }
+    '/_authenticated/admin/sections/$id/': {
+      id: '/_authenticated/admin/sections/$id/'
+      path: '/$id'
+      fullPath: '/admin/sections/$id'
+      preLoaderRoute: typeof AuthenticatedAdminSectionsIdIndexImport
+      parentRoute: typeof AuthenticatedAdminSectionsImport
+    }
+    '/_authenticated/company/branches/$id/': {
+      id: '/_authenticated/company/branches/$id/'
+      path: '/branches/$id'
+      fullPath: '/company/branches/$id'
+      preLoaderRoute: typeof AuthenticatedCompanyBranchesIdIndexImport
+      parentRoute: typeof AuthenticatedCompanyImport
+    }
+    '/_authenticated/company/departments/$id/': {
+      id: '/_authenticated/company/departments/$id/'
+      path: '/departments/$id'
+      fullPath: '/company/departments/$id'
+      preLoaderRoute: typeof AuthenticatedCompanyDepartmentsIdIndexImport
+      parentRoute: typeof AuthenticatedCompanyImport
+    }
+    '/_authenticated/finance/bank/branches/': {
+      id: '/_authenticated/finance/bank/branches/'
+      path: '/bank/branches'
+      fullPath: '/finance/bank/branches'
+      preLoaderRoute: typeof AuthenticatedFinanceBankBranchesIndexImport
+      parentRoute: typeof AuthenticatedFinanceImport
+    }
+    '/_authenticated/finance/bankAccounts/$id/': {
+      id: '/_authenticated/finance/bankAccounts/$id/'
+      path: '/bankAccounts/$id'
+      fullPath: '/finance/bankAccounts/$id'
+      preLoaderRoute: typeof AuthenticatedFinanceBankAccountsIdIndexImport
+      parentRoute: typeof AuthenticatedFinanceImport
+    }
+    '/_authenticated/finance/banks/$id/': {
+      id: '/_authenticated/finance/banks/$id/'
+      path: '/banks/$id'
+      fullPath: '/finance/banks/$id'
+      preLoaderRoute: typeof AuthenticatedFinanceBanksIdIndexImport
+      parentRoute: typeof AuthenticatedFinanceImport
     }
     '/_authenticated/hr/employees/$id/': {
       id: '/_authenticated/hr/employees/$id/'
@@ -317,6 +1237,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHrTimekeepingIdIndexImport
       parentRoute: typeof AuthenticatedHrTimekeepingImport
     }
+    '/_authenticated/storage/assignmentCards/$id/': {
+      id: '/_authenticated/storage/assignmentCards/$id/'
+      path: '/$id'
+      fullPath: '/storage/assignmentCards/$id'
+      preLoaderRoute: typeof AuthenticatedStorageAssignmentCardsIdIndexImport
+      parentRoute: typeof AuthenticatedStorageAssignmentCardsImport
+    }
+    '/_authenticated/storage/assignmentTransactions/$id/': {
+      id: '/_authenticated/storage/assignmentTransactions/$id/'
+      path: '/$id'
+      fullPath: '/storage/assignmentTransactions/$id'
+      preLoaderRoute: typeof AuthenticatedStorageAssignmentTransactionsIdIndexImport
+      parentRoute: typeof AuthenticatedStorageAssignmentTransactionsImport
+    }
+    '/_authenticated/storage/fixtureCards/$id/': {
+      id: '/_authenticated/storage/fixtureCards/$id/'
+      path: '/storage/fixtureCards/$id'
+      fullPath: '/storage/fixtureCards/$id'
+      preLoaderRoute: typeof AuthenticatedStorageFixtureCardsIdIndexImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/storage/shelf/$id/': {
+      id: '/_authenticated/storage/shelf/$id/'
+      path: '/storage/shelf/$id'
+      fullPath: '/storage/shelf/$id'
+      preLoaderRoute: typeof AuthenticatedStorageShelfIdIndexImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/storage/unit/$id/': {
+      id: '/_authenticated/storage/unit/$id/'
+      path: '/storage/unit/$id'
+      fullPath: '/storage/unit/$id'
+      preLoaderRoute: typeof AuthenticatedStorageUnitIdIndexImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/finance/bank/branches/$id/': {
+      id: '/_authenticated/finance/bank/branches/$id/'
+      path: '/bank/branches/$id'
+      fullPath: '/finance/bank/branches/$id'
+      preLoaderRoute: typeof AuthenticatedFinanceBankBranchesIdIndexImport
+      parentRoute: typeof AuthenticatedFinanceImport
+    }
   }
 }
 
@@ -325,8 +1287,69 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren({
   IndexRoute,
   AuthenticatedRoute: AuthenticatedRoute.addChildren({
-    AuthenticatedAdminRoute,
+    AuthenticatedAdminRoute: AuthenticatedAdminRoute.addChildren({
+      AuthenticatedAdminCompaniesRoute:
+        AuthenticatedAdminCompaniesRoute.addChildren({
+          AuthenticatedAdminCompaniesNewRoute,
+          AuthenticatedAdminCompaniesIndexRoute,
+          AuthenticatedAdminCompaniesIdIndexRoute,
+        }),
+      AuthenticatedAdminDepotsRoute: AuthenticatedAdminDepotsRoute.addChildren({
+        AuthenticatedAdminDepotsNewRoute,
+        AuthenticatedAdminDepotsIndexRoute,
+        AuthenticatedAdminDepotsIdIndexRoute,
+      }),
+      AuthenticatedAdminMachinesRoute:
+        AuthenticatedAdminMachinesRoute.addChildren({
+          AuthenticatedAdminMachinesNewRoute,
+          AuthenticatedAdminMachinesIndexRoute,
+          AuthenticatedAdminMachinesIdIndexRoute,
+        }),
+      AuthenticatedAdminPaymentMethodsRoute:
+        AuthenticatedAdminPaymentMethodsRoute.addChildren({
+          AuthenticatedAdminPaymentMethodsNewRoute,
+          AuthenticatedAdminPaymentMethodsIndexRoute,
+          AuthenticatedAdminPaymentMethodsIdIndexRoute,
+        }),
+      AuthenticatedAdminPublicHolidaysRoute:
+        AuthenticatedAdminPublicHolidaysRoute.addChildren({
+          AuthenticatedAdminPublicHolidaysNewRoute,
+          AuthenticatedAdminPublicHolidaysIndexRoute,
+          AuthenticatedAdminPublicHolidaysIdIndexRoute,
+        }),
+      AuthenticatedAdminRolesRoute: AuthenticatedAdminRolesRoute.addChildren({
+        AuthenticatedAdminRolesNewRoute,
+        AuthenticatedAdminRolesIndexRoute,
+        AuthenticatedAdminRolesIdIndexRoute,
+      }),
+      AuthenticatedAdminSectionsRoute:
+        AuthenticatedAdminSectionsRoute.addChildren({
+          AuthenticatedAdminSectionsNewRoute,
+          AuthenticatedAdminSectionsIndexRoute,
+          AuthenticatedAdminSectionsIdIndexRoute,
+        }),
+      AuthenticatedAdminIndexRoute,
+    }),
+    AuthenticatedCompanyRoute: AuthenticatedCompanyRoute.addChildren({
+      AuthenticatedCompanyBranchesNewRoute,
+      AuthenticatedCompanyDepartmentsNewRoute,
+      AuthenticatedCompanyBranchesIndexRoute,
+      AuthenticatedCompanyDepartmentsIndexRoute,
+      AuthenticatedCompanyBranchesIdIndexRoute,
+      AuthenticatedCompanyDepartmentsIdIndexRoute,
+    }),
     AuthenticatedDashboardRoute,
+    AuthenticatedFinanceRoute: AuthenticatedFinanceRoute.addChildren({
+      AuthenticatedFinanceBankAccountsNewRoute,
+      AuthenticatedFinanceBanksNewRoute,
+      AuthenticatedFinanceBankAccountsIndexRoute,
+      AuthenticatedFinanceBanksIndexRoute,
+      AuthenticatedFinanceBankBranchesNewRoute,
+      AuthenticatedFinanceBankBranchesIndexRoute,
+      AuthenticatedFinanceBankAccountsIdIndexRoute,
+      AuthenticatedFinanceBanksIdIndexRoute,
+      AuthenticatedFinanceBankBranchesIdIndexRoute,
+    }),
     AuthenticatedHrRoute: AuthenticatedHrRoute.addChildren({
       AuthenticatedHrDebitCreditAnalysisRoute,
       AuthenticatedHrEmployeesRoute: AuthenticatedHrEmployeesRoute.addChildren({
@@ -352,6 +1375,33 @@ export const routeTree = rootRoute.addChildren({
       }),
       AuthenticatedHrIndexRoute,
     }),
+    AuthenticatedStorageAssignmentCardsRoute:
+      AuthenticatedStorageAssignmentCardsRoute.addChildren({
+        AuthenticatedStorageAssignmentCardsNewRoute,
+        AuthenticatedStorageAssignmentCardsIndexRoute,
+        AuthenticatedStorageAssignmentCardsIdIndexRoute,
+      }),
+    AuthenticatedStorageAssignmentTransactionsRoute:
+      AuthenticatedStorageAssignmentTransactionsRoute.addChildren({
+        AuthenticatedStorageAssignmentTransactionsNewRoute,
+        AuthenticatedStorageAssignmentTransactionsIndexRoute,
+        AuthenticatedStorageAssignmentTransactionsIdIndexRoute,
+      }),
+    AuthenticatedStorageShelvesRoute,
+    AuthenticatedStorageUnitsRoute,
+    AuthenticatedStorageIndexRoute,
+    AuthenticatedAccountingCashAccountsNewRoute,
+    AuthenticatedStorageFixtureCardsNewRoute,
+    AuthenticatedStorageShelfNewRoute,
+    AuthenticatedStorageUnitNewRoute,
+    AuthenticatedAccountingCashAccountsIndexRoute,
+    AuthenticatedStorageFixtureCardsIndexRoute,
+    AuthenticatedStorageShelfIndexRoute,
+    AuthenticatedStorageUnitIndexRoute,
+    AuthenticatedAccountingCashAccountsIdIndexRoute,
+    AuthenticatedStorageFixtureCardsIdIndexRoute,
+    AuthenticatedStorageShelfIdIndexRoute,
+    AuthenticatedStorageUnitIdIndexRoute,
   }),
   LoginRoute,
 })
@@ -376,8 +1426,27 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_authenticated.tsx",
       "children": [
         "/_authenticated/admin",
+        "/_authenticated/company",
         "/_authenticated/dashboard",
-        "/_authenticated/hr"
+        "/_authenticated/finance",
+        "/_authenticated/hr",
+        "/_authenticated/storage/assignmentCards",
+        "/_authenticated/storage/assignmentTransactions",
+        "/_authenticated/storage/shelves",
+        "/_authenticated/storage/units",
+        "/_authenticated/storage/",
+        "/_authenticated/accounting/cashAccounts/new",
+        "/_authenticated/storage/fixtureCards/new",
+        "/_authenticated/storage/shelf/new",
+        "/_authenticated/storage/unit/new",
+        "/_authenticated/accounting/cashAccounts/",
+        "/_authenticated/storage/fixtureCards/",
+        "/_authenticated/storage/shelf/",
+        "/_authenticated/storage/unit/",
+        "/_authenticated/accounting/cashAccounts/$id/",
+        "/_authenticated/storage/fixtureCards/$id/",
+        "/_authenticated/storage/shelf/$id/",
+        "/_authenticated/storage/unit/$id/"
       ]
     },
     "/login": {
@@ -385,11 +1454,48 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_authenticated/admin": {
       "filePath": "_authenticated/admin.tsx",
-      "parent": "/_authenticated"
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/admin/companies",
+        "/_authenticated/admin/depots",
+        "/_authenticated/admin/machines",
+        "/_authenticated/admin/paymentMethods",
+        "/_authenticated/admin/publicHolidays",
+        "/_authenticated/admin/roles",
+        "/_authenticated/admin/sections",
+        "/_authenticated/admin/"
+      ]
+    },
+    "/_authenticated/company": {
+      "filePath": "_authenticated/company.tsx",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/company/branches/new",
+        "/_authenticated/company/departments/new",
+        "/_authenticated/company/branches/",
+        "/_authenticated/company/departments/",
+        "/_authenticated/company/branches/$id/",
+        "/_authenticated/company/departments/$id/"
+      ]
     },
     "/_authenticated/dashboard": {
       "filePath": "_authenticated/dashboard.tsx",
       "parent": "/_authenticated"
+    },
+    "/_authenticated/finance": {
+      "filePath": "_authenticated/finance.tsx",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/finance/bankAccounts/new",
+        "/_authenticated/finance/banks/new",
+        "/_authenticated/finance/bankAccounts/",
+        "/_authenticated/finance/banks/",
+        "/_authenticated/finance/bank/branches/new",
+        "/_authenticated/finance/bank/branches/",
+        "/_authenticated/finance/bankAccounts/$id/",
+        "/_authenticated/finance/banks/$id/",
+        "/_authenticated/finance/bank/branches/$id/"
+      ]
     },
     "/_authenticated/hr": {
       "filePath": "_authenticated/hr.tsx",
@@ -401,6 +1507,69 @@ export const routeTree = rootRoute.addChildren({
         "/_authenticated/hr/timekeeping",
         "/_authenticated/hr/vacations",
         "/_authenticated/hr/"
+      ]
+    },
+    "/_authenticated/admin/companies": {
+      "filePath": "_authenticated/admin/companies.tsx",
+      "parent": "/_authenticated/admin",
+      "children": [
+        "/_authenticated/admin/companies/new",
+        "/_authenticated/admin/companies/",
+        "/_authenticated/admin/companies/$id/"
+      ]
+    },
+    "/_authenticated/admin/depots": {
+      "filePath": "_authenticated/admin/depots.tsx",
+      "parent": "/_authenticated/admin",
+      "children": [
+        "/_authenticated/admin/depots/new",
+        "/_authenticated/admin/depots/",
+        "/_authenticated/admin/depots/$id/"
+      ]
+    },
+    "/_authenticated/admin/machines": {
+      "filePath": "_authenticated/admin/machines.tsx",
+      "parent": "/_authenticated/admin",
+      "children": [
+        "/_authenticated/admin/machines/new",
+        "/_authenticated/admin/machines/",
+        "/_authenticated/admin/machines/$id/"
+      ]
+    },
+    "/_authenticated/admin/paymentMethods": {
+      "filePath": "_authenticated/admin/paymentMethods.tsx",
+      "parent": "/_authenticated/admin",
+      "children": [
+        "/_authenticated/admin/paymentMethods/new",
+        "/_authenticated/admin/paymentMethods/",
+        "/_authenticated/admin/paymentMethods/$id/"
+      ]
+    },
+    "/_authenticated/admin/publicHolidays": {
+      "filePath": "_authenticated/admin/publicHolidays.tsx",
+      "parent": "/_authenticated/admin",
+      "children": [
+        "/_authenticated/admin/publicHolidays/new",
+        "/_authenticated/admin/publicHolidays/",
+        "/_authenticated/admin/publicHolidays/$id/"
+      ]
+    },
+    "/_authenticated/admin/roles": {
+      "filePath": "_authenticated/admin/roles.tsx",
+      "parent": "/_authenticated/admin",
+      "children": [
+        "/_authenticated/admin/roles/new",
+        "/_authenticated/admin/roles/",
+        "/_authenticated/admin/roles/$id/"
+      ]
+    },
+    "/_authenticated/admin/sections": {
+      "filePath": "_authenticated/admin/sections.tsx",
+      "parent": "/_authenticated/admin",
+      "children": [
+        "/_authenticated/admin/sections/new",
+        "/_authenticated/admin/sections/",
+        "/_authenticated/admin/sections/$id/"
       ]
     },
     "/_authenticated/hr/debitCreditAnalysis": {
@@ -440,9 +1609,91 @@ export const routeTree = rootRoute.addChildren({
         "/_authenticated/hr/vacations/"
       ]
     },
+    "/_authenticated/storage/assignmentCards": {
+      "filePath": "_authenticated/storage/assignmentCards.tsx",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/storage/assignmentCards/new",
+        "/_authenticated/storage/assignmentCards/",
+        "/_authenticated/storage/assignmentCards/$id/"
+      ]
+    },
+    "/_authenticated/storage/assignmentTransactions": {
+      "filePath": "_authenticated/storage/assignmentTransactions.tsx",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/storage/assignmentTransactions/new",
+        "/_authenticated/storage/assignmentTransactions/",
+        "/_authenticated/storage/assignmentTransactions/$id/"
+      ]
+    },
+    "/_authenticated/storage/shelves": {
+      "filePath": "_authenticated/storage/shelves.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/storage/units": {
+      "filePath": "_authenticated/storage/units.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/admin/": {
+      "filePath": "_authenticated/admin/index.tsx",
+      "parent": "/_authenticated/admin"
+    },
     "/_authenticated/hr/": {
       "filePath": "_authenticated/hr/index.tsx",
       "parent": "/_authenticated/hr"
+    },
+    "/_authenticated/storage/": {
+      "filePath": "_authenticated/storage/index.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/accounting/cashAccounts/new": {
+      "filePath": "_authenticated/accounting/cashAccounts/new.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/admin/companies/new": {
+      "filePath": "_authenticated/admin/companies/new.tsx",
+      "parent": "/_authenticated/admin/companies"
+    },
+    "/_authenticated/admin/depots/new": {
+      "filePath": "_authenticated/admin/depots/new.tsx",
+      "parent": "/_authenticated/admin/depots"
+    },
+    "/_authenticated/admin/machines/new": {
+      "filePath": "_authenticated/admin/machines/new.tsx",
+      "parent": "/_authenticated/admin/machines"
+    },
+    "/_authenticated/admin/paymentMethods/new": {
+      "filePath": "_authenticated/admin/paymentMethods/new.tsx",
+      "parent": "/_authenticated/admin/paymentMethods"
+    },
+    "/_authenticated/admin/publicHolidays/new": {
+      "filePath": "_authenticated/admin/publicHolidays/new.tsx",
+      "parent": "/_authenticated/admin/publicHolidays"
+    },
+    "/_authenticated/admin/roles/new": {
+      "filePath": "_authenticated/admin/roles/new.tsx",
+      "parent": "/_authenticated/admin/roles"
+    },
+    "/_authenticated/admin/sections/new": {
+      "filePath": "_authenticated/admin/sections/new.tsx",
+      "parent": "/_authenticated/admin/sections"
+    },
+    "/_authenticated/company/branches/new": {
+      "filePath": "_authenticated/company/branches/new.tsx",
+      "parent": "/_authenticated/company"
+    },
+    "/_authenticated/company/departments/new": {
+      "filePath": "_authenticated/company/departments/new.tsx",
+      "parent": "/_authenticated/company"
+    },
+    "/_authenticated/finance/bankAccounts/new": {
+      "filePath": "_authenticated/finance/bankAccounts/new.tsx",
+      "parent": "/_authenticated/finance"
+    },
+    "/_authenticated/finance/banks/new": {
+      "filePath": "_authenticated/finance/banks/new.tsx",
+      "parent": "/_authenticated/finance"
     },
     "/_authenticated/hr/employees/new": {
       "filePath": "_authenticated/hr/employees/new.tsx",
@@ -458,6 +1709,74 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/_authenticated/hr/vacations/new/$id"
       ]
+    },
+    "/_authenticated/storage/assignmentCards/new": {
+      "filePath": "_authenticated/storage/assignmentCards/new.tsx",
+      "parent": "/_authenticated/storage/assignmentCards"
+    },
+    "/_authenticated/storage/assignmentTransactions/new": {
+      "filePath": "_authenticated/storage/assignmentTransactions/new.tsx",
+      "parent": "/_authenticated/storage/assignmentTransactions"
+    },
+    "/_authenticated/storage/fixtureCards/new": {
+      "filePath": "_authenticated/storage/fixtureCards/new.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/storage/shelf/new": {
+      "filePath": "_authenticated/storage/shelf/new.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/storage/unit/new": {
+      "filePath": "_authenticated/storage/unit/new.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/accounting/cashAccounts/": {
+      "filePath": "_authenticated/accounting/cashAccounts/index.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/admin/companies/": {
+      "filePath": "_authenticated/admin/companies/index.tsx",
+      "parent": "/_authenticated/admin/companies"
+    },
+    "/_authenticated/admin/depots/": {
+      "filePath": "_authenticated/admin/depots/index.tsx",
+      "parent": "/_authenticated/admin/depots"
+    },
+    "/_authenticated/admin/machines/": {
+      "filePath": "_authenticated/admin/machines/index.tsx",
+      "parent": "/_authenticated/admin/machines"
+    },
+    "/_authenticated/admin/paymentMethods/": {
+      "filePath": "_authenticated/admin/paymentMethods/index.tsx",
+      "parent": "/_authenticated/admin/paymentMethods"
+    },
+    "/_authenticated/admin/publicHolidays/": {
+      "filePath": "_authenticated/admin/publicHolidays/index.tsx",
+      "parent": "/_authenticated/admin/publicHolidays"
+    },
+    "/_authenticated/admin/roles/": {
+      "filePath": "_authenticated/admin/roles/index.tsx",
+      "parent": "/_authenticated/admin/roles"
+    },
+    "/_authenticated/admin/sections/": {
+      "filePath": "_authenticated/admin/sections/index.tsx",
+      "parent": "/_authenticated/admin/sections"
+    },
+    "/_authenticated/company/branches/": {
+      "filePath": "_authenticated/company/branches/index.tsx",
+      "parent": "/_authenticated/company"
+    },
+    "/_authenticated/company/departments/": {
+      "filePath": "_authenticated/company/departments/index.tsx",
+      "parent": "/_authenticated/company"
+    },
+    "/_authenticated/finance/bankAccounts/": {
+      "filePath": "_authenticated/finance/bankAccounts/index.tsx",
+      "parent": "/_authenticated/finance"
+    },
+    "/_authenticated/finance/banks/": {
+      "filePath": "_authenticated/finance/banks/index.tsx",
+      "parent": "/_authenticated/finance"
     },
     "/_authenticated/hr/employees/": {
       "filePath": "_authenticated/hr/employees/index.tsx",
@@ -475,9 +1794,85 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_authenticated/hr/vacations/index.tsx",
       "parent": "/_authenticated/hr/vacations"
     },
+    "/_authenticated/storage/assignmentCards/": {
+      "filePath": "_authenticated/storage/assignmentCards/index.tsx",
+      "parent": "/_authenticated/storage/assignmentCards"
+    },
+    "/_authenticated/storage/assignmentTransactions/": {
+      "filePath": "_authenticated/storage/assignmentTransactions/index.tsx",
+      "parent": "/_authenticated/storage/assignmentTransactions"
+    },
+    "/_authenticated/storage/fixtureCards/": {
+      "filePath": "_authenticated/storage/fixtureCards/index.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/storage/shelf/": {
+      "filePath": "_authenticated/storage/shelf/index.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/storage/unit/": {
+      "filePath": "_authenticated/storage/unit/index.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/finance/bank/branches/new": {
+      "filePath": "_authenticated/finance/bank/branches/new.tsx",
+      "parent": "/_authenticated/finance"
+    },
     "/_authenticated/hr/vacations/new/$id": {
       "filePath": "_authenticated/hr/vacations/new/$id.tsx",
       "parent": "/_authenticated/hr/vacations/new"
+    },
+    "/_authenticated/accounting/cashAccounts/$id/": {
+      "filePath": "_authenticated/accounting/cashAccounts/$id/index.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/admin/companies/$id/": {
+      "filePath": "_authenticated/admin/companies/$id/index.tsx",
+      "parent": "/_authenticated/admin/companies"
+    },
+    "/_authenticated/admin/depots/$id/": {
+      "filePath": "_authenticated/admin/depots/$id/index.tsx",
+      "parent": "/_authenticated/admin/depots"
+    },
+    "/_authenticated/admin/machines/$id/": {
+      "filePath": "_authenticated/admin/machines/$id/index.tsx",
+      "parent": "/_authenticated/admin/machines"
+    },
+    "/_authenticated/admin/paymentMethods/$id/": {
+      "filePath": "_authenticated/admin/paymentMethods/$id/index.tsx",
+      "parent": "/_authenticated/admin/paymentMethods"
+    },
+    "/_authenticated/admin/publicHolidays/$id/": {
+      "filePath": "_authenticated/admin/publicHolidays/$id/index.tsx",
+      "parent": "/_authenticated/admin/publicHolidays"
+    },
+    "/_authenticated/admin/roles/$id/": {
+      "filePath": "_authenticated/admin/roles/$id/index.tsx",
+      "parent": "/_authenticated/admin/roles"
+    },
+    "/_authenticated/admin/sections/$id/": {
+      "filePath": "_authenticated/admin/sections/$id/index.tsx",
+      "parent": "/_authenticated/admin/sections"
+    },
+    "/_authenticated/company/branches/$id/": {
+      "filePath": "_authenticated/company/branches/$id/index.tsx",
+      "parent": "/_authenticated/company"
+    },
+    "/_authenticated/company/departments/$id/": {
+      "filePath": "_authenticated/company/departments/$id/index.tsx",
+      "parent": "/_authenticated/company"
+    },
+    "/_authenticated/finance/bank/branches/": {
+      "filePath": "_authenticated/finance/bank/branches/index.tsx",
+      "parent": "/_authenticated/finance"
+    },
+    "/_authenticated/finance/bankAccounts/$id/": {
+      "filePath": "_authenticated/finance/bankAccounts/$id/index.tsx",
+      "parent": "/_authenticated/finance"
+    },
+    "/_authenticated/finance/banks/$id/": {
+      "filePath": "_authenticated/finance/banks/$id/index.tsx",
+      "parent": "/_authenticated/finance"
     },
     "/_authenticated/hr/employees/$id/": {
       "filePath": "_authenticated/hr/employees/$id/index.tsx",
@@ -486,6 +1881,30 @@ export const routeTree = rootRoute.addChildren({
     "/_authenticated/hr/timekeeping/$id/": {
       "filePath": "_authenticated/hr/timekeeping/$id/index.tsx",
       "parent": "/_authenticated/hr/timekeeping"
+    },
+    "/_authenticated/storage/assignmentCards/$id/": {
+      "filePath": "_authenticated/storage/assignmentCards/$id/index.tsx",
+      "parent": "/_authenticated/storage/assignmentCards"
+    },
+    "/_authenticated/storage/assignmentTransactions/$id/": {
+      "filePath": "_authenticated/storage/assignmentTransactions/$id/index.tsx",
+      "parent": "/_authenticated/storage/assignmentTransactions"
+    },
+    "/_authenticated/storage/fixtureCards/$id/": {
+      "filePath": "_authenticated/storage/fixtureCards/$id/index.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/storage/shelf/$id/": {
+      "filePath": "_authenticated/storage/shelf/$id/index.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/storage/unit/$id/": {
+      "filePath": "_authenticated/storage/unit/$id/index.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/finance/bank/branches/$id/": {
+      "filePath": "_authenticated/finance/bank/branches/$id/index.tsx",
+      "parent": "/_authenticated/finance"
     }
   }
 }
