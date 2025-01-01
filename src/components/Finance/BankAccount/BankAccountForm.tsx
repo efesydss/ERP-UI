@@ -34,6 +34,7 @@ export const BankAccountForm = (props: FormBankAccountProps) => {
             <Input name={'iban'} />
             <BaseSelect
               name={'currency'}
+              isEnum={true}
               options={warrantyPeriodOptions}
               selectLabel={'Currency'}
             />

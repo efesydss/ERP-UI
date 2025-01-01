@@ -5,14 +5,19 @@ import { Input } from '@/components/Common/Form/Input/Input'
 import { Box, Button, Paper } from '@mui/material'
 import { FaCheck } from 'react-icons/fa6'
 import { BaseSelect } from '@/components/Common/Form/Select/BaseSelect'
+import { SectionTypeEnum } from '@/components/Storage/typesEnums'
 interface FormSectionProps {
   sectionId?: number
 }
-
+//todo ef : email alanını kaldır ..
 export const SectionForm = (props: FormSectionProps) => {
   console.log(props)
   const { t } = useTranslation()
 
+  const sectionEnumOptions = Object.values(SectionTypeEnum).map((value) => ({
+    label: value,
+    value: value
+  }))
 
   return (
     <>
@@ -24,8 +29,15 @@ export const SectionForm = (props: FormSectionProps) => {
           <FormGrid>
             <Input name={'name'} />
             <BaseSelect
+
               name="employee"
               endpoint="employees"
+            />
+            <BaseSelect
+              name={'sectionType'}
+              isEnum={true}
+              options={sectionEnumOptions}
+              selectLabel={'sectionType'}
             />
             <BaseSelect
               name="department"

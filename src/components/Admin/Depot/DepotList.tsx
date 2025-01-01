@@ -68,7 +68,7 @@ export const DepotList = () => {
         )
       }
     ],
-    [t]
+    [t,handleDeleteClick]
   )
 
   const DepotListActions = () => {

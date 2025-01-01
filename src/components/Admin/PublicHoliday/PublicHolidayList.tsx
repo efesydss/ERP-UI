@@ -33,8 +33,9 @@ export const PublicHolidayList = () => {
         console.log('Deletion cancelled')
       }
     )
-  const safeAccessor = (accessorFn: (row: any) => any, columnName: string) => {
+  const safeAccessor = (accessorFn: (row: any) => any) => {
     return (row: any) => {
+
       try {
         const result = accessorFn(row)
         return result
@@ -62,19 +63,19 @@ export const PublicHolidayList = () => {
     () => [
       {
         header: t('year'),
-        accessorFn: safeAccessor((row) => row.year || t('-'), 'year')
+        accessorFn: safeAccessor((row) => row.year || t('-'))
       },
       {
         header: t('startDate'),
-        accessorFn: safeAccessor((row) => row.startDate || t('-'), 'startDate')
+        accessorFn: safeAccessor((row) => row.startDate || t('-'))
       },
       {
         header: t('endDate'),
-        accessorFn: safeAccessor((row) => row.endDate || t('-'), 'endDate')
+        accessorFn: safeAccessor((row) => row.endDate || t('-'))
       },
       {
         header: t('description'),
-        accessorFn: safeAccessor((row) => row.description || t('-'), 'description')
+        accessorFn: safeAccessor((row) => row.description || t('-'))
       },
       {
         header: t('actions'),
@@ -91,7 +92,7 @@ export const PublicHolidayList = () => {
         )
       }
     ],
-    [t]
+    [t,handleDeleteClick]
   )
 
   const PublicHolidayListActions = () => {

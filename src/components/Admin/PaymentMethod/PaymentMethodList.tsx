@@ -45,8 +45,8 @@ export const PaymentMethodList = () => {
       toast.success('PaymentMethod Deleted')
     }
   })
-  const safeAccessor = (accessorFn: (row: any) => any, columnName: string) => {
-    return (row: any) => {
+  const safeAccessor = <T, >(accessorFn: (row: T) => any, columnName: string) => {
+    return (row: T) => {
       try {
         const result = accessorFn(row)
         return result

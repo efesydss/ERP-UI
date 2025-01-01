@@ -16,6 +16,7 @@ const initialSection: Section = {
   name: ' ',
   employee: undefined,
   department: undefined,
+  sectionType:undefined,
   email: '',
 }
   export const SectionAdd = () => {

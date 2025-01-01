@@ -1,13 +1,10 @@
 import {
   DataGrid,
-  getGridDateOperators,
-  GRID_DATETIME_COL_DEF,
   GridActionsCellItem,
   GridColDef,
-  GridColTypeDef,
+
   GridEventListener,
-  GridFilterInputValueProps,
-  GridRenderEditCellParams,
+
   GridRowEditStopReasons,
   GridRowId,
   GridRowModel,
@@ -15,23 +12,22 @@ import {
   GridRowModesModel,
   GridRowsProp,
   GridSlots,
-  GridToolbarContainer,
-  useGridApiContext
+  GridToolbarContainer
 } from '@mui/x-data-grid'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { apiRequest, ApiResponse } from '@/utils/apiDefaults'
-import { Box, Button, InputBase, InputBaseProps, styled, TextFieldProps } from '@mui/material'
+import { Box, Button, InputBase, styled } from '@mui/material'
 import { AiOutlineSave } from 'react-icons/ai'
 import { MdDeleteOutline, MdModeEdit, MdOutlineAdd } from 'react-icons/md'
 import { RxCross1 } from 'react-icons/rx'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-import { DatePicker, DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers'
+import { LocalizationProvider } from '@mui/x-date-pickers'
 import { tr as locale } from 'date-fns/locale'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3'
 import { useTranslation } from 'react-i18next'
 import { useConfirmDialog } from '@/utils/hooks/useConfirmDialogContext'
-import { formatToISOString, enumToOptions } from '@/utils/transformers'
+import { enumToOptions } from '@/utils/transformers'
 import { Currency } from '@/components/Hr/Employees/typesEmployee'
 import { CashAccountBaseProps } from '@/components/Accounting/typesCashAccount'
 
@@ -50,7 +46,6 @@ interface EditToolbarProps {
   setRowModesModel: (newModel: (oldModel: GridRowModesModel) => GridRowModesModel) => void
 }
 
-const dateAdapter = new AdapterDateFns({ locale })
 
 //todo: time zone issue, conversion between toISOString and Date
 export const CashAccountGrid = (props: BaseGridProps) => {
@@ -86,8 +81,8 @@ export const CashAccountGrid = (props: BaseGridProps) => {
       const id = 1
       setRows((oldRows) => [
         ...oldRows,/** code: string
-        name: string
-        currency: Currency */
+         name: string
+         currency: Currency */
         {
           id,
           code: '1',
@@ -105,9 +100,9 @@ export const CashAccountGrid = (props: BaseGridProps) => {
       <GridToolbarContainer sx={{ p: 2 }}>
         <Button
           disabled={rows.some((r) => r.isNew)}
-          color='primary'
+          color="primary"
           startIcon={<MdOutlineAdd />}
-          variant='outlined'
+          variant="outlined"
           size={'small'}
           onClick={handleAddRecord}
         >
@@ -222,7 +217,7 @@ export const CashAccountGrid = (props: BaseGridProps) => {
       id,
       code: newRow.code, // yeni satırdan code bilgisi
       name: newRow.name, // yeni satırdan name bilgisi
-      currency: newRow.currency, // yeni satırdan currency bilgisi
+      currency: newRow.currency // yeni satırdan currency bilgisi
       // Eğer CashAccount için gerekli başka alanlar varsa buraya ekle
     }
 
@@ -243,93 +238,10 @@ export const CashAccountGrid = (props: BaseGridProps) => {
       setRows(data as GridRowsProp<CashAccountBaseProps>)
     }
   }, [data])
-
-
-  const GridEditDateInput = styled(InputBase)({
+  styled(InputBase)({
     fontSize: 'inherit',
     padding: '0 9px'
   })
-
-  function WrappedGridEditDateInput(props: TextFieldProps) {
-    const { InputProps, ...other } = props
-    return (
-      <GridEditDateInput
-        fullWidth
-        {...InputProps}
-        {...(other as InputBaseProps)}
-      />
-    )
-  }
-
-  function GridEditDateCell({ id, field, value, colDef }: GridRenderEditCellParams<any, Date | null, string>) {
-    const apiRef = useGridApiContext()
-
-    const Component = colDef.type === 'dateTime' ? DateTimePicker : DatePicker
-
-    const handleChange = (newValue: unknown) => {
-      apiRef.current.setEditCellValue({ id, field, value: newValue })
-    }
-
-    return (
-      <Component
-        value={value}
-        autoFocus
-        onChange={handleChange}
-        slots={{ textField: WrappedGridEditDateInput }}
-      />
-    )
-  }
-
-  function GridFilterDateInput(props: GridFilterInputValueProps & { showTime?: boolean }) {
-    const { item, showTime, applyValue, apiRef } = props
-
-    const Component = showTime ? DateTimePicker : DatePicker
-
-    const handleFilterChange = (newValue: unknown) => {
-      applyValue({ ...item, value: newValue })
-    }
-
-    return (
-      <Component
-        value={item.value ? new Date(item.value) : null}
-        autoFocus
-        label={apiRef.current.getLocaleText('filterPanelInputLabel')}
-        slotProps={{
-          textField: {
-            variant: 'standard'
-          },
-          inputAdornment: {
-            sx: {
-              '& .MuiButtonBase-root': {
-                marginRight: -1
-              }
-            }
-          }
-        }}
-        onChange={handleFilterChange}
-      />
-    )
-  }
-
-  const dateTimeColumnType: GridColTypeDef<Date, string> = {
-    ...GRID_DATETIME_COL_DEF,
-    resizable: false,
-    renderEditCell: (params) => {
-      return <GridEditDateCell {...params} />
-    },
-    filterOperators: getGridDateOperators(true).map((item) => ({
-      ...item,
-      InputComponent: GridFilterDateInput,
-      InputComponentProps: { showTime: true }
-    })),
-    valueFormatter: (value) => {
-      if (value) {
-        return dateAdapter.format(value, 'keyboardDateTime')
-      }
-      return ''
-    }
-  }
-
   const columns: GridColDef[] = [
     {
       field: 'code',
@@ -364,7 +276,7 @@ export const CashAccountGrid = (props: BaseGridProps) => {
           return [
             <GridActionsCellItem
               icon={<AiOutlineSave />}
-              label='Save'
+              label="Save"
               sx={{
                 color: 'primary.main'
               }}
@@ -372,10 +284,10 @@ export const CashAccountGrid = (props: BaseGridProps) => {
             />,
             <GridActionsCellItem
               icon={<RxCross1 />}
-              label='Cancel'
-              className='textPrimary'
+              label="Cancel"
+              className="textPrimary"
               onClick={handleCancelClick(id)}
-              color='inherit'
+              color="inherit"
             />
           ]
         }
@@ -383,16 +295,16 @@ export const CashAccountGrid = (props: BaseGridProps) => {
         return [
           <GridActionsCellItem
             icon={<MdModeEdit />}
-            label='Edit'
-            className='textPrimary'
+            label="Edit"
+            className="textPrimary"
             onClick={handleEditClick(id)}
-            color='inherit'
+            color="inherit"
           />,
           <GridActionsCellItem
             icon={<MdDeleteOutline />}
-            label='Delete'
+            label="Delete"
             onClick={handleDeleteClick(id)}
-            color='inherit'
+            color="inherit"
           />
         ]
       }
@@ -416,7 +328,7 @@ export const CashAccountGrid = (props: BaseGridProps) => {
             },
             toolbar: { setRows, setRowModesModel }
           }}
-          editMode='row'
+          editMode="row"
           rowModesModel={rowModesModel}
           onRowModesModelChange={handleRowModesModelChange}
           onProcessRowUpdateError={(err) => console.log(err)}
