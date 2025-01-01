@@ -1,10 +1,10 @@
-import { FixtureGroup } from './typesFixtureGroup'
-import { FixtureCardUnit } from './typesFixtureCardUnit'
+import { FixtureGroup } from '@/components/Storage/typesFixtureGroup'
+import { FixtureCardUnit } from '@/components/Storage/typesFixtureCardUnit'
 
 import {
   DefaultUnit,
   FixtureTypeEnum,
-} from './typesEnum';
+} from '@/components/Storage/typesEnums';
 
 export interface FixtureCard{
     id:number,

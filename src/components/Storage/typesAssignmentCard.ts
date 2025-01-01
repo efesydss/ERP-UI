@@ -2,11 +2,11 @@ import {
   AssignmentStatusEnum,
   WarrantyPeriodEnum,
   MaintenancePeriodEnum
-} from './typesEnum';
+} from '@/components/Storage/typesEnums';
 
 
-import { FixtureCard } from './typesFixtureCard'
-import { Invoice } from './typesInvoice'
+import { FixtureCard } from '@/components/Storage/typesFixtureCard';
+import { Invoice } from '@/components/Storage/typesInvoice';
 
 
 export interface AssignmentCard {

@@ -2,7 +2,7 @@ import {
   InvoiceItemTypeEnum,
   DefaultUnit,
 
-} from './typesEnum';
+} from '@/components/Storage/typesEnums';
 export interface InvoiceItem {
 
     id:number,

@@ -46,50 +46,50 @@ export const CompanyList = () => {
       toast.success('Company Deleted')
     }
   })
-  const safeAccessor = (accessorFn: (row: any) => any, columnName: string) => {
-    return (row: any) => {
+  const safeAccessor = <T, >(accessorFn: (row: T) => any, columnName: string) => {
+    return (row: T) => {
       try {
-        const result = accessorFn(row);
-        return result;
+        const result = accessorFn(row)
+        return result
       } catch (error) {
-        console.error(`Error in column "${columnName}"`, error, row);
-        return 'Error';
+        console.error(`Error in column "${columnName}"`, error, row)
+        return 'Error'
       }
-    };
-  };
+    }
+  }
   const columns = useMemo<ColumnDef<Company>[]>(
     () => [
       {
         header: t('code'),
-        accessorFn: safeAccessor((row) => row.code || t('-'), 'code'),
+        accessorFn: safeAccessor((row) => row.code || t('-'), 'code')
       },
       {
         header: t('title'),
-        accessorFn: safeAccessor((row) => row.title || t('-'), 'title'),
+        accessorFn: safeAccessor((row) => row.title || t('-'), 'title')
       },
       {
         header: t('address'),
-        accessorFn: safeAccessor((row) => row.address || t('-'), 'address'),
+        accessorFn: safeAccessor((row) => row.address || t('-'), 'address')
       },
       {
         header: t('phone'),
-        accessorFn: safeAccessor((row) => row.phone || t('-'), 'phone'),
+        accessorFn: safeAccessor((row) => row.phone || t('-'), 'phone')
       },
       {
         header: t('phoneBackup'),
-        accessorFn: safeAccessor((row) => row.phoneBackup || t('-'), 'phoneBackup'),
+        accessorFn: safeAccessor((row) => row.phoneBackup || t('-'), 'phoneBackup')
       },
       {
         header: t('taxAdmin'),
-        accessorFn: safeAccessor((row) => row.taxAdmin || t('-'), 'taxAdmin'),
+        accessorFn: safeAccessor((row) => row.taxAdmin || t('-'), 'taxAdmin')
       },
       {
         header: t('taxNumber'),
-        accessorFn: safeAccessor((row) => row.taxNumber || t('-'), 'taxNumber'),
+        accessorFn: safeAccessor((row) => row.taxNumber || t('-'), 'taxNumber')
       },
       {
         header: t('branch'),
-        accessorFn: (row) => row.branch?.title || t('noBranch')
+        accessorFn: (row) => row.branch?.name || t('noBranch')
       },
       {
         header: t('actions'),

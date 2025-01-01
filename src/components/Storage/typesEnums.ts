@@ -1,4 +1,9 @@
 
+export enum FixtureTypeEnum {
+    MAIN_MATERIAL='MAIN_MATERIAL',
+    CONSUMPTION_MATERIAL='CONSUMPTION_MATERIAL',
+}
+
 export enum InvoiceItemTypeEnum{
     ADDITIONAL_COST='ADDITIONAL_COST',
     SERVICE='SERVICE',

@@ -16,7 +16,7 @@ const initialBankAccount: BankAccount = {
   id: 0,
   accountNumber: '',
   iban: '',
-  currency: '',
+  currency: undefined,
 }
   export const BankAccountAdd = () => {
     const navigate = useNavigate()

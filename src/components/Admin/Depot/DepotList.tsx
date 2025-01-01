@@ -1,6 +1,6 @@
 import { ColumnDef } from '@tanstack/react-table'
 import React, { useMemo } from 'react'
-import { Depot } from '@/components/Admin/Depot/typesDepot'
+import { DepotResponse } from '@/components/Admin/Depot/typesDepot'
 import { Button } from '@mui/material'
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
 import { Route } from '@/routes/_authenticated/admin/depots/new'
@@ -43,11 +43,11 @@ export const DepotList = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['depots'] })
-      toast.success('Depot Deleted')
+      toast.success('DepotResponse Deleted')
     }
   })
   // 2. Tablo sütunlarını tanımlama
-  const columns = useMemo<ColumnDef<Depot>[]>(
+  const columns = useMemo<ColumnDef<DepotResponse>[]>(
     () => [
       {
         header: t('name'),
@@ -95,7 +95,7 @@ export const DepotList = () => {
         actions={<DepotListActions />}
       />
 
-      <BaseTable<Depot> endpoint={endpoint} columns={columns}
+      <BaseTable<DepotResponse> endpoint={endpoint} columns={columns}
 
       ></BaseTable>
 

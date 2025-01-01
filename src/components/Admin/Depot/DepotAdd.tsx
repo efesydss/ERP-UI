@@ -7,12 +7,12 @@ import { Container } from '@mui/material'
 import { FormDepot } from '@/components/Admin/Depot/FormDepot'
 import { AxiosError } from 'axios'
 import { toast } from 'react-toastify'
-import { Depot } from '@/components/Admin/Depot/typesDepot'
+import { DepotResponse } from '@/components/Admin/Depot/typesDepot'
 import { apiRequest } from '@/utils/apiDefaults'
 import { t } from 'i18next'
 
 
-const initialDepot: Depot = {
+const initialDepot: DepotResponse = {
   id: 1,
   name: 'DepotName'
 }
@@ -21,7 +21,7 @@ export const DepotAdd = () => {
   const navigate = useNavigate()
 
   const { mutateAsync } = useMutation({
-    mutationFn: (values: Depot) =>
+    mutationFn: (values: DepotResponse) =>
       apiRequest({
         endpoint: 'depotAdd',
         payload: values
@@ -47,7 +47,7 @@ export const DepotAdd = () => {
 
   })
 
-  const onFormSubmit = async (values: Depot) => {
+  const onFormSubmit = async (values: DepotResponse) => {
     await mutateAsync({
       ...values
 

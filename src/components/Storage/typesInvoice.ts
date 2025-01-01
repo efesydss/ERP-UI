@@ -2,7 +2,7 @@ import {
   WarehouseBranchEnum,
   Currency,
   InvoiceTypeEnum
-} from './typesEnum';
+} from '@/components/Storage/typesEnums';
 
 import { InvoiceItem } from './typesInvoiceItem'
 

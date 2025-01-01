@@ -1,9 +1,9 @@
-import { Employee } from './typesEmployee';
-import { Department } from './Admin/typesDepartment';
+import { EmployeeResponse } from '@/components/Hr/Employees/typesEmployee';
+import { Department } from '@/components/Company/Department/types/typesDepartment';
 export interface Section {
   id: number;
   name: string;
-  employee:Employee;
-  department:Department;
+  employee?:EmployeeResponse;
+  department?:Department;
   email: string;
 }

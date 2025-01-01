@@ -1,15 +1,12 @@
-import {
-    AssignmentStatusEnum,
-
-    } from './typesEnum';
-import { Employee } from './typesEmployee';
-import { AssignmentCard } from './typesAssignmentCard';
+import { AssignmentStatusEnum } from '@/components/Storage/typesEnums';
+import { EmployeeResponse } from '@/components/Hr/Employees/typesEmployee';
+import { AssignmentCard } from '@/components/Storage/typesAssignmentCard';
 
 export interface AssignmentTransaction{
     id:number,
     assignmentCard?:AssignmentCard,
-    employee?:Employee,
+    employee?:EmployeeResponse,
     transactionDate:string,
-    assignmentStatusEnum:AssignmentStatusEnum,
+    assignmentStatusEnum?:AssignmentStatusEnum,
 
 }

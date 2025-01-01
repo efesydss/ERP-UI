@@ -1,6 +1,6 @@
 import {
   DefaultUnit
-} from './typesEnum';
+} from '@/components/Storage/typesEnums'
 export interface FixtureCardUnit{
     id:number,
     unit:DefaultUnit,

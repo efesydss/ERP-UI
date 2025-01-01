@@ -1,4 +1,4 @@
-import { Branch } from './typesBranch';
+import { Branch } from '@/components/Admin/typesBranch';
 
 export interface Company {
     id: number;
