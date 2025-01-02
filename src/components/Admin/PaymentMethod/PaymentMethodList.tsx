@@ -23,16 +23,16 @@ export const PaymentMethodList = () => {
   const navigate = useNavigate()
 
   const { mutate: deletePaymentMethod } = useMutation({
-    mutationFn: async (PaymentMethodId: string) => {
+    mutationFn: async (paymentMethodId: string) => {
       return await apiRequest({
         endpoint: 'paymentMethodDelete',
         method: 'DELETE',
-        params: { PaymentMethodId: PaymentMethodId?.toString() ?? '0' }
+        params: { paymentMethodId: paymentMethodId?.toString() ?? '0' }
       })
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['paymentMethods'] })
-      toast.success('PaymentMethod Deleted')
+      toast.success('Payment Method Deleted')
     }
   })
   const safeAccessor = <T, >(accessorFn: (row: T) => unknown, columnName: string) => {

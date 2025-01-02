@@ -34,11 +34,11 @@ export const DepartmentList = () => {
     }
   }
   const { mutate: deleteDepartment } = useMutation({
-    mutationFn: async (DepartmentId: string) => {
+    mutationFn: async (departmentId: string) => {
       return await apiRequest({
         endpoint: 'departmentDelete',
         method: 'DELETE',
-        params: { DepartmentId: DepartmentId?.toString() ?? '0' }
+        params: { departmentId: departmentId?.toString() ?? '0' }
       })
     },
     onSuccess: () => {

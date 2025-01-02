@@ -65,14 +65,13 @@ export const SectionList = () => {
         header: t('name'),
         accessorFn: safeAccessor((row) => row.name, 'name')
       },
-
+      {
+        header: t('sectionType'),
+        accessorFn: safeAccessor((row) => row.sectionType || t('noSectionType'), 'sectionType')
+      },
       {
         header: t('employee'),
         accessorFn: safeAccessor((row) => row.employee?.name || t('noEmployee'), 'employee')
-      },
-      {
-        header: t('department'),
-        accessorFn: safeAccessor((row) => row.department?.name || t('noDepartment'), 'department')
       },
       {
         header: t('actions'),

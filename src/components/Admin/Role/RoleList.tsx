@@ -33,11 +33,11 @@ export const RoleList = () => {
     }
   }
   const { mutate: deleteRole } = useMutation({
-    mutationFn: async (RoleId: string) => {
+    mutationFn: async (roleId: string) => {
       return await apiRequest({
         endpoint: 'roleDelete',
         method: 'DELETE',
-        params: { RoleId: RoleId?.toString() ?? '0' }
+        params: { roleId: roleId?.toString() ?? '0' }
       })
     },
     onSuccess: () => {
