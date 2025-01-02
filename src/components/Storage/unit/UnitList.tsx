@@ -3,7 +3,7 @@ import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
 import { Route } from '@/routes/_authenticated/storage/unit/new'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import { BaseTable } from '@/components/Common/Table/BaseTable'
-import React, { useMemo } from 'react'
+import React, { useMemo,useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { useConfirmDialog } from '@/utils/hooks/useConfirmDialogContext'
@@ -21,17 +21,7 @@ export const UnitList = () => {
 
   const navigate = useNavigate()
 
-  const handleDeleteClick = (id: GridRowId) => () =>
-    openDialog(
-      'Confirm Deletion',
-      'Are you sure you want to delete this item?',
-      () => {
-        deleteUnit(id.toString())
-      },
-      () => {
-        console.log('Deletion cancelled')
-      }
-    )
+
   const { mutate: deleteUnit } = useMutation({
     mutationFn: async (UnitId: string) => {
       return await apiRequest({
@@ -45,6 +35,19 @@ export const UnitList = () => {
       toast.success('Unit Deleted')
     }
   })
+  const handleDeleteClick = useCallback(
+    (id: GridRowId) => () =>
+      openDialog(
+        'Confirm Deletion',
+        'Are you sure you want to delete this item?',
+        () => {
+          deleteUnit(id.toString())
+        },
+        () => {
+          console.log('Deletion cancelled')
+        }
+      ),
+    [openDialog, deleteUnit])
   // 2. Tablo sütunlarını tanımlama
   const columns = useMemo<ColumnDef<Unit>[]>(
     () => [
@@ -67,7 +70,7 @@ export const UnitList = () => {
         )
       }
     ],
-    [t]
+    [t,handleDeleteClick]
   )
 
   const UnitListActions = () => {

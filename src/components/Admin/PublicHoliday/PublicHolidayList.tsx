@@ -1,9 +1,8 @@
 import { useTranslation } from 'react-i18next'
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
-
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import { BaseTable } from '@/components/Common/Table/BaseTable'
-import React, { useMemo } from 'react'
+import React, { useMemo, useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { useConfirmDialog } from '@/utils/hooks/useConfirmDialogContext'
@@ -15,6 +14,7 @@ import { toast } from 'react-toastify'
 import { ColumnDef } from '@tanstack/react-table'
 import { PublicHoliday } from '@/components/Admin/PublicHoliday/types/typesPublicHoliday'
 import { Route } from '@/routes/_authenticated/admin/publicHolidays/new'
+
 export const PublicHolidayList = () => {
   const { t } = useTranslation('common')
   const { openDialog } = useConfirmDialog()
@@ -22,25 +22,13 @@ export const PublicHolidayList = () => {
 
   const navigate = useNavigate()
 
-  const handleDeleteClick = (id: GridRowId) => () =>
-    openDialog(
-      'Confirm Deletion',
-      'Are you sure you want to delete this item?',
-      () => {
-        deletePublicHoliday(id.toString())
-      },
-      () => {
-        console.log('Deletion cancelled')
-      }
-    )
-  const safeAccessor = (accessorFn: (row: any) => any) => {
-    return (row: any) => {
 
+  const safeAccessor = <T, >(accessorFn: (row: T) => unknown, columnName: string) => {
+    return (row: T) => {
       try {
-        const result = accessorFn(row)
-        return result
+        return accessorFn(row)
       } catch (error) {
-        console.error(error)
+        console.error(`Error in column "${columnName}"`, error, row)
         return 'Error'
       }
     }
@@ -59,23 +47,36 @@ export const PublicHolidayList = () => {
     }
   })
 
+  const handleDeleteClick = useCallback(
+    (id: GridRowId) => () =>
+      openDialog(
+        'Confirm Deletion',
+        'Are you sure you want to delete this item?',
+        () => {
+          deletePublicHoliday(id.toString())
+        },
+        () => {
+          console.log('Deletion cancelled')
+        }
+      ),
+    [openDialog, deletePublicHoliday])
   const columns = useMemo<ColumnDef<PublicHoliday>[]>(
     () => [
       {
         header: t('year'),
-        accessorFn: safeAccessor((row) => row.year || t('-'))
+        accessorFn: safeAccessor((row) => row.year || t('-'), 'year')
       },
       {
         header: t('startDate'),
-        accessorFn: safeAccessor((row) => row.startDate || t('-'))
+        accessorFn: safeAccessor((row) => row.startDate || t('-'), 'startDate')
       },
       {
         header: t('endDate'),
-        accessorFn: safeAccessor((row) => row.endDate || t('-'))
+        accessorFn: safeAccessor((row) => row.endDate || t('-'), 'endDate')
       },
       {
         header: t('description'),
-        accessorFn: safeAccessor((row) => row.description || t('-'))
+        accessorFn: safeAccessor((row) => row.description || t('-'), 'description')
       },
       {
         header: t('actions'),
@@ -92,7 +93,7 @@ export const PublicHolidayList = () => {
         )
       }
     ],
-    [t,handleDeleteClick]
+    [t, handleDeleteClick]
   )
 
   const PublicHolidayListActions = () => {

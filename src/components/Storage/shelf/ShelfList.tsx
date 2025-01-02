@@ -3,7 +3,7 @@ import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
 import { Route } from '@/routes/_authenticated/storage/shelf/new'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import { BaseTable } from '@/components/Common/Table/BaseTable'
-import React, { useMemo } from 'react'
+import React, { useMemo, useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { useConfirmDialog } from '@/utils/hooks/useConfirmDialogContext'
@@ -14,6 +14,7 @@ import { Button } from '@mui/material'
 import { toast } from 'react-toastify'
 import { Shelf } from '@/components/Storage/shelf/types/typesShelf'
 import { ColumnDef } from '@tanstack/react-table'
+
 export const ShelfList = () => {
   const { t } = useTranslation('common')
   const { openDialog } = useConfirmDialog()
@@ -21,17 +22,7 @@ export const ShelfList = () => {
 
   const navigate = useNavigate()
 
-  const handleDeleteClick = (id: GridRowId) => () =>
-    openDialog(
-      'Confirm Deletion',
-      'Are you sure you want to delete this item?',
-      () => {
-        deleteShelf(id.toString())
-      },
-      () => {
-        console.log('Deletion cancelled')
-      }
-    )
+
   const { mutate: deleteShelf } = useMutation({
     mutationFn: async (shelfId: string) => {
       return await apiRequest({
@@ -45,16 +36,38 @@ export const ShelfList = () => {
       toast.success('Shelf Deleted')
     }
   })
-  // 2. Tablo sütunlarını tanımlama
+  const handleDeleteClick = useCallback(
+    (id: GridRowId) => () =>
+      openDialog(
+        'Confirm Deletion',
+        'Are you sure you want to delete this item?',
+        () => {
+          deleteShelf(id.toString())
+        },
+        () => {
+          console.log('Deletion cancelled')
+        }
+      ),
+    [openDialog, deleteShelf])
+  const safeAccessor = <T, >(accessorFn: (row: T) => unknown, columnName: string) => {
+    return (row: T) => {
+      try {
+        return accessorFn(row)
+      } catch (error) {
+        console.error(`Error in column "${columnName}"`, error, row)
+        return 'Error'
+      }
+    }
+  }
   const columns = useMemo<ColumnDef<Shelf>[]>(
     () => [
       {
         header: t('name'),
-        accessorKey: 'name'
+        accessorFn: safeAccessor((row) => row.name, 'name')
       },
       {
         header: t('description'),
-        accessorKey: 'description'
+        accessorFn: safeAccessor((row) => row.description, 'description')
       },
       {
         header: t('actions'),
@@ -71,7 +84,7 @@ export const ShelfList = () => {
         )
       }
     ],
-    [t]
+    [t, handleDeleteClick]
   )
 
   const ShelfListActions = () => {

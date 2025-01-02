@@ -1,10 +1,8 @@
-
 import { useTranslation } from 'react-i18next'
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
-
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import { BaseTable } from '@/components/Common/Table/BaseTable'
-import React, { useMemo } from 'react'
+import React, { useMemo, useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { useConfirmDialog } from '@/utils/hooks/useConfirmDialogContext'
@@ -15,7 +13,8 @@ import { Button } from '@mui/material'
 import { toast } from 'react-toastify'
 import { ColumnDef } from '@tanstack/react-table'
 import { Branch } from '@/components/Company/Branch/types/typesBranch'
-import {Route } from '@/routes/_authenticated/company/branches/new'
+import { Route } from '@/routes/_authenticated/company/branches/new'
+
 export const BranchList = () => {
   const { t } = useTranslation('common')
   const { openDialog } = useConfirmDialog()
@@ -23,25 +22,13 @@ export const BranchList = () => {
 
   const navigate = useNavigate()
 
-  const handleDeleteClick = (id: GridRowId) => () =>
-    openDialog(
-      'Confirm Deletion',
-      'Are you sure you want to delete this item?',
-      () => {
-        deleteBranch(id.toString())
-      },
-      () => {
-        console.log('Deletion cancelled')
-      }
-    )
-    const safeAccessor = (accessorFn: (row: any) => any, columnName: string) => {
-    return (row: any) => {
+
+  const safeAccessor = <T, >(accessorFn: (row: T) => unknown, columnName: string) => {
+    return (row: T) => {
       try {
-        const result = accessorFn(row)
-        console.log(columnName, result)
-        return result
+        return accessorFn(row)
       } catch (error) {
-        console.error(error)
+        console.error(`Error in column "${columnName}"`, error, row)
         return 'Error'
       }
     }
@@ -59,12 +46,24 @@ export const BranchList = () => {
       toast.success('Branch Deleted')
     }
   })
-  
+  const handleDeleteClick = useCallback(
+    (id: GridRowId) => () =>
+      openDialog(
+        'Confirm Deletion',
+        'Are you sure you want to delete this item?',
+        () => {
+          deleteBranch(id.toString())
+        },
+        () => {
+          console.log('Deletion cancelled')
+        }
+      ),
+    [openDialog, deleteBranch])
   const columns = useMemo<ColumnDef<Branch>[]>(
     () => [
       {
         header: t('name'),
-        accessorFn: safeAccessor((row) => row.name || t('-'), 'name'),
+        accessorFn: safeAccessor((row) => row.name || t('-'), 'name')
       },
       {
         header: t('actions'),
@@ -81,7 +80,7 @@ export const BranchList = () => {
         )
       }
     ],
-    [t]
+    [t, handleDeleteClick]
   )
 
   const BranchListActions = () => {

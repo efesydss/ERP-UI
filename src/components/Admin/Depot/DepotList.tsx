@@ -13,7 +13,7 @@ import { toast } from 'react-toastify'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import { BaseTable } from '@/components/Common/Table/BaseTable'
 import { useConfirmDialog } from '@/utils/hooks/useConfirmDialogContext'
-
+import { useCallback } from 'react'
 
 export const DepotList = () => {
   const { t } = useTranslation('common')
@@ -22,17 +22,6 @@ export const DepotList = () => {
 
   const navigate = useNavigate()
 
-  const handleDeleteClick = (id: GridRowId) => () =>
-    openDialog(
-      'Confirm Deletion',
-      'Are you sure you want to delete this item?',
-      () => {
-        deleteDepot(id.toString())
-      },
-      () => {
-        console.log('Deletion cancelled')
-      }
-    )
   const { mutate: deleteDepot } = useMutation({
     mutationFn: async (depotId: string) => {
       return await apiRequest({
@@ -46,6 +35,21 @@ export const DepotList = () => {
       toast.success('DepotResponse Deleted')
     }
   })
+  const handleDeleteClick = useCallback(
+  (id: GridRowId) => () =>
+    openDialog(
+      'Confirm Deletion',
+      'Are you sure you want to delete this item?',
+      () => {
+        deleteDepot(id.toString())
+      },
+      () => {
+        console.log('Deletion cancelled')
+      }
+    ),
+  [openDialog, deleteDepot]
+)
+
   // 2. Tablo sütunlarını tanımlama
   const columns = useMemo<ColumnDef<DepotResponse>[]>(
     () => [
