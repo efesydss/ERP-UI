@@ -116,7 +116,7 @@ export const AssignmentCardList = () => {
         accessorFn: safeAccessor((row) => row.maintenancePeriodEnum || t('-'), 'maintenancePeriodEnum')
       },
       {
-        header: t('actions'),  // Actions başlığı
+        header: t('actions'),
         id: 'actions',
         cell: ({ row }) => (
 

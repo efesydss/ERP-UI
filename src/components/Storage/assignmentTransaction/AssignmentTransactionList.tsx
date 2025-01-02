@@ -24,7 +24,7 @@ export const AssignmentTransactionList = () => {
   const { mutate: deleteAssignmentTransaction } = useMutation({
     mutationFn: async (assignmentTransactionId: string) => {
       return await apiRequest({
-        endpoint: 'assignmentTransactionDelete',//todo ef
+        endpoint: 'assignmentTransactionDelete',
         method: 'DELETE',
         params: { assignmentTransactionId: assignmentTransactionId?.toString() ?? '0' }
       })
@@ -77,7 +77,7 @@ export const AssignmentTransactionList = () => {
       },
 
       {
-        header: t('actions'),  // Actions başlığı
+        header: t('actions'),
         id: 'actions',
         cell: ({ row }) => (
 

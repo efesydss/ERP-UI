@@ -48,7 +48,6 @@ export const UnitList = () => {
         }
       ),
     [openDialog, deleteUnit])
-  // 2. Tablo sütunlarını tanımlama
   const columns = useMemo<ColumnDef<Unit>[]>(
     () => [
       {

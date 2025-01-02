@@ -16,20 +16,19 @@ interface FormAssignmentCardProps {
 }
 
 const assignmentStatusOptions = Object.values(AssignmentStatusEnum).map((value) => ({
-  label: value, // Label genelde Enum'daki değer oluyor
-  value: value  // Value da aynı Enum değeriyle eşleşiyor
+  label: value,
+  value: value
 }))
 
 
 const warrantyPeriodOptions = Object.values(WarrantyPeriodEnum).map((value) => ({
-  label: value, // Label genelde Enum'daki değer oluyor
-  value: value  // Value da aynı Enum değeriyle eşleşiyor
+  label: value,
+  value: value
 }))
 
-//maintenancePeriodEnum
 const maintenancePeriodEnum = Object.values(MaintenancePeriodEnum).map((value) => ({
-  label: value, // Label genelde Enum'daki değer oluyor
-  value: value  // Value da aynı Enum değeriyle eşleşiyor
+  label: value,
+  value: value
 }))
 
 export const AssignmentCardForm = (props: FormAssignmentCardProps) => {

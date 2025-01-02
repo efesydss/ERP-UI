@@ -59,7 +59,7 @@ export const CashAccountAdd = () => {
   const onFormSubmit = async (values: CashAccountResponse) => {
     console.log('Form values before mutation:', values);
 
-    //TODO ef : buraya değerler boş geliyor.
+
     await mutateAsync({
       ...values,
       name: capitalizeFirstLetter(values.name),

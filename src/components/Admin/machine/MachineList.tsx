@@ -66,7 +66,7 @@ export const MachineList = () => {
         accessorFn: (row) => row.employee?.name || t('noEmployee')
       },
       {
-        header: t('actions'),  // Actions başlığı
+        header: t('actions'),
         id: 'actions',
         cell: ({ row }) => (
           <Button

@@ -215,10 +215,9 @@ export const CashAccountGrid = (props: BaseGridProps) => {
 
     const cashAccountDetails: CashAccountBaseProps = {
       id,
-      code: newRow.code, // yeni satırdan code bilgisi
-      name: newRow.name, // yeni satırdan name bilgisi
-      currency: newRow.currency // yeni satırdan currency bilgisi
-      // Eğer CashAccount için gerekli başka alanlar varsa buraya ekle
+      code: newRow.code,
+      name: newRow.name,
+      currency: newRow.currency
     }
 
 
@@ -258,7 +257,7 @@ export const CashAccountGrid = (props: BaseGridProps) => {
     {
       field: 'currency',
       headerName: t('common:currency'),
-      valueOptions: enumToOptions(Currency), // Currency enum'undan değerler
+      valueOptions: enumToOptions(Currency),
       type: 'singleSelect',
       width: 150,
       editable: true

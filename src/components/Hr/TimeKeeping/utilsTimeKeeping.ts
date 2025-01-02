@@ -2,12 +2,6 @@ import { DynamicInputFieldProps } from '@/components/Common/Form/Input/DynamicFi
 import { EmployeeOverTime } from '@/components/Hr/TimeKeeping/typesTimeKeeping'
 import { EmployeePaymentProps } from '@/components/Hr/typesHr'
 
-//todo: check 'nested' type, is that still relevant for bankAccount
-/*{
-    name: 'bankAccount',
-    type: 'nested',
-    fields: bankAccountFields
-  }*/
 
 export interface DynamicFieldValues {
   overtimes: EmployeeOverTime[]

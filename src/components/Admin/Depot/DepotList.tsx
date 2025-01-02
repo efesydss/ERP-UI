@@ -36,21 +36,21 @@ export const DepotList = () => {
     }
   })
   const handleDeleteClick = useCallback(
-  (id: GridRowId) => () =>
-    openDialog(
-      'Confirm Deletion',
-      'Are you sure you want to delete this item?',
-      () => {
-        deleteDepot(id.toString())
-      },
-      () => {
-        console.log('Deletion cancelled')
-      }
-    ),
-  [openDialog, deleteDepot]
-)
+    (id: GridRowId) => () =>
+      openDialog(
+        'Confirm Deletion',
+        'Are you sure you want to delete this item?',
+        () => {
+          deleteDepot(id.toString())
+        },
+        () => {
+          console.log('Deletion cancelled')
+        }
+      ),
+    [openDialog, deleteDepot]
+  )
 
-  // 2. Tablo sütunlarını tanımlama
+
   const columns = useMemo<ColumnDef<DepotResponse>[]>(
     () => [
       {
@@ -58,7 +58,7 @@ export const DepotList = () => {
         accessorKey: 'name'
       },
       {
-        header: t('actions'),  // Actions başlığı
+        header: t('actions'),
         id: 'actions',
         cell: ({ row }) => (
           <Button
@@ -72,7 +72,7 @@ export const DepotList = () => {
         )
       }
     ],
-    [t,handleDeleteClick]
+    [t, handleDeleteClick]
   )
 
   const DepotListActions = () => {
