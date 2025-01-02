@@ -17,7 +17,7 @@ const initialSection: Section = {
   employee: undefined,
   department: undefined,
   sectionType:undefined,
-  email: '',
+
 }
   export const SectionAdd = () => {
     const navigate = useNavigate()
