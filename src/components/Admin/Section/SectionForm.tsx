@@ -5,7 +5,7 @@ import { Input } from '@/components/Common/Form/Input/Input'
 import { Box, Button, Paper } from '@mui/material'
 import { FaCheck } from 'react-icons/fa6'
 import { BaseSelect } from '@/components/Common/Form/Select/BaseSelect'
-import { SectionTypeEnum } from '@/components/Storage/typesEnums'
+import { SectionTypeEnum } from '@/components/Admin/Section/types/typesSection'
 
 interface FormSectionProps {
   sectionId?: number

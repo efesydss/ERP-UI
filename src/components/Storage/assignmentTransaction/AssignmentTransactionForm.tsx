@@ -1,10 +1,10 @@
 import { useTranslation } from 'react-i18next'
-import { AssignmentStatusEnum } from '@/components/Storage/typesEnums'
 import { Box, Button, Paper } from '@mui/material'
 import { FaCheck } from 'react-icons/fa6'
 import { FormGrid } from '@/components/Common/Form/FormGrid/FormGrid'
 import { BaseSelect } from '@/components/Common/Form/Select/BaseSelect'
 import { Input } from '@/components/Common/Form/Input/Input'
+import { AssignmentStatusEnum } from '@/components/Storage/assignmentCard/types/typesAssignmentCard'
 
 interface FormAssignmenttransactionProps {
   assignmentTransactionId?: number
