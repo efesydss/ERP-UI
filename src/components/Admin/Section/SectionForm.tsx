@@ -9,7 +9,6 @@ import { SectionTypeEnum } from '@/components/Storage/typesEnums'
 interface FormSectionProps {
   sectionId?: number
 }
-//todo ef : email alanını kaldır ..
 export const SectionForm = (props: FormSectionProps) => {
   console.log(props)
   const { t } = useTranslation()
@@ -43,7 +42,7 @@ export const SectionForm = (props: FormSectionProps) => {
               name="department"
               endpoint="departments"
             />
-            <Input name={'email'} />
+
           </FormGrid>
 
         </FormGrid>

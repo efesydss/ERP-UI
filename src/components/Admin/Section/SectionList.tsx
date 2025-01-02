@@ -66,10 +66,7 @@ export const SectionList = () => {
         header: t('name'),
         accessorFn: safeAccessor((row) => row.name, 'name')
       },
-      {
-        header: t('email'),
-        accessorFn: safeAccessor((row) => row.email, 'email')
-      },
+
       {
         header: t('employee'),
         accessorFn: safeAccessor((row) => row.employee?.name || t('noEmployee'), 'employee')
@@ -93,7 +90,7 @@ export const SectionList = () => {
         )
       }
     ],
-    [t]
+    [t, handleDeleteClick]
   )
 
   const SectionListActions = () => {

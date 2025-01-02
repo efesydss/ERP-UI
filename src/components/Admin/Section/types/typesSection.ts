@@ -7,5 +7,4 @@ export interface Section {
   employee?:EmployeeResponse;
   department?:Department;
   sectionType?:SectionType
-  email: string;
 }
