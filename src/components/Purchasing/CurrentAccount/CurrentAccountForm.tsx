@@ -7,6 +7,7 @@ import { FaCheck } from 'react-icons/fa6'
 import { BaseSelect } from '@/components/Common/Form/Select/BaseSelect'
 import { SectorEnum } from '@/components/Purchasing/CurrentAccount/types/typesCurrentAccount'
 import { Checkbox } from '@/components/Common/Form/Checkbox/Checkbox'
+
 interface FormCurrentAccountProps {
   currentAccountId?: number
 }

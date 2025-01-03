@@ -59,18 +59,18 @@ export const CurrentAccountTransactionForm = (props: FormCurrentAccountTransacti
               name={'transactionType'}
               isEnum={true}
               options={warrantyPeriodOptions}
-              selectLabel={'transactionType'}
+              selectLabel={t('common:transactionType')}
             />
             <BaseSelect
               name={'paymentType'}
               isEnum={true}
               options={paymentOptions}
-              selectLabel={'paymentType'} />
+              selectLabel={t('common:paymentType')} />
             <BaseSelect
               name={'currency'}
               isEnum={true}
               options={currOptions}
-              selectLabel={'currency'} />
+              selectLabel={t('common:currency')} />
             <BaseSelect
               name={'bankAccount'}
               endpoint={'bankAccounts'} />
@@ -83,7 +83,7 @@ export const CurrentAccountTransactionForm = (props: FormCurrentAccountTransacti
               name={'debtType'}
               isEnum={true}
               options={debtPeriodOptions}
-              selectLabel={'debtType'}
+              selectLabel={t('common:debtType')}
             />
             <Input
               name={'amount'}
