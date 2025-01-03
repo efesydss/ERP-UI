@@ -103,10 +103,9 @@ const initialChangeMe: ChangeMe = {
     const listTemplate = `
 import { useTranslation } from 'react-i18next'
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
-
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import { BaseTable } from '@/components/Common/Table/BaseTable'
-import React, { useMemo } from 'react'
+import React, { useMemo,useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { useConfirmDialog } from '@/utils/hooks/useConfirmDialogContext'
@@ -120,32 +119,21 @@ export const ChangeMeList = () => {
   const { t } = useTranslation('common')
   const { openDialog } = useConfirmDialog()
   const queryClient = useQueryClient()
-
   const navigate = useNavigate()
 
-  const handleDeleteClick = (id: GridRowId) => () =>
-    openDialog(
-      'Confirm Deletion',
-      'Are you sure you want to delete this item?',
-      () => {
-        deleteChangeMe(id.toString())
-      },
-      () => {
-        console.log('Deletion cancelled')
-      }
-    )
-    const safeAccessor = (accessorFn: (row: any) => any, columnName: string) => {
-    return (row: any) => {
+  
+    const safeAccessor = <T, >(accessorFn: (row: T) => unknown, columnName: string) => {
+    return (row: T) => {
       try {
-        const result = accessorFn(row)
-        console.log(columnName, result)
-        return result
+        console.log(columnName)
+        return accessorFn(row)
       } catch (error) {
-        console.error(error)
+        
         return 'Error'
       }
     }
   }
+  
   const { mutate: deleteChangeMe } = useMutation({
     mutationFn: async (ChangeMeId: string) => {
       return await apiRequest({
@@ -159,16 +147,28 @@ export const ChangeMeList = () => {
       toast.success('ChangeMe Deleted')
     }
   })
-  
+  const handleDeleteClick = useCallback(
+    (id: GridRowId) => () =>
+      openDialog(
+        'Confirm Deletion',
+        'Are you sure you want to delete this item?',
+        () => {
+          deleteChangeMe(id.toString())
+        },
+        () => {
+          console.log('Deletion cancelled')
+        }
+      ),
+    [openDialog, deleteChangeMe])
   const columns = useMemo<ColumnDef<ChangeMe>[]>(
     () => [
       {
         header: t('name'),
-        accessorKey: 'name'
+         accessorFn: safeAccessor((row) => row.bankName, 'bankName')
       },
       {
         header: t('code'),
-        accessorKey: 'code'
+        accessorFn: safeAccessor((row) => row.bankName, 'bankName')
       },
       {
         header: t('actions'),
@@ -185,7 +185,7 @@ export const ChangeMeList = () => {
         )
       }
     ],
-    [t]
+    [t,handleDeleteClick]
   )
 
   const ChangeMeListActions = () => {
@@ -225,15 +225,14 @@ import { FormGrid } from '@/components/Common/Form/FormGrid/FormGrid'
 import { Input } from '@/components/Common/Form/Input/Input'
 import { Box, Button, Paper } from '@mui/material'
 import { FaCheck } from 'react-icons/fa6'
+
 interface FormChangeMeProps {
   ChangeMeId?: number
-
 }
 
 export const ChangeMeForm = (props: FormChangeMeProps) => {
   console.log(props)
   const { t } = useTranslation()
-
 
   return (
     <>

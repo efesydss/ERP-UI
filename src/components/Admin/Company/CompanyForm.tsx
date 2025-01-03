@@ -25,7 +25,6 @@ export const CompanyForm = (props: FormCompanyProps) => {
         >
 
           <FormGrid>
-            <Input name={'id'} />
             <Input name={'code'} />
             <Input name={'title'} />
             <Input name={'address'} />

@@ -1,12 +1,9 @@
-
 import { useTranslation } from 'react-i18next'
-import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
-
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import { BaseTable } from '@/components/Common/Table/BaseTable'
-import React, { useMemo } from 'react'
+import React, { useMemo, useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import { useNavigate } from '@tanstack/react-router'
+//import { useNavigate } from '@tanstack/react-router'
 import { useConfirmDialog } from '@/utils/hooks/useConfirmDialogContext'
 import { apiRequest } from '@/utils/apiDefaults'
 import { useMutation } from '@tanstack/react-query'
@@ -15,34 +12,21 @@ import { Button } from '@mui/material'
 import { toast } from 'react-toastify'
 import { ColumnDef } from '@tanstack/react-table'
 import { BankAccount } from '@/components/Finance/BankAccount/types/typesBankAccount'
-import { Route } from '@/routes/_authenticated/finance/bankAccounts/new'
 
 export const BankAccountList = () => {
   const { t } = useTranslation('common')
   const { openDialog } = useConfirmDialog()
   const queryClient = useQueryClient()
 
-  const navigate = useNavigate()
+  //const navigate = useNavigate()
 
-  const handleDeleteClick = (id: GridRowId) => () =>
-    openDialog(
-      'Confirm Deletion',
-      'Are you sure you want to delete this item?',
-      () => {
-        deleteBankAccount(id.toString())
-      },
-      () => {
-        console.log('Deletion cancelled')
-      }
-    )
-    const safeAccessor = (accessorFn: (row: any) => any, columnName: string) => {
-    return (row: any) => {
+
+  const safeAccessor = <T, >(accessorFn: (row: T) => unknown, columnName: string) => {
+    return (row: T) => {
       try {
-        const result = accessorFn(row)
-        console.log(columnName, result)
-        return result
+        return accessorFn(row)
       } catch (error) {
-        console.error(error)
+        console.error(`Error in column "${columnName}"`, error, row)
         return 'Error'
       }
     }
@@ -60,10 +44,22 @@ export const BankAccountList = () => {
       toast.success('BankAccount Deleted')
     }
   })
-  
+  const handleDeleteClick = useCallback(
+    (id: GridRowId) => () =>
+      openDialog(
+        'Confirm Deletion',
+        'Are you sure you want to delete this item?',
+        () => {
+          deleteBankAccount(id.toString())
+        },
+        () => {
+          console.log('Deletion cancelled')
+        }
+      ),
+    [openDialog, deleteBankAccount])
   const columns = useMemo<ColumnDef<BankAccount>[]>(
     () => [
-     //accountNumber,iban,currency
+
       {
         header: t('accountNumber'),
         accessorFn: safeAccessor((row) => row.accountNumber, 'accountNumber')
@@ -91,33 +87,32 @@ export const BankAccountList = () => {
         )
       }
     ],
-    [t]
+    [t, handleDeleteClick]
   )
 
-  const BankAccountListActions = () => {
+  /*const BankAccountListActions = () => {
     return (
       <>
         <Button
           variant={'contained'}
           size={'small'}
           startIcon={<PersonAddAlt1Icon />}
-          onClick={() => navigate({ to: Route.fullPath })}
-        >
+          onClick={() => navigate({ to: Route.fullPath)}>//parametre geçmeliyim ???
           {t('newBankAccount')}
         </Button>
       </>
     )
-  }
+  }*/
   const endpoint = 'bankAccounts'
 
   return (
     <>
       <PageTitle
         title={t('BankAccountList')}
-        actions={<BankAccountListActions />}
+       // actions={<BankAccountListActions />}
       />
 
-      <h1>Burada böyle bir path var nasıl olacak  /api/finance/bankBranch/id/accounts </h1>
+      <h1>Burada böyle bir path var nasıl olacak /api/finance/bankBranch/id/accounts </h1>
       <BaseTable<BankAccount> endpoint={endpoint} columns={columns}
 
       ></BaseTable>

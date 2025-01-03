@@ -1,7 +1,10 @@
- import {
-  Currency
- } from '@/components/Storage/typesEnums';
-
+export enum Currency {
+    TRY='TRY',
+    USD='USD',
+    EUR='EUR',
+    AUD='AUD',
+    GBP='GBP',
+    }
 export interface BankAccount {
   id: number;
   accountNumber: string;

@@ -1,9 +1,8 @@
 import { useTranslation } from 'react-i18next'
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
-
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import { BaseTable } from '@/components/Common/Table/BaseTable'
-import React, { useMemo } from 'react'
+import React, { useMemo, useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { useConfirmDialog } from '@/utils/hooks/useConfirmDialogContext'
@@ -23,25 +22,13 @@ export const SectionList = () => {
 
   const navigate = useNavigate()
 
-  const handleDeleteClick = (id: GridRowId) => () =>
-    openDialog(
-      'Confirm Deletion',
-      'Are you sure you want to delete this item?',
-      () => {
-        deleteSection(id.toString())
-      },
-      () => {
-        console.log('Deletion cancelled')
-      }
-    )
-  const safeAccessor = (accessorFn: (row: any) => any, columnName: string) => {
-    return (row: any) => {
+
+  const safeAccessor = <T, >(accessorFn: (row: T) => unknown, columnName: string) => {
+    return (row: T) => {
       try {
-        const result = accessorFn(row)
-        console.log(columnName, result)
-        return result
+        return accessorFn(row)
       } catch (error) {
-        console.error(error)
+        console.error(`Error in column "${columnName}"`, error, row)
         return 'Error'
       }
     }
@@ -59,21 +46,32 @@ export const SectionList = () => {
       toast.success('Section Deleted')
     }
   })
-
+  const handleDeleteClick = useCallback(
+    (id: GridRowId) => () =>
+      openDialog(
+        'Confirm Deletion',
+        'Are you sure you want to delete this item?',
+        () => {
+          deleteSection(id.toString())
+        },
+        () => {
+          console.log('Deletion cancelled')
+        }
+      ),
+    [openDialog, deleteSection])
   const columns = useMemo<ColumnDef<Section>[]>(
     () => [
       {
         header: t('name'),
         accessorFn: safeAccessor((row) => row.name, 'name')
       },
-
+      {
+        header: t('sectionType'),
+        accessorFn: safeAccessor((row) => row.sectionType || t('noSectionType'), 'sectionType')
+      },
       {
         header: t('employee'),
         accessorFn: safeAccessor((row) => row.employee?.name || t('noEmployee'), 'employee')
-      },
-      {
-        header: t('department'),
-        accessorFn: safeAccessor((row) => row.department?.name || t('noDepartment'), 'department')
       },
       {
         header: t('actions'),

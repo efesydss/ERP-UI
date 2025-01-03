@@ -1,7 +1,7 @@
 import React from 'react';
 import { apiRequest } from '@/utils/apiDefaults'
 import { t } from 'i18next'
-import { useNavigate } from '@tanstack/react-router'
+//import { useNavigate } from '@tanstack/react-router'
 import { useMutation } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 import { toast } from 'react-toastify'
@@ -9,7 +9,7 @@ import { Container } from '@mui/material'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import { BaseForm } from '@/components/Common/Form/BaseForm'
 import {BankAccount} from '@/components/Finance/BankAccount/types/typesBankAccount'
-import {Route} from '@/routes/_authenticated/finance/bankAccounts/'
+//import {Route} from '@/routes/_authenticated/finance/branches/$id/bankAccounts/'
 import { BankAccountForm } from '@/components/Finance/BankAccount/BankAccountForm'
 
 const initialBankAccount: BankAccount = {
@@ -19,7 +19,7 @@ const initialBankAccount: BankAccount = {
   currency: undefined,
 }
   export const BankAccountAdd = () => {
-    const navigate = useNavigate()
+  //  const navigate = useNavigate()
     const { mutateAsync } = useMutation({
       mutationFn: (values: BankAccount) =>
         apiRequest({
@@ -27,7 +27,7 @@ const initialBankAccount: BankAccount = {
           payload: values
         }),
       onSuccess: () => {
-        navigate({ to: Route.fullPath })
+        //navigate({ to: Route.fullPath })
         toast.success('BankAccount Created')
       },
       onError: (

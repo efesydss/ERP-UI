@@ -88,7 +88,7 @@ export const SidebarHeader = styled('div')(({ theme }) => ({
 export const Main = styled(Box)(({ theme }) => ({
   flexGrow: 1,
   padding: theme.spacing(3)
-  //width: `calc(100% - ${drawerWidth}px)`
+
 }))
 
 export const ListItem = styled(MuiListItem, {

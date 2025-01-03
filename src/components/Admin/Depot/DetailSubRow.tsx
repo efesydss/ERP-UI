@@ -73,7 +73,6 @@ export const DetailsSubRow = <TData, >(props: DetailsSubRowProps<TData>) => {
     <>
       <BaseForm<DepotResponse>
         initialValues={data}
-        //validationSchema={depotValidationScheme}
         component={<FormDepot />}
         onSubmit={onFormSubmit}
       />

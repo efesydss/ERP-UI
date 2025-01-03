@@ -2,8 +2,8 @@ import { OptionType } from '@/components/Common/Form/Select/BaseSelect'
 
 interface FilterSelectProps {
   options: OptionType[]
-  value: string
-  onChange: (value: string) => void
+  value: string | number | boolean
+  onChange: (value: string | number | boolean) => void
   onSetVisible: (value: boolean) => void
 }
 
@@ -13,16 +13,17 @@ export const FilterSelect = (props: FilterSelectProps) => {
     <select
       style={{ width: '100%' }}
       onChange={(e) => {
-        onChange(e.target.value)
+        const selectedValue = e.target.value
+        onChange(selectedValue === 'true' ? true : selectedValue === 'false' ? false : selectedValue)
         onSetVisible(false)
       }}
-      value={value}
+      value={value.toString()}
     >
       <option value=''>Tümü</option>
       {options.map((option) => (
         <option
-          key={option.value}
-          value={option.value}
+          key={option.value.toString()}
+          value={option.value.toString()}
         >
           {option.label}
         </option>

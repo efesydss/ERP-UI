@@ -2,12 +2,11 @@ import { useTranslation } from 'react-i18next'
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import { BaseTable } from '@/components/Common/Table/BaseTable'
-import React, { useMemo } from 'react'
-import { useQueryClient } from '@tanstack/react-query'
+import React, { useCallback, useMemo } from 'react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { useConfirmDialog } from '@/utils/hooks/useConfirmDialogContext'
 import { apiRequest } from '@/utils/apiDefaults'
-import { useMutation } from '@tanstack/react-query'
 import { GridRowId } from '@mui/x-data-grid'
 import { Button } from '@mui/material'
 import { toast } from 'react-toastify'
@@ -22,17 +21,7 @@ export const CompanyList = () => {
 
   const navigate = useNavigate()
 
-  const handleDeleteClick = (id: GridRowId) => () =>
-    openDialog(
-      'Confirm Deletion',
-      'Are you sure you want to delete this item?',
-      () => {
-        deleteCompany(id.toString())
-      },
-      () => {
-        console.log('Deletion cancelled')
-      }
-    )
+
   const { mutate: deleteCompany } = useMutation({
     mutationFn: async (companyId: string) => {
       return await apiRequest({
@@ -46,11 +35,23 @@ export const CompanyList = () => {
       toast.success('Company Deleted')
     }
   })
-  const safeAccessor = <T, >(accessorFn: (row: T) => any, columnName: string) => {
+  const handleDeleteClick = useCallback(
+    (id: GridRowId) => () =>
+      openDialog(
+        'Confirm Deletion',
+        'Are you sure you want to delete this item?',
+        () => {
+          deleteCompany(id.toString())
+        },
+        () => {
+          console.log('Deletion cancelled')
+        }
+      ),
+    [openDialog, deleteCompany])
+  const safeAccessor = <T, >(accessorFn: (row: T) => unknown, columnName: string) => {
     return (row: T) => {
       try {
-        const result = accessorFn(row)
-        return result
+        return accessorFn(row)
       } catch (error) {
         console.error(`Error in column "${columnName}"`, error, row)
         return 'Error'
@@ -106,7 +107,7 @@ export const CompanyList = () => {
         )
       }
     ],
-    [t]
+    [t,handleDeleteClick]
   )
 
 

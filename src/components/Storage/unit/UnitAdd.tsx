@@ -13,7 +13,7 @@ import { UnitForm } from '@/components/Storage/unit/UnitForm'
 
 const initialUnit: Unit = {
   id: 0,
-  name: ' ',
+  name: ' '
 }
 export const UnitAdd = () => {
   const navigate = useNavigate()
@@ -53,7 +53,7 @@ export const UnitAdd = () => {
         <BaseForm
           initialValues={initialUnit}
           onSubmit={onFormSubmit}
-          component={<UnitForm />}//todo ef create
+          component={<UnitForm />}
         />
       </Container>
     </>

@@ -2,7 +2,6 @@ import { NamedEntity } from '@/utils/sharedTypes'
 import { VacationBaseProps } from '@/components/Hr/Vacations/typeVacations'
 import { EmployeePaymentProps } from '@/components/Hr/typesHr'
 
-//todo: employee can be null
 export interface EmployeeTimeKeepingSpan {
   employee?: NamedEntity
   year: number
@@ -30,7 +29,6 @@ export enum OverTimePercentage {
   P200 = 'P200'
 }
 
-//todo: typo
 export interface EmployeeOverTime {
   id?: number
   description?: string

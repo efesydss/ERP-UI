@@ -9,7 +9,7 @@ import { apiRoutes } from '@/utils/apiRoutes'
 import { getSelectStyles } from '@/components/Common/Form/Select/stylesBaseSelect'
 
 export interface OptionType {
-  value: number | string
+  value: number | string | boolean
   label: string
 }
 
@@ -66,9 +66,7 @@ export const BaseSelect = (props: BaseSelectProps) => {
     enabled: !options && !!endpoint
   })
 
-  //todo: refactor isEnum condition
   //todo: onChange only supports singleValue for now
-
   const handleChange = (newValue: MultiValue<OptionType> | SingleValue<OptionType> | null) => {
     if (isEnum) {
       if (newValue === null) {
