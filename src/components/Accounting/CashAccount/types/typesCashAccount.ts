@@ -2,7 +2,7 @@ export interface CashAccount {
   id: number;
   code: string;
   name: string;
-  currency: Currency;
+  currency?: Currency;
 }
 
 export enum Currency {

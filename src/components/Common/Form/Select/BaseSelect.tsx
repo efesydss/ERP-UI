@@ -9,7 +9,7 @@ import { apiRoutes } from '@/utils/apiRoutes'
 import { getSelectStyles } from '@/components/Common/Form/Select/stylesBaseSelect'
 
 export interface OptionType {
-  value: number | string
+  value: number | string | boolean
   label: string
 }
 

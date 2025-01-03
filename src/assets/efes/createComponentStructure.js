@@ -121,20 +121,11 @@ export const ChangeMeList = () => {
   const queryClient = useQueryClient()
   const navigate = useNavigate()
 
-  const handleDeleteClick = (id: GridRowId) => () =>
-    openDialog(
-      'Confirm Deletion',
-      'Are you sure you want to delete this item?',
-      () => {
-        deleteChangeMe(id.toString())
-      },
-      () => {
-        console.log('Deletion cancelled')
-      }
-    )
+  
     const safeAccessor = <T, >(accessorFn: (row: T) => unknown, columnName: string) => {
     return (row: T) => {
       try {
+        console.log(columnName)
         return accessorFn(row)
       } catch (error) {
         
@@ -156,7 +147,19 @@ export const ChangeMeList = () => {
       toast.success('ChangeMe Deleted')
     }
   })
-  
+  const handleDeleteClick = useCallback(
+    (id: GridRowId) => () =>
+      openDialog(
+        'Confirm Deletion',
+        'Are you sure you want to delete this item?',
+        () => {
+          deleteChangeMe(id.toString())
+        },
+        () => {
+          console.log('Deletion cancelled')
+        }
+      ),
+    [openDialog, deleteChangeMe])
   const columns = useMemo<ColumnDef<ChangeMe>[]>(
     () => [
       {

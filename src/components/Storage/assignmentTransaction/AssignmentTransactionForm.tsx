@@ -29,6 +29,7 @@ export const AssignmentTransactionForm = (props: FormAssignmenttransactionProps)
           <FormGrid>
             <BaseSelect
               name={'assignmentStatusEnum'}
+              isEnum={true}
               options={assignmentStatusOptions}
               selectLabel={'Assignment Status'}
             />

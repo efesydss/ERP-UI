@@ -12,12 +12,26 @@ export const apiRoutes = {
 
 
 
-  //Cash Account
+  // Accounting / Cash Account
   cashAccounts:'accounting/cashAccounts',
   cashAccount:'accounting/cashAccount/{cashAccountId}',
   cashAccountAdd:'accounting/cashAccount',
   cashAccountDelete:'accounting/cashAccount/{cashAccountId}',
   cashAccountUpdate:'accounting/cashAccount/{cashAccountId}',
+
+   // Purchasing / Current Account
+    currentAccounts:'purchasing/currentAccounts',
+    currentAccount:'purchasing/currentAccount/{currentAccountId}',
+    currentAccountAdd:'purchasing/currentAccount',
+    currentAccountDelete:'purchasing/currentAccount/{currentAccountId}',
+    currentAccountUpdate:'purchasing/currentAccount/{currentAccountId}',
+
+    // Purchasing / Current Account Bank Account
+    currentAccountBankAccounts:'purchasing/currentAccountBankAccounts',
+    currentAccountBankAccount:'purchasing/currentAccountBankAccount/{currentAccountBankAccountId}',
+    currentAccountBankAccountAdd:'purchasing/currentAccountBankAccount',
+    currentAccountBankAccountDelete:'purchasing/currentAccountBankAccount/{currentAccountBankAccountId}',
+    currentAccountBankAccountUpdate:'purchasing/currentAccountBankAccount/{currentAccountBankAccountId}',
 
   //Admin / Depot 
   depots:'admin/depots',
