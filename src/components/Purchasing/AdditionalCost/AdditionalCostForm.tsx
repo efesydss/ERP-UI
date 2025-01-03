@@ -5,14 +5,19 @@ import { Input } from '@/components/Common/Form/Input/Input'
 import { Box, Button, Paper } from '@mui/material'
 import { FaCheck } from 'react-icons/fa6'
 import { BaseSelect } from '@/components/Common/Form/Select/BaseSelect'
+import { DefaultUnit } from '@/components/Purchasing/AdditionalCost/types/typesAdditionalCost'
 
-interface FormProjectProps {
-  projectId?: number
+interface FormAdditionalCostProps {
+  additionalCostId?: number
 }
 
-export const ProjectForm = (props: FormProjectProps) => {
+export const AdditionalCostForm = (props: FormAdditionalCostProps) => {
   console.log(props)
   const { t } = useTranslation()
+  const warrantyPeriodOptions = Object.values(DefaultUnit).map((value) => ({
+    label: value,
+    value: value
+  }))
 
   return (
     <>
@@ -22,26 +27,27 @@ export const ProjectForm = (props: FormProjectProps) => {
           isContainer
         >
           <FormGrid>
-            <BaseSelect
-              name="employee"
-              endpoint="employees"
-            />
-            <BaseSelect
-              name="currentAccount"
-              endpoint="currentAccounts"
-            />
-
-            <Input
-              name={'name'}
-              label={t('common:name')}
-              required
-            />
             <Input
               name={'code'}
               label={t('common:code')}
               required
             />
-
+            <Input
+              name={'description'}
+              label={t('common:description')}
+              required
+            />
+            <BaseSelect
+              name={'unit'}
+              isEnum={true}
+              options={warrantyPeriodOptions}
+              selectLabel={t('common:unit')}
+            />
+            <Input
+              name={'specialCode'}
+              label={t('common:specialCode')}
+              required
+            />
           </FormGrid>
 
         </FormGrid>

@@ -40,6 +40,20 @@ export const apiRoutes = {
     currentAccountBankAccountDelete:'purchasing/currentAccountBankAccount/{currentAccountBankAccountId}',
     currentAccountBankAccountUpdate:'purchasing/currentAccountBankAccount/{currentAccountBankAccountId}',
 
+    // Purchasing / Additional Cost
+    additionalCosts:'purchasing/additionalCosts',
+    additionalCost:'purchasing/additionalCost/{additionalCostId}',
+    additionalCostAdd:'purchasing/additionalCost',
+    additionalCostDelete:'purchasing/additionalCost/{additionalCostId}',
+    additionalCostUpdate:'purchasing/additionalCost/{additionalCostId}',
+
+    // Purchasing / Current Account Transaction
+    currentAccountTransactions:'purchasing/currentAccountTransactions',
+    currentAccountTransaction:'purchasing/currentAccountTransaction/{currentAccountTransactionId}',
+    currentAccountTransactionAdd:'purchasing/currentAccountTransaction',
+    currentAccountTransactionDelete:'purchasing/currentAccountTransaction/{currentAccountTransactionId}',
+    currentAccountTransactionUpdate:'purchasing/currentAccountTransaction/{currentAccountTransactionId}',
+
     // Production / Project
     projects:'production/projects',
     project:'production/project/{projectId}',
