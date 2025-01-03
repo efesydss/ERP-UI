@@ -137,12 +137,12 @@ export const ChangeMeList = () => {
       try {
         return accessorFn(row)
       } catch (error) {
-        console.error(\`Error in column "${columnName}"\`, error, row)
+        
         return 'Error'
       }
     }
   }
-  }
+  
   const { mutate: deleteChangeMe } = useMutation({
     mutationFn: async (ChangeMeId: string) => {
       return await apiRequest({
