@@ -11,7 +11,8 @@ import { BaseForm } from '@/components/Common/Form/BaseForm'
 import {
   CashAccountTransaction
 } from '@/components/Accounting/CashAccountTransaction/types/typesCashAccountTransaction'
-import { Route } from 
+import { Route } from '@/routes/_authenticated/accounting/cashAccountTransactions/'
+import { CashAccountTransactionForm } from '@/components/Accounting/CashAccountTransaction/CashAccountTransactionForm'
 const initialCashAccountTransaction: CashAccountTransaction = {
   id: 0,
   date: '',

@@ -6,6 +6,7 @@ import { Box, Button, Paper } from '@mui/material'
 import { FaCheck } from 'react-icons/fa6'
 import { BaseSelect } from '@/components/Common/Form/Select/BaseSelect'
 import { SectorEnum } from '@/components/Purchasing/CurrentAccount/types/typesCurrentAccount'
+import { Checkbox } from '@/components/Common/Form/Checkbox/Checkbox'
 interface FormCurrentAccountProps {
   currentAccountId?: number
 }
@@ -36,13 +37,10 @@ export const CurrentAccountForm = (props: FormCurrentAccountProps) => {
               label={t('common:title')}
               required
             />
-            <BaseSelect
+            <Checkbox
               name={'active'}
-              options={[
-                { label: t('common:true'), value: true },
-                { label: t('common:false'), value: false }
-              ]}
-              selectLabel={t('common:active')}
+              label={t('common:active')}
+
             />
             <BaseSelect
               name={'sector'}

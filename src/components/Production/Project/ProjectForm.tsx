@@ -5,17 +5,14 @@ import { Input } from '@/components/Common/Form/Input/Input'
 import { Box, Button, Paper } from '@mui/material'
 import { FaCheck } from 'react-icons/fa6'
 import { BaseSelect } from '@/components/Common/Form/Select/BaseSelect'
-import { DatePicker } from '@/components/Common/Form/DatePicker/DatePicker'
-import { Checkbox } from '@/components/Common/Form/Checkbox/Checkbox'
 
-interface FormCashAccountTransactionProps {
-  cashAccountTransactionId?: number
+interface FormProjectProps {
+  projectId?: number
 }
 
-export const CashAccountTransactionForm = (props: FormCashAccountTransactionProps) => {
+export const ProjectForm = (props: FormProjectProps) => {
   console.log(props)
   const { t } = useTranslation()
-
 
   return (
     <>
@@ -25,37 +22,26 @@ export const CashAccountTransactionForm = (props: FormCashAccountTransactionProp
           isContainer
         >
           <FormGrid>
-            <DatePicker name={'date'} />
-
             <BaseSelect
-              name="cashAccount"
-              endpoint="cashAccounts"
+              name="employee"
+              endpoint="employees"
             />
             <BaseSelect
               name="currentAccount"
               endpoint="currentAccounts"
             />
-
+            
             <Input
-              name={'description'}
-              label={t('common:description')}
-            />
-            <Checkbox
-              name={'debtStatus'}
-              label={t('common:debtStatus')}
-
+              name={'name'}
+              label={t('common:name')}
+              required
             />
             <Input
-              name={'total'}
-              label={t('common:total')}
-              type={'number'}
+              name={'code'}
+              label={t('common:code')}
+              required
             />
 
-            <Input
-              name={'balance'}
-              label={t('common:balance')}
-              type={'number'}
-            />
           </FormGrid>
 
         </FormGrid>

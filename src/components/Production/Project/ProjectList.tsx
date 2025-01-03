@@ -1,9 +1,8 @@
-
 import { useTranslation } from 'react-i18next'
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import { BaseTable } from '@/components/Common/Table/BaseTable'
-import React, { useMemo,useCallback } from 'react'
+import React, { useMemo, useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { useConfirmDialog } from '@/utils/hooks/useConfirmDialogContext'
@@ -13,40 +12,39 @@ import { GridRowId } from '@mui/x-data-grid'
 import { Button } from '@mui/material'
 import { toast } from 'react-toastify'
 import { ColumnDef } from '@tanstack/react-table'
-import { CashAccountTransaction } from '@/components/Accounting/CashAccountTransaction/types/typesCashAccountTransaction'
-import { Route } from '@/routes/_authenticated/accounting/cashAccountTransactions/new'
+import { Project } from '@/components/Production/Project/types/typesProject'
+import { Route } from '@/routes/_authenticated/production/projects/new'
 
-
-export const CashAccountTransactionList = () => {
+export const ProjectList = () => {
   const { t } = useTranslation('common')
   const { openDialog } = useConfirmDialog()
   const queryClient = useQueryClient()
   const navigate = useNavigate()
 
 
-    const safeAccessor = <T, >(accessorFn: (row: T) => unknown, columnName: string) => {
+  const safeAccessor = <T, >(accessorFn: (row: T) => unknown, columnName: string) => {
     return (row: T) => {
       try {
         console.log(columnName)
         return accessorFn(row)
       } catch (error) {
-        
+
         return 'Error'
       }
     }
   }
-  
-  const { mutate: deleteCashAccountTransaction } = useMutation({
-    mutationFn: async (CashAccountTransactionId: string) => {
+
+  const { mutate: deleteProject } = useMutation({
+    mutationFn: async (projectId: string) => {
       return await apiRequest({
-        endpoint: 'cashAccountTransactionDelete',
+        endpoint: 'projectDelete',
         method: 'DELETE',
-        params: { CashAccountTransactionId: CashAccountTransactionId?.toString() ?? '0' }
+        params: { projectId: projectId?.toString() ?? '0' }
       })
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['cashAccountTransactions'] })
-      toast.success('CashAccountTransaction Deleted')
+      queryClient.invalidateQueries({ queryKey: ['projects'] })
+      toast.success('Project Deleted')
     }
   })
   const handleDeleteClick = useCallback(
@@ -55,43 +53,30 @@ export const CashAccountTransactionList = () => {
         'Confirm Deletion',
         'Are you sure you want to delete this item?',
         () => {
-          deleteCashAccountTransaction(id.toString())
+          deleteProject(id.toString())
         },
         () => {
           console.log('Deletion cancelled')
         }
       ),
-    [openDialog, deleteCashAccountTransaction])
-  const columns = useMemo<ColumnDef<CashAccountTransaction>[]>(
+    [openDialog, deleteProject])
+  const columns = useMemo<ColumnDef<Project>[]>(
     () => [
-
       {
-        header: t('date'),
-        accessorFn: safeAccessor((row) => row.date, 'date')
+        header: t('name'),
+        accessorFn: safeAccessor((row) => row.code, 'bankName')
       },
       {
-        header: t('cashAccount'),
-        accessorFn: safeAccessor((row) => row.cashAccount?.name, 'cashAccount')
+        header: t('code'),
+        accessorFn: safeAccessor((row) => row.name, 'bankName')
       },
       {
         header: t('currentAccount'),
         accessorFn: safeAccessor((row) => row.currentAccount?.title, 'currentAccount')
       },
       {
-        header: t('description'),
-        accessorFn: safeAccessor((row) => row.description, 'description')
-      },
-      {
-        header: t('debtStatus'),
-        accessorFn: safeAccessor((row) => row.debtStatus, 'debtStatus')
-      },
-      {
-        header: t('total'),
-        accessorFn: safeAccessor((row) => row.total, 'total')
-      },
-      {
-        header: t('balance'),
-        accessorFn: safeAccessor((row) => row.balance, 'balance')
+        header: t('employee'),
+        accessorFn: safeAccessor((row) => row.employee?.name, 'employee')
       },
       {
         header: t('actions'),
@@ -108,10 +93,10 @@ export const CashAccountTransactionList = () => {
         )
       }
     ],
-    [t,handleDeleteClick]
+    [t, handleDeleteClick]
   )
 
-  const CashAccountTransactionListActions = () => {
+  const ProjectListActions = () => {
     return (
       <>
         <Button
@@ -120,21 +105,21 @@ export const CashAccountTransactionList = () => {
           startIcon={<PersonAddAlt1Icon />}
           onClick={() => navigate({ to: Route.fullPath })}
         >
-          {t('newCashAccountTransaction')}
+          {t('newProject')}
         </Button>
       </>
     )
   }
-  const endpoint = 'cashAccountTransactions'
+  const endpoint = 'projects'
 
   return (
     <>
       <PageTitle
-        title={t('CashAccountTransactionList')}
-        actions={<CashAccountTransactionListActions />}
+        title={t('ProjectList')}
+        actions={<ProjectListActions />}
       />
 
-      <BaseTable<CashAccountTransaction> endpoint={endpoint} columns={columns}
+      <BaseTable<Project> endpoint={endpoint} columns={columns}
 
       ></BaseTable>
 

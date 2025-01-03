@@ -1,10 +1,9 @@
 import { useTranslation } from 'react-i18next'
-import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import { BaseTable } from '@/components/Common/Table/BaseTable'
 import React, { useMemo, useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import { useNavigate } from '@tanstack/react-router'
+//import { useNavigate } from '@tanstack/react-router'
 import { useConfirmDialog } from '@/utils/hooks/useConfirmDialogContext'
 import { apiRequest } from '@/utils/apiDefaults'
 import { useMutation } from '@tanstack/react-query'
@@ -13,14 +12,13 @@ import { Button } from '@mui/material'
 import { toast } from 'react-toastify'
 import { ColumnDef } from '@tanstack/react-table'
 import { BankAccount } from '@/components/Finance/BankAccount/types/typesBankAccount'
-import { Route } from '@/routes/_authenticated/finance/bankAccounts/new'
 
 export const BankAccountList = () => {
   const { t } = useTranslation('common')
   const { openDialog } = useConfirmDialog()
   const queryClient = useQueryClient()
 
-  const navigate = useNavigate()
+  //const navigate = useNavigate()
 
 
   const safeAccessor = <T, >(accessorFn: (row: T) => unknown, columnName: string) => {
@@ -92,27 +90,26 @@ export const BankAccountList = () => {
     [t, handleDeleteClick]
   )
 
-  const BankAccountListActions = () => {
+  /*const BankAccountListActions = () => {
     return (
       <>
         <Button
           variant={'contained'}
           size={'small'}
           startIcon={<PersonAddAlt1Icon />}
-          onClick={() => navigate({ to: Route.fullPath })}
-        >
+          onClick={() => navigate({ to: Route.fullPath)}>//parametre geçmeliyim ???
           {t('newBankAccount')}
         </Button>
       </>
     )
-  }
+  }*/
   const endpoint = 'bankAccounts'
 
   return (
     <>
       <PageTitle
         title={t('BankAccountList')}
-        actions={<BankAccountListActions />}
+       // actions={<BankAccountListActions />}
       />
 
       <h1>Burada böyle bir path var nasıl olacak /api/finance/bankBranch/id/accounts </h1>

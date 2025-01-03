@@ -19,6 +19,13 @@ export const apiRoutes = {
   cashAccountDelete:'accounting/cashAccount/{cashAccountId}',
   cashAccountUpdate:'accounting/cashAccount/{cashAccountId}',
 
+   // Accounting / Cash Account Transaction
+    cashAccountTransactions:'accounting/cashAccountTransactions',
+    cashAccountTransaction:'accounting/cashAccountTransaction/{cashAccountTransactionId}',
+    cashAccountTransactionAdd:'accounting/cashAccountTransaction',
+    cashAccountTransactionDelete:'accounting/cashAccountTransaction/{cashAccountTransactionId}',
+    cashAccountTransactionUpdate:'accounting/cashAccountTransaction/{cashAccountTransactionId}',
+
    // Purchasing / Current Account
     currentAccounts:'purchasing/currentAccounts',
     currentAccount:'purchasing/currentAccount/{currentAccountId}',
@@ -32,6 +39,13 @@ export const apiRoutes = {
     currentAccountBankAccountAdd:'purchasing/currentAccountBankAccount',
     currentAccountBankAccountDelete:'purchasing/currentAccountBankAccount/{currentAccountBankAccountId}',
     currentAccountBankAccountUpdate:'purchasing/currentAccountBankAccount/{currentAccountBankAccountId}',
+
+    // Production / Project
+    projects:'production/projects',
+    project:'production/project/{projectId}',
+    projectAdd:'production/project',
+    projectDelete:'production/project/{projectId}',
+    projectUpdate:'production/project/{projectId}',
 
   //Admin / Depot 
   depots:'admin/depots',
