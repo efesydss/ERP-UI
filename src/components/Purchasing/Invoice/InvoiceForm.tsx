@@ -48,7 +48,7 @@ export const InvoiceForm = (props: FormInvoiceProps) => {
               name={'warehouseBranch'}
               isEnum={true}
               options={warehouseBranchOptions}
-              selectLabel={'warehouseBranch'}
+              selectLabel={t('common:warehouseBranch')}
             />
             <Input
               name={'specialCode'}
@@ -58,7 +58,7 @@ export const InvoiceForm = (props: FormInvoiceProps) => {
               name={'currency'}
               isEnum={true}
               options={currencyOptions}
-              selectLabel={'currency'}
+              selectLabel={t('common:currency')}
             />
             <Checkbox
               name={'fixedCurrency'}
@@ -66,41 +66,41 @@ export const InvoiceForm = (props: FormInvoiceProps) => {
             />
             <Input
               name={'fixedCurrencyValue'}
-              label={t('fixedCurrencyValue')}
+              label={t('common:fixedCurrencyValue')}
               required />
             //todo invoiceItems list select
 
             <Input
               name={'generalDiscount'}
-              label={t('generalDiscount')}
+              label={t('common:generalDiscount')}
             />
             <Input
               name={'unitDiscount'}
-              label={t('unitDiscount')}
+              label={t('common:unitDiscount')}
             />
             <Input
               name={'totalVat'}
-              label={t('totalVat')}
+              label={t('common:totalVat')}
             />
             <Input
               name={'totalAdditionalCosts'}
-              label={t('totalAdditionalCosts')}
+              label={t('common:totalAdditionalCosts')}
             />
 
             <Input
               name={'subTotal'}
-              label={t('subTotal')}
+              label={t('common:subTotal')}
             />
 
             <Input
               name={'finalTotal'}
-              label={t('finalTotal')}
+              label={t('common:finalTotal')}
             />
             <BaseSelect
               name={'invoiceTypeEnum'}
               isEnum={true}
               options={invoiceTypeEnumOptions}
-              selectLabel={'invoiceTypeEnum'}
+              selectLabel={t('common:invoiceTypeEnum')}
             />
 
           </FormGrid>
