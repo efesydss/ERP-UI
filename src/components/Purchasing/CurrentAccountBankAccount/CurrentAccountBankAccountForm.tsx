@@ -45,16 +45,15 @@ export const CurrentAccountBankAccountForm = (props: FormCurrentAccountBankAccou
               options={assignmentStatusOptions}
               selectLabel={t('common:Currency')}
             />
-            <Input
-              name={'bank'}
-              label={t('common:bank')}
-              required
+            <BaseSelect
+              name="bank"
+              endpoint="banks"
             />
-            <Input
-              name={'branch'}
-              label={t('common:branch')}
-              required
+            <BaseSelect
+              name="branch"
+              endpoint="bankBranches"
             />
+
 
           </FormGrid>
 

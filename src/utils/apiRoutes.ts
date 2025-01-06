@@ -40,6 +40,13 @@ export const apiRoutes = {
     currentAccountBankAccountDelete:'purchasing/currentAccountBankAccount/{currentAccountBankAccountId}',
     currentAccountBankAccountUpdate:'purchasing/currentAccountBankAccount/{currentAccountBankAccountId}',
 
+    // Finance / Bank Branch
+    bankBranches:'finance/bankBranches',
+    bankBranch:'finance/bankBranch/{bankBranchId}',
+    bankBranchAdd:'finance/bankBranch',
+    bankBranchDelete:'finance/bankBranch/{bankBranchId}',
+    bankBranchUpdate:'finance/bankBranch/{bankBranchId}',
+
     // Purchasing / Additional Cost
     additionalCosts:'purchasing/additionalCosts',
     additionalCost:'purchasing/additionalCost/{additionalCostId}',

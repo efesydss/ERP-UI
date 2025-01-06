@@ -119,7 +119,7 @@ export const AssignmentTransactionList = () => {
   return (
     <>
       <PageTitle
-        title={t('assignmentTransactionList')}
+        title={t('common:assignmentTransactionList')}
         actions={<AssignmentTransactionListActions />}
       />
 
@@ -136,6 +136,4 @@ export const AssignmentTransactionList = () => {
 
     </>
   )
-  console.log('BaseTable için kullanılan endpoint:', endpoint)
-  console.log('BaseTable için kullanılan columns:', columns)
 }

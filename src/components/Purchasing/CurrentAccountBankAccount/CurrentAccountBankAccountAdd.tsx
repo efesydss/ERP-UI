@@ -17,7 +17,7 @@ const initialCurrentAccountBankAccount: CurrentAccountBankAccount = {
   id: 0,
   currentAccount: undefined,
   bank: undefined,
-  branch: '',
+  branch: undefined,
   accountNumber: '',
   iban: '',
   currency:undefined,

@@ -8,27 +8,26 @@ import { toast } from 'react-toastify'
 import { Container } from '@mui/material'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import { BaseForm } from '@/components/Common/Form/BaseForm'
-import { BankAccountForm } from '@/components/Finance/BankAccount/BankAccountForm'
-import { BankAccount } from '@/components/Finance/BankAccount/types/typesBankAccount'
-import { Route } from '@/routes/_authenticated/finance/bankAccounts/'
-const initialBankAccount: BankAccount = {
+import { BankBranchForm } from '@/components/Finance/BankBranch/BankBranchForm'
+import { BankBranch } from '@/components/Finance/BankBranch/types/typesBankBranch'
+import { Route } from '@/routes/_authenticated/finance/bankBranches/'
+const initialBankBranch: BankBranch = {
   id: 0,
-  accountNumber: '',
-  branch: undefined,
-  iban: '',
-  currency: undefined,
+  bank: undefined,
+  name: '',
+  relatedEmployee: '',
 }
-  export const BankAccountAdd = () => {
+  export const BankBranchAdd = () => {
     const navigate = useNavigate()
     const { mutateAsync } = useMutation({
-      mutationFn: (values: BankAccount) =>
+      mutationFn: (values: BankBranch) =>
         apiRequest({
-          endpoint: 'bankAccountAdd',
+          endpoint: 'bankBranchAdd',
           payload: values
         }),
       onSuccess: () => {
         navigate({ to: Route.fullPath })
-        toast.success('BankAccount Created')
+        toast.success('BankBranch Created')
       },
       onError: (
         err: AxiosError<{
@@ -43,7 +42,7 @@ const initialBankAccount: BankAccount = {
         }
       }
     })
-    const onFormSubmit = async (values: BankAccount) => {
+    const onFormSubmit = async (values: BankBranch) => {
       await mutateAsync({
         ...values
       })
@@ -51,12 +50,12 @@ const initialBankAccount: BankAccount = {
     }
     return (
       <>
-        <PageTitle title={t('common:BankAccountAdd')} />
+        <PageTitle title={t('common:BankBranchAdd')} />
         <Container>
           <BaseForm
-            initialValues={initialBankAccount}
+            initialValues={initialBankBranch}
             onSubmit={onFormSubmit}
-            component={<BankAccountForm />}
+            component={<BankBranchForm />}
           />
         </Container>
       </>

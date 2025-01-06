@@ -1,5 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
+import {
+  CurrentAccountBankAccountList
+} from '@/components/Purchasing/CurrentAccountBankAccount/CurrentAccountBankAccountList'
 
 export const Route = createFileRoute('/_authenticated/purchasing/currentAccountBankAccounts/')({
-  component: () => <div>Hello /_authenticated/purchasing/currentAccountBankAccounts/!</div>
+  component: () => <CurrentAccountBankAccountList />
 })

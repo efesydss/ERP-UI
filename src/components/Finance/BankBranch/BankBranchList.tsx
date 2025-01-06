@@ -12,17 +12,15 @@ import { GridRowId } from '@mui/x-data-grid'
 import { Button } from '@mui/material'
 import { toast } from 'react-toastify'
 import { ColumnDef } from '@tanstack/react-table'
-import {
-  CurrentAccountBankAccount
-} from '@/components/Purchasing/CurrentAccountBankAccount/types/typesCurrentAccountBankAccount'
-import { Route } from '@/routes/_authenticated/purchasing/currentAccountBankAccounts/new'
+import { BankBranch } from '@/components/Finance/BankBranch/types/typesBankBranch'
+import { Route } from '@/routes/_authenticated/finance/bankBranches/new'
 
-
-export const CurrentAccountBankAccountList = () => {
+export const BankBranchList = () => {
   const { t } = useTranslation('common')
   const { openDialog } = useConfirmDialog()
   const queryClient = useQueryClient()
   const navigate = useNavigate()
+
 
   const safeAccessor = <T, >(accessorFn: (row: T) => unknown, columnName: string) => {
     return (row: T) => {
@@ -36,17 +34,17 @@ export const CurrentAccountBankAccountList = () => {
     }
   }
 
-  const { mutate: deleteCurrentAccountBankAccount } = useMutation({
-    mutationFn: async (currentAccountBankAccountId: string) => {
+  const { mutate: deleteBankBranch } = useMutation({
+    mutationFn: async (bankBranchId: string) => {
       return await apiRequest({
-        endpoint: 'currentAccountBankAccountDelete',
+        endpoint: 'bankBranchDelete',
         method: 'DELETE',
-        params: { currentAccountBankAccountId: currentAccountBankAccountId?.toString() ?? '0' }
+        params: { bankBranchId: bankBranchId?.toString() ?? '0' }
       })
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['currentAccountBankAccounts'] })
-      toast.success('Current Account Bank Account Deleted')
+      queryClient.invalidateQueries({ queryKey: ['bankBranches'] })
+      toast.success('BankBranch Deleted')
     }
   })
   const handleDeleteClick = useCallback(
@@ -55,39 +53,26 @@ export const CurrentAccountBankAccountList = () => {
         'Confirm Deletion',
         'Are you sure you want to delete this item?',
         () => {
-          deleteCurrentAccountBankAccount(id.toString())
+          deleteBankBranch(id.toString())
         },
         () => {
           console.log('Deletion cancelled')
         }
       ),
-    [openDialog, deleteCurrentAccountBankAccount])
-
-  const columns = useMemo<ColumnDef<CurrentAccountBankAccount>[]>(
+    [openDialog, deleteBankBranch])
+  const columns = useMemo<ColumnDef<BankBranch>[]>(
     () => [
       {
-        header: t('currentAccount'),
-        accessorFn: safeAccessor((row) => row.currentAccount, 'currentAccount')
-      },
-      {
-        header: t('iban'),
-        accessorFn: safeAccessor((row) => row.iban, 'iban')
-      },
-      {
-        header: t('accountNumber'),
-        accessorFn: safeAccessor((row) => row.accountNumber, 'accountNumber')
-      },
-      {
-        header: t('currency'),
-        accessorFn: safeAccessor((row) => row.currency, 'currency')
+        header: t('name'),
+        accessorFn: safeAccessor((row) => row.name, 'name')
       },
       {
         header: t('bank'),
         accessorFn: safeAccessor((row) => row.bank?.bankName, 'bank')
       },
       {
-        header: t('branch'),
-        accessorFn: safeAccessor((row) => row.branch?.name, 'branch')
+        header: t('relatedEmployee'),
+        accessorFn: safeAccessor((row) => row.relatedEmployee, 'relatedEmployee')
       },
       {
         header: t('actions'),
@@ -107,7 +92,7 @@ export const CurrentAccountBankAccountList = () => {
     [t, handleDeleteClick]
   )
 
-  const CurrentAccountBankAccountListActions = () => {
+  const BankBranchListActions = () => {
     return (
       <>
         <Button
@@ -116,21 +101,21 @@ export const CurrentAccountBankAccountList = () => {
           startIcon={<PersonAddAlt1Icon />}
           onClick={() => navigate({ to: Route.fullPath })}
         >
-          {t('newCurrentAccountBankAccount')}
+          {t('newBankBranch')}
         </Button>
       </>
     )
   }
-  const endpoint = 'currentAccountBankAccounts'
+  const endpoint = 'bankBranches'
 
   return (
     <>
       <PageTitle
-        title={t('CurrentAccountBankAccountList')}
-        actions={<CurrentAccountBankAccountListActions />}
+        title={t('BankBranchList')}
+        actions={<BankBranchListActions />}
       />
 
-      <BaseTable<CurrentAccountBankAccount> endpoint={endpoint} columns={columns}
+      <BaseTable<BankBranch> endpoint={endpoint} columns={columns}
 
       ></BaseTable>
 

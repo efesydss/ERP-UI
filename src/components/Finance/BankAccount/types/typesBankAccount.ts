@@ -1,3 +1,4 @@
+import { BankBranch } from '@/components/Finance/BankBranch/types/typesBankBranch';
 export enum Currency {
     TRY='TRY',
     USD='USD',
@@ -8,6 +9,7 @@ export enum Currency {
 export interface BankAccount {
   id: number;
   accountNumber: string;
+  branch?:BankBranch;
   iban: string;
   currency?: Currency;
 }

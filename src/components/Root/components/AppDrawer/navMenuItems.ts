@@ -146,6 +146,10 @@ export const navMenuItems: MenuItemProps[] = [
                  icon: FaRProject
               },
               {
+                  label: 'currentAccountBankAccounts',
+                  icon: FaRProject
+              },
+              {
                   label: 'currentAccountTransactions',
                   icon: FaRProject
               },
