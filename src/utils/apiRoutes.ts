@@ -48,11 +48,11 @@ export const apiRoutes = {
     bankBranchUpdate:'finance/bankBranch/{bankBranchId}',
 
     // Purchasing / Additional Cost
-    additionalCosts:'purchasing/additionalCosts',
-    additionalCost:'purchasing/additionalCost/{additionalCostId}',
-    additionalCostAdd:'purchasing/additionalCost',
-    additionalCostDelete:'purchasing/additionalCost/{additionalCostId}',
-    additionalCostUpdate:'purchasing/additionalCost/{additionalCostId}',
+    additionalCosts:'purchasing/additionalcosts',
+    additionalCost:'purchasing/additionalcost/{additionalCostId}',
+    additionalCostAdd:'purchasing/additionalcost',
+    additionalCostDelete:'purchasing/additionalcost/{additionalCostId}',
+    additionalCostUpdate:'purchasing/additionalcost/{additionalCostId}',
 
     // Purchasing / Current Account Transaction
     currentAccountTransactions:'purchasing/currentAccountTransactions',
@@ -163,11 +163,11 @@ export const apiRoutes = {
   fixtureCardUpdate:'storage/fixtureCard/{fixtureCardId}',
 
   //Storage / Invoice
-  invoices: 'storage/invoices',
-  invoice:'storage/invoice/{invoiceId}',
-  invoiceAdd:'storage/invoice',
-  invoiceDelete:'storage/invoice/{invoiceId}',
-  invoiceUpdate:'storage/invoice/{invoiceId}',
+  invoices: 'purchasing/invoices',
+  invoice:'purchasing/invoice/{invoiceId}',
+  invoiceAdd:'purchasing/invoice',
+  invoiceDelete:'purchasing/invoice/{invoiceId}',
+  invoiceUpdate:'purchasing/invoice/{invoiceId}',
 
   //Storage / AssignmentTransaction
   assignmentTransactions:'storage/assignmentTransactions',
