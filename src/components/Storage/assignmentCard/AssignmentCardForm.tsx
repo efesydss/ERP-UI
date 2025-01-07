@@ -54,6 +54,7 @@ export const AssignmentCardForm = (props: FormAssignmentCardProps) => {
           <FormGrid>
             <BaseSelect
               name="fixtureCard"
+              fieldName={'fixtureName'}
               endpoint="fixtureCards"
             />
             <Input name={'insuranceCompany'} />
@@ -67,6 +68,7 @@ export const AssignmentCardForm = (props: FormAssignmentCardProps) => {
           <FormGrid>
             <BaseSelect
               name="invoice"
+              fieldName={'code'}
               endpoint="invoices"
             />
             <BaseSelect
@@ -87,14 +89,6 @@ export const AssignmentCardForm = (props: FormAssignmentCardProps) => {
           </FormGrid>
 
         </FormGrid>
-        <FormGrid>
-          <>sil bunu</>
-          <BaseSelect
-            name="employee"
-            endpoint="employees"
-          />
-        </FormGrid>
-
 
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 4 }}>
 

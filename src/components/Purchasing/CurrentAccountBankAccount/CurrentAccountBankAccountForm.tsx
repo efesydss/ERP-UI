@@ -27,37 +27,40 @@ export const CurrentAccountBankAccountForm = (props: FormCurrentAccountBankAccou
           widths={'half'}
           isContainer
         >
-          <FormGrid>
-            <BaseSelect
-              name={'currentAccount'}
-              endpoint={'currentAccounts'}
-            />
-            <Input
-              name={'iban'}
-              label={t('common:iban')}
-              required />
-            <Input name={'accountNumber'}
-                   label={t('common:accountNumber')}
-                   required />
-            <BaseSelect
-              name={'currency'}
-              isEnum={true}
-              options={assignmentStatusOptions}
-              selectLabel={t('common:Currency')}
-            />
-            <BaseSelect
-              name="bank"
-              endpoint="banks"
-            />
-            <BaseSelect
-              name="branch"
-              endpoint="bankBranches"
-            />
 
+          <BaseSelect
+            name={'currentAccount'}
+            fieldName={'title'}
+            endpoint={'currentAccounts'}
+          />
+          <Input
+            name={'iban'}
+            label={t('common:iban')}
+            required />
+          <Input name={'accountNumber'}
+                 label={t('common:accountNumber')}
+                 required />
+          <BaseSelect
+            name={'currency'}
+            isEnum={true}
+            options={assignmentStatusOptions}
+            selectLabel={t('common:Currency')}
+          />
 
-          </FormGrid>
+          <BaseSelect
+            name={'bank'}
+            fieldName={'bankName'}
+            endpoint="banks"
+            selectLabel={t('common:bank')}
+          />
+          <Input
+            name={'branch'}
+            label={t('common:branch')}
+            required />
+
 
         </FormGrid>
+
 
       </Paper>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>

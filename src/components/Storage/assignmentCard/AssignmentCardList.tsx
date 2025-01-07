@@ -157,7 +157,7 @@ export const AssignmentCardList = () => {
 
   return (
     <>
-      <h4>Details ile Optimize et</h4>
+      <h4>will be optimised with details component</h4>
       <PageTitle
         title={t('assignmentCards')}
         actions={<AssignmentCardListActions />}

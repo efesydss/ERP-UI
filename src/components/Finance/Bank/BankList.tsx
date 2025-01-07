@@ -61,15 +61,15 @@ export const BankList = () => {
   const columns = useMemo<ColumnDef<Bank>[]>(
     () => [
       {
-        header: t('bankName'),
+        header: t('common:bankName'),
         accessorFn: safeAccessor((row) => row.bankName, 'bankName')
       },
       {
-        header: t('bankShortName'),
+        header: t('common:bankShortName'),
         accessorFn: safeAccessor((row) => row.bankShortName, 'bankShortName')
       },
       {
-        header: t('swiftCode'),
+        header: t('common:swiftCode'),
         accessorFn: safeAccessor((row) => row.swiftCode, 'swiftCode')
       },
       {

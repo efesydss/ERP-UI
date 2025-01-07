@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FormGrid } from '@/components/Common/Form/FormGrid/FormGrid'
 import { Input } from '@/components/Common/Form/Input/Input'
-import { Box, Button, Paper } from '@mui/material'
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Paper, Typography } from '@mui/material'
 import { FaCheck } from 'react-icons/fa6'
 import { BaseSelect } from '@/components/Common/Form/Select/BaseSelect'
 import { SectorEnum } from '@/components/Purchasing/CurrentAccount/types/typesCurrentAccount'
@@ -11,7 +10,7 @@ import {
   CurrentAccountType,
   Currency
 } from '@/components/Purchasing/CurrentAccount/types/typesCurrentContactInformation'
-import { FaPlus } from 'react-icons/fa'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
 const assignmentStatusOptions = Object.values(SectorEnum).map((value) => ({
   label: value,
@@ -35,137 +34,76 @@ export const CurrentAccountForm = (props: FormCurrentAccountProps) => {
   console.log(props)
   const { t } = useTranslation()
 
-  const [showForm, setShowForm] = useState(false)
   return (
     <>
-
       <Paper sx={{ p: 2 }}>
         <FormGrid
           widths={'half'}
           isContainer
         >
-          <FormGrid>
-            <Input
-              name={'code'}
-              label={t('common:code')}
+          <Input
+            name={'code'}
+            label={t('common:code')}
 
-            />
-            <Input
-              name={'title'}
-              label={t('common:title')}
+          />
+          <Input
+            name={'title'}
+            label={t('common:title')}
 
-            />
-            <Checkbox
-              name={'active'}
-              label={t('common:active')}
+          />
+          <Checkbox
+            name={'active'}
+            label={t('common:active')}
 
-            />
-            <BaseSelect
-              name={'sector'}
-              isEnum={true}
-              options={assignmentStatusOptions}
-              selectLabel={'Sector'}
-            />
+          />
+          <BaseSelect
+            name={'sector'}
+            isEnum={true}
+            options={assignmentStatusOptions}
+          />
 
-            <FormGrid
-              widths={'half'}
-              isContainer>
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography>{t('common:ContactInformation')}</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
 
-              <Input name={'contactInformation.address'}
-                     label={t('common:address')}
-              />
-
-              <Input name={'contactInformation.authorizedPerson'}
-                     label={t('common:authorizedPerson')}
-              />
-              <Input name={'contactInformation.faxNo'}
-                     label={t('common:faxNo')}
-              />
-              <Input name={'contactInformation.webAddress'}
-                     label={t('common:webAddress')}
-              />
-              <Input name={'contactInformation.email'}
-                     label={t('common:email')}
-              />
-              <Input name={'contactInformation.specialCode'}
-                     label={t('common:specialCode')}
-              />
-              <Input name={'contactInformation.number'}
-                     label={t('common:number')}
-              />
-              <Input name={'contactInformation.backupNumber'}
-                     label={t('common:backupNumber')}
-              />
-              <Input name={'contactInformation.taxAdmin'}
-                     label={t('common:taxAdmin')}
-              />
-              <Input name={'contactInformation.taxNo'}
-                     label={t('common:taxNo')}
-              />
+              <Input name={'contactInformation.authorizedPerson'} label={t('common:authorizedPerson')} />
+              <Input name={'contactInformation.address'} label={t('common:address')} />
+              <Input name={'contactInformation.faxNo'} label={t('common:faxNo')} />
+              <Input name={'contactInformation.webAddress'} label={t('common:webAddress')} />
+              <Input name={'contactInformation.email'} label={t('common:email')} />
+              <Input name={'contactInformation.specialCode'} label={t('common:specialCode')} />
+              <Input name={'contactInformation.number'} label={t('common:number')} />
+              <Input name={'contactInformation.backupNumber'} label={t('common:backupNumber')} />
+              <Input name={'contactInformation.taxAdmin'} label={t('common:taxAdmin')} />
+              <Input name={'contactInformation.taxNo'} label={t('common:taxNo')} />
               <Checkbox name={'contactInformation.invoicedWithCurrency'}
                         label={'Fatura Para Birimiyle İşlem Yapılsın mı?'} />
-              <BaseSelect
-                name={'contactInformation.currency'}
-                isEnum={true}
-                options={currencyOptions}
-                selectLabel={'Currency'}
-              />
-              <BaseSelect
-                name={'contactInformation.accountType'}
-                isEnum={true}
-                options={typeOptions}
-                selectLabel={'Account Type'} />
+              <BaseSelect name={'contactInformation.currency'} isEnum={true} options={currencyOptions}
+                         />
+              <BaseSelect name={'contactInformation.accountType'} isEnum={true} options={typeOptions}
+                          />
+
+            </AccordionDetails>
+          </Accordion>
 
 
-            </FormGrid>
-            <BaseSelect
-              name="bankAccount"
-              endpoint="bankAccounts"
-            />
-            <BaseSelect
-              isMulti={true}
-              name="currentAccountBankAccount"
-              endpoint="currentAccountBankAccounts"
-            />
+          <BaseSelect
+            name="bankAccount"
+            fieldName={'iban'}
+            endpoint="bankAccounts"
+          />
 
-            <Button
-              size="small"
-              variant="contained"
-              color="primary"
-              onClick={() => setShowForm(true)}
-              sx={{ ml: 2 }}
-              startIcon={<FaPlus />}
-            >
-              {t('common:addNewBank')}
-            </Button>
-
-            {showForm && (
-              <Paper sx={{ p: 2, mt: 2, backgroundColor: 'background.paper', boxShadow: 3 }}>
-                <FormGrid widths="half" isContainer>
-                  <Input
-                    name="newCurrentAccountBankAccount.bankName"
-                    label={t('common:newBank')}
-                    fullWidth
-                    margin="dense"
-                  />
-                  <Button
-                    size="small"
-                    variant="contained"
-                    color="primary"
-                    onClick={() => {
-                      setShowForm(false)
-                    }}
-                    startIcon={<FaCheck />}
-                    sx={{ mt: 2 }}
-                  >
-                    {t('common:save')}
-                  </Button>
-                </FormGrid>
-              </Paper>
-            )}
-
-          </FormGrid>
-
+          <BaseSelect
+            name="selectedAccounts" // Formik için kullanılacak alan adı
+            fieldName="accountNumber" // `label` için kullanılacak `fieldKey`
+            endpoint="currentAccountBankAccounts" // Veri kaynağı
+            isMulti={true} // Çoklu seçim özelliğini aktif hale getirir
+            selectLabel="Hesap Numaraları" // Etiket
+            placeholder="Hesap numaralarını seçin"
+            isOptional={true} // Zorunlu alan olmadığını belirtir
+          />
         </FormGrid>
 
       </Paper>

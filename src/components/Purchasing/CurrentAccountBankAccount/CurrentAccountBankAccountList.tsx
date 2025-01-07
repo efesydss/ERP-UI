@@ -31,6 +31,7 @@ export const CurrentAccountBankAccountList = () => {
         return accessorFn(row)
       } catch (error) {
 
+        console.log(columnName + ' error')
         return 'Error'
       }
     }
@@ -66,10 +67,6 @@ export const CurrentAccountBankAccountList = () => {
   const columns = useMemo<ColumnDef<CurrentAccountBankAccount>[]>(
     () => [
       {
-        header: t('currentAccount'),
-        accessorFn: safeAccessor((row) => row.currentAccount, 'currentAccount')
-      },
-      {
         header: t('iban'),
         accessorFn: safeAccessor((row) => row.iban, 'iban')
       },
@@ -87,7 +84,7 @@ export const CurrentAccountBankAccountList = () => {
       },
       {
         header: t('branch'),
-        accessorFn: safeAccessor((row) => row.branch?.name, 'branch')
+        accessorFn: safeAccessor((row) => row.branch, 'branch')
       },
       {
         header: t('actions'),

@@ -28,9 +28,10 @@ export const SectionForm = (props: FormSectionProps) => {
           isContainer
         >
           <FormGrid>
-            <Input name={'name'} />
+            <Input name={'name'}
+                   label={t('common:name')}
+            />
             <BaseSelect
-
               name="employee"
               endpoint="employees"
             />
@@ -38,7 +39,7 @@ export const SectionForm = (props: FormSectionProps) => {
               name={'sectionType'}
               isEnum={true}
               options={sectionEnumOptions}
-              selectLabel={'sectionType'}
+              selectLabel={t('common:sectionType')}
             />
 
           </FormGrid>

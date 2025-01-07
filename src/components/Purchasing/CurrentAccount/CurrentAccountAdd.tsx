@@ -13,12 +13,13 @@ import {Route} from '@/routes/_authenticated/purchasing/currentAccounts/'
 import { CurrentAccountForm } from '@/components/Purchasing/CurrentAccount/CurrentAccountForm'
 const initialCurrentAccount: CurrentAccount = {
   id: 0,
-  code: '',
-  title: '',
+  code: 'Code',
+  title: 'Title',
   active: true,
   sector: undefined,
   contactInformation:undefined,
   bankAccount:undefined,
+  currentAccountBankAccounts:undefined,
 }
   export const CurrentAccountAdd = () => {
     const navigate = useNavigate()

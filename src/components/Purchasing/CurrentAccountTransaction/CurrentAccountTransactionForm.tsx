@@ -54,6 +54,7 @@ export const CurrentAccountTransactionForm = (props: FormCurrentAccountTransacti
             />
             <BaseSelect
               name={'currentAccount'}
+              fieldName={'title'}
               endpoint={'currentAccounts'} />
             <BaseSelect
               name={'transactionType'}
@@ -73,6 +74,7 @@ export const CurrentAccountTransactionForm = (props: FormCurrentAccountTransacti
               selectLabel={t('common:currency')} />
             <BaseSelect
               name={'bankAccount'}
+              fieldName={'accountNumber'}
               endpoint={'bankAccounts'} />
             <Input
               name={'transactionFee'}

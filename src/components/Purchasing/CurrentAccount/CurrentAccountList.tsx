@@ -80,15 +80,11 @@ export const CurrentAccountList = () => {
       },
       {
         header: t('contactInformation'),
-        accessorFn: safeAccessor((row) => row.contactInformation, 'contactInformation')
+        accessorFn: safeAccessor((row) => row.contactInformation?.authorizedPerson, 'contactInformation')
       },
       {
         header: t('bankAccount'),
-        accessorFn: safeAccessor((row) => row.bankAccount, 'bankAccount')
-      },
-      {
-        header: t('currentAccountBankAccounts'),
-        accessorFn: safeAccessor((row) => row.currentAccountBankAccounts, 'currentAccountBankAccounts')
+        accessorFn: safeAccessor((row) => row.bankAccount?.accountNumber, 'bankAccount')
       },
       {
         header: t('actions'),

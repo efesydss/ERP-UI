@@ -64,6 +64,7 @@ export const InvoiceAdd = () => {
   return (
     <>
       <PageTitle title={t('common:InvoiceAdd')} />
+      <h4>Invoices to be continued</h4>
       <Container>
         <BaseForm
           initialValues={initialInvoice}

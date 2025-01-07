@@ -10,7 +10,9 @@ import { getSelectStyles } from '@/components/Common/Form/Select/stylesBaseSelec
 
 export interface OptionType {
   value: number | string | boolean
-  label: string
+  label: string | number
+
+  [key: string]: any
 }
 
 interface BaseSelectProps {
@@ -25,6 +27,7 @@ interface BaseSelectProps {
   selectLabel?: string
   isOptional?: boolean
   placeholder?: string
+  fieldName?: string
 }
 
 export const BaseSelect = (props: BaseSelectProps) => {
@@ -40,6 +43,7 @@ export const BaseSelect = (props: BaseSelectProps) => {
     isOptional = false,
     onChange,
     placeholder = '',
+
     ...rest
   } = props
   const [field, { touched, error }, { setValue }] = useField(name)
@@ -58,9 +62,10 @@ export const BaseSelect = (props: BaseSelectProps) => {
         }
       }),
     select: (res): OptionType[] => {
+      const fieldKey = props.fieldName || 'name' // Dinamik alan belirleme
       return res.data.map((r) => ({
         value: r.id,
-        label: r.name
+        label: r[fieldKey as keyof NamedEntity] || r.name || 'Please provide fieldName for label' // Tür dönüştürme
       }))
     },
     enabled: !options && !!endpoint
@@ -68,6 +73,8 @@ export const BaseSelect = (props: BaseSelectProps) => {
 
   //todo: onChange only supports singleValue for now
   const handleChange = (newValue: MultiValue<OptionType> | SingleValue<OptionType> | null) => {
+    const fieldKey = props.fieldName || 'name' // Varsayılan olarak 'name' kullanıyoruz
+
     if (isEnum) {
       if (newValue === null) {
         setValue('')
@@ -87,7 +94,7 @@ export const BaseSelect = (props: BaseSelectProps) => {
         setValue(newValue.map((v) => ({ id: v.value, name: v.label })))
       } else {
         const selectedOption = newValue as OptionType
-        setValue({ id: selectedOption.value, name: selectedOption.label })
+        setValue({ id: selectedOption.value, [fieldKey]: selectedOption.label })
         if (onChange) {
           onChange(selectedOption.value as string)
         }
@@ -97,21 +104,30 @@ export const BaseSelect = (props: BaseSelectProps) => {
 
   const getValue = (): MultiValue<OptionType> | SingleValue<OptionType> | null => {
     const finalOptions = options || fetchedOptions || []
+    const fieldKey = props.fieldName || 'name' // Varsayılan olarak 'name' kullanıyoruz
 
     if (isEnum) {
       if (isMulti) {
-        const values = (field.value as string).split(',')
+        const values = (field.value as string).split(',') || []
         return finalOptions.filter((option) => values.includes(option.value.toString()))
       } else {
         return finalOptions.find((option) => option.value.toString() === field.value) || null
       }
     } else {
       if (isMulti) {
+        const multiValue = field.value as Array<{ id: number; [key: string]: any }> || []
         return finalOptions.filter((option) =>
-          (field.value as Array<{ id: number; name: string }>).some((val) => val.id === option.value)
+          multiValue.some((val) => val.id === option.value && val[fieldKey] === option.label)
         )
       }
-      return finalOptions.find((option) => option.value === (field.value as { id: number; name: string })?.id) || null
+      const singleValue = field.value as { id: number; [key: string]: any } || {}
+      return (
+        finalOptions.find(
+          (option) =>
+            option.value === singleValue?.id &&
+            option.label === singleValue?.[fieldKey]
+        ) || null
+      )
     }
   }
 

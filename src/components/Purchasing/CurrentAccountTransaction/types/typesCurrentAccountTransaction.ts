@@ -33,7 +33,6 @@ export enum PaymentTypeEnum {
         CHECK = 'CHECK',
         BOND = 'BOND',
         EFT = 'EFT',
-        CREDIT_CARD = 'CREDIT_CARD',
         BANK_CARD = 'BANK_CARD',
         PROMISSORY_NOTE = 'PROMISSORY_NOTE',
         OTHER = 'OTHER',

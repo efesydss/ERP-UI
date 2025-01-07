@@ -28,6 +28,7 @@ export const ProjectForm = (props: FormProjectProps) => {
             />
             <BaseSelect
               name="currentAccount"
+              fieldName={'title'}
               endpoint="currentAccounts"
             />
 

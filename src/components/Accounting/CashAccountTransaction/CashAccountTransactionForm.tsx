@@ -29,10 +29,12 @@ export const CashAccountTransactionForm = (props: FormCashAccountTransactionProp
 
             <BaseSelect
               name="cashAccount"
+              fieldName={'accountNumber'}
               endpoint="cashAccounts"
             />
             <BaseSelect
               name="currentAccount"
+              fieldName={'title'}
               endpoint="currentAccounts"
             />
 

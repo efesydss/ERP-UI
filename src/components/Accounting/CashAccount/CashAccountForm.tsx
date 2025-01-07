@@ -42,7 +42,7 @@ export const CashAccountForm = (props: FormCashAccountProps) => {
               name={'currency'}
               isEnum={true}
               options={warrantyPeriodOptions}
-              selectLabel={'Currency'}
+              selectLabel={t('common:Currency')}
             />
           </FormGrid>
 
