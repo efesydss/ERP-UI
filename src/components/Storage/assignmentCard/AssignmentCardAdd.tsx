@@ -1,5 +1,9 @@
-import { AssignmentCard  } from '@/components/Storage/typesAssignmentCard'
-import { AssignmentStatusEnum, WarrantyPeriodEnum,MaintenancePeriodEnum } from '@/components/Storage/typesEnums'
+import {
+  AssignmentCard,
+  WarrantyPeriodEnum,
+  MaintenancePeriodEnum,
+  AssignmentStatusEnum
+} from '@/components/Storage/assignmentCard/types/typesAssignmentCard'
 import { useNavigate } from '@tanstack/react-router'
 import { useMutation } from '@tanstack/react-query'
 import { Route } from '@/routes/_authenticated/storage/assignmentCards'
@@ -15,33 +19,33 @@ import { AssignmentCardForm } from '@/components/Storage/assignmentCard/Assignme
 
 const initialAssignmentCard: AssignmentCard = {
   id: 0,
-  assignmentStatusEnum: AssignmentStatusEnum.ASSIGNED, // Varsayılan Enum değeri
+  assignmentStatusEnum: AssignmentStatusEnum.ASSIGNED,
   code: '',
   name: '',
-  fixtureCard: undefined, // Opsiyonel olduğu için başta tanımsız bırakıldı
+  fixtureCard: undefined,
   insuranceCompany: '',
-  insurance: false, // Boolean olduğu için varsayılan false
+  insurance: false,
   insurancePolicyNo: '',
   insuranceDuration: 0,
   info: '',
-  invoice: undefined, // Opsiyonel olduğu için tanımsız
-  warrantyPeriodEnum: WarrantyPeriodEnum.DAY, // Varsayılan Enum değeri
+  invoice: undefined,
+  warrantyPeriodEnum: WarrantyPeriodEnum.DAY,
   warrantyDay: 0,
   underMaintenance: false,
   maintenanceDuration: 0,
-  maintenancePeriodEnum: MaintenancePeriodEnum.DAY, // Varsayılan Enum değeri
-};
+  maintenancePeriodEnum: MaintenancePeriodEnum.DAY
+}
 export const AssignmentCardAdd = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const { mutateAsync } = useMutation({
     mutationFn: (values: AssignmentCard) =>
       apiRequest({
         endpoint: 'assignmentCardAdd',
-        payload: values,
+        payload: values
       }),
     onSuccess: () => {
-      navigate({to: Route.fullPath})
+      navigate({ to: Route.fullPath })
       toast.success(t('AssignmentCardAdd successfully added successfully!'))
     },
     onError: (
@@ -63,16 +67,16 @@ export const AssignmentCardAdd = () => {
       ...values
 
     })
-    console.log('Payload: ', values);
+    console.log('Payload: ', values)
   }
 
   return (
     <>
-    <PageTitle title={t('common:assignmentCardAdd')} />
+      <PageTitle title={t('common:assignmentCardAdd')} />
       <Container>
         <BaseForm
           initialValues={initialAssignmentCard}
-          component={<AssignmentCardForm/>}
+          component={<AssignmentCardForm />}
           onSubmit={onFormSubmit}
         />
       </Container>

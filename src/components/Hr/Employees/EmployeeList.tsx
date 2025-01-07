@@ -15,23 +15,23 @@ export const EmployeeList = () => {
   const navigate = useNavigate()
   const [checked, setChecked] = useState(false)
 
-  
-  const columns = useMemo<ColumnDef<EmployeeResponse>[]>(//Tablo Sütunları Tanımlaması
+
+  const columns = useMemo<ColumnDef<EmployeeResponse>[]>(
     () => [
       {
         header: t('name'),
-        accessorKey: 'name'//accessors verileri bağlamk için kullanılır 
+        accessorKey: 'name'
       },
       {
         header: t('surname'),
-        accessorKey: 'surname'//Veriyi tablodaki satırlara bağlayan anahtar.
+        accessorKey: 'surname'
       },
       {
         header: t('department'),
         accessorKey: 'department',
         accessorFn: (row) => row.department.name,
         meta: {
-          filterVariant: 'select',//filterVariant: 'select' ile seçmeli filtreleme özelliği sağlanır.
+          filterVariant: 'select',
           filterOptionsEndpoint: 'departments'
         }
       },
@@ -81,13 +81,12 @@ export const EmployeeList = () => {
             <Switch
               checked={checked}
               onChange={handleChange}
-              size='small'
+              size="small"
             />
           }
           label={t('togglePassive')}
         />
       </Box>
-
 
 
       <BaseTable<EmployeeResponse>
@@ -98,7 +97,7 @@ export const EmployeeList = () => {
         renderSubComponent={(props) => (
           <DetailsSubRow
 
-            employeeId={props.row.original.id}//props.row.original, tabloya sağlanan verinin orijinal haliyle temsil edildiği bir nesnedir.
+            employeeId={props.row.original.id}
             row={props.row}
             handleExpandRow={props.handleExpandRow}
           />

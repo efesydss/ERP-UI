@@ -1,6 +1,8 @@
-import { AssignmentStatusEnum } from '@/components/Storage/typesEnums'
 import { useMutation } from '@tanstack/react-query'
-import { AssignmentTransaction  } from '@/components/Storage/assignmentTransaction/types/typesAssignmentTransaction'
+import {
+  AssignmentTransaction,
+  AssignmentStatusEnum
+} from '@/components/Storage/assignmentTransaction/types/typesAssignmentTransaction'
 import { toast } from 'react-toastify'
 import { t } from 'i18next'
 import { apiRequest } from '@/utils/apiDefaults'
@@ -19,21 +21,21 @@ export const initialAssignmentTransaction: AssignmentTransaction = {
   employee: undefined,
   transactionDate: '',
   assignmentStatusEnum: AssignmentStatusEnum.ASSIGNED
-};
+}
 
 
 export const AssignmentTransactionAdd = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
 
   const { mutateAsync } = useMutation({
     mutationFn: (values: AssignmentTransaction) =>
       apiRequest({
         endpoint: 'assignmentCardAdd',
-        payload: values,
+        payload: values
       }),
     onSuccess: () => {
-      navigate({to: Route.fullPath})
+      navigate({ to: Route.fullPath })
       toast.success(t('AssignmentCardAdd successfully added successfully!'))
     },
     onError: (
@@ -56,7 +58,7 @@ export const AssignmentTransactionAdd = () => {
       ...values
 
     })
-    console.log('Payload: ', values);
+    console.log('Payload: ', values)
   }
 
   return (
@@ -65,7 +67,7 @@ export const AssignmentTransactionAdd = () => {
       <Container>
         <BaseForm
           initialValues={initialAssignmentTransaction}
-          component={<AssignmentTransactionForm/>}
+          component={<AssignmentTransactionForm />}
           onSubmit={onFormSubmit}
         />
       </Container>

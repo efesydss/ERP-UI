@@ -1,10 +1,8 @@
-
 import { useTranslation } from 'react-i18next'
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
-
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import { BaseTable } from '@/components/Common/Table/BaseTable'
-import React, { useMemo } from 'react'
+import React, { useMemo, useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { useConfirmDialog } from '@/utils/hooks/useConfirmDialogContext'
@@ -16,6 +14,7 @@ import { toast } from 'react-toastify'
 import { ColumnDef } from '@tanstack/react-table'
 import { Bank } from '@/components/Finance/Bank/types/typesBank'
 import { Route } from '@/routes/_authenticated/finance/banks/new'
+
 export const BankList = () => {
   const { t } = useTranslation('common')
   const { openDialog } = useConfirmDialog()
@@ -23,25 +22,12 @@ export const BankList = () => {
 
   const navigate = useNavigate()
 
-  const handleDeleteClick = (id: GridRowId) => () =>
-    openDialog(
-      'Confirm Deletion',
-      'Are you sure you want to delete this item?',
-      () => {
-        deleteBank(id.toString())
-      },
-      () => {
-        console.log('Deletion cancelled')
-      }
-    )
-    const safeAccessor = (accessorFn: (row: any) => any, columnName: string) => {
-    return (row: any) => {
+  const safeAccessor = <T, >(accessorFn: (row: T) => unknown, columnName: string) => {
+    return (row: T) => {
       try {
-        const result = accessorFn(row)
-        console.log(columnName, result)
-        return result
+        return accessorFn(row)
       } catch (error) {
-        console.error(error)
+        console.error(`Error in column "${columnName}"`, error, row)
         return 'Error'
       }
     }
@@ -59,19 +45,31 @@ export const BankList = () => {
       toast.success('Bank Deleted')
     }
   })
-  
+  const handleDeleteClick = useCallback(
+    (id: GridRowId) => () =>
+      openDialog(
+        'Confirm Deletion',
+        'Are you sure you want to delete this item?',
+        () => {
+          deleteBank(id.toString())
+        },
+        () => {
+          console.log('Deletion cancelled')
+        }
+      ),
+    [openDialog, deleteBank])
   const columns = useMemo<ColumnDef<Bank>[]>(
     () => [
       {
-        header: t('bankName'),
+        header: t('common:bankName'),
         accessorFn: safeAccessor((row) => row.bankName, 'bankName')
       },
       {
-        header: t('bankShortName'),
+        header: t('common:bankShortName'),
         accessorFn: safeAccessor((row) => row.bankShortName, 'bankShortName')
       },
       {
-        header: t('swiftCode'),
+        header: t('common:swiftCode'),
         accessorFn: safeAccessor((row) => row.swiftCode, 'swiftCode')
       },
       {
@@ -89,7 +87,7 @@ export const BankList = () => {
         )
       }
     ],
-    [t]
+    [t, handleDeleteClick]
   )
 
   const BankListActions = () => {

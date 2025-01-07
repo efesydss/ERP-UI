@@ -12,12 +12,61 @@ export const apiRoutes = {
 
 
 
-  //Cash Account
+  // Accounting / Cash Account
   cashAccounts:'accounting/cashAccounts',
   cashAccount:'accounting/cashAccount/{cashAccountId}',
   cashAccountAdd:'accounting/cashAccount',
   cashAccountDelete:'accounting/cashAccount/{cashAccountId}',
   cashAccountUpdate:'accounting/cashAccount/{cashAccountId}',
+
+   // Accounting / Cash Account Transaction
+    cashAccountTransactions:'accounting/cashAccountTransactions',
+    cashAccountTransaction:'accounting/cashAccountTransaction/{cashAccountTransactionId}',
+    cashAccountTransactionAdd:'accounting/cashAccountTransaction',
+    cashAccountTransactionDelete:'accounting/cashAccountTransaction/{cashAccountTransactionId}',
+    cashAccountTransactionUpdate:'accounting/cashAccountTransaction/{cashAccountTransactionId}',
+
+   // Purchasing / Current Account
+    currentAccounts:'purchasing/currentAccounts',
+    currentAccount:'purchasing/currentAccount/{currentAccountId}',
+    currentAccountAdd:'purchasing/currentAccount',
+    currentAccountDelete:'purchasing/currentAccount/{currentAccountId}',
+    currentAccountUpdate:'purchasing/currentAccount/{currentAccountId}',
+
+    // Purchasing / Current Account Bank Account
+    currentAccountBankAccounts:'purchasing/currentAccountBankAccounts',
+    currentAccountBankAccount:'purchasing/currentAccountBankAccount/{currentAccountBankAccountId}',
+    currentAccountBankAccountAdd:'purchasing/currentAccountBankAccount',
+    currentAccountBankAccountDelete:'purchasing/currentAccountBankAccount/{currentAccountBankAccountId}',
+    currentAccountBankAccountUpdate:'purchasing/currentAccountBankAccount/{currentAccountBankAccountId}',
+
+    // Finance / Bank Branch
+    bankBranches:'finance/bankBranches',
+    bankBranch:'finance/bankBranch/{bankBranchId}',
+    bankBranchAdd:'finance/bankBranch',
+    bankBranchDelete:'finance/bankBranch/{bankBranchId}',
+    bankBranchUpdate:'finance/bankBranch/{bankBranchId}',
+
+    // Purchasing / Additional Cost
+    additionalCosts:'purchasing/additionalCosts',
+    additionalCost:'purchasing/additionalCost/{additionalCostId}',
+    additionalCostAdd:'purchasing/additionalCost',
+    additionalCostDelete:'purchasing/additionalCost/{additionalCostId}',
+    additionalCostUpdate:'purchasing/additionalCost/{additionalCostId}',
+
+    // Purchasing / Current Account Transaction
+    currentAccountTransactions:'purchasing/currentAccountTransactions',
+    currentAccountTransaction:'purchasing/currentAccountTransaction/{currentAccountTransactionId}',
+    currentAccountTransactionAdd:'purchasing/currentAccountTransaction',
+    currentAccountTransactionDelete:'purchasing/currentAccountTransaction/{currentAccountTransactionId}',
+    currentAccountTransactionUpdate:'purchasing/currentAccountTransaction/{currentAccountTransactionId}',
+
+    // Production / Project
+    projects:'production/projects',
+    project:'production/project/{projectId}',
+    projectAdd:'production/project',
+    projectDelete:'production/project/{projectId}',
+    projectUpdate:'production/project/{projectId}',
 
   //Admin / Depot 
   depots:'admin/depots',

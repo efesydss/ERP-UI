@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react'
 import {
   useReactTable,
   getCoreRowModel,
   getExpandedRowModel,
   ColumnDef,
-  flexRender,
-} from "@tanstack/react-table";
+  flexRender
+} from '@tanstack/react-table'
 
 interface MaterialGroup {
   id: number;
@@ -14,86 +14,83 @@ interface MaterialGroup {
   parent?: MaterialGroup;
 }
 
-// initial data for the table
-
-
 const initialMaterialGroups: MaterialGroup[] = [
   {
     id: 1,
-    name: "Level 1 - Metal",
-    code: "m.01",
+    name: 'Level 1 - Metal',
+    code: 'm.01',
     parent: {
       id: 2,
-      name: "Level 2 - Alloys",
-      code: "a.01",
+      name: 'Level 2 - Alloys',
+      code: 'a.01',
       parent: {
         id: 3,
-        name: "Level 3 - Base Materials",
-        code: "b.01",
+        name: 'Level 3 - Base Materials',
+        code: 'b.01',
         parent: {
           id: 4,
-          name: "Level 4 - Raw Materials",
-          code: "r.01",
+          name: 'Level 4 - Raw Materials',
+          code: 'r.01',
           parent: {
             id: 5,
-            name: "Level 5 - Mining Products",
-            code: "mp.01",
-          },
-        },
-      },
-    },
-  },
-];
+            name: 'Level 5 - Mining Products',
+            code: 'mp.01'
+          }
+        }
+      }
+    }
+  }
+]
 
 const renderParentHierarchy = (parent: MaterialGroup | undefined): JSX.Element[] => {
-  if (!parent) return [];
+  if (!parent) return []
   return [
-    <div key={parent.id} style={{ paddingLeft: "20px", fontStyle: "italic", color: "gray" }}>
+    <div key={parent.id} style={{ paddingLeft: '20px', fontStyle: 'italic', color: 'gray' }}>
       <strong>Parent:</strong> {parent.name} ({parent.code})
     </div>,
-    ...renderParentHierarchy(parent.parent), // Recursive çağrı ile tüm seviyeleri getir
-  ];
-};
+    ...renderParentHierarchy(parent.parent)
+  ]
+}
 
 const MaterialGroupTable = () => {
   const columns: ColumnDef<MaterialGroup>[] = [
     {
-      id: "expander",
-      header: "",
+      id: 'expander',
+      header: '',
       cell: ({ row }) =>
         row.getCanExpand() ? (
           <button onClick={row.getToggleExpandedHandler()}>
-            {row.getIsExpanded() ? "▼" : "▶"}
+            {row.getIsExpanded() ? '▼' : '▶'}
           </button>
-        ) : null,
+        ) : null
     },
     {
-      header: "Name",
-      accessorKey: "name",
+      header: 'Name',
+      accessorKey: 'name'
     },
     {
-      header: "Code",
-      accessorKey: "code",
+      header: 'Code',
+      accessorKey: 'code'
     },
     {
-      header: "Parent",
+      header: 'Parent',
       cell: ({ row }) =>
         row.original.parent
           ? `${row.original.parent.name} (${row.original.parent.code})`
-          : "No Parent",
-    },
-  ];
+          : 'No Parent'
+    }
+  ]
 
   const table = useReactTable({
     data: initialMaterialGroups,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
-    getRowCanExpand: (row) => !!row.original.parent,
-  });
+    getRowCanExpand: (row) => !!row.original.parent
+  })
 
   return (
-    <table style={{ border: "1px solid black", borderCollapse: "collapse", width: "100%" }}>
+    <table style={{ border: '1px solid black', borderCollapse: 'collapse', width: '100%' }}>
       <thead>
       {table.getHeaderGroups().map((headerGroup) => (
         <tr key={headerGroup.id}>
@@ -101,9 +98,9 @@ const MaterialGroupTable = () => {
             <th
               key={header.id}
               style={{
-                border: "1px solid black",
-                padding: "8px",
-                background: "#f4f4f4",
+                border: '1px solid black',
+                padding: '8px',
+                background: '#f4f4f4'
               }}
             >
               {flexRender(header.column.columnDef.header, header.getContext())}
@@ -120,9 +117,9 @@ const MaterialGroupTable = () => {
               <td
                 key={cell.id}
                 style={{
-                  border: "1px solid black",
-                  padding: "8px",
-                  textAlign: "left",
+                  border: '1px solid black',
+                  padding: '8px',
+                  textAlign: 'left'
                 }}
               >
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -141,7 +138,7 @@ const MaterialGroupTable = () => {
       ))}
       </tbody>
     </table>
-  );
-};
+  )
+}
 
-export default MaterialGroupTable;
+export default MaterialGroupTable

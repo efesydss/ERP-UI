@@ -1,9 +1,8 @@
 import { useTranslation } from 'react-i18next'
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
-
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import { BaseTable } from '@/components/Common/Table/BaseTable'
-import React, { useMemo } from 'react'
+import React, { useMemo, useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { useConfirmDialog } from '@/utils/hooks/useConfirmDialogContext'
@@ -15,6 +14,7 @@ import { toast } from 'react-toastify'
 import { ColumnDef } from '@tanstack/react-table'
 import { Department } from '@/components/Company/Department/types/typesDepartment'
 import { Route } from '@/routes/_authenticated/company/departments/new'
+
 export const DepartmentList = () => {
   const { t } = useTranslation('common')
   const { openDialog } = useConfirmDialog()
@@ -22,35 +22,23 @@ export const DepartmentList = () => {
 
   const navigate = useNavigate()
 
-  const handleDeleteClick = (id: GridRowId) => () =>
-    openDialog(
-      'Confirm Deletion',
-      'Are you sure you want to delete this item?',
-      () => {
-        deleteDepartment(id.toString())
-      },
-      () => {
-        console.log('Deletion cancelled')
-      }
-    )
-  const safeAccessor = (accessorFn: (row: any) => any, columnName: string) => {
-    return (row: any) => {
+
+  const safeAccessor = <T, >(accessorFn: (row: T) => unknown, columnName: string) => {
+    return (row: T) => {
       try {
-        const result = accessorFn(row)
-        console.log(columnName, result)
-        return result
+        return accessorFn(row)
       } catch (error) {
-        console.error(error)
+        console.error(`Error in column "${columnName}"`, error, row)
         return 'Error'
       }
     }
   }
   const { mutate: deleteDepartment } = useMutation({
-    mutationFn: async (DepartmentId: string) => {
+    mutationFn: async (departmentId: string) => {
       return await apiRequest({
         endpoint: 'departmentDelete',
         method: 'DELETE',
-        params: { DepartmentId: DepartmentId?.toString() ?? '0' }
+        params: { departmentId: departmentId?.toString() ?? '0' }
       })
     },
     onSuccess: () => {
@@ -58,7 +46,19 @@ export const DepartmentList = () => {
       toast.success('Department Deleted')
     }
   })
-
+  const handleDeleteClick = useCallback(
+    (id: GridRowId) => () =>
+      openDialog(
+        'Confirm Deletion',
+        'Are you sure you want to delete this item?',
+        () => {
+          deleteDepartment(id.toString())
+        },
+        () => {
+          console.log('Deletion cancelled')
+        }
+      ),
+    [openDialog, deleteDepartment])
   const columns = useMemo<ColumnDef<Department>[]>(
     () => [
       {
@@ -80,7 +80,7 @@ export const DepartmentList = () => {
         )
       }
     ],
-    [t]
+    [t, handleDeleteClick]
   )
 
   const DepartmentListActions = () => {

@@ -1,14 +1,16 @@
-import React from 'react';
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { FormGrid } from '@/components/Common/Form/FormGrid/FormGrid'
 import { Input } from '@/components/Common/Form/Input/Input'
 import { Box, Button, Paper } from '@mui/material'
 import { FaCheck } from 'react-icons/fa6'
 import { BaseSelect } from '@/components/Common/Form/Select/BaseSelect'
-import { SectionTypeEnum } from '@/components/Storage/typesEnums'
+import { SectionTypeEnum } from '@/components/Admin/Section/types/typesSection'
+
 interface FormSectionProps {
   sectionId?: number
 }
+
 export const SectionForm = (props: FormSectionProps) => {
   console.log(props)
   const { t } = useTranslation()
@@ -26,9 +28,10 @@ export const SectionForm = (props: FormSectionProps) => {
           isContainer
         >
           <FormGrid>
-            <Input name={'name'} />
+            <Input name={'name'}
+                   label={t('common:name')}
+            />
             <BaseSelect
-
               name="employee"
               endpoint="employees"
             />
@@ -36,11 +39,7 @@ export const SectionForm = (props: FormSectionProps) => {
               name={'sectionType'}
               isEnum={true}
               options={sectionEnumOptions}
-              selectLabel={'sectionType'}
-            />
-            <BaseSelect
-              name="department"
-              endpoint="departments"
+              selectLabel={t('common:sectionType')}
             />
 
           </FormGrid>

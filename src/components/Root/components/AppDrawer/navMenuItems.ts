@@ -87,7 +87,20 @@ export const navMenuItems: MenuItemProps[] = [
       {
         label: 'CashAccounts',
         icon: TbUserStar
-      }
+      },
+      {
+          label:'cashAccountTransactions',
+          icon: TbUserStar
+      },
+      {
+          label:'expenseCards',
+          icon: TbUserStar
+      },
+     {
+            label:'expenseInvoices',
+            icon: TbUserStar
+     },
+
     ]
   },
   {
@@ -110,6 +123,44 @@ export const navMenuItems: MenuItemProps[] = [
         ]
       },
   {
+          label: 'production',
+          icon: RiAdminLine,
+          sub: [
+            {
+              label: 'projects',
+              icon: FaRProject
+            },
+          ]
+        },
+
+    {
+            label: 'purchasing',
+            icon: RiAdminLine,
+            sub: [
+              {
+                label: 'additionalCosts',
+                icon: FaRProject
+              },
+              {
+                 label: 'currentAccounts',
+                 icon: FaRProject
+              },
+              {
+                  label: 'currentAccountBankAccounts',
+                  icon: FaRProject
+              },
+              {
+                  label: 'currentAccountTransactions',
+                  icon: FaRProject
+              },
+              {
+                label: 'invoices',
+                icon: FaRProject
+              },
+            ]
+          },
+
+  {
       label: 'storage',
       icon: FaPeopleRoof,
       sub: [
@@ -119,8 +170,39 @@ export const navMenuItems: MenuItemProps[] = [
         },
         {
               label: 'assignmentTransactions',
-
               icon: TbUserStar
+        },
+        {
+            label: 'fixtureCards',
+            icon: TbUserStar
+        },
+        {
+            label: 'fixtureGroups',
+            icon: TbUserStar
+        },
+        {
+                label: 'materialCards',
+                icon: TbUserStar
+        },
+        {
+                label: 'materialGroups',
+                icon: TbUserStar
+        },
+        {
+                label: 'productCards',
+                icon: TbUserStar
+        },
+        {
+                label: 'productGroups',
+                icon: TbUserStar
+        },
+        {
+                label: 'serviceCards',
+                icon: TbUserStar
+        },
+        {
+                label: 'serviceGroups',
+                icon: TbUserStar
         },
         {
         label: 'shelves',

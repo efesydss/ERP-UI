@@ -3,7 +3,7 @@ import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
 import { PaymentMethod } from '@/components/Admin/PaymentMethod/types/typesPaymentMethod'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import { BaseTable } from '@/components/Common/Table/BaseTable'
-import React, { useMemo } from 'react'
+import React, { useMemo, useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { useConfirmDialog } from '@/utils/hooks/useConfirmDialogContext'
@@ -14,6 +14,7 @@ import { Button } from '@mui/material'
 import { toast } from 'react-toastify'
 import { ColumnDef } from '@tanstack/react-table'
 import { Route } from '@/routes/_authenticated/admin/paymentMethods/new'
+
 export const PaymentMethodList = () => {
   const { t } = useTranslation('common')
   const { openDialog } = useConfirmDialog()
@@ -21,50 +22,51 @@ export const PaymentMethodList = () => {
 
   const navigate = useNavigate()
 
-  const handleDeleteClick = (id: GridRowId) => () =>
-    openDialog(
-      'Confirm Deletion',
-      'Are you sure you want to delete this item?',
-      () => {
-        deletePaymentMethod(id.toString())
-      },
-      () => {
-        console.log('Deletion cancelled')
-      }
-    )
   const { mutate: deletePaymentMethod } = useMutation({
-    mutationFn: async (PaymentMethodId: string) => {
+    mutationFn: async (paymentMethodId: string) => {
       return await apiRequest({
         endpoint: 'paymentMethodDelete',
         method: 'DELETE',
-        params: { PaymentMethodId: PaymentMethodId?.toString() ?? '0' }
+        params: { paymentMethodId: paymentMethodId?.toString() ?? '0' }
       })
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['paymentMethods'] })
-      toast.success('PaymentMethod Deleted')
+      toast.success('Payment Method Deleted')
     }
   })
-  const safeAccessor = <T, >(accessorFn: (row: T) => any, columnName: string) => {
+  const safeAccessor = <T, >(accessorFn: (row: T) => unknown, columnName: string) => {
     return (row: T) => {
       try {
-        const result = accessorFn(row)
-        return result
+        return accessorFn(row)
       } catch (error) {
         console.error(`Error in column "${columnName}"`, error, row)
         return 'Error'
       }
     }
   }
+  const handleDeleteClick = useCallback(
+    (id: GridRowId) => () =>
+      openDialog(
+        'Confirm Deletion',
+        'Are you sure you want to delete this item?',
+        () => {
+          deletePaymentMethod(id.toString())
+        },
+        () => {
+          console.log('Deletion cancelled')
+        }
+      ),
+    [openDialog, deletePaymentMethod])
   const columns = useMemo<ColumnDef<PaymentMethod>[]>(
     () => [
       {
         header: t('name'),
-        accessorFn: safeAccessor((row) => row.name || t('-'), 'name'),
+        accessorFn: safeAccessor((row) => row.name || t('-'), 'name')
       },
       {
         header: t('code'),
-       accessorFn: safeAccessor((row) => row.code || t('-'), 'code'),
+        accessorFn: safeAccessor((row) => row.code || t('-'), 'code')
       },
       {
         header: t('actions'),
@@ -81,7 +83,7 @@ export const PaymentMethodList = () => {
         )
       }
     ],
-    [t]
+    [t, handleDeleteClick]
   )
 
   const PaymentMethodListActions = () => {

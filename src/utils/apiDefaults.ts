@@ -7,7 +7,7 @@ export const backendURL = import.meta.env.VITE_BACKEND_ENDPOINT
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
 
-interface RequestConfig<TRequest = any> {
+interface RequestConfig<TRequest = unknown> {
   endpoint: keyof typeof apiRoutes
   method?: HttpMethod
   payload?: TRequest
@@ -33,7 +33,7 @@ export const axiosBase = axios.create({
   baseURL: '/api'
 })
 
-export const apiRequest = async <TResponse, TRequest = any>(options: RequestConfig<TRequest>): Promise<TResponse> => {
+export const apiRequest = async <TResponse, TRequest = unknown>(options: RequestConfig<TRequest>): Promise<TResponse> => {
   const { endpoint, payload, method = 'POST', headers = new AxiosHeaders(), id, params } = options
 
   let url = apiRoutes[endpoint]

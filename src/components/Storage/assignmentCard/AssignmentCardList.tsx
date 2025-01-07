@@ -6,14 +6,13 @@ import { GridRowId } from '@mui/x-data-grid'
 import { apiRequest } from '@/utils/apiDefaults'
 import { toast } from 'react-toastify'
 import { ColumnDef } from '@tanstack/react-table'
-import { AssignmentCard } from '@/components/Storage/typesAssignmentCard'
-import { useMemo } from 'react'
+import { AssignmentCard } from '@/components/Storage/assignmentCard/types/typesAssignmentCard'
+import { useMemo, useCallback } from 'react'
 import { Button } from '@mui/material'
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
 import { Route } from '@/routes/_authenticated/storage/assignmentCards/new'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import { BaseTable } from '@/components/Common/Table/BaseTable'
-//import { MachineSubRow } from '@/components/Admin/machine/MachineSubRow'
 
 
 export const AssignmentCardList = () => {
@@ -25,17 +24,7 @@ export const AssignmentCardList = () => {
 
   const navigate = useNavigate()
 
-  const handleDeleteClick = (id: GridRowId) => () =>
-    openDialog(
-      'Confirm Deletion',
-      'Are you sure you want to delete this item?',
-      () => {
-        deleteMachine(id.toString())
-      },
-      () => {
-        console.log('Deletion cancelled')
-      }
-    )
+
   const { mutate: deleteMachine } = useMutation({
     mutationFn: async (machineId: string) => {
       return await apiRequest({
@@ -49,92 +38,104 @@ export const AssignmentCardList = () => {
       toast.success('Assignment Card Deleted')
     }
   })
-  const safeAccessor = (accessorFn: (row: any) => any, columnName: string) => {
-    return (row: any) => {
+  const handleDeleteClick = useCallback(
+    (id: GridRowId) => () =>
+      openDialog(
+        'Confirm Deletion',
+        'Are you sure you want to delete this item?',
+        () => {
+          deleteMachine(id.toString())
+        },
+        () => {
+          console.log('Deletion cancelled')
+        }
+      ),
+    [openDialog, deleteMachine])
+  const safeAccessor = <T, >(accessorFn: (row: T) => unknown, columnName: string) => {
+    return (row: T) => {
       try {
-        const result = accessorFn(row);
-        return result;
+        return accessorFn(row)
       } catch (error) {
-        console.error(`Error in column "${columnName}"`, error, row);
-        return 'Error';
+        console.error(`Error in column "${columnName}"`, error, row)
+        return 'Error'
       }
-    };
-  };
+    }
+  }
   const columns = useMemo<ColumnDef<AssignmentCard>[]>(
-    () =>[
+    () => [
       {
         header: t('assignmentStatusEnum'),
-        accessorFn: safeAccessor((row) => row.assignmentStatusEnum || t('-'), 'assignmentStatusEnum'),
+        accessorFn: safeAccessor((row) => row.assignmentStatusEnum || t('-'), 'assignmentStatusEnum')
       },
       {
         header: t('code'),
-        accessorFn: safeAccessor((row) => row.code || t('-'), 'code'),
+        accessorFn: safeAccessor((row) => row.code || t('-'), 'code')
       },
       {
         header: t('name'),
-        accessorFn: safeAccessor((row) => row.name || t('-'), 'name'),
+        accessorFn: safeAccessor((row) => row.name || t('-'), 'name')
       },
       {
         header: t('insuranceCompany'),
-        accessorFn: safeAccessor((row) => row.insuranceCompany || t('-'), 'insuranceCompany'),
+        accessorFn: safeAccessor((row) => row.insuranceCompany || t('-'), 'insuranceCompany')
       },
       {
         header: t('insurance'),
-        accessorFn: safeAccessor((row) => (row.insurance ? t('Yes') : t('No')), 'insurance'),
+        accessorFn: safeAccessor((row) => (row.insurance ? t('Yes') : t('No')), 'insurance')
       },
       {
         header: t('insurancePolicyNo'),
-        accessorFn: safeAccessor((row) => row.insurancePolicyNo || t('-'), 'insurancePolicyNo'),
+        accessorFn: safeAccessor((row) => row.insurancePolicyNo || t('-'), 'insurancePolicyNo')
       },
       {
         header: t('insuranceDuration'),
-        accessorFn: safeAccessor((row) => row.insuranceDuration || t('-'), 'insuranceDuration'),
+        accessorFn: safeAccessor((row) => row.insuranceDuration || t('-'), 'insuranceDuration')
       },
       {
         header: t('info'),
-        accessorFn: safeAccessor((row) => row.info || t('-'), 'info'),
+        accessorFn: safeAccessor((row) => row.info || t('-'), 'info')
       },
       {
         header: t('warrantyPeriodEnum'),
-        accessorFn: safeAccessor((row) => row.warrantyPeriodEnum || t('-'), 'warrantyPeriodEnum'),
+        accessorFn: safeAccessor((row) => row.warrantyPeriodEnum || t('-'), 'warrantyPeriodEnum')
       },
       {
         header: t('warrantyDay'),
-        accessorFn: safeAccessor((row) => row.warrantyDay || t('-'), 'warrantyDay'),
+        accessorFn: safeAccessor((row) => row.warrantyDay || t('-'), 'warrantyDay')
       },
       {
         header: t('underMaintenance'),
-        accessorFn: safeAccessor((row) => (row.underMaintenance ? t('true') : t('false')), 'underMaintenance'),
+        accessorFn: safeAccessor((row) => (row.underMaintenance ? t('true') : t('false')), 'underMaintenance')
       },
       {
         header: t('maintenanceDuration'),
-        accessorFn: safeAccessor((row) => row.maintenanceDuration || t('-'), 'maintenanceDuration'),
+        accessorFn: safeAccessor((row) => row.maintenanceDuration || t('-'), 'maintenanceDuration')
       },
       {
         header: t('maintenancePeriodEnum'),
-        accessorFn: safeAccessor((row) => row.maintenancePeriodEnum || t('-'), 'maintenancePeriodEnum'),
+        accessorFn: safeAccessor((row) => row.maintenancePeriodEnum || t('-'), 'maintenancePeriodEnum')
       },
       {
-        header: t('actions'),  // Actions başlığı
+        header: t('actions'),
         id: 'actions',
         cell: ({ row }) => (
 
-      <Button
+          <Button
             variant="outlined"
             color="error"
             size="small"
             onClick={handleDeleteClick(row.original.id)}
           >
             {t('delete')}
-        console.log('Satır verisi:', row.original);
+            console.log('Satır verisi:', row.original);
 
-      </Button>
+          </Button>
         )
       }
     ],
-    [t]
-  );
-  console.log('Columns tanımı:', columns);
+    [t, handleDeleteClick]
+  )
+  console.log('Columns tanımı:', columns)
 
   const AssignmentCardListActions = () => {
     return (
@@ -156,26 +157,17 @@ export const AssignmentCardList = () => {
 
   return (
     <>
-      <h4>Details ile Optimize et</h4>
+      <h4>will be optimised with details component</h4>
       <PageTitle
         title={t('assignmentCards')}
         actions={<AssignmentCardListActions />}
       />
       <BaseTable<AssignmentCard> endpoint={endpoint} columns={columns}
-                           /*renderSubComponent={(props) => (
-                             // <MachineSubRow
-                             //
-                             //   employeeId={props.row.original.id}
-                             //   row={props.row}
-                             //   handleExpandRow={props.handleExpandRow}
-                             // />
-                           )}*/
+
       ></BaseTable>
 
 
     </>
 
   )
-  console.log('BaseTable için kullanılan endpoint:', endpoint);
-  console.log('BaseTable için kullanılan columns:', columns);
 }

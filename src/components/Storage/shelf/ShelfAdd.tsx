@@ -14,7 +14,7 @@ import { ShelfForm } from '@/components/Storage/shelf/ShelfForm'
 const initialShelf: Shelf = {
   id: 0,
   name: ' ',
-  description: '',
+  description: ''
 }
 export const ShelfAdd = () => {
   const navigate = useNavigate()
@@ -54,7 +54,7 @@ export const ShelfAdd = () => {
         <BaseForm
           initialValues={initialShelf}
           onSubmit={onFormSubmit}
-          component={<ShelfForm />}//todo ef create
+          component={<ShelfForm />}
         />
       </Container>
     </>

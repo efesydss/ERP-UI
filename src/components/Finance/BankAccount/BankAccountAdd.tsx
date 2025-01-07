@@ -8,13 +8,13 @@ import { toast } from 'react-toastify'
 import { Container } from '@mui/material'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import { BaseForm } from '@/components/Common/Form/BaseForm'
-import {BankAccount} from '@/components/Finance/BankAccount/types/typesBankAccount'
-import {Route} from '@/routes/_authenticated/finance/bankAccounts/'
 import { BankAccountForm } from '@/components/Finance/BankAccount/BankAccountForm'
-
+import { BankAccount } from '@/components/Finance/BankAccount/types/typesBankAccount'
+import { Route } from '@/routes/_authenticated/finance/bankAccounts/'
 const initialBankAccount: BankAccount = {
   id: 0,
   accountNumber: '',
+  branch: undefined,
   iban: '',
   currency: undefined,
 }

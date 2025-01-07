@@ -16,9 +16,9 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-rl.question('Lütfen ENTITY adını girin: ', (entityName) => {
+rl.question('Lütfen Route adını girin: ', (entityName) => {
   if (!entityName) {
-    console.error('ENTITY adı boş bırakılamaz.');
+    console.error('Route adı boş bırakılamaz.');
     rl.close();
     process.exit(1);
   }
