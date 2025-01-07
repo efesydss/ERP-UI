@@ -16,7 +16,6 @@ bun run dev
 use `/login` to login and get the token
 
 
-
 Or use the launch_dev.sh script 
 
 ```bash
