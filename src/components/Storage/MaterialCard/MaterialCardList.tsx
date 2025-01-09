@@ -1,12 +1,15 @@
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
+//import { useTranslation } from 'react-i18next';
 import {
   MaterialReactTable,
   useMaterialReactTable,
   type MRT_ColumnDef,
 } from 'material-react-table';
+import { Button } from '@mui/material'
 
 //example data type
 type Person = {
+  id: number; // Her satıra bir id ekledim.
   name: {
     firstName: string;
     lastName: string;
@@ -19,6 +22,7 @@ type Person = {
 //nested data is ok, see accessorKeys in ColumnDef below
 const data: Person[] = [
   {
+    id: 1,
     name: {
       firstName: 'John',
       lastName: 'Doe',
@@ -28,6 +32,7 @@ const data: Person[] = [
     state: 'Kentucky',
   },
   {
+    id: 2,
     name: {
       firstName: 'Jane',
       lastName: 'Doe',
@@ -37,6 +42,7 @@ const data: Person[] = [
     state: 'Ohio',
   },
   {
+    id: 3,
     name: {
       firstName: 'Joe',
       lastName: 'Doe',
@@ -46,6 +52,7 @@ const data: Person[] = [
     state: 'West Virginia',
   },
   {
+    id: 4,
     name: {
       firstName: 'Kevin',
       lastName: 'Vandy',
@@ -55,6 +62,7 @@ const data: Person[] = [
     state: 'Nebraska',
   },
   {
+    id: 5,
     name: {
       firstName: 'Joshua',
       lastName: 'Rolluffs',
@@ -63,6 +71,7 @@ const data: Person[] = [
     city: 'Omaha',
     state: 'Nebraska',
   },
+
 ];
 
 const MaterialCardList = () => {
@@ -93,6 +102,22 @@ const MaterialCardList = () => {
         accessorKey: 'state',
         header: 'State',
         size: 150,
+      },
+      {
+        id: 'actions', // Actions sütunu ekleniyor.
+        header: 'Actions',
+        size: 100,
+        Cell: ({ row }) => (
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={() => {
+              console.log(`Silinen ID: ${row.original.id}`); // Satırdaki id'yi konsola yazdırır.
+            }}
+          >
+            Delete
+          </Button>
+        ),
       },
     ],
     [],
