@@ -42,6 +42,7 @@ import { Route as AuthenticatedAdminDepotsImport } from './routes/_authenticated
 import { Route as AuthenticatedAdminCompaniesImport } from './routes/_authenticated/admin/companies'
 import { Route as AuthenticatedStorageUnitIndexImport } from './routes/_authenticated/storage/unit/index'
 import { Route as AuthenticatedStorageShelfIndexImport } from './routes/_authenticated/storage/shelf/index'
+import { Route as AuthenticatedStorageServiceCardsIndexImport } from './routes/_authenticated/storage/serviceCards/index'
 import { Route as AuthenticatedStorageProductCardsIndexImport } from './routes/_authenticated/storage/productCards/index'
 import { Route as AuthenticatedStorageMaterialCardsIndexImport } from './routes/_authenticated/storage/materialCards/index'
 import { Route as AuthenticatedStorageFixtureCardsIndexImport } from './routes/_authenticated/storage/fixtureCards/index'
@@ -75,6 +76,7 @@ import { Route as AuthenticatedAccountingCashAccountsIndexImport } from './route
 import { Route as AuthenticatedAccountingCashAccountTransactionsIndexImport } from './routes/_authenticated/accounting/cashAccountTransactions/index'
 import { Route as AuthenticatedStorageUnitNewImport } from './routes/_authenticated/storage/unit/new'
 import { Route as AuthenticatedStorageShelfNewImport } from './routes/_authenticated/storage/shelf/new'
+import { Route as AuthenticatedStorageServiceCardsNewImport } from './routes/_authenticated/storage/serviceCards/new'
 import { Route as AuthenticatedStorageProductCardsNewImport } from './routes/_authenticated/storage/productCards/new'
 import { Route as AuthenticatedStorageMaterialCardsNewImport } from './routes/_authenticated/storage/materialCards/new'
 import { Route as AuthenticatedStorageFixtureCardsNewImport } from './routes/_authenticated/storage/fixtureCards/new'
@@ -107,6 +109,7 @@ import { Route as AuthenticatedAccountingCashAccountsNewImport } from './routes/
 import { Route as AuthenticatedAccountingCashAccountTransactionsNewImport } from './routes/_authenticated/accounting/cashAccountTransactions/new'
 import { Route as AuthenticatedStorageUnitIdIndexImport } from './routes/_authenticated/storage/unit/$id/index'
 import { Route as AuthenticatedStorageShelfIdIndexImport } from './routes/_authenticated/storage/shelf/$id/index'
+import { Route as AuthenticatedStorageServiceCardsIdIndexImport } from './routes/_authenticated/storage/serviceCards/$id/index'
 import { Route as AuthenticatedStorageProductCardsIdIndexImport } from './routes/_authenticated/storage/productCards/$id/index'
 import { Route as AuthenticatedStorageMaterialCardsIdIndexImport } from './routes/_authenticated/storage/materialCards/$id/index'
 import { Route as AuthenticatedStorageFixtureCardsIdIndexImport } from './routes/_authenticated/storage/fixtureCards/$id/index'
@@ -310,6 +313,12 @@ const AuthenticatedStorageShelfIndexRoute =
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
+const AuthenticatedStorageServiceCardsIndexRoute =
+  AuthenticatedStorageServiceCardsIndexImport.update({
+    path: '/storage/serviceCards/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
 const AuthenticatedStorageProductCardsIndexRoute =
   AuthenticatedStorageProductCardsIndexImport.update({
     path: '/storage/productCards/',
@@ -508,6 +517,12 @@ const AuthenticatedStorageShelfNewRoute =
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
+const AuthenticatedStorageServiceCardsNewRoute =
+  AuthenticatedStorageServiceCardsNewImport.update({
+    path: '/storage/serviceCards/new',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
 const AuthenticatedStorageProductCardsNewRoute =
   AuthenticatedStorageProductCardsNewImport.update({
     path: '/storage/productCards/new',
@@ -698,6 +713,12 @@ const AuthenticatedStorageUnitIdIndexRoute =
 const AuthenticatedStorageShelfIdIndexRoute =
   AuthenticatedStorageShelfIdIndexImport.update({
     path: '/storage/shelf/$id/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
+const AuthenticatedStorageServiceCardsIdIndexRoute =
+  AuthenticatedStorageServiceCardsIdIndexImport.update({
+    path: '/storage/serviceCards/$id/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
@@ -1298,6 +1319,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedStorageProductCardsNewImport
       parentRoute: typeof AuthenticatedImport
     }
+    '/_authenticated/storage/serviceCards/new': {
+      id: '/_authenticated/storage/serviceCards/new'
+      path: '/storage/serviceCards/new'
+      fullPath: '/storage/serviceCards/new'
+      preLoaderRoute: typeof AuthenticatedStorageServiceCardsNewImport
+      parentRoute: typeof AuthenticatedImport
+    }
     '/_authenticated/storage/shelf/new': {
       id: '/_authenticated/storage/shelf/new'
       path: '/storage/shelf/new'
@@ -1529,6 +1557,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedStorageProductCardsIndexImport
       parentRoute: typeof AuthenticatedImport
     }
+    '/_authenticated/storage/serviceCards/': {
+      id: '/_authenticated/storage/serviceCards/'
+      path: '/storage/serviceCards'
+      fullPath: '/storage/serviceCards'
+      preLoaderRoute: typeof AuthenticatedStorageServiceCardsIndexImport
+      parentRoute: typeof AuthenticatedImport
+    }
     '/_authenticated/storage/shelf/': {
       id: '/_authenticated/storage/shelf/'
       path: '/storage/shelf'
@@ -1753,6 +1788,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedStorageProductCardsIdIndexImport
       parentRoute: typeof AuthenticatedImport
     }
+    '/_authenticated/storage/serviceCards/$id/': {
+      id: '/_authenticated/storage/serviceCards/$id/'
+      path: '/storage/serviceCards/$id'
+      fullPath: '/storage/serviceCards/$id'
+      preLoaderRoute: typeof AuthenticatedStorageServiceCardsIdIndexImport
+      parentRoute: typeof AuthenticatedImport
+    }
     '/_authenticated/storage/shelf/$id/': {
       id: '/_authenticated/storage/shelf/$id/'
       path: '/storage/shelf/$id'
@@ -1907,6 +1949,7 @@ export const routeTree = rootRoute.addChildren({
     AuthenticatedStorageFixtureCardsNewRoute,
     AuthenticatedStorageMaterialCardsNewRoute,
     AuthenticatedStorageProductCardsNewRoute,
+    AuthenticatedStorageServiceCardsNewRoute,
     AuthenticatedStorageShelfNewRoute,
     AuthenticatedStorageUnitNewRoute,
     AuthenticatedAccountingCashAccountTransactionsIndexRoute,
@@ -1916,6 +1959,7 @@ export const routeTree = rootRoute.addChildren({
     AuthenticatedStorageFixtureCardsIndexRoute,
     AuthenticatedStorageMaterialCardsIndexRoute,
     AuthenticatedStorageProductCardsIndexRoute,
+    AuthenticatedStorageServiceCardsIndexRoute,
     AuthenticatedStorageShelfIndexRoute,
     AuthenticatedStorageUnitIndexRoute,
     AuthenticatedAccountingCashAccountTransactionsIdIndexRoute,
@@ -1925,6 +1969,7 @@ export const routeTree = rootRoute.addChildren({
     AuthenticatedStorageFixtureCardsIdIndexRoute,
     AuthenticatedStorageMaterialCardsIdIndexRoute,
     AuthenticatedStorageProductCardsIdIndexRoute,
+    AuthenticatedStorageServiceCardsIdIndexRoute,
     AuthenticatedStorageShelfIdIndexRoute,
     AuthenticatedStorageUnitIdIndexRoute,
   }),
@@ -1969,6 +2014,7 @@ export const routeTree = rootRoute.addChildren({
         "/_authenticated/storage/fixtureCards/new",
         "/_authenticated/storage/materialCards/new",
         "/_authenticated/storage/productCards/new",
+        "/_authenticated/storage/serviceCards/new",
         "/_authenticated/storage/shelf/new",
         "/_authenticated/storage/unit/new",
         "/_authenticated/accounting/cashAccountTransactions/",
@@ -1978,6 +2024,7 @@ export const routeTree = rootRoute.addChildren({
         "/_authenticated/storage/fixtureCards/",
         "/_authenticated/storage/materialCards/",
         "/_authenticated/storage/productCards/",
+        "/_authenticated/storage/serviceCards/",
         "/_authenticated/storage/shelf/",
         "/_authenticated/storage/unit/",
         "/_authenticated/accounting/cashAccountTransactions/$id/",
@@ -1987,6 +2034,7 @@ export const routeTree = rootRoute.addChildren({
         "/_authenticated/storage/fixtureCards/$id/",
         "/_authenticated/storage/materialCards/$id/",
         "/_authenticated/storage/productCards/$id/",
+        "/_authenticated/storage/serviceCards/$id/",
         "/_authenticated/storage/shelf/$id/",
         "/_authenticated/storage/unit/$id/"
       ]
@@ -2342,6 +2390,10 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_authenticated/storage/productCards/new.tsx",
       "parent": "/_authenticated"
     },
+    "/_authenticated/storage/serviceCards/new": {
+      "filePath": "_authenticated/storage/serviceCards/new.tsx",
+      "parent": "/_authenticated"
+    },
     "/_authenticated/storage/shelf/new": {
       "filePath": "_authenticated/storage/shelf/new.tsx",
       "parent": "/_authenticated"
@@ -2474,6 +2526,10 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_authenticated/storage/productCards/index.tsx",
       "parent": "/_authenticated"
     },
+    "/_authenticated/storage/serviceCards/": {
+      "filePath": "_authenticated/storage/serviceCards/index.tsx",
+      "parent": "/_authenticated"
+    },
     "/_authenticated/storage/shelf/": {
       "filePath": "_authenticated/storage/shelf/index.tsx",
       "parent": "/_authenticated"
@@ -2600,6 +2656,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_authenticated/storage/productCards/$id/": {
       "filePath": "_authenticated/storage/productCards/$id/index.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/storage/serviceCards/$id/": {
+      "filePath": "_authenticated/storage/serviceCards/$id/index.tsx",
       "parent": "/_authenticated"
     },
     "/_authenticated/storage/shelf/$id/": {
