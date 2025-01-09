@@ -25,7 +25,8 @@
     "paths": {
       "@/*": [
         "*"
-      ]
+      ],
+      "@api-spec/*": ["../api-spec/*"]
     }
   },
   "include": [

@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom/client'
-import { StrictMode } from 'react'
+import { StrictMode, Suspense } from 'react'
 import { CssBaseline, GlobalStyles } from '@mui/material'
 import { MultiThemeProvider } from '@/utils/ThemeContext'
 import { initI18n } from '@/i18n'
@@ -77,7 +77,9 @@ if (!rootElement.innerHTML) {
             }}
           />
           <ToastContainer />
-          <App />
+          <Suspense fallback={<div>loading...</div>}>
+            <App />
+          </Suspense>
         </QueryClientProvider>
       </MultiThemeProvider>
     </StrictMode>
