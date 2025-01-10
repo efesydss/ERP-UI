@@ -119,7 +119,7 @@ const ServiceCardList = () => {
             header: 'Job Title',
             size: 350,
           },
-         
+
         ],
       },
     ],
