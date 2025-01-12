@@ -109,6 +109,7 @@ const ProductCardList = () => {
     data,
     enableExpandAll: false, //hide expand all double arrow in column header
     enableExpanding: true,
+    enableColumnOrdering: true,
     filterFromLeafRows: true, //apply filtering to all rows instead of just parent rows
     getSubRows: (row) => row.subRows, //default
     initialState: { expanded: true }, //expand all rows by default
