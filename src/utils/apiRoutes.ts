@@ -155,6 +155,13 @@ export const apiRoutes = {
   assignmentCardDelete:'storage/assignmentCard/{assignmentCardId}',
   assignmentCardUpdate:'storage/assignmentCard/{assignmentCardId}',
 
+  //Storage / MaterialCard
+    materialCards: 'storage/materialCards',
+    materialCard: 'storage/materialCard/{materialCardId}',
+    materialCardAdd: 'storage/materialCard',
+    materialCardDelete: 'storage/materialCard/{materialCardId}',
+    materialCardUpdate: 'storage/materialCard/{materialCardId}',
+
   //Storage / FixtureCard
   fixtureCards: 'storage/fixtureCards',
   fixtureCard:'storage/fixtureCard/{fixtureCardId}',

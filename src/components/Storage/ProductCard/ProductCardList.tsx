@@ -1,103 +1,79 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react'
 import {
   MaterialReactTable,
   useMaterialReactTable,
-  type MRT_ColumnDef,
-} from 'material-react-table';
-
-export type Person = {
-  firstName: string;
-  lastName: string;
-  address: string;
-  city: string;
-  state: string;
-  subRows?: Person[]; //Each person can have sub rows of more people
-};
-
-export const data: Person[] = [
-  {
-    firstName: 'Dylan',
-    lastName: 'Murray',
-    address: '261 Erdman Ford',
-    city: 'East Daphne',
-    state: 'Kentucky',
-    subRows: [
-      {
-        firstName: 'Ervin',
-        lastName: 'Reinger',
-        address: '566 Brakus Inlet',
-        city: 'South Linda',
-        state: 'West Virginia',
-        subRows: [
-          {
-            firstName: 'Jordane',
-            lastName: 'Homenick',
-            address: '1234 Brakus Inlet',
-            city: 'South Linda',
-            state: 'West Virginia',
-          },
-          {
-            firstName: 'Jordan',
-            lastName: 'Clarkson',
-            address: '4882 Palm Rd',
-            city: 'San Francisco',
-            state: 'California',
-          },
-        ],
-      },
-      {
-        firstName: 'Brittany',
-        lastName: 'McCullough',
-        address: '722 Emie Stream',
-        city: 'Lincoln',
-        state: 'Nebraska',
-      },
-    ],
-  },
-  {
-    firstName: 'Raquel',
-    lastName: 'Kohler',
-    address: '769 Dominic Grove',
-    city: 'Columbus',
-    state: 'Ohio',
-    subRows: [
-      {
-        firstName: 'Branson',
-        lastName: 'Frami',
-        address: '32188 Larkin Turnpike',
-        city: 'Charleston',
-        state: 'South Carolina',
-      },
-    ],
-  },
-];
+  type MRT_ColumnDef, MRT_SortingState, MRT_PaginationState
+} from 'material-react-table'
+import { MaterialCard } from '@/components/Storage/MaterialCard/types/typesMaterialCard'
+import { useQuery } from '@tanstack/react-query'
+import { apiRequest, ApiResponse } from '@/utils/apiDefaults'
 
 const ProductCardList = () => {
-  const columns = useMemo<MRT_ColumnDef<Person>[]>(
+  const endpoint = 'materialCards'
+  const [pagination, setPagination] = useState<MRT_PaginationState>({
+    pageIndex: 0,
+    pageSize: 10
+  })
+  const [sorting, setSorting] = useState<MRT_SortingState>([])
+  const method = 'POST'
+  const sortingOptions = () => {
+    if (sorting.length) {
+      return sorting.map(({ id, desc }) => `${id},${desc ? 'desc' : 'asc'}`).join(';')
+    }
+    return 'id,desc'
+  }
+  const {data} = useQuery({
+    queryKey: [endpoint, pagination, sorting],
+    queryFn: () =>
+      apiRequest<ApiResponse<MaterialCard>>({
+        endpoint,
+        method,
+        payload: {
+          filter: '',
+          sort: sortingOptions(),
+          page: pagination.pageIndex,
+          pageSize: pagination.pageSize,
+        },
+      })
+  })
+  const columns = useMemo<MRT_ColumnDef<MaterialCard>[]>(
     //column definitions...
     () => [
       {
-        accessorKey: 'firstName',
-        header: 'First Name',
+        accessorKey: 'materialCode',
+        header: 'materialCode',
       },
       {
-        accessorKey: 'lastName',
-        header: 'Last Name',
-      },
-
-      {
-        accessorKey: 'address',
-        header: 'Address',
+        accessorKey: 'materialName',
+        header: 'materialName',
       },
       {
-        accessorKey: 'city',
-        header: 'City',
+        accessorKey: 'defaultUnit',
+        header: 'defaultUnit',
       },
-
       {
-        accessorKey: 'state',
-        enableColumnOrdering: false,
-        header: 'State',
+        accessorKey: 'materialType',
+        header: 'materialType',
+      },
+      {
+        accessorKey: 'optimalLevel',
+        header: 'optimalLevel',
+      },
+      {
+        accessorKey: 'minimumLevel',
+        header: 'minimumLevel',
+      },
+      {
+        accessorKey: 'specialCode',
+        header: 'specialCode',
+      },
+      {
+        accessorKey: 'shelfLocation',
+        header: 'shelfLocation',
+      },
+      {
+        accessorKey: 'materialCardUnits',
+        header: 'materialCardUnits',
       },
     ],
     [],
@@ -106,12 +82,13 @@ const ProductCardList = () => {
 
   const table = useMaterialReactTable({
     columns,
-    data,
-    enableExpandAll: false, //hide expand all double arrow in column header
+    data: data?.data ?? [],
+    enableExpandAll: false,
     enableExpanding: true,
+    onSortingChange:setSorting,
+    onPaginationChange:setPagination,
     enableColumnOrdering: true,
     filterFromLeafRows: true, //apply filtering to all rows instead of just parent rows
-    getSubRows: (row) => row.subRows, //default
     initialState: { expanded: true }, //expand all rows by default
     paginateExpandedRows: false, //When rows are expanded, do not count sub-rows as number of rows on the page towards pagination
   });

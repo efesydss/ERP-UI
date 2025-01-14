@@ -157,7 +157,7 @@ const MaterialCardList = () => {
   useEffect(() => {
     const newFilterOperators: ColumnFilterProps[] = table.getHeaderGroups().flatMap((headerGroup) =>
       headerGroup.headers.map((header) => ({
-        filterVariant: header.column.columnDef.meta?.filterVariant,//todo Behçet abi yardımmm ?
+        filterVariant: header.column.columnDef.meta?.filterVariant ,//todo Behçet abi yardımmm ?
         columnId: header.column.id
       }))
     )
