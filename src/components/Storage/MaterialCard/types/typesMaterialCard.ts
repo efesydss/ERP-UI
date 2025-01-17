@@ -13,8 +13,9 @@ export interface MaterialCard {
   materialCardUnits: MaterialCardUnit[];
 }
 export interface MaterialCardUnit {
-    //bu yanlış işte çünkü bu dto da farklı alanlar var ben bunu entity den baktım yanlış oldu o yüzden...
-    materialCard:MaterialCard;
+    id: number;
+    unit : DefaultUnit;
+    multiplier: number;
 }
 export enum MaterialType{
     MAIN_MATERIAL = 'MAIN_MATERIAL',

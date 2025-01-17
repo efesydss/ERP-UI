@@ -162,6 +162,22 @@ export const apiRoutes = {
     materialCardDelete: 'storage/materialCard/{materialCardId}',
     materialCardUpdate: 'storage/materialCard/{materialCardId}',
 
+    //Storage / MaterialGroup
+    materialGroups: 'storage/materialGroups',
+    materialGroup: 'storage/materialGroup/{materialGroupId}',
+    materialGroupAdd: 'storage/materialGroup',
+    materialGroupDelete: 'storage/materialGroup/{materialGroupId}',
+    materialGroupUpdate: 'storage/materialGroup/{materialGroupId}',
+    materialTree: 'storage/materialGroup/tree',
+
+    //Storage / Product Group
+    productGroups: 'storage/productGroups',
+    productGroup: 'storage/productGroup/{productGroupId}',
+    productGroupAdd: 'storage/productGroup',
+    productGroupDelete: 'storage/productGroup/{productGroupId}',
+    productGroupUpdate: 'storage/productGroup/{productGroupId}',
+    productTree: 'storage/productGroup/tree',
+
   //Storage / FixtureCard
   fixtureCards: 'storage/fixtureCards',
   fixtureCard:'storage/fixtureCard/{fixtureCardId}',
