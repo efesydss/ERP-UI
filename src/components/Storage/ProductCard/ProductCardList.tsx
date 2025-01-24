@@ -5,8 +5,6 @@ import {
   MRT_ColumnDef,
   useMaterialReactTable
 } from 'material-react-table'
-import { useQuery } from '@tanstack/react-query'
-
 const ProductCardList = () => {
 
   const columns = useMemo<MRT_ColumnDef<MaterialGroupTree>[]>(
@@ -43,20 +41,7 @@ const ProductCardList = () => {
     }
   ];
 
-  const { data } = useQuery({
-    queryKey: [endpoint, pagination, sorting],
-    queryFn: () =>
-      apiRequest<ApiResponse<MaterialGroupTree>>({
-        endpoint,
-        method,
-        payload: {
-          filter: '',
-          sort: sortingOptions(),
-          page: pagination.pageIndex,
-          pageSize: pagination.pageSize
-        }
-      })
-  })
+
   const table = useMaterialReactTable({
 
     columns,

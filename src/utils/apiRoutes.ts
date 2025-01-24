@@ -61,6 +61,13 @@ export const apiRoutes = {
     currentAccountTransactionDelete:'purchasing/currentAccountTransaction/{currentAccountTransactionId}',
     currentAccountTransactionUpdate:'purchasing/currentAccountTransaction/{currentAccountTransactionId}',
 
+     // Purchasing / Purchase Order
+        purchaseOrders:'purchasing/purchaseOrders',
+        purchaseOrder:'purchasing/purchaseOrder/{purchaseOrderId}',
+        purchaseOrderAdd:'purchasing/purchaseOrder',
+        purchaseOrderDelete:'purchasing/purchaseOrder/{purchaseOrderId}',
+        purchaseOrderUpdate:'purchasing/purchaseOrder/{purchaseOrderId}',
+
     // Production / Project
     projects:'production/projects',
     project:'production/project/{projectId}',

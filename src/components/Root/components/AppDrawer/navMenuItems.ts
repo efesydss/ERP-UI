@@ -157,6 +157,10 @@ export const navMenuItems: MenuItemProps[] = [
                 label: 'invoices',
                 icon: FaRProject
               },
+              {
+                  label: 'purchaseOrders',
+                 icon: FaRProject
+              },
             ]
           },
 
