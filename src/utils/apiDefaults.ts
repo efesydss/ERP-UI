@@ -99,12 +99,16 @@ export const refreshAuth = async (failedRequest: AxiosError) => {
     const newAccessToken = tokenRefreshResponse.data.token
     setAuthToken(newAccessToken)
 
-    if (failedRequest.response && failedRequest.response.config) {
+    if (failedRequest.response?.config) {
       failedRequest.response.config.headers['Authorization'] = `Bearer ${newAccessToken}`
     }
 
     return Promise.resolve()
   } catch (error) {
+    if (axios.isAxiosError(error) && error.response?.status === 401) {
+      setAuthToken(undefined)
+      window.location.href = '/login'
+    }
     return Promise.reject(error)
   }
 }
