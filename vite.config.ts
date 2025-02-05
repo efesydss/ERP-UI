@@ -11,6 +11,7 @@ export default defineConfig({
     }
   },
 
+
   //todo: this is a temp fix for cors
   //http://localhost:8080/api
   //https://falcons-erp-api-dev.sd.iafl.net/api/

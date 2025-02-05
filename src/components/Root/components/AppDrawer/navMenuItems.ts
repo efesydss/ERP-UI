@@ -219,4 +219,14 @@ export const navMenuItems: MenuItemProps[] = [
         },
       ]
     },
+{
+      label: 'sales',
+      icon: RiAdminLine,
+      sub: [
+        {
+          label: 'proposals',
+          icon: FaRProject
+        },
+      ]
+    },
 ]
