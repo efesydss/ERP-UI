@@ -7,7 +7,8 @@ export default defineConfig({
   plugins: [react(), TanStackRouterVite()],
   resolve: {
     alias: {
-      '@': new URL('./src/', import.meta.url).pathname
+      '@': new URL('./src/', import.meta.url).pathname,
+
     }
   },
 

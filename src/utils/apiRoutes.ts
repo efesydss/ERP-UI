@@ -220,6 +220,18 @@ export const apiRoutes = {
     unitDelete:'storage/unit/{unitId}',
     unitUpdate:'storage/unit/{unitId}',
 
+
+   // Sales / Proposal
+    proposals:'sales/proposals',
+    proposal:'sales/proposal/{proposalId}',
+    proposalAdd:'sales/proposal',
+    proposalDelete:'sales/proposal/{proposalId}',
+    proposalUpdate:'sales/proposal/{proposalId}',
+
+
+
+
+
   // Employee Vacation Management
   employeeVacationStatuses: 'hr/employees/timeoffstatuses',
   employeeVacation: 'hr/employee/{employeeId}/timeoffs',
