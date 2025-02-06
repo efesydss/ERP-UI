@@ -26,6 +26,8 @@ import { useQuery } from '@tanstack/react-query'
 
 
 const ProposalsList = () => {
+
+  // todo ef complete column definitions..
   const columns = useMemo<MRT_ColumnDef<Proposals>[]>(
     () => [
       {
