@@ -14,7 +14,7 @@ export interface Proposals {
   tax: number;
   total: number;
   description: string;
-  productCards: ProductCardUnit[];
+  products: ProductRowItem[];
   laborCosts: LaborCost[];
   materialCards: MaterialCard[];
   unitDiscount: number;
@@ -57,11 +57,17 @@ export interface LaborCost{
          DELIVERED = 'DELIVERED',
      }
 
-export interface ProductCardUnit {
+export interface ProductRowItem {
     id: number;
-    productCard: ProductCardRef;
-    multiplier: number;
-}
+    productCard:ProductCardRef;
+    discount: number;
+    expense: number;
+    profit: number;
+    profitMargin: number;
+    price: number;
+    rowTotal: number;
+    }
+
 
 export interface ProductCardRef {
     id: number;

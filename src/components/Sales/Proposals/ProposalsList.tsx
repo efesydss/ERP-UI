@@ -27,6 +27,25 @@ import { useQuery } from '@tanstack/react-query'
 
 const ProposalsList = () => {
 
+  /*
+  *date: string;
+  proposalState: string;
+  proposalNo: number;
+  currentAccount: CurrentAccount;
+  discount: number;
+  expense: number;
+  tax: number;
+  total: number;
+  description: string;
+  products: ProductRowItem[];
+  laborCosts: LaborCost[];
+  materialCards: MaterialCard[];
+  unitDiscount: number;
+  totalTax: number;
+  additionalCosts: number;
+  finalTotal: number;
+  extras: Extras;
+  * */
   // todo ef complete column definitions..
   const columns = useMemo<MRT_ColumnDef<Proposals>[]>(
     () => [
@@ -35,7 +54,7 @@ const ProposalsList = () => {
         columns: [
           {
             accessorFn: (row) => row.proposalNo, //accessorFn used to join multiple data into a single cell
-            header: 'Proposal No.',
+            header: 'Proposal Date',
             size: 250,
             Cell: ({ renderedCellValue, row }) => (
               <Box
@@ -45,41 +64,56 @@ const ProposalsList = () => {
                   gap: '1rem'
                 }}
               >
-                <div>{row.original.proposalState}</div>
+                <div>{row.original.date}</div>{/*todo ef buraya date picker elementi koy*/}
                 {/* using renderedCellValue instead of cell.getValue() preserves filter match highlighting */}
-                <span>{renderedCellValue}</span>
-              </Box>
-            )
-          }
-        ]
-      },
-      {
-        header: 'Job Info',
-        columns: [
-          {
-            accessorKey: 'description',
-            // filterVariant: 'range', //if not using filter modes feature, use this instead of filterFn
-            header: 'Salary',
-            size: 200,
-            //custom conditional format and styling
-            Cell: ({ cell }) => (
-              <Box
-                component="span"
-                sx={(theme) => ({
-                  backgroundColor: theme.palette.primary.main,
-                  borderRadius: '0.25rem',
-                  color: '#fff',
-                  maxWidth: '9ch',
-                  p: '0.25rem'
-                })}
-              >
+                <span>Proposal No: {renderedCellValue}</span>
               </Box>
             )
           },
           {
-            accessorKey: 'finalTotal', //hey a simple column for once
-            header: 'Job Title',
-            size: 350
+            accessorKey: 'currentAccount.title',
+            // filterVariant: 'range', //if not using filter modes feature, use this instead of filterFn
+            header: 'Current Account',
+            Cell: ({ row }) => (
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '1rem'
+                }}
+              >
+                <div>{row.original.currentAccount.title}</div>
+                <div>{row.original.currentAccount.code}</div>
+                <div>{row.original.currentAccount.sector}</div>
+              </Box>
+            )
+          },
+          {
+            accessorKey: 'proposalState',
+            header: 'State',
+          },
+        ]
+      },
+      {
+        header: 'Prices',
+        columns: [
+          {
+            accessorFn: (row) => row.proposalNo, //accessorFn used to join multiple data into a single cell
+            header: 'Proposal Date',
+            size: 250,
+            Cell: ({ renderedCellValue, row }) => (
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '1rem'
+                }}
+              >
+                <div>{row.original.date}</div>{/*todo ef buraya date picker elementi koy*/}
+                {/* using renderedCellValue instead of cell.getValue() preserves filter match highlighting */}
+                <span>Proposal No: {renderedCellValue}</span>
+              </Box>
+            )
           },
         ]
       }
@@ -178,7 +212,7 @@ const ProposalsList = () => {
         <ListItemIcon>
           <AccountCircle />
         </ListItemIcon>
-        View Profile
+        Additional Action
       </MenuItem>,
       <MenuItem
         key={1}
