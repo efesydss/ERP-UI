@@ -28,17 +28,18 @@ import { useQuery } from '@tanstack/react-query'
 const ProposalsList = () => {
 
   /*
-  *date: string;
-  proposalState: string;
-  proposalNo: number;
-  currentAccount: CurrentAccount;
-  discount: number;
-  expense: number;
-  tax: number;
-  total: number;
-  description: string;
-  products: ProductRowItem[];
-  laborCosts: LaborCost[];
+  *date: string;*
+  proposalState: string;*
+  proposalNo: number;*
+  currentAccount: CurrentAccount;*
+  * Prices
+  discount: number;*
+  expense: number;*
+  tax: number;*
+  total: number;*
+  description: string;*
+  products: ProductRowItem[];*
+  laborCosts: LaborCost[];*
   materialCards: MaterialCard[];
   unitDiscount: number;
   totalTax: number;
@@ -50,7 +51,7 @@ const ProposalsList = () => {
   const columns = useMemo<MRT_ColumnDef<Proposals>[]>(
     () => [
       {
-        header: 'proposals',
+        header: 'Proposals',
         columns: [
           {
             accessorFn: (row) => row.proposalNo, //accessorFn used to join multiple data into a single cell
@@ -60,31 +61,13 @@ const ProposalsList = () => {
               <Box
                 sx={{
                   display: 'flex',
-                  alignItems: 'center',
+                  alignItems: 'left',
                   gap: '1rem'
                 }}
               >
                 <div>{row.original.date}</div>{/*todo ef buraya date picker elementi koy*/}
                 {/* using renderedCellValue instead of cell.getValue() preserves filter match highlighting */}
                 <span>Proposal No: {renderedCellValue}</span>
-              </Box>
-            )
-          },
-          {
-            accessorKey: 'currentAccount.title',
-            // filterVariant: 'range', //if not using filter modes feature, use this instead of filterFn
-            header: 'Current Account',
-            Cell: ({ row }) => (
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '1rem'
-                }}
-              >
-                <div>{row.original.currentAccount.title}</div>
-                <div>{row.original.currentAccount.code}</div>
-                <div>{row.original.currentAccount.sector}</div>
               </Box>
             )
           },
@@ -92,29 +75,33 @@ const ProposalsList = () => {
             accessorKey: 'proposalState',
             header: 'State',
           },
+          {
+            accessorKey: 'description',
+            header: 'Description',
+          },
+
         ]
       },
       {
         header: 'Prices',
         columns: [
           {
-            accessorFn: (row) => row.proposalNo, //accessorFn used to join multiple data into a single cell
-            header: 'Proposal Date',
-            size: 250,
-            Cell: ({ renderedCellValue, row }) => (
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '1rem'
-                }}
-              >
-                <div>{row.original.date}</div>{/*todo ef buraya date picker elementi koy*/}
-                {/* using renderedCellValue instead of cell.getValue() preserves filter match highlighting */}
-                <span>Proposal No: {renderedCellValue}</span>
-              </Box>
-            )
+            accessorFn: (row) => row.discount, //accessorFn used to join multiple data into a single cell
+            header: 'Discount',
           },
+          {
+            accessorFn: (row) => row.tax, //accessorFn used to join multiple data into a single cell
+            header: 'Tax',
+          },
+          {
+            accessorFn: (row) => row.expense, //accessorFn used to join multiple data into a single cell
+            header: 'Expense',
+          },
+          {
+            accessorFn: (row) => row.total, //accessorFn used to join multiple data into a single cell
+            header: 'Total',
+          },
+
         ]
       }
     ],
@@ -153,7 +140,7 @@ const ProposalsList = () => {
     columns,
     data, //data must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
     enableColumnFilterModes: true,
-    enableColumnOrdering: true,
+    enableColumnOrdering: false,
     enableGrouping: true,
     enableColumnPinning: true,
     enableFacetedValues: true,
@@ -182,24 +169,109 @@ const ProposalsList = () => {
     renderDetailPanel: ({ row }) => (
       <Box
         sx={{
-          alignItems: 'center',
           display: 'flex',
-          justifyContent: 'space-around',
-          left: '30px',
+          flexDirection: 'column', // Üstte currentAccount, altta products olacak
+          gap: 2,
+          padding: 2,
           maxWidth: '1000px',
-          position: 'sticky',
-          width: '100%'
+          width: '100%',
+          border: '1px solid #ddd',
+          borderRadius: 2,
+          backgroundColor: '#e3e0e0'
         }}
       >
+        {/* Üst satır: Current Account bilgileri */}
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            gap: 2
+          }}
+        >
+          <Box sx={{ paddingX: 2, borderRight: '2px solid #ccc' }}>
+            <Typography variant="h6">
+              <strong>Hesap Adı:</strong> {row.original.currentAccount?.title}
+            </Typography>
+          </Box>
 
-        <Box sx={{ textAlign: 'center' }}>
-          <Typography variant="h4">Signature Catch Phrase:</Typography>
-          <Typography variant="h1">
-            &quot;{row.original.unitDiscount}&quot;
-          </Typography>
+          <Box sx={{ paddingX: 2, borderRight: '2px solid #ccc' }}>
+            <Typography variant="h6">
+              <strong>Sektör:</strong> {row.original.currentAccount?.sector}
+            </Typography>
+          </Box>
+
+          <Box sx={{ paddingX: 2 }}>
+            <Typography variant="h6">
+              <strong>Kod:</strong> {row.original.currentAccount?.code}
+            </Typography>
+          </Box>
+        </Box>
+
+        {/* Alt satır: Products bilgileri */}
+        <Box
+          sx={{
+            display: 'flex',
+            flexWrap: 'wrap', // Ürünler yan yana sıralansın ama taşarsa alta geçsin
+            gap: 2,
+            paddingTop: 2
+          }}
+        >
+          {row.original.products?.length > 0 ? (
+            row.original.products.map((product, index) => (
+              <Box
+                key={index}
+                sx={{
+                  paddingX: 2,
+                  borderRight: index !== row.original.products.length - 1 ? '2px solid #ccc' : 'none'
+                }}
+              >
+                <Typography variant="h6">
+                  <strong>Ürün ID:</strong> {product.productCard?.id}
+                </Typography>
+                <Typography variant="body2">
+                  <strong>Price:</strong> {product.price}₺
+                </Typography>
+                <Typography variant="body2">
+                  <strong>Expense:</strong> {product.expense}
+                </Typography>
+                <Typography variant="body2">
+                  <strong>Discount:</strong> {product.discount}
+                </Typography>
+                <Typography variant="body2">
+                  <strong>Profit:</strong> {product.profit}₺
+                </Typography>
+                <Typography variant="body2">
+                  <strong>Profit Margin:</strong> {product.profitMargin}₺
+                </Typography>
+                <Typography variant="body2">
+                  <strong>RowTotal:</strong> {product.rowTotal}₺
+                </Typography>
+              </Box>
+
+            ))
+          ) : (
+            <Typography variant="h6" sx={{ color: 'gray' }}>
+              Ürün bulunamadı
+            </Typography>
+          )}
+        </Box>
+        {/* Finansal Detaylar */}
+        <Box sx={{ paddingX: 2 }}>
+          <Typography variant="h6"><strong>Labor Costs</strong></Typography>
+          {row.original.laborCosts?.map((laborCosts, index) => (
+            <Box key={index} sx={{ marginTop: 1 }}>
+              <Typography>Description: {laborCosts.description}</Typography>
+              <Typography>Employee Name: {laborCosts.employee?.name}</Typography>
+              <Typography>Man Hour: {laborCosts.manHour}</Typography>
+              <Typography><strong>ManHourCost:</strong> {laborCosts.manHourCost}₺</Typography>
+            </Box>
+          ))}
         </Box>
       </Box>
     ),
+
+
     renderRowActionMenuItems: ({ closeMenu }) => [
       <MenuItem
         key={0}
