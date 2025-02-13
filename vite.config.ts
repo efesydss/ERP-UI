@@ -17,6 +17,7 @@ export default defineConfig({
   //http://localhost:8080/api
   //https://falcons-erp-api-dev.sd.iafl.net/api/
   server: {
+
     proxy: {
       '/api': {
         target: 'http://localhost:8080/api',

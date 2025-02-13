@@ -58,6 +58,7 @@ import { Route as AuthenticatedPurchasingCurrentAccountTransactionsIndexImport }
 import { Route as AuthenticatedPurchasingCurrentAccountBankAccountsIndexImport } from './routes/_authenticated/purchasing/currentAccountBankAccounts/index'
 import { Route as AuthenticatedPurchasingAdditionalCostsIndexImport } from './routes/_authenticated/purchasing/additionalCosts/index'
 import { Route as AuthenticatedProductionProjectsIndexImport } from './routes/_authenticated/production/projects/index'
+import { Route as AuthenticatedProductionProductPlansIndexImport } from './routes/_authenticated/production/productPlans/index'
 import { Route as AuthenticatedHrVacationsIndexImport } from './routes/_authenticated/hr/vacations/index'
 import { Route as AuthenticatedHrTimekeepingIndexImport } from './routes/_authenticated/hr/timekeeping/index'
 import { Route as AuthenticatedHrFinancesIndexImport } from './routes/_authenticated/hr/finances/index'
@@ -95,6 +96,7 @@ import { Route as AuthenticatedPurchasingCurrentAccountTransactionsNewImport } f
 import { Route as AuthenticatedPurchasingCurrentAccountBankAccountsNewImport } from './routes/_authenticated/purchasing/currentAccountBankAccounts/new'
 import { Route as AuthenticatedPurchasingAdditionalCostsNewImport } from './routes/_authenticated/purchasing/additionalCosts/new'
 import { Route as AuthenticatedProductionProjectsNewImport } from './routes/_authenticated/production/projects/new'
+import { Route as AuthenticatedProductionProductPlansNewImport } from './routes/_authenticated/production/productPlans/new'
 import { Route as AuthenticatedHrVacationsNewImport } from './routes/_authenticated/hr/vacations/new'
 import { Route as AuthenticatedHrTimekeepingNewImport } from './routes/_authenticated/hr/timekeeping/new'
 import { Route as AuthenticatedHrEmployeesNewImport } from './routes/_authenticated/hr/employees/new'
@@ -131,6 +133,7 @@ import { Route as AuthenticatedPurchasingCurrentAccountTransactionsIdIndexImport
 import { Route as AuthenticatedPurchasingCurrentAccountBankAccountsIdIndexImport } from './routes/_authenticated/purchasing/currentAccountBankAccounts/$id/index'
 import { Route as AuthenticatedPurchasingAdditionalCostsIdIndexImport } from './routes/_authenticated/purchasing/additionalCosts/$id/index'
 import { Route as AuthenticatedProductionProjectsIdIndexImport } from './routes/_authenticated/production/projects/$id/index'
+import { Route as AuthenticatedProductionProductPlansIdIndexImport } from './routes/_authenticated/production/productPlans/$id/index'
 import { Route as AuthenticatedHrTimekeepingIdIndexImport } from './routes/_authenticated/hr/timekeeping/$id/index'
 import { Route as AuthenticatedHrEmployeesIdIndexImport } from './routes/_authenticated/hr/employees/$id/index'
 import { Route as AuthenticatedFinanceBanksIdIndexImport } from './routes/_authenticated/finance/banks/$id/index'
@@ -418,6 +421,12 @@ const AuthenticatedProductionProjectsIndexRoute =
     getParentRoute: () => AuthenticatedProductionRoute,
   } as any)
 
+const AuthenticatedProductionProductPlansIndexRoute =
+  AuthenticatedProductionProductPlansIndexImport.update({
+    path: '/productPlans/',
+    getParentRoute: () => AuthenticatedProductionRoute,
+  } as any)
+
 const AuthenticatedHrVacationsIndexRoute =
   AuthenticatedHrVacationsIndexImport.update({
     path: '/',
@@ -640,6 +649,12 @@ const AuthenticatedProductionProjectsNewRoute =
     getParentRoute: () => AuthenticatedProductionRoute,
   } as any)
 
+const AuthenticatedProductionProductPlansNewRoute =
+  AuthenticatedProductionProductPlansNewImport.update({
+    path: '/productPlans/new',
+    getParentRoute: () => AuthenticatedProductionRoute,
+  } as any)
+
 const AuthenticatedHrVacationsNewRoute =
   AuthenticatedHrVacationsNewImport.update({
     path: '/new',
@@ -854,6 +869,12 @@ const AuthenticatedPurchasingAdditionalCostsIdIndexRoute =
 const AuthenticatedProductionProjectsIdIndexRoute =
   AuthenticatedProductionProjectsIdIndexImport.update({
     path: '/projects/$id/',
+    getParentRoute: () => AuthenticatedProductionRoute,
+  } as any)
+
+const AuthenticatedProductionProductPlansIdIndexRoute =
+  AuthenticatedProductionProductPlansIdIndexImport.update({
+    path: '/productPlans/$id/',
     getParentRoute: () => AuthenticatedProductionRoute,
   } as any)
 
@@ -1318,6 +1339,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHrVacationsNewImport
       parentRoute: typeof AuthenticatedHrVacationsImport
     }
+    '/_authenticated/production/productPlans/new': {
+      id: '/_authenticated/production/productPlans/new'
+      path: '/productPlans/new'
+      fullPath: '/production/productPlans/new'
+      preLoaderRoute: typeof AuthenticatedProductionProductPlansNewImport
+      parentRoute: typeof AuthenticatedProductionImport
+    }
     '/_authenticated/production/projects/new': {
       id: '/_authenticated/production/projects/new'
       path: '/projects/new'
@@ -1577,6 +1605,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHrVacationsIndexImport
       parentRoute: typeof AuthenticatedHrVacationsImport
     }
+    '/_authenticated/production/productPlans/': {
+      id: '/_authenticated/production/productPlans/'
+      path: '/productPlans'
+      fullPath: '/production/productPlans'
+      preLoaderRoute: typeof AuthenticatedProductionProductPlansIndexImport
+      parentRoute: typeof AuthenticatedProductionImport
+    }
     '/_authenticated/production/projects/': {
       id: '/_authenticated/production/projects/'
       path: '/projects'
@@ -1829,6 +1864,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHrTimekeepingIdIndexImport
       parentRoute: typeof AuthenticatedHrTimekeepingImport
     }
+    '/_authenticated/production/productPlans/$id/': {
+      id: '/_authenticated/production/productPlans/$id/'
+      path: '/productPlans/$id'
+      fullPath: '/production/productPlans/$id'
+      preLoaderRoute: typeof AuthenticatedProductionProductPlansIdIndexImport
+      parentRoute: typeof AuthenticatedProductionImport
+    }
     '/_authenticated/production/projects/$id/': {
       id: '/_authenticated/production/projects/$id/'
       path: '/projects/$id'
@@ -2045,8 +2087,11 @@ export const routeTree = rootRoute.addChildren({
       AuthenticatedHrIndexRoute,
     }),
     AuthenticatedProductionRoute: AuthenticatedProductionRoute.addChildren({
+      AuthenticatedProductionProductPlansNewRoute,
       AuthenticatedProductionProjectsNewRoute,
+      AuthenticatedProductionProductPlansIndexRoute,
       AuthenticatedProductionProjectsIndexRoute,
+      AuthenticatedProductionProductPlansIdIndexRoute,
       AuthenticatedProductionProjectsIdIndexRoute,
     }),
     AuthenticatedPurchasingRoute: AuthenticatedPurchasingRoute.addChildren({
@@ -2257,8 +2302,11 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_authenticated/production.tsx",
       "parent": "/_authenticated",
       "children": [
+        "/_authenticated/production/productPlans/new",
         "/_authenticated/production/projects/new",
+        "/_authenticated/production/productPlans/",
         "/_authenticated/production/projects/",
+        "/_authenticated/production/productPlans/$id/",
         "/_authenticated/production/projects/$id/"
       ]
     },
@@ -2512,6 +2560,10 @@ export const routeTree = rootRoute.addChildren({
         "/_authenticated/hr/vacations/new/$id"
       ]
     },
+    "/_authenticated/production/productPlans/new": {
+      "filePath": "_authenticated/production/productPlans/new.tsx",
+      "parent": "/_authenticated/production"
+    },
     "/_authenticated/production/projects/new": {
       "filePath": "_authenticated/production/projects/new.tsx",
       "parent": "/_authenticated/production"
@@ -2660,6 +2712,10 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_authenticated/hr/vacations/index.tsx",
       "parent": "/_authenticated/hr/vacations"
     },
+    "/_authenticated/production/productPlans/": {
+      "filePath": "_authenticated/production/productPlans/index.tsx",
+      "parent": "/_authenticated/production"
+    },
     "/_authenticated/production/projects/": {
       "filePath": "_authenticated/production/projects/index.tsx",
       "parent": "/_authenticated/production"
@@ -2803,6 +2859,10 @@ export const routeTree = rootRoute.addChildren({
     "/_authenticated/hr/timekeeping/$id/": {
       "filePath": "_authenticated/hr/timekeeping/$id/index.tsx",
       "parent": "/_authenticated/hr/timekeeping"
+    },
+    "/_authenticated/production/productPlans/$id/": {
+      "filePath": "_authenticated/production/productPlans/$id/index.tsx",
+      "parent": "/_authenticated/production"
     },
     "/_authenticated/production/projects/$id/": {
       "filePath": "_authenticated/production/projects/$id/index.tsx",

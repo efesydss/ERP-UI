@@ -130,6 +130,10 @@ export const navMenuItems: MenuItemProps[] = [
               label: 'projects',
               icon: FaRProject
             },
+            {
+                label: 'productPlans',
+                icon: FaRProject
+            },
           ]
         },
 
