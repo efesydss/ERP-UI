@@ -1,15 +1,11 @@
-import { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { axiosBase } from '@/utils/apiDefaults'
+import { AxiosRequestConfig } from 'axios'
+import { apiRequest, HttpMethod } from '@/utils/apiDefaults'
 
-export interface MutatorConfig extends AxiosRequestConfig {
-  url: string
-  method: AxiosRequestConfig['method']
-  data?: unknown
-}
-
-export const customMutator = async <TData = unknown>(
-  config: MutatorConfig
-): Promise<TData> => {
-  const response: AxiosResponse<TData> = await axiosBase(config)
-  return response.data
+export const customMutator = async <T>(options: AxiosRequestConfig) => {
+  return apiRequest<T>({
+    endpoint: options.url || '',
+    method: options.method as HttpMethod,
+    payload: options.data,
+    headers: options.headers
+  })
 }

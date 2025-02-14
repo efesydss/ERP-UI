@@ -1,81 +1,26 @@
-import React, { useMemo } from 'react'
-import { MaterialGroupTree } from '@/components/Storage/MaterialGroup/types/typesMaterialGroupTree'
+import React, { useMemo, useState } from 'react'
 import { MaterialReactTable, MRT_ColumnDef, useMaterialReactTable } from 'material-react-table'
+import { useGetMaterialCard, useGetMaterialGroupTreeSuspense } from '@/api/openAPIDefinition'
+import { type MaterialGroupTreeItem } from '@/api/model'
+import { Stack } from '@mui/material'
 
-
-const mockData = [
-  {
-    'id': 1,
-    'name': 'Root Element',
-    'code': '1',
-    'children': [
-      {
-        'id': 2,
-        'name': 'Material Group 1',
-        'code': '1.1',
-        'children': [
-          {
-            'id': 3,
-            'name': 'Material Group 2',
-            'code': '1.1.1'
-          }
-        ]
-      }
-    ]
-  },
-  {
-    'id': 4,
-    'name': 'Root Element 2',
-    'code': '2',
-    'children': [
-      {
-        'id': 5,
-        'name': 'Root Element 2',
-        'code': '2.2',
-        'children': [
-          {
-            'id': 6,
-            'name': 'Root Element 2',
-            'code': '2.2.2',
-            'children': []
-          }
-        ]
-      }
-    ]
-  }
-]
 
 export const MaterialGroupList = () => {
-  /*  const endpoint = 'materialTree'
-    const [pagination, setPagination] = useState<MRT_PaginationState>({
-      pageIndex: 0,
-      pageSize: 10
-    })
-    const [sorting, setSorting] = useState<MRT_SortingState>([])
-    const method = 'GET'
+  const [selectedGroup, setSelectedGroup] = useState(0)
 
-    const sortingOptions = () => {
-      if (sorting.length) {
-        return sorting.map(({ id, desc }) => `${id},${desc ? 'desc' : 'asc'}`).join(';')
-      }
-      return 'id,desc'
+  const { data: materialGroup } = useGetMaterialGroupTreeSuspense({
+    query: {
+      select: (response) => response.materialGroups,
     }
-    const { data } = useQuery({
-      queryKey: [endpoint, pagination, sorting],
-      queryFn: () =>
-        apiRequest<ApiResponse<MaterialGroupTree>>({
-          endpoint,
-          method,
-          payload: {
-            filter: '',
-            sort: sortingOptions(),
-            page: pagination.pageIndex,
-            pageSize: pagination.pageSize
-          }
-        })
-    })*/
+  })
 
-  const columns = useMemo<MRT_ColumnDef<MaterialGroupTree>[]>(
+  const { data: materialCard, error: materialCardError } = useGetMaterialCard(selectedGroup, {
+    query: {
+      enabled: selectedGroup !== 0,
+    }
+  })
+
+  const columnsTree = useMemo<MRT_ColumnDef<MaterialGroupTreeItem>[]>(
     () => [
       {
         header: 'Name',
@@ -83,15 +28,24 @@ export const MaterialGroupList = () => {
       },
       {
         header: 'Code',
-        accessorKey: 'code'
+        accessorKey: 'code',
+        accessorFn: (row) => {
+          const { id } = row
+
+          if (!id) {
+            return null
+          }
+          
+          return <button onClick={() => setSelectedGroup(id)}>{row.code}</button>
+        }
       }
     ],
     []
   )
 
-  const table = useMaterialReactTable({
-    columns,
-    data: mockData,
+  const groupListTable = useMaterialReactTable({
+    columns: columnsTree,
+    data: materialGroup || [],
     enableExpandAll: true,
     enableExpanding: true,
     getSubRows: (row) => row.children,
@@ -99,7 +53,11 @@ export const MaterialGroupList = () => {
     filterFromLeafRows: false,
     paginateExpandedRows: false
   })
-  return <MaterialReactTable table={table} />
+
+  const materialCardTable = useMaterialReactTable({
+
+  })
+  return <Stack><MaterialReactTable table={groupListTable} /> </Stack>
 
 
 }

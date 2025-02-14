@@ -8,10 +8,10 @@ export const backendURL = import.meta.env.VITE_BACKEND_ENDPOINT
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
 
 interface RequestConfig<TRequest = unknown> {
-  endpoint: keyof typeof apiRoutes
+  endpoint: string
   method?: HttpMethod
   payload?: TRequest
-  headers?: AxiosHeaders
+  headers?: AxiosRequestConfig['headers']
   id?: number
   params?: Record<string, string>
 }
@@ -36,7 +36,9 @@ export const axiosBase = axios.create({
 export const apiRequest = async <TResponse, TRequest = unknown>(options: RequestConfig<TRequest>): Promise<TResponse> => {
   const { endpoint, payload, method = 'POST', headers = new AxiosHeaders(), id, params } = options
 
-  let url = apiRoutes[endpoint]
+
+//todo: temp until we migrate to orval
+  let url = endpoint.startsWith('/api') ? endpoint.replace(/^\/api/, '') : apiRoutes[endpoint as keyof typeof apiRoutes]
 
   if (id) {
     url = `${url}/${id}`
@@ -103,7 +105,7 @@ export const refreshAuth = async (failedRequest: AxiosError) => {
       failedRequest.response.config.headers['Authorization'] = `Bearer ${newAccessToken}`
     }
 
-    return Promise.resolve()
+    return Promise.resolve(newAccessToken)
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.status === 401) {
       setAuthToken(undefined)

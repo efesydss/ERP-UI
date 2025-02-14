@@ -6,7 +6,8 @@
  */
 import {
   useMutation,
-  useQuery
+  useQuery,
+  useSuspenseQuery
 } from '@tanstack/react-query'
 import type {
   DataTag,
@@ -19,1719 +20,111 @@ import type {
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
-  UseQueryResult
+  UseQueryResult,
+  UseSuspenseQueryOptions,
+  UseSuspenseQueryResult
 } from '@tanstack/react-query'
-import { customMutator } from '../src/api/customMutator';
-export interface FixtureGroupTreeItem {
-  /** @nullable */
-  id?: number | null;
-  name: string;
-  code: string;
-  children?: FixtureGroupTreeItem[];
-}
-
-export interface FixtureGroupTree {
-  fixtureGroups?: FixtureGroupTreeItem[];
-}
-
-export interface MaterialGroupTreeItem {
-  /** @nullable */
-  id?: number | null;
-  name: string;
-  code: string;
-  children?: MaterialGroupTreeItem[];
-}
-
-export interface MaterialGroupTree {
-  message?: string;
-  error?: string;
-  materialGroups?: MaterialGroupTreeItem[];
-}
-
-export interface ProductGroupTreeItem {
-  /** @nullable */
-  id?: number | null;
-  name: string;
-  code: string;
-  children?: ProductGroupTreeItem[];
-}
-
-export interface ProductGroupTree {
-  productGroups?: ProductGroupTreeItem[];
-}
-
-export interface ServiceGroupTreeItem {
-  /** @nullable */
-  id?: number | null;
-  name: string;
-  code: string;
-  children?: ServiceGroupTreeItem[];
-}
-
-export interface ServiceGroupTree {
-  serviceGroups?: ServiceGroupTreeItem[];
-}
-
-export interface CashAccountBalanceResult {
-  balance: number;
-}
-
-export type UserEntityRole = typeof UserEntityRole[keyof typeof UserEntityRole];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UserEntityRole = {
-  USER: 'USER',
-  ADMIN: 'ADMIN',
-} as const;
-
-export interface UserEntity {
-  id?: number;
-  createdAt?: string;
-  createdBy?: UserEntity;
-  updatedAt?: string;
-  deleted?: boolean;
-  updatedBy?: UserEntity;
-  email?: string;
-  password?: string;
-  role?: UserEntityRole;
-}
-
-export type CurrentContactInformationEntityAccountType = typeof CurrentContactInformationEntityAccountType[keyof typeof CurrentContactInformationEntityAccountType];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CurrentContactInformationEntityAccountType = {
-  CUSTOMER: 'CUSTOMER',
-  SELLER: 'SELLER',
-  OFFICIAL: 'OFFICIAL',
-  RUNNING: 'RUNNING',
-} as const;
-
-export type CurrentContactInformationEntityCurrency = typeof CurrentContactInformationEntityCurrency[keyof typeof CurrentContactInformationEntityCurrency];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CurrentContactInformationEntityCurrency = {
-  TRY: 'TRY',
-  USD: 'USD',
-  EUR: 'EUR',
-  AUD: 'AUD',
-  GBP: 'GBP',
-} as const;
-
-export interface CurrentContactInformationEntity {
-  id?: number;
-  createdAt?: string;
-  createdBy?: UserEntity;
-  updatedAt?: string;
-  deleted?: boolean;
-  updatedBy?: UserEntity;
-  address?: string;
-  authorizedPerson?: string;
-  faxNo?: string;
-  webAddress?: string;
-  email?: string;
-  specialCode?: string;
-  number?: string;
-  backupNumber?: string;
-  taxAdmin?: string;
-  taxNo?: number;
-  currency?: CurrentContactInformationEntityCurrency;
-  invoicedWithCurrency?: boolean;
-  accountType?: CurrentContactInformationEntityAccountType;
-}
-
-export type CurrentAccountEntitySector = typeof CurrentAccountEntitySector[keyof typeof CurrentAccountEntitySector];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CurrentAccountEntitySector = {
-  METAL: 'METAL',
-  YACHTING: 'YACHTING',
-  ALUMINIUM: 'ALUMINIUM',
-  IT: 'IT',
-  FOOD: 'FOOD',
-} as const;
-
-export type CurrentAccountBankAccountEntityCurrency = typeof CurrentAccountBankAccountEntityCurrency[keyof typeof CurrentAccountBankAccountEntityCurrency];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CurrentAccountBankAccountEntityCurrency = {
-  TRY: 'TRY',
-  USD: 'USD',
-  EUR: 'EUR',
-  AUD: 'AUD',
-  GBP: 'GBP',
-} as const;
-
-export interface CurrentAccountBankAccountEntity {
-  id?: number;
-  createdAt?: string;
-  createdBy?: UserEntity;
-  updatedAt?: string;
-  deleted?: boolean;
-  updatedBy?: UserEntity;
-  currentAccount?: CurrentAccountEntity;
-  bank?: BankEntity;
-  branch?: string;
-  /**
-   * @minLength 0
-   * @maxLength 64
-   */
-  accountNumber?: string;
-  /**
-   * @minLength 0
-   * @maxLength 64
-   */
-  iban?: string;
-  currency?: CurrentAccountBankAccountEntityCurrency;
-}
-
-export interface CurrentAccountEntity {
-  id?: number;
-  createdAt?: string;
-  createdBy?: UserEntity;
-  updatedAt?: string;
-  deleted?: boolean;
-  updatedBy?: UserEntity;
-  code?: string;
-  title?: string;
-  active?: boolean;
-  sector?: CurrentAccountEntitySector;
-  contactInformation?: CurrentContactInformationEntity;
-  bankAccount?: BankAccountEntity;
-  currentAccountBankAccounts?: CurrentAccountBankAccountEntity[];
-}
-
-export type CashAccountEntityCurrency = typeof CashAccountEntityCurrency[keyof typeof CashAccountEntityCurrency];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CashAccountEntityCurrency = {
-  TRY: 'TRY',
-  USD: 'USD',
-  EUR: 'EUR',
-  AUD: 'AUD',
-  GBP: 'GBP',
-} as const;
-
-export interface CashAccountEntity {
-  id?: number;
-  createdAt?: string;
-  createdBy?: UserEntity;
-  updatedAt?: string;
-  deleted?: boolean;
-  updatedBy?: UserEntity;
-  code?: string;
-  name?: string;
-  currency?: CashAccountEntityCurrency;
-}
-
-export interface CashAccountTransactionEntity {
-  id?: number;
-  createdAt?: string;
-  createdBy?: UserEntity;
-  updatedAt?: string;
-  deleted?: boolean;
-  updatedBy?: UserEntity;
-  date?: string;
-  cashAccount?: CashAccountEntity;
-  currentAccount?: CurrentAccountEntity;
-  description?: string;
-  debtStatus?: boolean;
-  total?: number;
-  balance?: number;
-}
-
-export interface BankEntity {
-  id?: number;
-  createdAt?: string;
-  createdBy?: UserEntity;
-  updatedAt?: string;
-  deleted?: boolean;
-  updatedBy?: UserEntity;
-  /**
-   * @minLength 0
-   * @maxLength 64
-   */
-  bankName?: string;
-  /**
-   * @minLength 0
-   * @maxLength 256
-   */
-  bankShortName?: string;
-  /**
-   * @minLength 0
-   * @maxLength 32
-   */
-  swiftCode?: string;
-}
-
-export interface BankBranchEntity {
-  id?: number;
-  createdAt?: string;
-  createdBy?: UserEntity;
-  updatedAt?: string;
-  deleted?: boolean;
-  updatedBy?: UserEntity;
-  bank?: BankEntity;
-  name?: string;
-  relatedEmployee?: string;
-}
-
-export type BankAccountEntityCurrency = {
-  currencyCode?: string;
-  numericCode?: number;
-  numericCodeAsString?: string;
-  displayName?: string;
-  symbol?: string;
-  defaultFractionDigits?: number;
-};
-
-export interface BankAccountEntity {
-  id?: number;
-  createdAt?: string;
-  createdBy?: UserEntity;
-  updatedAt?: string;
-  deleted?: boolean;
-  updatedBy?: UserEntity;
-  branch?: BankBranchEntity;
-  /**
-   * @minLength 0
-   * @maxLength 64
-   */
-  accountNumber?: string;
-  /**
-   * @minLength 0
-   * @maxLength 64
-   */
-  iban?: string;
-  currency?: BankAccountEntityCurrency;
-}
-
-export interface CashAccountTransactions {
-  message?: string;
-  error?: string;
-  data?: CashAccountTransaction[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface CashAccounts {
-  message?: string;
-  error?: string;
-  data?: CashAccount[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface ExpenseCards {
-  message?: string;
-  error?: string;
-  data?: ExpenseCard[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface ExpenseInvoiceCalculationResult {
-  total: number;
-  totalVAT: number;
-  totalDiscount: number;
-}
-
-export interface ExpenseInvoices {
-  message?: string;
-  error?: string;
-  data?: ExpenseInvoice[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface Companies {
-  message?: string;
-  error?: string;
-  data?: Company[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface Depots {
-  message?: string;
-  error?: string;
-  data?: Depot[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface Machines {
-  message?: string;
-  error?: string;
-  data?: Machine[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface PaymentMethods {
-  message?: string;
-  error?: string;
-  data?: PaymentMethod[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface PublicHolidays {
-  message?: string;
-  error?: string;
-  data?: PublicHoliday[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface Roles {
-  message?: string;
-  error?: string;
-  data?: Role[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface Sections {
-  message?: string;
-  error?: string;
-  data?: Section[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface Branches {
-  message?: string;
-  error?: string;
-  data?: Branch[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface Departments {
-  message?: string;
-  error?: string;
-  data?: Department[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface BankAccounts {
-  message?: string;
-  error?: string;
-  data?: BankAccount[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface BankBranches {
-  message?: string;
-  error?: string;
-  data?: BankBranch[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface Banks {
-  message?: string;
-  error?: string;
-  data?: Bank[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface EmployeeOvertimes {
-  message?: string;
-  error?: string;
-  data?: EmployeeOvertime[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface EmployeePayments {
-  message?: string;
-  error?: string;
-  data?: EmployeePayment[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface TimeOffs {
-  message?: string;
-  error?: string;
-  data?: TimeOff[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-/**
- * Represents calculated time off status (izin durumu) for an employee.
- */
-export interface TimeOffStatus {
-  entitled: number;
-  allTimeUsed: number;
-  employee: EmployeeRef;
-  transferred: number;
-  /** For display only, no id returned */
-  usedCurrentYear: number;
-  usable: number;
-  profession: string;
-  startDateTime?: string;
-  workingDays: number;
-}
-
-export interface TimeOffStatuses {
-  message?: string;
-  error?: string;
-  data?: TimeOffStatus[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface Employees {
-  message?: string;
-  error?: string;
-  data?: Employee[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface TimeKeepingCalculationResult {
-  total: number;
-}
-
-export interface TimeKeepings {
-  message?: string;
-  error?: string;
-  data?: TimeKeeping[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface Projects {
-  message?: string;
-  error?: string;
-  data?: Project[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface AdditionalCosts {
-  message?: string;
-  error?: string;
-  data?: AdditionalCost[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface CurrentAccountBankAccounts {
-  message?: string;
-  error?: string;
-  data?: CurrentAccountBankAccount[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface CurrentAccountTransactions {
-  message?: string;
-  error?: string;
-  data?: CurrentAccountTransaction[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface CurrentAccounts {
-  message?: string;
-  error?: string;
-  data?: CurrentAccount[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface InvoiceCalculationResult {
-  total: number;
-  totalVAT: number;
-  totalDiscount: number;
-}
-
-export interface Invoices {
-  message?: string;
-  error?: string;
-  data?: Invoice[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface PurchaseOrders {
-  message?: string;
-  error?: string;
-  data?: PurchaseOrder[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface AssignmentCards {
-  message?: string;
-  error?: string;
-  data?: AssignmentCard[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface AssignmentTransactions {
-  message?: string;
-  error?: string;
-  data?: AssignmentTransaction[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface FixtureCards {
-  message?: string;
-  error?: string;
-  data?: FixtureCard[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface FixtureGroups {
-  message?: string;
-  error?: string;
-  data?: FixtureGroup[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface MaterialCards {
-  message?: string;
-  error?: string;
-  data?: MaterialCards[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface MaterialGroups {
-  message?: string;
-  error?: string;
-  data?: MaterialGroup[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface ProductCards {
-  message?: string;
-  error?: string;
-  data?: ProductCard[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface ProductGroups {
-  message?: string;
-  error?: string;
-  data?: ProductGroup[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface ServiceCards {
-  message?: string;
-  error?: string;
-  data?: ServiceCards[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface ServiceGroups {
-  message?: string;
-  error?: string;
-  data?: ServiceGroup[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface Shelves {
-  message?: string;
-  error?: string;
-  data?: Shelf[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface Units {
-  message?: string;
-  error?: string;
-  data?: Unit[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface LoginRequest {
-  email?: string;
-  password?: string;
-}
-
-export interface ResponseBase {
-  message?: string;
-  error?: string;
-}
-
-export interface RefreshResponse {
-  message?: string;
-  error?: string;
-  token?: string;
-}
-
-export type UserRole = typeof UserRole[keyof typeof UserRole];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UserRole = {
-  USER: 'USER',
-  ADMIN: 'ADMIN',
-} as const;
-
-export interface User {
-  /** @nullable */
-  id?: number | null;
-  email: string;
-  role: UserRole;
-}
-
-export interface LoginResponse {
-  message?: string;
-  error?: string;
-  token?: string;
-  user?: User;
-}
-
-export interface Users {
-  message?: string;
-  error?: string;
-  data?: User[];
-  total?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export type FilteringRequestNamedFiltersItem = typeof FilteringRequestNamedFiltersItem[keyof typeof FilteringRequestNamedFiltersItem];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const FilteringRequestNamedFiltersItem = {
-  show_passives: 'show_passives',
-} as const;
-
-/**
- * Filtering request via RSQL. Empty filter returns everything. 
-
-Example filter: (endDate>2023-05-05 and endDate<2024-05-08) and name==Jon 
-
-Example sort: id,asc;company.id,desc
- */
-export interface FilteringRequest {
-  filter?: string;
-  sort?: string;
-  /** 0-index page */
-  page?: number;
-  pageSize?: number;
-  namedFilters?: FilteringRequestNamedFiltersItem[];
-}
-
-export interface CashAccount {
-  /** @nullable */
-  id?: number | null;
-  code: string;
-  name: string;
-  currency: CurrencyEnum;
-}
-
-export interface CashAccountTransaction {
-  /** @nullable */
-  id?: number | null;
-  date: string;
-  cashAccount?: CashAccount;
-  currentAccount?: CurrentAccount;
-  description: string;
-  debtStatus?: boolean;
-  total: number;
-  balance: number;
-}
-
-export interface ExpenseInvoice {
-  /** @nullable */
-  id?: number | null;
-  code: string;
-  date: string;
-  warehouseBranch: WarehouseBranchEnum;
-  specialCode?: string;
-  currency: CurrencyEnum;
-  fixedCurrency: boolean;
-  fixedCurrencyValue: number;
-  invoiceItems: ExpenseInvoiceItem[];
-  generalDiscount: number;
-  unitDiscount: number;
-  totalVat: number;
-  subTotal: number;
-  finalTotal: number;
-}
-
-export interface ExpenseCard {
-  /** @nullable */
-  id?: number | null;
-  code: string;
-  description: string;
-  unit: Unit;
-}
-
-export interface ExpenseInvoiceItem {
-  /** @nullable */
-  id?: number | null;
-  expenseCard: ExpenseCard;
-  unit: UnitEnum;
-  quantity: number;
-  price: number;
-  discount: number;
-  tax: number;
-  rowTotal: number;
-}
-
-export interface Company {
-  /** @nullable */
-  id?: number | null;
-  code: string;
-  title: string;
-  address: string;
-  phone: string;
-  phoneBackup: string;
-  taxAdmin: string;
-  taxNumber: string;
-  branch: Branch;
-}
-
-export interface Depot {
-  /** @nullable */
-  id?: number | null;
-  name: string;
-}
-
-export interface Machine {
-  /** @nullable */
-  id?: number | null;
-  code: string;
-  description: string;
-  employee: Employee;
-}
-
-export interface PaymentMethod {
-  /** @nullable */
-  id?: number | null;
-  code: string;
-  name: string;
-}
-
-export interface PublicHoliday {
-  /** @nullable */
-  id?: number | null;
-  year: number;
-  startDate: string;
-  endDate: string;
-  /** @nullable */
-  description?: string | null;
-}
-
-export interface Role {
-  /** @nullable */
-  id?: number | null;
-  name: string;
-}
-
-export type SectionTypeEnum = typeof SectionTypeEnum[keyof typeof SectionTypeEnum];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const SectionTypeEnum = {
-  MANAGEMENT: 'MANAGEMENT',
-  IT: 'IT',
-  PRODUCTION: 'PRODUCTION',
-  FINANCE: 'FINANCE',
-  DESIGN: 'DESIGN',
-  ACCOUNTING: 'ACCOUNTING',
-  PURCHASING: 'PURCHASING',
-} as const;
-
-export interface Section {
-  /** @nullable */
-  id?: number | null;
-  name: string;
-  sectionType: SectionTypeEnum;
-  employee: EmployeeExtendedRef;
-}
-
-export type TimeOffType = typeof TimeOffType[keyof typeof TimeOffType];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const TimeOffType = {
-  SICK_LEAVE: 'SICK_LEAVE',
-  VACATION: 'VACATION',
-  ON_DEMAND: 'ON_DEMAND',
-  MARRIAGE: 'MARRIAGE',
-  CHILD_BIRTH: 'CHILD_BIRTH',
-} as const;
-
-export interface TimeOff {
-  /** @nullable */
-  id?: number | null;
-  startDateTime: string;
-  endDateTime: string;
-  workingDays: number;
-  workingHours: number;
-  timeOffType: TimeOffType;
-  unPaid?: boolean;
-}
-
-export type OverTimePercentage = typeof OverTimePercentage[keyof typeof OverTimePercentage];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const OverTimePercentage = {
-  P50: 'P50',
-  P100: 'P100',
-  P150: 'P150',
-  P200: 'P200',
-} as const;
-
-export interface EmployeeRef {
-  /** @nullable */
-  id?: number | null;
-  name?: string;
-  surname?: string;
-  companyBranch?: Branch;
-  department?: Department;
-}
-
-export interface TimeKeeping {
-  /** @nullable */
-  id?: number | null;
-  employee: EmployeeRef;
-  year: number;
-  month: number;
-  netSalary: number;
-  normalWorkingDays: number;
-  weekendWorkingHours: number;
-  unpaidTimeOffHours: number;
-  timeOffs: TimeOff[];
-  total: number;
-  title: string;
-  deductions: EmployeePayment[];
-  additionalPayments: EmployeePayment[];
-  overtimes: EmployeeOvertime[];
-}
-
-export type EmployeePaymentType = typeof EmployeePaymentType[keyof typeof EmployeePaymentType];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const EmployeePaymentType = {
-  SALARY: 'SALARY',
-  SALARY_PAYMENT: 'SALARY_PAYMENT',
-  OVERTIME: 'OVERTIME',
-  ADVANCE: 'ADVANCE',
-  DEDUCTION: 'DEDUCTION',
-  TRANSFER: 'TRANSFER',
-  SEIZURE: 'SEIZURE',
-  ADDITIONAL_PAYMENT: 'ADDITIONAL_PAYMENT',
-  TRAVEL_PAYMENT: 'TRAVEL_PAYMENT',
-} as const;
-
-export type EmployeePaymentAmountCurrency = {
-  currencyCode?: string;
-  numericCode?: number;
-  numericCodeAsString?: string;
-  displayName?: string;
-  symbol?: string;
-  defaultFractionDigits?: number;
-};
-
-export interface EmployeePayment {
-  /** @nullable */
-  id?: number | null;
-  paymentDate: string;
-  paymentType: EmployeePaymentType;
-  description: string;
-  bankAccount: BankAccount;
-  transactionCost: number;
-  amount: number;
-  amountCurrency: EmployeePaymentAmountCurrency;
-  employee?: EmployeeRef;
-}
-
-export interface EmployeeOvertime {
-  /** @nullable */
-  id?: number | null;
-  description?: string;
-  overtimeDate: string;
-  workingHours: number;
-  overTimePercentage: OverTimePercentage;
-  employee?: EmployeeRef;
-}
-
-export interface AdditionalCost {
-  /** @nullable */
-  id?: number | null;
-  code: string;
-  description: string;
-  unit: UnitEnum;
-  specialCode?: string;
-}
-
-export type TransactionTypeEnum = typeof TransactionTypeEnum[keyof typeof TransactionTypeEnum];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const TransactionTypeEnum = {
-  ORDER: 'ORDER',
-  INVOICE: 'INVOICE',
-  PAYMENT: 'PAYMENT',
-  COLLECTION: 'COLLECTION',
-  EXPENSE: 'EXPENSE',
-  EMPLOYEE_ADVANCE: 'EMPLOYEE_ADVANCE',
-  EMPLOYEE_SALARY: 'EMPLOYEE_SALARY',
-  TAX: 'TAX',
-  SOCIAL_SECURITY: 'SOCIAL_SECURITY',
-  FREELANCE_RECEIPT: 'FREELANCE_RECEIPT',
-  RENT: 'RENT',
-  TRANSFER: 'TRANSFER',
-  DOCUMENT_CANCELLATION: 'DOCUMENT_CANCELLATION',
-} as const;
-
-export type PaymentTypeEnum = typeof PaymentTypeEnum[keyof typeof PaymentTypeEnum];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const PaymentTypeEnum = {
-  NO_PAYMENT: 'NO_PAYMENT',
-  CASH: 'CASH',
-  CHECK: 'CHECK',
-  BOND: 'BOND',
-  EFT: 'EFT',
-  BANK_CARD: 'BANK_CARD',
-} as const;
-
-export type DebtTypeEnum = typeof DebtTypeEnum[keyof typeof DebtTypeEnum];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const DebtTypeEnum = {
-  DEBIT: 'DEBIT',
-  CREDIT: 'CREDIT',
-} as const;
-
-export interface CurrentAccountTransaction {
-  /** @nullable */
-  id?: number | null;
-  date: string;
-  currentAccount: CurrentAccount;
-  /** @nullable */
-  description: string | null;
-  transactionType: TransactionTypeEnum;
-  paymentType: PaymentTypeEnum;
-  bankAccount: BankAccount;
-  transactionFee: number;
-  debtType: DebtTypeEnum;
-  amount: number;
-  currency: CurrencyEnum;
-}
-
-export type SectorEnum = typeof SectorEnum[keyof typeof SectorEnum];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const SectorEnum = {
-  METAL: 'METAL',
-  YACHTING: 'YACHTING',
-  ALUMINIUM: 'ALUMINIUM',
-  IT: 'IT',
-  FOOD: 'FOOD',
-} as const;
-
-export type PurchaseOrderItemUnit = typeof PurchaseOrderItemUnit[keyof typeof PurchaseOrderItemUnit];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const PurchaseOrderItemUnit = {
-  KG: 'KG',
-  GR: 'GR',
-  METER: 'METER',
-  M2: 'M2',
-  M3: 'M3',
-  LITRE: 'LITRE',
-  PIECE: 'PIECE',
-  PACKAGE: 'PACKAGE',
-  PAIR: 'PAIR',
-  PLATE: 'PLATE',
-  MM: 'MM',
-} as const;
-
-/**
- * Purchase Order Items
- */
-export interface PurchaseOrderItem {
-  /** @nullable */
-  id?: number | null;
-  materialCard: MaterialCard;
-  quantity: number;
-  unit: PurchaseOrderItemUnit;
-}
-
-export interface Project {
-  /** @nullable */
-  id?: number | null;
-  currentAccount: CurrentAccount;
-  code: string;
-  name: string;
-  employee: Employee;
-}
-
-export interface EmployeeExtendedRef {
-  /** @nullable */
-  id?: number | null;
-  name?: string;
-  surname?: string;
-  companyBranch?: Branch;
-  department?: Department;
-  email: string;
-}
-
-export interface PurchaseOrder {
-  /** Purchase Order ID */
-  id?: number;
-  /** Purchase Order Date */
-  date: string;
-  /** Purchase Order Name */
-  name: string;
-  employee: EmployeeExtendedRef;
-  /** Purchase Order Description */
-  description: string;
-  project: Project;
-  currentAccount: CurrentAccount;
-  /** Purchase Order Items */
-  purchaseOrderItems?: PurchaseOrderItem[];
-}
-
-export interface CurrentBankAccountRef {
-  /** @nullable */
-  id?: number | null;
-}
-
-export type CurrentAccountType = typeof CurrentAccountType[keyof typeof CurrentAccountType];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CurrentAccountType = {
-  CUSTOMER: 'CUSTOMER',
-  SELLER: 'SELLER',
-  OFFICIAL: 'OFFICIAL',
-  RUNNING: 'RUNNING',
-} as const;
-
-export interface CurrentContactInformation {
-  /** @nullable */
-  id?: number | null;
-  address: string;
-  authorizedPerson: string;
-  faxNo: string;
-  webAddress?: string;
-  email: string;
-  specialCode?: string;
-  number: string;
-  backupNumber?: string;
-  taxAdmin: string;
-  taxNo: number;
-  invoicedWithCurrency: boolean;
-  currency: CurrencyEnum;
-  accountType: CurrentAccountType;
-}
-
-export interface CurrentAccountBankAccount {
-  /** @nullable */
-  id?: number | null;
-  currentAccount: CurrentBankAccountRef;
-  bank: Bank;
-  branch: string;
-  accountNumber: string;
-  iban: string;
-  currency: CurrencyEnum;
-}
-
-export interface CurrentAccount {
-  /** @nullable */
-  id?: number | null;
-  code: string;
-  title: string;
-  active: boolean;
-  sector: SectorEnum;
-  contactInformation: CurrentContactInformation;
-  bankAccount: BankAccount;
-  currentAccountBankAccounts: CurrentAccountBankAccount[];
-}
-
-export interface BankBranch {
-  /** @nullable */
-  id?: number | null;
-  bank: Bank;
-  name: string;
-  relatedEmployee: string;
-}
-
-export type BankAccountCurrency = {
-  currencyCode?: string;
-  numericCode?: number;
-  numericCodeAsString?: string;
-  displayName?: string;
-  symbol?: string;
-  defaultFractionDigits?: number;
-};
-
-export interface BankAccount {
-  /** @nullable */
-  id?: number | null;
-  accountNumber: string;
-  branch: BankBranch;
-  iban: string;
-  currency: BankAccountCurrency;
-}
-
-export interface Bank {
-  /** @nullable */
-  id?: number | null;
-  bankName: string;
-  bankShortName: string;
-  swiftCode?: string;
-}
-
-export type WarrantyPeriodEnum = typeof WarrantyPeriodEnum[keyof typeof WarrantyPeriodEnum];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const WarrantyPeriodEnum = {
-  DAY: 'DAY',
-  WEEK: 'WEEK',
-  MONTH: 'MONTH',
-  YEAR: 'YEAR',
-} as const;
-
-export type WarehouseBranchEnum = typeof WarehouseBranchEnum[keyof typeof WarehouseBranchEnum];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const WarehouseBranchEnum = {
-  DUZCE: 'DUZCE',
-  TUZLA: 'TUZLA',
-  TERSANE: 'TERSANE',
-} as const;
-
-/**
- * @nullable
- */
-export type PayrollData = {
-  /** @nullable */
-  id?: number | null;
-  /** @nullable */
-  currency?: string | null;
-  salary: number;
-  /** @nullable */
-  includedInCost?: boolean | null;
-  /** @nullable */
-  monthlyProgress?: number | null;
-  /** @nullable */
-  monthlyHour?: number | null;
-  iban: string;
-  /**
-   * @minimum 0
-   * @nullable
-   */
-  children?: number | null;
-  spouseWorking?: boolean;
-} | null;
-
-export type MaintenancePeriodEnum = typeof MaintenancePeriodEnum[keyof typeof MaintenancePeriodEnum];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const MaintenancePeriodEnum = {
-  DAY: 'DAY',
-  WEEK: 'WEEK',
-  MONTH: 'MONTH',
-  YEAR: 'YEAR',
-} as const;
-
-export type InvoiceTypeEnum = typeof InvoiceTypeEnum[keyof typeof InvoiceTypeEnum];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const InvoiceTypeEnum = {
-  RECEIPT_INVOICE: 'RECEIPT_INVOICE',
-  RETURN_INVOICE: 'RETURN_INVOICE',
-} as const;
-
-export type InvoiceItemTypeEnum = typeof InvoiceItemTypeEnum[keyof typeof InvoiceItemTypeEnum];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const InvoiceItemTypeEnum = {
-  ADDITIONAL_COST: 'ADDITIONAL_COST',
-  SERVICE: 'SERVICE',
-  MATERIAL: 'MATERIAL',
-  FIXTURE: 'FIXTURE',
-} as const;
-
-export interface InvoiceItem {
-  /** @nullable */
-  id?: number | null;
-  invoiceItemType: InvoiceItemTypeEnum;
-  invoiceItemTypeEntityId: string;
-  code: string;
-  name: string;
-  unit: UnitEnum;
-  quantity: number;
-  price: number;
-  discount: number;
-  tax: number;
-  rowTotal: number;
-}
-
-export interface Department {
-  /** @nullable */
-  id?: number | null;
-  name: string;
-}
-
-export interface Employee {
-  /** @nullable */
-  id?: number | null;
-  passive?: boolean;
-  /**
-   * @minLength 5
-   * @maxLength 128
-   */
-  identificationNumber: string;
-  name: string;
-  surname: string;
-  companyBranch: Branch;
-  department: Department;
-  profession: string;
-  /** @nullable */
-  emergencyPhone?: string | null;
-  /** @nullable */
-  emergencyName?: string | null;
-  startDate: string;
-  /** @nullable */
-  endDate?: string | null;
-  /** @nullable */
-  phone?: string | null;
-  /** @nullable */
-  email?: string | null;
-  /** @nullable */
-  serialNumber?: string | null;
-  /** @nullable */
-  fathersName?: string | null;
-  /** @nullable */
-  mothersName?: string | null;
-  /** @nullable */
-  birthPlace?: string | null;
-  /** @nullable */
-  birthDate?: string | null;
-  /** @nullable */
-  civilStatus?: string | null;
-  /** @nullable */
-  city?: string | null;
-  /** @nullable */
-  province?: string | null;
-  /** @nullable */
-  state?: string | null;
-  /** @nullable */
-  street?: string | null;
-  /** @nullable */
-  volumeNumber?: string | null;
-  /** @nullable */
-  familySerial?: string | null;
-  payrollData?: PayrollData;
-}
-
-export type CurrencyEnum = typeof CurrencyEnum[keyof typeof CurrencyEnum];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const CurrencyEnum = {
-  TRY: 'TRY',
-  USD: 'USD',
-  EUR: 'EUR',
-  AUD: 'AUD',
-  GBP: 'GBP',
-} as const;
-
-export interface Invoice {
-  /** @nullable */
-  id?: number | null;
-  code: string;
-  date: string;
-  warehouseBranch: WarehouseBranchEnum;
-  specialCode?: string;
-  currency: CurrencyEnum;
-  fixedCurrency: boolean;
-  fixedCurrencyValue: number;
-  invoiceItems: InvoiceItem[];
-  generalDiscount: number;
-  unitDiscount: number;
-  totalVat: number;
-  totalAdditionalCosts: number;
-  subTotal: number;
-  finalTotal: number;
-  invoiceTypeEnum: InvoiceTypeEnum;
-}
-
-export interface Branch {
-  /** @nullable */
-  id?: number | null;
-  name: string;
-}
-
-export type AssignmentStatusEnum = typeof AssignmentStatusEnum[keyof typeof AssignmentStatusEnum];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const AssignmentStatusEnum = {
-  ASSIGNED: 'ASSIGNED',
-  UNASSIGNED: 'UNASSIGNED',
-  IN_MAINTENANCE: 'IN_MAINTENANCE',
-  OUT_OF_SERVICE: 'OUT_OF_SERVICE',
-} as const;
-
-export interface AssignmentCard {
-  /** @nullable */
-  id?: number | null;
-  assignmentStatusEnum: AssignmentStatusEnum;
-  code: string;
-  name: string;
-  fixtureCard: FixtureCard;
-  insuranceCompany: string;
-  insurance: boolean;
-  insurancePolicyNo: string;
-  insuranceDuration: number;
-  info: string;
-  invoice: Invoice;
-  warrantyPeriodEnum: WarrantyPeriodEnum;
-  warrantyDay: number;
-  underMaintenance: boolean;
-  maintenanceDuration: number;
-  maintenancePeriodEnum: MaintenancePeriodEnum;
-}
-
-export interface AssignmentTransaction {
-  /** @nullable */
-  id?: number | null;
-  assignmentCard: AssignmentCard;
-  employee: Employee;
-  transactionDate: string;
-  assignmentStatusEnum: AssignmentStatusEnum;
-}
-
-export type FixtureTypeEnum = typeof FixtureTypeEnum[keyof typeof FixtureTypeEnum];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const FixtureTypeEnum = {
-  MAIN_MATERIAL: 'MAIN_MATERIAL',
-  CONSUMPTION_MATERIAL: 'CONSUMPTION_MATERIAL',
-} as const;
-
-export interface FixtureGroupRef {
-  /** @nullable */
-  id?: number | null;
-}
-
-/**
- * @nullable
- */
-export type FixtureCardUnit = {
-  /** @nullable */
-  id?: number | null;
-  unit: UnitEnum;
-  multiplier: number;
-} | null;
-
-export interface FixtureGroup {
-  /** @nullable */
-  id?: number | null;
-  name: string;
-  code: string;
-  parent?: FixtureGroup;
-}
-
-export type MaterialTypeEnum = typeof MaterialTypeEnum[keyof typeof MaterialTypeEnum];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const MaterialTypeEnum = {
-  MAIN_MATERIAL: 'MAIN_MATERIAL',
-  CONSUMPTION_MATERIAL: 'CONSUMPTION_MATERIAL',
-} as const;
-
-/**
- * @nullable
- */
-export type MaterialCardUnit = {
-  /** @nullable */
-  id?: number | null;
-  unit: UnitEnum;
-  multiplier: number;
-} | null;
-
-export interface MaterialCard {
-  /** @nullable */
-  id?: number | null;
-  materialCode: string;
-  materialName: string;
-  materialGroup: MaterialGroupRef;
-  defaultUnit: UnitEnum;
-  materialType: MaterialTypeEnum;
-  /** @nullable */
-  optimalLevel?: number | null;
-  /** @nullable */
-  minimumLevel?: number | null;
-  /** @nullable */
-  specialCode?: string | null;
-  /** @nullable */
-  shelfLocation?: string | null;
-  /** @nullable */
-  materialCardUnits?: MaterialCardUnit[] | null;
-}
-
-export interface MaterialGroup {
-  /** @nullable */
-  id?: number | null;
-  name: string;
-  code: string;
-  parent?: MaterialGroup;
-}
-
-export type ProductTypeEnum = typeof ProductTypeEnum[keyof typeof ProductTypeEnum];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ProductTypeEnum = {
-  PRODUCT: 'PRODUCT',
-  SEMI_PRODUCT: 'SEMI_PRODUCT',
-} as const;
-
-export interface ProductGroupRef {
-  /** @nullable */
-  id?: number | null;
-}
-
-export interface ProductCardRef {
-  /** @nullable */
-  id?: number | null;
-}
-
-/**
- * @nullable
- */
-export type ProductCardUnit = {
-  /** @nullable */
-  id?: number | null;
-  productCard: ProductCardRef;
-  multiplier: number;
-} | null;
-
-export interface ProductGroup {
-  /** @nullable */
-  id?: number | null;
-  name: string;
-  code: string;
-  parent?: ProductGroup;
-}
-
-export type UnitEnum = typeof UnitEnum[keyof typeof UnitEnum];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UnitEnum = {
-  KG: 'KG',
-  GR: 'GR',
-  METER: 'METER',
-  M2: 'M2',
-  M3: 'M3',
-  LITRE: 'LITRE',
-  PIECE: 'PIECE',
-  PACKAGE: 'PACKAGE',
-  PAIR: 'PAIR',
-  PLATE: 'PLATE',
-  MM: 'MM',
-} as const;
-
-export interface FixtureCard {
-  /** @nullable */
-  id?: number | null;
-  fixtureCode: string;
-  fixtureName: string;
-  fixtureGroup: FixtureGroupRef;
-  defaultUnit: UnitEnum;
-  fixtureType: FixtureTypeEnum;
-  /** @nullable */
-  optimalLevel?: number | null;
-  /** @nullable */
-  minimumLevel?: number | null;
-  /** @nullable */
-  specialCode?: string | null;
-  /** @nullable */
-  shelfLocation?: string | null;
-  /** @nullable */
-  fixtureCardUnits?: FixtureCardUnit[] | null;
-}
-
-export interface ProductCard {
-  /** @nullable */
-  id?: number | null;
-  productCode: string;
-  productName: string;
-  productGroup: ProductGroupRef;
-  defaultUnit: UnitEnum;
-  productType: ProductTypeEnum;
-  /** @nullable */
-  optimalLevel?: number | null;
-  /** @nullable */
-  minimumLevel?: number | null;
-  /** @nullable */
-  specialCode?: string | null;
-  /** @nullable */
-  shelfLocation?: string | null;
-  /** @nullable */
-  productCardUnits?: ProductCardUnit[] | null;
-}
-
-export type ServiceTypeEnum = typeof ServiceTypeEnum[keyof typeof ServiceTypeEnum];
-
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ServiceTypeEnum = {
-  MAIN_SERVICE: 'MAIN_SERVICE',
-  CONSUMPTION_SERVICE: 'CONSUMPTION_SERVICE',
-} as const;
-
-/**
- * @nullable
- */
-export type ServiceCardUnit = {
-  /** @nullable */
-  id?: number | null;
-  unit: UnitEnum;
-  multiplier: number;
-} | null;
-
-export interface MaterialGroupRef {
-  /** @nullable */
-  id?: number | null;
-}
-
-export interface ServiceCard {
-  /** @nullable */
-  id?: number | null;
-  serviceCode: string;
-  serviceName: string;
-  serviceGroup: MaterialGroupRef;
-  defaultUnit: UnitEnum;
-  serviceType: ServiceTypeEnum;
-  /** @nullable */
-  optimalLevel?: number | null;
-  /** @nullable */
-  minimumLevel?: number | null;
-  /** @nullable */
-  specialCode?: string | null;
-  /** @nullable */
-  shelfLocation?: string | null;
-  /** @nullable */
-  serviceCardUnits?: ServiceCardUnit[] | null;
-}
-
-export interface ServiceGroup {
-  /** @nullable */
-  id?: number | null;
-  name: string;
-  code: string;
-  parent?: ServiceGroup;
-}
-
-export interface Shelf {
-  /** @nullable */
-  id?: number | null;
-  name: string;
-  description: string;
-}
-
-export type ErrorResponseFieldErrors = {[key: string]: string};
-
-export interface ErrorResponse {
-  message?: string;
-  error?: string;
-  fieldErrors?: ErrorResponseFieldErrors;
-}
-
-export interface Unit {
-  /** @nullable */
-  id?: number | null;
-  name: string;
-}
-
-
+import type {
+  AdditionalCost,
+  AdditionalCosts,
+  AssignmentCard,
+  AssignmentCards,
+  AssignmentTransaction,
+  AssignmentTransactions,
+  Bank,
+  BankAccount,
+  BankAccounts,
+  BankBranch,
+  BankBranches,
+  Banks,
+  Branch,
+  Branches,
+  CashAccount,
+  CashAccountBalanceResult,
+  CashAccountTransaction,
+  CashAccountTransactionEntity,
+  CashAccountTransactions,
+  CashAccounts,
+  Companies,
+  Company,
+  CurrentAccount,
+  CurrentAccountBankAccount,
+  CurrentAccountBankAccounts,
+  CurrentAccountTransaction,
+  CurrentAccountTransactions,
+  CurrentAccounts,
+  Department,
+  Departments,
+  Depot,
+  Depots,
+  Employee,
+  EmployeeOvertime,
+  EmployeeOvertimes,
+  EmployeePayment,
+  EmployeePayments,
+  Employees,
+  ErrorResponse,
+  ExpenseCard,
+  ExpenseCards,
+  ExpenseInvoice,
+  ExpenseInvoiceCalculationResult,
+  ExpenseInvoices,
+  FilteringRequest,
+  FixtureCard,
+  FixtureCards,
+  FixtureGroup,
+  FixtureGroupTree,
+  FixtureGroups,
+  Invoice,
+  InvoiceCalculationResult,
+  Invoices,
+  LoginRequest,
+  LoginResponse,
+  Machine,
+  Machines,
+  MaterialCard,
+  MaterialCards,
+  MaterialGroup,
+  MaterialGroupTree,
+  MaterialGroups,
+  PaymentMethod,
+  PaymentMethods,
+  ProductCard,
+  ProductCards,
+  ProductGroup,
+  ProductGroupTree,
+  ProductGroups,
+  Project,
+  Projects,
+  PublicHoliday,
+  PublicHolidays,
+  PurchaseOrder,
+  PurchaseOrders,
+  RefreshResponse,
+  ResponseBase,
+  Role,
+  Roles,
+  Section,
+  Sections,
+  ServiceCard,
+  ServiceCards,
+  ServiceGroup,
+  ServiceGroupTree,
+  ServiceGroups,
+  Shelf,
+  Shelves,
+  TimeKeeping,
+  TimeKeepingCalculationResult,
+  TimeKeepings,
+  TimeOff,
+  TimeOffStatus,
+  TimeOffStatuses,
+  TimeOffs,
+  Unit,
+  Units,
+  Users
+} from './model'
+import { customMutator } from './customMutator';
 
 
 
@@ -1811,6 +204,57 @@ export function useGetUnit<TData = Awaited<ReturnType<typeof getUnit>>, TError =
   const queryOptions = getGetUnitQueryOptions(id,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const getGetUnitSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getUnit>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getUnit>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetUnitQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUnit>>> = ({ signal }) => getUnit(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getUnit>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetUnitSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getUnit>>>
+export type GetUnitSuspenseQueryError = ErrorResponse
+
+
+export function useGetUnitSuspense<TData = Awaited<ReturnType<typeof getUnit>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getUnit>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetUnitSuspense<TData = Awaited<ReturnType<typeof getUnit>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getUnit>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetUnitSuspense<TData = Awaited<ReturnType<typeof getUnit>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getUnit>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetUnitSuspense<TData = Awaited<ReturnType<typeof getUnit>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getUnit>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetUnitSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = queryOptions.queryKey ;
 
@@ -2023,6 +467,57 @@ export function useGetShelf<TData = Awaited<ReturnType<typeof getShelf>>, TError
 
 
 
+export const getGetShelfSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getShelf>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getShelf>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetShelfQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getShelf>>> = ({ signal }) => getShelf(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getShelf>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetShelfSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getShelf>>>
+export type GetShelfSuspenseQueryError = ErrorResponse
+
+
+export function useGetShelfSuspense<TData = Awaited<ReturnType<typeof getShelf>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getShelf>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetShelfSuspense<TData = Awaited<ReturnType<typeof getShelf>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getShelf>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetShelfSuspense<TData = Awaited<ReturnType<typeof getShelf>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getShelf>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetShelfSuspense<TData = Awaited<ReturnType<typeof getShelf>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getShelf>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetShelfSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
 
 /**
  * Update Shelf
@@ -2219,6 +714,57 @@ export function useGetServiceGroup<TData = Awaited<ReturnType<typeof getServiceG
   const queryOptions = getGetServiceGroupQueryOptions(id,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const getGetServiceGroupSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getServiceGroup>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroup>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetServiceGroupQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getServiceGroup>>> = ({ signal }) => getServiceGroup(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroup>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetServiceGroupSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getServiceGroup>>>
+export type GetServiceGroupSuspenseQueryError = ErrorResponse
+
+
+export function useGetServiceGroupSuspense<TData = Awaited<ReturnType<typeof getServiceGroup>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroup>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetServiceGroupSuspense<TData = Awaited<ReturnType<typeof getServiceGroup>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroup>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetServiceGroupSuspense<TData = Awaited<ReturnType<typeof getServiceGroup>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroup>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetServiceGroupSuspense<TData = Awaited<ReturnType<typeof getServiceGroup>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroup>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetServiceGroupSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = queryOptions.queryKey ;
 
@@ -2431,6 +977,57 @@ export function useGetServiceCard<TData = Awaited<ReturnType<typeof getServiceCa
 
 
 
+export const getGetServiceCardSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getServiceCard>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceCard>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetServiceCardQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getServiceCard>>> = ({ signal }) => getServiceCard(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceCard>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetServiceCardSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getServiceCard>>>
+export type GetServiceCardSuspenseQueryError = ErrorResponse
+
+
+export function useGetServiceCardSuspense<TData = Awaited<ReturnType<typeof getServiceCard>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceCard>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetServiceCardSuspense<TData = Awaited<ReturnType<typeof getServiceCard>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceCard>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetServiceCardSuspense<TData = Awaited<ReturnType<typeof getServiceCard>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceCard>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetServiceCardSuspense<TData = Awaited<ReturnType<typeof getServiceCard>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceCard>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetServiceCardSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
 
 /**
  * Update ServiceCard
@@ -2627,6 +1224,57 @@ export function useGetProductGroup<TData = Awaited<ReturnType<typeof getProductG
   const queryOptions = getGetProductGroupQueryOptions(id,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const getGetProductGroupSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getProductGroup>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroup>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetProductGroupQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProductGroup>>> = ({ signal }) => getProductGroup(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroup>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetProductGroupSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getProductGroup>>>
+export type GetProductGroupSuspenseQueryError = ErrorResponse
+
+
+export function useGetProductGroupSuspense<TData = Awaited<ReturnType<typeof getProductGroup>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroup>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetProductGroupSuspense<TData = Awaited<ReturnType<typeof getProductGroup>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroup>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetProductGroupSuspense<TData = Awaited<ReturnType<typeof getProductGroup>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroup>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetProductGroupSuspense<TData = Awaited<ReturnType<typeof getProductGroup>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroup>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetProductGroupSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = queryOptions.queryKey ;
 
@@ -2839,6 +1487,57 @@ export function useGetProductCard<TData = Awaited<ReturnType<typeof getProductCa
 
 
 
+export const getGetProductCardSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getProductCard>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductCard>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetProductCardQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProductCard>>> = ({ signal }) => getProductCard(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductCard>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetProductCardSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getProductCard>>>
+export type GetProductCardSuspenseQueryError = ErrorResponse
+
+
+export function useGetProductCardSuspense<TData = Awaited<ReturnType<typeof getProductCard>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductCard>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetProductCardSuspense<TData = Awaited<ReturnType<typeof getProductCard>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductCard>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetProductCardSuspense<TData = Awaited<ReturnType<typeof getProductCard>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductCard>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetProductCardSuspense<TData = Awaited<ReturnType<typeof getProductCard>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductCard>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetProductCardSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
 
 /**
  * Update ProductCard
@@ -3035,6 +1734,57 @@ export function useGetMaterialGroup<TData = Awaited<ReturnType<typeof getMateria
   const queryOptions = getGetMaterialGroupQueryOptions(id,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const getGetMaterialGroupSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getMaterialGroup>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroup>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetMaterialGroupQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMaterialGroup>>> = ({ signal }) => getMaterialGroup(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroup>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetMaterialGroupSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getMaterialGroup>>>
+export type GetMaterialGroupSuspenseQueryError = ErrorResponse
+
+
+export function useGetMaterialGroupSuspense<TData = Awaited<ReturnType<typeof getMaterialGroup>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroup>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetMaterialGroupSuspense<TData = Awaited<ReturnType<typeof getMaterialGroup>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroup>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetMaterialGroupSuspense<TData = Awaited<ReturnType<typeof getMaterialGroup>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroup>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetMaterialGroupSuspense<TData = Awaited<ReturnType<typeof getMaterialGroup>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroup>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetMaterialGroupSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = queryOptions.queryKey ;
 
@@ -3247,6 +1997,57 @@ export function useGetMaterialCard<TData = Awaited<ReturnType<typeof getMaterial
 
 
 
+export const getGetMaterialCardSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getMaterialCard>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialCard>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetMaterialCardQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMaterialCard>>> = ({ signal }) => getMaterialCard(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialCard>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetMaterialCardSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getMaterialCard>>>
+export type GetMaterialCardSuspenseQueryError = ErrorResponse
+
+
+export function useGetMaterialCardSuspense<TData = Awaited<ReturnType<typeof getMaterialCard>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialCard>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetMaterialCardSuspense<TData = Awaited<ReturnType<typeof getMaterialCard>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialCard>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetMaterialCardSuspense<TData = Awaited<ReturnType<typeof getMaterialCard>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialCard>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetMaterialCardSuspense<TData = Awaited<ReturnType<typeof getMaterialCard>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialCard>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetMaterialCardSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
 
 /**
  * Update MaterialCard
@@ -3443,6 +2244,57 @@ export function useGetFixtureGroup<TData = Awaited<ReturnType<typeof getFixtureG
   const queryOptions = getGetFixtureGroupQueryOptions(id,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const getGetFixtureGroupSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getFixtureGroup>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroup>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetFixtureGroupQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFixtureGroup>>> = ({ signal }) => getFixtureGroup(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroup>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetFixtureGroupSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getFixtureGroup>>>
+export type GetFixtureGroupSuspenseQueryError = ErrorResponse
+
+
+export function useGetFixtureGroupSuspense<TData = Awaited<ReturnType<typeof getFixtureGroup>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroup>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetFixtureGroupSuspense<TData = Awaited<ReturnType<typeof getFixtureGroup>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroup>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetFixtureGroupSuspense<TData = Awaited<ReturnType<typeof getFixtureGroup>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroup>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetFixtureGroupSuspense<TData = Awaited<ReturnType<typeof getFixtureGroup>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroup>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetFixtureGroupSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = queryOptions.queryKey ;
 
@@ -3655,6 +2507,57 @@ export function useGetFixtureCard<TData = Awaited<ReturnType<typeof getFixtureCa
 
 
 
+export const getGetFixtureCardSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getFixtureCard>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureCard>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetFixtureCardQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFixtureCard>>> = ({ signal }) => getFixtureCard(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureCard>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetFixtureCardSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getFixtureCard>>>
+export type GetFixtureCardSuspenseQueryError = ErrorResponse
+
+
+export function useGetFixtureCardSuspense<TData = Awaited<ReturnType<typeof getFixtureCard>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureCard>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetFixtureCardSuspense<TData = Awaited<ReturnType<typeof getFixtureCard>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureCard>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetFixtureCardSuspense<TData = Awaited<ReturnType<typeof getFixtureCard>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureCard>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetFixtureCardSuspense<TData = Awaited<ReturnType<typeof getFixtureCard>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureCard>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetFixtureCardSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
 
 /**
  * Update FixtureCard
@@ -3851,6 +2754,57 @@ export function useGetAssignmentTransaction<TData = Awaited<ReturnType<typeof ge
   const queryOptions = getGetAssignmentTransactionQueryOptions(id,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const getGetAssignmentTransactionSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getAssignmentTransaction>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAssignmentTransaction>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAssignmentTransactionQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAssignmentTransaction>>> = ({ signal }) => getAssignmentTransaction(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAssignmentTransaction>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetAssignmentTransactionSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getAssignmentTransaction>>>
+export type GetAssignmentTransactionSuspenseQueryError = ErrorResponse
+
+
+export function useGetAssignmentTransactionSuspense<TData = Awaited<ReturnType<typeof getAssignmentTransaction>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAssignmentTransaction>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetAssignmentTransactionSuspense<TData = Awaited<ReturnType<typeof getAssignmentTransaction>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAssignmentTransaction>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetAssignmentTransactionSuspense<TData = Awaited<ReturnType<typeof getAssignmentTransaction>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAssignmentTransaction>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetAssignmentTransactionSuspense<TData = Awaited<ReturnType<typeof getAssignmentTransaction>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAssignmentTransaction>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetAssignmentTransactionSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = queryOptions.queryKey ;
 
@@ -4063,6 +3017,57 @@ export function useGetAssignmentCard<TData = Awaited<ReturnType<typeof getAssign
 
 
 
+export const getGetAssignmentCardSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getAssignmentCard>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAssignmentCard>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAssignmentCardQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAssignmentCard>>> = ({ signal }) => getAssignmentCard(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAssignmentCard>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetAssignmentCardSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getAssignmentCard>>>
+export type GetAssignmentCardSuspenseQueryError = ErrorResponse
+
+
+export function useGetAssignmentCardSuspense<TData = Awaited<ReturnType<typeof getAssignmentCard>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAssignmentCard>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetAssignmentCardSuspense<TData = Awaited<ReturnType<typeof getAssignmentCard>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAssignmentCard>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetAssignmentCardSuspense<TData = Awaited<ReturnType<typeof getAssignmentCard>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAssignmentCard>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetAssignmentCardSuspense<TData = Awaited<ReturnType<typeof getAssignmentCard>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAssignmentCard>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetAssignmentCardSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
 
 /**
  * Update AssignmentCard
@@ -4259,6 +3264,57 @@ export function useGetPurchaseOrder<TData = Awaited<ReturnType<typeof getPurchas
   const queryOptions = getGetPurchaseOrderQueryOptions(id,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const getGetPurchaseOrderSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getPurchaseOrder>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPurchaseOrder>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetPurchaseOrderQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPurchaseOrder>>> = ({ signal }) => getPurchaseOrder(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPurchaseOrder>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetPurchaseOrderSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getPurchaseOrder>>>
+export type GetPurchaseOrderSuspenseQueryError = ErrorResponse
+
+
+export function useGetPurchaseOrderSuspense<TData = Awaited<ReturnType<typeof getPurchaseOrder>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPurchaseOrder>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetPurchaseOrderSuspense<TData = Awaited<ReturnType<typeof getPurchaseOrder>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPurchaseOrder>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetPurchaseOrderSuspense<TData = Awaited<ReturnType<typeof getPurchaseOrder>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPurchaseOrder>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetPurchaseOrderSuspense<TData = Awaited<ReturnType<typeof getPurchaseOrder>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPurchaseOrder>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetPurchaseOrderSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = queryOptions.queryKey ;
 
@@ -4471,6 +3527,57 @@ export function useGetInvoice<TData = Awaited<ReturnType<typeof getInvoice>>, TE
 
 
 
+export const getGetInvoiceSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getInvoice>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getInvoice>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetInvoiceQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getInvoice>>> = ({ signal }) => getInvoice(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getInvoice>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetInvoiceSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getInvoice>>>
+export type GetInvoiceSuspenseQueryError = ErrorResponse
+
+
+export function useGetInvoiceSuspense<TData = Awaited<ReturnType<typeof getInvoice>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getInvoice>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetInvoiceSuspense<TData = Awaited<ReturnType<typeof getInvoice>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getInvoice>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetInvoiceSuspense<TData = Awaited<ReturnType<typeof getInvoice>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getInvoice>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetInvoiceSuspense<TData = Awaited<ReturnType<typeof getInvoice>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getInvoice>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetInvoiceSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
 
 /**
  * Update Invoice
@@ -4667,6 +3774,57 @@ export function useGetCurrentAccountTransaction<TData = Awaited<ReturnType<typeo
   const queryOptions = getGetCurrentAccountTransactionQueryOptions(id,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const getGetCurrentAccountTransactionSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetCurrentAccountTransactionQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCurrentAccountTransaction>>> = ({ signal }) => getCurrentAccountTransaction(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetCurrentAccountTransactionSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getCurrentAccountTransaction>>>
+export type GetCurrentAccountTransactionSuspenseQueryError = ErrorResponse
+
+
+export function useGetCurrentAccountTransactionSuspense<TData = Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetCurrentAccountTransactionSuspense<TData = Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetCurrentAccountTransactionSuspense<TData = Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetCurrentAccountTransactionSuspense<TData = Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetCurrentAccountTransactionSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = queryOptions.queryKey ;
 
@@ -4879,6 +4037,57 @@ export function useGetCurrentAccountBankAccount<TData = Awaited<ReturnType<typeo
 
 
 
+export const getGetCurrentAccountBankAccountSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetCurrentAccountBankAccountQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCurrentAccountBankAccount>>> = ({ signal }) => getCurrentAccountBankAccount(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetCurrentAccountBankAccountSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getCurrentAccountBankAccount>>>
+export type GetCurrentAccountBankAccountSuspenseQueryError = ErrorResponse
+
+
+export function useGetCurrentAccountBankAccountSuspense<TData = Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetCurrentAccountBankAccountSuspense<TData = Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetCurrentAccountBankAccountSuspense<TData = Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetCurrentAccountBankAccountSuspense<TData = Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetCurrentAccountBankAccountSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
 
 /**
  * Update CurrentAccountBankAccount
@@ -5075,6 +4284,57 @@ export function useGetCurrentAccount<TData = Awaited<ReturnType<typeof getCurren
   const queryOptions = getGetCurrentAccountQueryOptions(id,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const getGetCurrentAccountSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getCurrentAccount>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccount>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetCurrentAccountQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCurrentAccount>>> = ({ signal }) => getCurrentAccount(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccount>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetCurrentAccountSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getCurrentAccount>>>
+export type GetCurrentAccountSuspenseQueryError = ErrorResponse
+
+
+export function useGetCurrentAccountSuspense<TData = Awaited<ReturnType<typeof getCurrentAccount>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccount>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetCurrentAccountSuspense<TData = Awaited<ReturnType<typeof getCurrentAccount>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccount>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetCurrentAccountSuspense<TData = Awaited<ReturnType<typeof getCurrentAccount>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccount>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetCurrentAccountSuspense<TData = Awaited<ReturnType<typeof getCurrentAccount>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccount>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetCurrentAccountSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = queryOptions.queryKey ;
 
@@ -5287,6 +4547,57 @@ export function useGetAdditionalCost<TData = Awaited<ReturnType<typeof getAdditi
 
 
 
+export const getGetAdditionalCostSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getAdditionalCost>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAdditionalCost>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAdditionalCostQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdditionalCost>>> = ({ signal }) => getAdditionalCost(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAdditionalCost>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetAdditionalCostSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getAdditionalCost>>>
+export type GetAdditionalCostSuspenseQueryError = ErrorResponse
+
+
+export function useGetAdditionalCostSuspense<TData = Awaited<ReturnType<typeof getAdditionalCost>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAdditionalCost>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetAdditionalCostSuspense<TData = Awaited<ReturnType<typeof getAdditionalCost>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAdditionalCost>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetAdditionalCostSuspense<TData = Awaited<ReturnType<typeof getAdditionalCost>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAdditionalCost>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetAdditionalCostSuspense<TData = Awaited<ReturnType<typeof getAdditionalCost>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAdditionalCost>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetAdditionalCostSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
 
 /**
  * Update AdditionalCost
@@ -5483,6 +4794,57 @@ export function useGetProject<TData = Awaited<ReturnType<typeof getProject>>, TE
   const queryOptions = getGetProjectQueryOptions(id,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const getGetProjectSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getProject>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProject>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetProjectQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProject>>> = ({ signal }) => getProject(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProject>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetProjectSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getProject>>>
+export type GetProjectSuspenseQueryError = ErrorResponse
+
+
+export function useGetProjectSuspense<TData = Awaited<ReturnType<typeof getProject>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProject>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetProjectSuspense<TData = Awaited<ReturnType<typeof getProject>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProject>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetProjectSuspense<TData = Awaited<ReturnType<typeof getProject>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProject>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetProjectSuspense<TData = Awaited<ReturnType<typeof getProject>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProject>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetProjectSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = queryOptions.queryKey ;
 
@@ -5695,6 +5057,57 @@ export function useGetTimeKeeping<TData = Awaited<ReturnType<typeof getTimeKeepi
 
 
 
+export const getGetTimeKeepingSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getTimeKeeping>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeKeeping>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetTimeKeepingQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTimeKeeping>>> = ({ signal }) => getTimeKeeping(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeKeeping>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetTimeKeepingSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getTimeKeeping>>>
+export type GetTimeKeepingSuspenseQueryError = ErrorResponse
+
+
+export function useGetTimeKeepingSuspense<TData = Awaited<ReturnType<typeof getTimeKeeping>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeKeeping>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetTimeKeepingSuspense<TData = Awaited<ReturnType<typeof getTimeKeeping>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeKeeping>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetTimeKeepingSuspense<TData = Awaited<ReturnType<typeof getTimeKeeping>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeKeeping>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetTimeKeepingSuspense<TData = Awaited<ReturnType<typeof getTimeKeeping>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeKeeping>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetTimeKeepingSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
 
 /**
  * Update Time Keeping
@@ -5891,6 +5304,57 @@ export function useGetEmployee<TData = Awaited<ReturnType<typeof getEmployee>>, 
   const queryOptions = getGetEmployeeQueryOptions(id,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const getGetEmployeeSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getEmployee>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployee>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetEmployeeQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEmployee>>> = ({ signal }) => getEmployee(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployee>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetEmployeeSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getEmployee>>>
+export type GetEmployeeSuspenseQueryError = ErrorResponse
+
+
+export function useGetEmployeeSuspense<TData = Awaited<ReturnType<typeof getEmployee>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployee>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetEmployeeSuspense<TData = Awaited<ReturnType<typeof getEmployee>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployee>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetEmployeeSuspense<TData = Awaited<ReturnType<typeof getEmployee>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployee>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetEmployeeSuspense<TData = Awaited<ReturnType<typeof getEmployee>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployee>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetEmployeeSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = queryOptions.queryKey ;
 
@@ -6102,6 +5566,62 @@ export function useGetTimeOff<TData = Awaited<ReturnType<typeof getTimeOff>>, TE
   const queryOptions = getGetTimeOffQueryOptions(id,timeOffId,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const getGetTimeOffSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getTimeOff>>, TError = ResponseBase>(id: number,
+    timeOffId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeOff>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetTimeOffQueryKey(id,timeOffId);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTimeOff>>> = ({ signal }) => getTimeOff(id,timeOffId, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeOff>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetTimeOffSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getTimeOff>>>
+export type GetTimeOffSuspenseQueryError = ResponseBase
+
+
+export function useGetTimeOffSuspense<TData = Awaited<ReturnType<typeof getTimeOff>>, TError = ResponseBase>(
+ id: number,
+    timeOffId: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeOff>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetTimeOffSuspense<TData = Awaited<ReturnType<typeof getTimeOff>>, TError = ResponseBase>(
+ id: number,
+    timeOffId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeOff>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetTimeOffSuspense<TData = Awaited<ReturnType<typeof getTimeOff>>, TError = ResponseBase>(
+ id: number,
+    timeOffId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeOff>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetTimeOffSuspense<TData = Awaited<ReturnType<typeof getTimeOff>>, TError = ResponseBase>(
+ id: number,
+    timeOffId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeOff>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetTimeOffSuspenseQueryOptions(id,timeOffId,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = queryOptions.queryKey ;
 
@@ -6562,6 +6082,57 @@ export function useGetBankBranch<TData = Awaited<ReturnType<typeof getBankBranch
 
 
 
+export const getGetBankBranchSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getBankBranch>>, TError = unknown>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBankBranch>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetBankBranchQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getBankBranch>>> = ({ signal }) => getBankBranch(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBankBranch>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetBankBranchSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getBankBranch>>>
+export type GetBankBranchSuspenseQueryError = unknown
+
+
+export function useGetBankBranchSuspense<TData = Awaited<ReturnType<typeof getBankBranch>>, TError = unknown>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBankBranch>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetBankBranchSuspense<TData = Awaited<ReturnType<typeof getBankBranch>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBankBranch>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetBankBranchSuspense<TData = Awaited<ReturnType<typeof getBankBranch>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBankBranch>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetBankBranchSuspense<TData = Awaited<ReturnType<typeof getBankBranch>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBankBranch>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetBankBranchSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
 
 /**
  * Update Bank Branch
@@ -6758,6 +6329,57 @@ export function useGetBankAccount<TData = Awaited<ReturnType<typeof getBankAccou
   const queryOptions = getGetBankAccountQueryOptions(id,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const getGetBankAccountSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getBankAccount>>, TError = unknown>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBankAccount>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetBankAccountQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getBankAccount>>> = ({ signal }) => getBankAccount(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBankAccount>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetBankAccountSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getBankAccount>>>
+export type GetBankAccountSuspenseQueryError = unknown
+
+
+export function useGetBankAccountSuspense<TData = Awaited<ReturnType<typeof getBankAccount>>, TError = unknown>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBankAccount>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetBankAccountSuspense<TData = Awaited<ReturnType<typeof getBankAccount>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBankAccount>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetBankAccountSuspense<TData = Awaited<ReturnType<typeof getBankAccount>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBankAccount>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetBankAccountSuspense<TData = Awaited<ReturnType<typeof getBankAccount>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBankAccount>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetBankAccountSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = queryOptions.queryKey ;
 
@@ -6970,6 +6592,57 @@ export function useGetDepartment<TData = Awaited<ReturnType<typeof getDepartment
 
 
 
+export const getGetDepartmentSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getDepartment>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepartment>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetDepartmentQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDepartment>>> = ({ signal }) => getDepartment(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepartment>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetDepartmentSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getDepartment>>>
+export type GetDepartmentSuspenseQueryError = ErrorResponse
+
+
+export function useGetDepartmentSuspense<TData = Awaited<ReturnType<typeof getDepartment>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepartment>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetDepartmentSuspense<TData = Awaited<ReturnType<typeof getDepartment>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepartment>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetDepartmentSuspense<TData = Awaited<ReturnType<typeof getDepartment>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepartment>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetDepartmentSuspense<TData = Awaited<ReturnType<typeof getDepartment>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepartment>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetDepartmentSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
 
 /**
  * Update Bank
@@ -7166,6 +6839,57 @@ export function useGetDepartment1<TData = Awaited<ReturnType<typeof getDepartmen
   const queryOptions = getGetDepartment1QueryOptions(id,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const getGetDepartment1SuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getDepartment1>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepartment1>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetDepartment1QueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDepartment1>>> = ({ signal }) => getDepartment1(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepartment1>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetDepartment1SuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getDepartment1>>>
+export type GetDepartment1SuspenseQueryError = ErrorResponse
+
+
+export function useGetDepartment1Suspense<TData = Awaited<ReturnType<typeof getDepartment1>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepartment1>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetDepartment1Suspense<TData = Awaited<ReturnType<typeof getDepartment1>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepartment1>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetDepartment1Suspense<TData = Awaited<ReturnType<typeof getDepartment1>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepartment1>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetDepartment1Suspense<TData = Awaited<ReturnType<typeof getDepartment1>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepartment1>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetDepartment1SuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = queryOptions.queryKey ;
 
@@ -7378,6 +7102,57 @@ export function useGetBranch<TData = Awaited<ReturnType<typeof getBranch>>, TErr
 
 
 
+export const getGetBranchSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getBranch>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBranch>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetBranchQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getBranch>>> = ({ signal }) => getBranch(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBranch>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetBranchSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getBranch>>>
+export type GetBranchSuspenseQueryError = ErrorResponse
+
+
+export function useGetBranchSuspense<TData = Awaited<ReturnType<typeof getBranch>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBranch>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetBranchSuspense<TData = Awaited<ReturnType<typeof getBranch>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBranch>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetBranchSuspense<TData = Awaited<ReturnType<typeof getBranch>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBranch>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetBranchSuspense<TData = Awaited<ReturnType<typeof getBranch>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBranch>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetBranchSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
 
 /**
  * Update Branch
@@ -7574,6 +7349,57 @@ export function useGetSection<TData = Awaited<ReturnType<typeof getSection>>, TE
   const queryOptions = getGetSectionQueryOptions(id,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const getGetSectionSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getSection>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getSection>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSectionQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSection>>> = ({ signal }) => getSection(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getSection>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetSectionSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getSection>>>
+export type GetSectionSuspenseQueryError = ErrorResponse
+
+
+export function useGetSectionSuspense<TData = Awaited<ReturnType<typeof getSection>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getSection>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetSectionSuspense<TData = Awaited<ReturnType<typeof getSection>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getSection>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetSectionSuspense<TData = Awaited<ReturnType<typeof getSection>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getSection>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetSectionSuspense<TData = Awaited<ReturnType<typeof getSection>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getSection>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetSectionSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = queryOptions.queryKey ;
 
@@ -7786,6 +7612,57 @@ export function useGetRole<TData = Awaited<ReturnType<typeof getRole>>, TError =
 
 
 
+export const getGetRoleSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getRole>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getRole>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetRoleQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRole>>> = ({ signal }) => getRole(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getRole>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetRoleSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getRole>>>
+export type GetRoleSuspenseQueryError = ErrorResponse
+
+
+export function useGetRoleSuspense<TData = Awaited<ReturnType<typeof getRole>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getRole>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetRoleSuspense<TData = Awaited<ReturnType<typeof getRole>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getRole>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetRoleSuspense<TData = Awaited<ReturnType<typeof getRole>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getRole>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetRoleSuspense<TData = Awaited<ReturnType<typeof getRole>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getRole>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetRoleSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
 
 /**
  * Update Role
@@ -7982,6 +7859,57 @@ export function useGetPublicHoliday<TData = Awaited<ReturnType<typeof getPublicH
   const queryOptions = getGetPublicHolidayQueryOptions(id,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const getGetPublicHolidaySuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getPublicHoliday>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPublicHoliday>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetPublicHolidayQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPublicHoliday>>> = ({ signal }) => getPublicHoliday(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPublicHoliday>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetPublicHolidaySuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getPublicHoliday>>>
+export type GetPublicHolidaySuspenseQueryError = ErrorResponse
+
+
+export function useGetPublicHolidaySuspense<TData = Awaited<ReturnType<typeof getPublicHoliday>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPublicHoliday>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetPublicHolidaySuspense<TData = Awaited<ReturnType<typeof getPublicHoliday>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPublicHoliday>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetPublicHolidaySuspense<TData = Awaited<ReturnType<typeof getPublicHoliday>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPublicHoliday>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetPublicHolidaySuspense<TData = Awaited<ReturnType<typeof getPublicHoliday>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPublicHoliday>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetPublicHolidaySuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = queryOptions.queryKey ;
 
@@ -8194,6 +8122,57 @@ export function useGetPaymentMethod<TData = Awaited<ReturnType<typeof getPayment
 
 
 
+export const getGetPaymentMethodSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getPaymentMethod>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPaymentMethod>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetPaymentMethodQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPaymentMethod>>> = ({ signal }) => getPaymentMethod(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPaymentMethod>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetPaymentMethodSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getPaymentMethod>>>
+export type GetPaymentMethodSuspenseQueryError = ErrorResponse
+
+
+export function useGetPaymentMethodSuspense<TData = Awaited<ReturnType<typeof getPaymentMethod>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPaymentMethod>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetPaymentMethodSuspense<TData = Awaited<ReturnType<typeof getPaymentMethod>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPaymentMethod>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetPaymentMethodSuspense<TData = Awaited<ReturnType<typeof getPaymentMethod>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPaymentMethod>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetPaymentMethodSuspense<TData = Awaited<ReturnType<typeof getPaymentMethod>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPaymentMethod>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetPaymentMethodSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
 
 /**
  * Update PaymentMethod
@@ -8390,6 +8369,57 @@ export function useGetMachine<TData = Awaited<ReturnType<typeof getMachine>>, TE
   const queryOptions = getGetMachineQueryOptions(id,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const getGetMachineSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getMachine>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMachine>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetMachineQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMachine>>> = ({ signal }) => getMachine(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMachine>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetMachineSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getMachine>>>
+export type GetMachineSuspenseQueryError = ErrorResponse
+
+
+export function useGetMachineSuspense<TData = Awaited<ReturnType<typeof getMachine>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMachine>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetMachineSuspense<TData = Awaited<ReturnType<typeof getMachine>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMachine>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetMachineSuspense<TData = Awaited<ReturnType<typeof getMachine>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMachine>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetMachineSuspense<TData = Awaited<ReturnType<typeof getMachine>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMachine>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetMachineSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = queryOptions.queryKey ;
 
@@ -8602,6 +8632,57 @@ export function useGetDepot<TData = Awaited<ReturnType<typeof getDepot>>, TError
 
 
 
+export const getGetDepotSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getDepot>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepot>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetDepotQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDepot>>> = ({ signal }) => getDepot(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepot>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetDepotSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getDepot>>>
+export type GetDepotSuspenseQueryError = ErrorResponse
+
+
+export function useGetDepotSuspense<TData = Awaited<ReturnType<typeof getDepot>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepot>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetDepotSuspense<TData = Awaited<ReturnType<typeof getDepot>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepot>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetDepotSuspense<TData = Awaited<ReturnType<typeof getDepot>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepot>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetDepotSuspense<TData = Awaited<ReturnType<typeof getDepot>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepot>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetDepotSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
 
 /**
  * Update Depot
@@ -8798,6 +8879,57 @@ export function useGetCompany<TData = Awaited<ReturnType<typeof getCompany>>, TE
   const queryOptions = getGetCompanyQueryOptions(id,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const getGetCompanySuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getCompany>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCompany>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetCompanyQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCompany>>> = ({ signal }) => getCompany(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCompany>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetCompanySuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getCompany>>>
+export type GetCompanySuspenseQueryError = ErrorResponse
+
+
+export function useGetCompanySuspense<TData = Awaited<ReturnType<typeof getCompany>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCompany>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetCompanySuspense<TData = Awaited<ReturnType<typeof getCompany>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCompany>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetCompanySuspense<TData = Awaited<ReturnType<typeof getCompany>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCompany>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetCompanySuspense<TData = Awaited<ReturnType<typeof getCompany>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCompany>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetCompanySuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = queryOptions.queryKey ;
 
@@ -9010,6 +9142,57 @@ export function useGetExpenseInvoice<TData = Awaited<ReturnType<typeof getExpens
 
 
 
+export const getGetExpenseInvoiceSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getExpenseInvoice>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getExpenseInvoice>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetExpenseInvoiceQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getExpenseInvoice>>> = ({ signal }) => getExpenseInvoice(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getExpenseInvoice>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetExpenseInvoiceSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getExpenseInvoice>>>
+export type GetExpenseInvoiceSuspenseQueryError = ErrorResponse
+
+
+export function useGetExpenseInvoiceSuspense<TData = Awaited<ReturnType<typeof getExpenseInvoice>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getExpenseInvoice>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetExpenseInvoiceSuspense<TData = Awaited<ReturnType<typeof getExpenseInvoice>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getExpenseInvoice>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetExpenseInvoiceSuspense<TData = Awaited<ReturnType<typeof getExpenseInvoice>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getExpenseInvoice>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetExpenseInvoiceSuspense<TData = Awaited<ReturnType<typeof getExpenseInvoice>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getExpenseInvoice>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetExpenseInvoiceSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
 
 /**
  * Update ExpenseInvoice
@@ -9206,6 +9389,57 @@ export function useGetExpenseCard<TData = Awaited<ReturnType<typeof getExpenseCa
   const queryOptions = getGetExpenseCardQueryOptions(id,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const getGetExpenseCardSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getExpenseCard>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getExpenseCard>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetExpenseCardQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getExpenseCard>>> = ({ signal }) => getExpenseCard(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getExpenseCard>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetExpenseCardSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getExpenseCard>>>
+export type GetExpenseCardSuspenseQueryError = ErrorResponse
+
+
+export function useGetExpenseCardSuspense<TData = Awaited<ReturnType<typeof getExpenseCard>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getExpenseCard>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetExpenseCardSuspense<TData = Awaited<ReturnType<typeof getExpenseCard>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getExpenseCard>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetExpenseCardSuspense<TData = Awaited<ReturnType<typeof getExpenseCard>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getExpenseCard>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetExpenseCardSuspense<TData = Awaited<ReturnType<typeof getExpenseCard>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getExpenseCard>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetExpenseCardSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = queryOptions.queryKey ;
 
@@ -9418,6 +9652,57 @@ export function useGetCashAccountTransaction<TData = Awaited<ReturnType<typeof g
 
 
 
+export const getGetCashAccountTransactionSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getCashAccountTransaction>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCashAccountTransaction>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetCashAccountTransactionQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCashAccountTransaction>>> = ({ signal }) => getCashAccountTransaction(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCashAccountTransaction>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetCashAccountTransactionSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getCashAccountTransaction>>>
+export type GetCashAccountTransactionSuspenseQueryError = ErrorResponse
+
+
+export function useGetCashAccountTransactionSuspense<TData = Awaited<ReturnType<typeof getCashAccountTransaction>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCashAccountTransaction>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetCashAccountTransactionSuspense<TData = Awaited<ReturnType<typeof getCashAccountTransaction>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCashAccountTransaction>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetCashAccountTransactionSuspense<TData = Awaited<ReturnType<typeof getCashAccountTransaction>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCashAccountTransaction>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetCashAccountTransactionSuspense<TData = Awaited<ReturnType<typeof getCashAccountTransaction>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCashAccountTransaction>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetCashAccountTransactionSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
 
 /**
  * Update CashAccountTransaction
@@ -9614,6 +9899,57 @@ export function useGetCashAccount<TData = Awaited<ReturnType<typeof getCashAccou
   const queryOptions = getGetCashAccountQueryOptions(id,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const getGetCashAccountSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getCashAccount>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCashAccount>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetCashAccountQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCashAccount>>> = ({ signal }) => getCashAccount(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCashAccount>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetCashAccountSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getCashAccount>>>
+export type GetCashAccountSuspenseQueryError = ErrorResponse
+
+
+export function useGetCashAccountSuspense<TData = Awaited<ReturnType<typeof getCashAccount>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCashAccount>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetCashAccountSuspense<TData = Awaited<ReturnType<typeof getCashAccount>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCashAccount>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetCashAccountSuspense<TData = Awaited<ReturnType<typeof getCashAccount>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCashAccount>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetCashAccountSuspense<TData = Awaited<ReturnType<typeof getCashAccount>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCashAccount>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetCashAccountSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = queryOptions.queryKey ;
 
@@ -15249,6 +15585,57 @@ export function useGetServiceGroupTree<TData = Awaited<ReturnType<typeof getServ
 
 
 
+export const getGetServiceGroupTreeSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getServiceGroupTree>>, TError = unknown>( options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroupTree>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetServiceGroupTreeQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getServiceGroupTree>>> = ({ signal }) => getServiceGroupTree(signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroupTree>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetServiceGroupTreeSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getServiceGroupTree>>>
+export type GetServiceGroupTreeSuspenseQueryError = unknown
+
+
+export function useGetServiceGroupTreeSuspense<TData = Awaited<ReturnType<typeof getServiceGroupTree>>, TError = unknown>(
+  options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroupTree>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetServiceGroupTreeSuspense<TData = Awaited<ReturnType<typeof getServiceGroupTree>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroupTree>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetServiceGroupTreeSuspense<TData = Awaited<ReturnType<typeof getServiceGroupTree>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroupTree>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetServiceGroupTreeSuspense<TData = Awaited<ReturnType<typeof getServiceGroupTree>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroupTree>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetServiceGroupTreeSuspenseQueryOptions(options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
 
 /**
  * Get ProductGroup Tree
@@ -15326,6 +15713,57 @@ export function useGetProductGroupTree<TData = Awaited<ReturnType<typeof getProd
   const queryOptions = getGetProductGroupTreeQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const getGetProductGroupTreeSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getProductGroupTree>>, TError = unknown>( options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroupTree>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetProductGroupTreeQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProductGroupTree>>> = ({ signal }) => getProductGroupTree(signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroupTree>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetProductGroupTreeSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getProductGroupTree>>>
+export type GetProductGroupTreeSuspenseQueryError = unknown
+
+
+export function useGetProductGroupTreeSuspense<TData = Awaited<ReturnType<typeof getProductGroupTree>>, TError = unknown>(
+  options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroupTree>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetProductGroupTreeSuspense<TData = Awaited<ReturnType<typeof getProductGroupTree>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroupTree>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetProductGroupTreeSuspense<TData = Awaited<ReturnType<typeof getProductGroupTree>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroupTree>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetProductGroupTreeSuspense<TData = Awaited<ReturnType<typeof getProductGroupTree>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroupTree>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetProductGroupTreeSuspenseQueryOptions(options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = queryOptions.queryKey ;
 
@@ -15419,6 +15857,57 @@ export function useGetMaterialGroupTree<TData = Awaited<ReturnType<typeof getMat
 
 
 
+export const getGetMaterialGroupTreeSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getMaterialGroupTree>>, TError = unknown>( options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupTree>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetMaterialGroupTreeQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMaterialGroupTree>>> = ({ signal }) => getMaterialGroupTree(signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupTree>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetMaterialGroupTreeSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getMaterialGroupTree>>>
+export type GetMaterialGroupTreeSuspenseQueryError = unknown
+
+
+export function useGetMaterialGroupTreeSuspense<TData = Awaited<ReturnType<typeof getMaterialGroupTree>>, TError = unknown>(
+  options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupTree>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetMaterialGroupTreeSuspense<TData = Awaited<ReturnType<typeof getMaterialGroupTree>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupTree>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetMaterialGroupTreeSuspense<TData = Awaited<ReturnType<typeof getMaterialGroupTree>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupTree>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetMaterialGroupTreeSuspense<TData = Awaited<ReturnType<typeof getMaterialGroupTree>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupTree>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetMaterialGroupTreeSuspenseQueryOptions(options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
 
 /**
  * Get FixtureGroup Tree
@@ -15496,6 +15985,57 @@ export function useGetFixtureGroupTree<TData = Awaited<ReturnType<typeof getFixt
   const queryOptions = getGetFixtureGroupTreeQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const getGetFixtureGroupTreeSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getFixtureGroupTree>>, TError = unknown>( options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupTree>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetFixtureGroupTreeQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFixtureGroupTree>>> = ({ signal }) => getFixtureGroupTree(signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupTree>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetFixtureGroupTreeSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getFixtureGroupTree>>>
+export type GetFixtureGroupTreeSuspenseQueryError = unknown
+
+
+export function useGetFixtureGroupTreeSuspense<TData = Awaited<ReturnType<typeof getFixtureGroupTree>>, TError = unknown>(
+  options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupTree>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetFixtureGroupTreeSuspense<TData = Awaited<ReturnType<typeof getFixtureGroupTree>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupTree>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetFixtureGroupTreeSuspense<TData = Awaited<ReturnType<typeof getFixtureGroupTree>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupTree>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetFixtureGroupTreeSuspense<TData = Awaited<ReturnType<typeof getFixtureGroupTree>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupTree>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetFixtureGroupTreeSuspenseQueryOptions(options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = queryOptions.queryKey ;
 
@@ -15603,6 +16143,67 @@ export function useGetTimeKeepingDraft<TData = Awaited<ReturnType<typeof getTime
 
 
 
+export const getGetTimeKeepingDraftSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError = ErrorResponse>(id: number,
+    year: number,
+    month: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetTimeKeepingDraftQueryKey(id,year,month);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTimeKeepingDraft>>> = ({ signal }) => getTimeKeepingDraft(id,year,month, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetTimeKeepingDraftSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getTimeKeepingDraft>>>
+export type GetTimeKeepingDraftSuspenseQueryError = ErrorResponse
+
+
+export function useGetTimeKeepingDraftSuspense<TData = Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError = ErrorResponse>(
+ id: number,
+    year: number,
+    month: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetTimeKeepingDraftSuspense<TData = Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError = ErrorResponse>(
+ id: number,
+    year: number,
+    month: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetTimeKeepingDraftSuspense<TData = Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError = ErrorResponse>(
+ id: number,
+    year: number,
+    month: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetTimeKeepingDraftSuspense<TData = Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError = ErrorResponse>(
+ id: number,
+    year: number,
+    month: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetTimeKeepingDraftSuspenseQueryOptions(id,year,month,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
 
 /**
  * Get TimeOff Status
@@ -15680,6 +16281,57 @@ export function useGetTimeOffStatus<TData = Awaited<ReturnType<typeof getTimeOff
   const queryOptions = getGetTimeOffStatusQueryOptions(id,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const getGetTimeOffStatusSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getTimeOffStatus>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeOffStatus>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetTimeOffStatusQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTimeOffStatus>>> = ({ signal }) => getTimeOffStatus(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeOffStatus>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetTimeOffStatusSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getTimeOffStatus>>>
+export type GetTimeOffStatusSuspenseQueryError = ErrorResponse
+
+
+export function useGetTimeOffStatusSuspense<TData = Awaited<ReturnType<typeof getTimeOffStatus>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeOffStatus>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetTimeOffStatusSuspense<TData = Awaited<ReturnType<typeof getTimeOffStatus>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeOffStatus>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetTimeOffStatusSuspense<TData = Awaited<ReturnType<typeof getTimeOffStatus>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeOffStatus>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetTimeOffStatusSuspense<TData = Awaited<ReturnType<typeof getTimeOffStatus>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeOffStatus>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetTimeOffStatusSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = queryOptions.queryKey ;
 
@@ -15772,6 +16424,62 @@ export function useGetEmployeePayment<TData = Awaited<ReturnType<typeof getEmplo
   const queryOptions = getGetEmployeePaymentQueryOptions(id,employeePaymentId,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const getGetEmployeePaymentSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getEmployeePayment>>, TError = unknown>(id: number,
+    employeePaymentId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployeePayment>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetEmployeePaymentQueryKey(id,employeePaymentId);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEmployeePayment>>> = ({ signal }) => getEmployeePayment(id,employeePaymentId, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployeePayment>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetEmployeePaymentSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getEmployeePayment>>>
+export type GetEmployeePaymentSuspenseQueryError = unknown
+
+
+export function useGetEmployeePaymentSuspense<TData = Awaited<ReturnType<typeof getEmployeePayment>>, TError = unknown>(
+ id: number,
+    employeePaymentId: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployeePayment>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetEmployeePaymentSuspense<TData = Awaited<ReturnType<typeof getEmployeePayment>>, TError = unknown>(
+ id: number,
+    employeePaymentId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployeePayment>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetEmployeePaymentSuspense<TData = Awaited<ReturnType<typeof getEmployeePayment>>, TError = unknown>(
+ id: number,
+    employeePaymentId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployeePayment>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetEmployeePaymentSuspense<TData = Awaited<ReturnType<typeof getEmployeePayment>>, TError = unknown>(
+ id: number,
+    employeePaymentId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployeePayment>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetEmployeePaymentSuspenseQueryOptions(id,employeePaymentId,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = queryOptions.queryKey ;
 
@@ -15923,6 +16631,62 @@ export function useGetEmployeeOvertime<TData = Awaited<ReturnType<typeof getEmpl
   const queryOptions = getGetEmployeeOvertimeQueryOptions(id,overtimeId,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const getGetEmployeeOvertimeSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getEmployeeOvertime>>, TError = unknown>(id: number,
+    overtimeId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployeeOvertime>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetEmployeeOvertimeQueryKey(id,overtimeId);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEmployeeOvertime>>> = ({ signal }) => getEmployeeOvertime(id,overtimeId, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployeeOvertime>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetEmployeeOvertimeSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getEmployeeOvertime>>>
+export type GetEmployeeOvertimeSuspenseQueryError = unknown
+
+
+export function useGetEmployeeOvertimeSuspense<TData = Awaited<ReturnType<typeof getEmployeeOvertime>>, TError = unknown>(
+ id: number,
+    overtimeId: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployeeOvertime>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetEmployeeOvertimeSuspense<TData = Awaited<ReturnType<typeof getEmployeeOvertime>>, TError = unknown>(
+ id: number,
+    overtimeId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployeeOvertime>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetEmployeeOvertimeSuspense<TData = Awaited<ReturnType<typeof getEmployeeOvertime>>, TError = unknown>(
+ id: number,
+    overtimeId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployeeOvertime>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetEmployeeOvertimeSuspense<TData = Awaited<ReturnType<typeof getEmployeeOvertime>>, TError = unknown>(
+ id: number,
+    overtimeId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployeeOvertime>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetEmployeeOvertimeSuspenseQueryOptions(id,overtimeId,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
   query.queryKey = queryOptions.queryKey ;
 

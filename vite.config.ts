@@ -20,7 +20,7 @@ export default defineConfig({
 
     proxy: {
       '/api': {
-        target: 'http://localhost:8080/api',
+        target: 'https://falcons-erp-api-dev.sd.iafl.net/api/',
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/api/, '')

@@ -3,17 +3,30 @@ import { defineConfig } from 'orval'
 export default defineConfig({
   erpApi: {
     input: {
-      target: './api-spec/openapi.yaml'
+      target: './openapi.yaml'
     },
     output: {
-      target: './api-spec/apiSchema.ts',
+      mock: true,
+      target: './src/api/',
+      mode: 'split',
       client: 'react-query',
+      schemas: './src/api/model',
       override: {
+        query:{
+          useSuspenseQuery: true
+        },
+       /* operations: {
+          MaterialGroups: {
+            query: {
+              useSuspenseQuery: true,
+            }
+          }
+        },*/
         mutator: {
           path: './src/api/customMutator.ts',
           name: 'customMutator'
         }
       }
-    },
+    }
   }
 })
