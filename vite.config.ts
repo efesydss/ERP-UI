@@ -7,14 +7,17 @@ export default defineConfig({
   plugins: [react(), TanStackRouterVite()],
   resolve: {
     alias: {
-      '@': new URL('./src/', import.meta.url).pathname
+      '@': new URL('./src/', import.meta.url).pathname,
+
     }
   },
+
 
   //todo: this is a temp fix for cors
   //http://localhost:8080/api
   //https://falcons-erp-api-dev.sd.iafl.net/api/
   server: {
+
     proxy: {
       '/api': {
         target: 'https://falcons-erp-api-dev.sd.iafl.net/api/',

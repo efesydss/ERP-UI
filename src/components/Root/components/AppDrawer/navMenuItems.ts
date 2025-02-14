@@ -130,6 +130,10 @@ export const navMenuItems: MenuItemProps[] = [
               label: 'projects',
               icon: FaRProject
             },
+            {
+                label: 'productPlans',
+                icon: FaRProject
+            },
           ]
         },
 
@@ -156,6 +160,10 @@ export const navMenuItems: MenuItemProps[] = [
               {
                 label: 'invoices',
                 icon: FaRProject
+              },
+              {
+                  label: 'purchaseOrders',
+                 icon: FaRProject
               },
             ]
           },
@@ -212,6 +220,16 @@ export const navMenuItems: MenuItemProps[] = [
             label: 'units',
 
             icon: TbUserStar
+        },
+      ]
+    },
+{
+      label: 'sales',
+      icon: RiAdminLine,
+      sub: [
+        {
+          label: 'proposals',
+          icon: FaRProject
         },
       ]
     },
