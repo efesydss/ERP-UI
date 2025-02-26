@@ -232,6 +232,7 @@ export const apiRoutes = {
 
 
 
+
   // Employee Vacation Management
   employeeVacationStatuses: 'hr/employees/timeoffstatuses',
   employeeVacation: 'hr/employee/{employeeId}/timeoffs',

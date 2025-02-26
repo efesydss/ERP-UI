@@ -2,12 +2,17 @@ import React, { useMemo, useState } from 'react'
 import { MaterialReactTable, MRT_ColumnDef, useMaterialReactTable } from 'material-react-table'
 import { useGetMaterialCard, useGetMaterialGroupTreeSuspense } from '@/api/openAPIDefinition'
 import { type MaterialGroupTreeItem } from '@/api/model'
-import { Stack } from '@mui/material'
+import { Button, Stack } from '@mui/material'
 import { useEffect } from 'react'
+import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
+import { Route } from '@/routes/_authenticated/storage/materialGroups/new'
+import { useNavigate } from '@tanstack/react-router'
 
 
 export const MaterialGroupList = () => {
   const [selectedGroup, setSelectedGroup] = useState(0)
+  const navigate = useNavigate()
 
   type MaterialGroupResponse = {
     message: string | null;
@@ -36,10 +41,10 @@ export const MaterialGroupList = () => {
     query: {
       enabled: selectedGroup !== 0,
       select: (response) => {
-        console.log('API Response:', response);
-        return Array.isArray(response) ? response : [response];
-      },
-    },
+        console.log('API Response:', response)
+        return Array.isArray(response) ? response : [response]
+      }
+    }
   })
 
   const columnsTree = useMemo<MRT_ColumnDef<MaterialGroupTreeItem>[]>(
@@ -82,19 +87,19 @@ export const MaterialGroupList = () => {
 
   const materialCardTable = useMaterialReactTable({
     columns: columnsMaterialCard,
-    data: Array.isArray(materialCard) ? materialCard : [], // Güvenli array kontrolü
+    data: Array.isArray(materialCard) ? materialCard : [],
     initialState: {
-      density: 'compact',
+      density: 'compact'
     },
     muiTableContainerProps: {
-      sx: { maxHeight: '80vh' },
-    },
-  });
+      sx: { maxHeight: '80vh' }
+    }
+  })
 
 
   useEffect(() => {
-    console.log('Material Card Data:', materialCard);
-  }, [materialCard]);
+    console.log('Material Card Data:', materialCard)
+  }, [materialCard])
 
 
   const groupListTable = useMaterialReactTable({
@@ -110,19 +115,40 @@ export const MaterialGroupList = () => {
     enableGlobalFilter: true,
     enableHiding: false
   })
+  const MaterialGroupListActions = () => {
+    return (
+      <>
+        <Button
+          variant={'contained'}
+          size={'small'}
+          startIcon={<PersonAddAlt1Icon />}
+          onClick={() => navigate({ to: Route.fullPath })}
+        >
+          {'common:newMaterialCard'}
+        </Button>
+      </>
+    )
+  }
 
-  return <Stack direction="row" spacing={2} sx={{ p: 2 }}>
-    {/* Grup Tablosu (Sol Taraf) */}
-    <div style={{ flex: 1 }}>
-      <MaterialReactTable table={groupListTable} />
+  return <Stack direction="column" spacing={2} sx={{ p: 2 }}>
+    {/* Page Title - Üst Kısımda Gösterilecek */}
+    <div>
+      <PageTitle title="Catalog" actions={<MaterialGroupListActions />} />
     </div>
 
-    {/* Material Card Tablosu (Sağ Taraf) */}
 
+    <Stack direction="row" spacing={2} sx={{ width: '100%' }}>
+      {/* Grup Tablosu (Sol Taraf) */}
+      <div style={{ flex: 1 }}>
+        <MaterialReactTable table={groupListTable} />
+      </div>
+
+      {/* Material Card Tablosu (Sağ Taraf) */}
       <div style={{ flex: 1 }}>
         <MaterialReactTable table={materialCardTable} />
       </div>
-
+    </Stack>
   </Stack>
+
 
 }
