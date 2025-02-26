@@ -5,8 +5,8 @@ import { type MaterialGroupTreeItem } from '@/api/model'
 import { Button, Stack } from '@mui/material'
 import { useEffect } from 'react'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
-import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
-import { Route } from '@/routes/_authenticated/storage/materialGroups/new'
+import { Route as MaterialGroupRoute } from '@/routes/_authenticated/storage/materialGroups/new'
+import { Route as MaterialNewRoute } from '@/routes/_authenticated/storage/materialCards/new'
 import { useNavigate } from '@tanstack/react-router'
 
 
@@ -121,10 +121,17 @@ export const MaterialGroupList = () => {
         <Button
           variant={'contained'}
           size={'small'}
-          startIcon={<PersonAddAlt1Icon />}
-          onClick={() => navigate({ to: Route.fullPath })}
+          onClick={() => navigate({ to: MaterialGroupRoute.fullPath })}
         >
-          {'common:newMaterialCard'}
+          Yeni Material Group Ekle
+        </Button>
+
+        <Button
+          variant={'contained'}
+          size={'small'}
+          onClick={() => navigate({ to: MaterialNewRoute.fullPath })}
+        >
+          Yeni Material Card Ekle
         </Button>
       </>
     )

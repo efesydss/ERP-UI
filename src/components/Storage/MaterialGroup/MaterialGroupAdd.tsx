@@ -8,7 +8,7 @@ import { toast } from 'react-toastify'
 import { Container } from '@mui/material'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import { BaseForm } from '@/components/Common/Form/BaseForm'
-import { MaterialGroupForm } from '@/components/Storage/MaterialGroup/MaterialGroupForm'
+import { MaterialCardForm } from '@/components/Storage/MaterialGroup/MaterialCardForm'
 import { MaterialGroup } from '@/components/Storage/MaterialGroup/types/typesMaterialGroup'
 import { Route } from '@/routes/_authenticated/storage/materialGroups'
 const initialMaterialGroup: MaterialGroup = {
@@ -53,7 +53,7 @@ const initialMaterialGroup: MaterialGroup = {
           <BaseForm
             initialValues={initialMaterialGroup}
             onSubmit={onFormSubmit}
-            component={<MaterialGroupForm />}
+            component={<MaterialCardForm />}
           />
         </Container>
       </>
