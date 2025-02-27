@@ -10,7 +10,6 @@ import {
   InputLabel,
   Select,
   MenuItem
-
 } from '@material-ui/core'
 import * as Yup from 'yup'
 import { makeStyles } from '@material-ui/core/styles'
@@ -19,7 +18,7 @@ import { TextField } from 'formik-material-ui'
 import { apiRequest } from '@/utils/apiDefaults'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
-
+import { useTranslation } from 'react-i18next'
 
 interface FormMaterialGroupProps {
   materialGroupId?: number
@@ -36,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 const initialValues = {
   materialCode: '1.01.10',
   materialName: 'Efe Form Material',
-  materialGroup: { id: 1 },  // materialGroup artık nesne olarak tanımlandı
+  materialGroup: { id: 1 },
   defaultUnit: 'KG',
   materialType: 'MAIN_MATERIAL',
   optimalLevel: 5,
@@ -64,6 +63,7 @@ const validationSchema = Yup.object().shape({
 export const MaterialCardForm = (props: FormMaterialGroupProps) => {
   console.log(props)
   const classes = useStyles()
+  const { t } = useTranslation('common')
 
   const materialGroups = [
     { id: 1, name: 'A' },
@@ -80,10 +80,10 @@ export const MaterialCardForm = (props: FormMaterialGroupProps) => {
         method: 'POST'
       }),
     onSuccess: () => {
-      toast.success('Material Created Successfully')
+      toast.success(t('Material Created Successfully'))
     },
     onError: (error) => {
-      toast.error('Error Creating Material')
+      toast.error(t('Error Creating Material'))
       console.error('Error:', error)
     }
   })

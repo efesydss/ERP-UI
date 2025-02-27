@@ -1,18 +1,18 @@
-import React, { useMemo, useState } from 'react'
-import { MaterialReactTable, MRT_ColumnDef, useMaterialReactTable } from 'material-react-table'
-import { useGetMaterialCard, useGetMaterialGroupTreeSuspense } from '@/api/openAPIDefinition'
-import { type MaterialGroupTreeItem } from '@/api/model'
-import { Button, Stack } from '@mui/material'
-import { useEffect } from 'react'
-import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
-import { Route as MaterialGroupRoute } from '@/routes/_authenticated/storage/materialGroups/new'
-import { Route as MaterialNewRoute } from '@/routes/_authenticated/storage/materialCards/new'
-import { useNavigate } from '@tanstack/react-router'
-
+import React, { useMemo, useState, useEffect } from 'react';
+import { MaterialReactTable, MRT_ColumnDef, useMaterialReactTable } from 'material-react-table';
+import { useGetMaterialCard, useGetMaterialGroupTreeSuspense } from '@/api/openAPIDefinition';
+import { type MaterialGroupTreeItem } from '@/api/model';
+import { Button, Stack } from '@mui/material';
+import { PageTitle } from '@/components/Common/PageTitle/PageTitle';
+import { Route as MaterialGroupRoute } from '@/routes/_authenticated/storage/materialGroups/new';
+import { Route as MaterialNewRoute } from '@/routes/_authenticated/storage/materialCards/new';
+import { useNavigate } from '@tanstack/react-router';
+import { useTranslation } from 'react-i18next';
 
 export const MaterialGroupList = () => {
-  const [selectedGroup, setSelectedGroup] = useState(0)
-  const navigate = useNavigate()
+  const [selectedGroup, setSelectedGroup] = useState<number | null>(null);
+  const navigate = useNavigate();
+  const { t } = useTranslation('common');
 
   type MaterialGroupResponse = {
     message: string | null;
@@ -21,141 +21,102 @@ export const MaterialGroupList = () => {
     page: number;
     pageSize: number;
   };
-  const { data: materialGroup, error: materialGroupError } = useGetMaterialGroupTreeSuspense<MaterialGroupResponse>({
+
+  const { data: materialGroup } = useGetMaterialGroupTreeSuspense<MaterialGroupResponse>({
     query: {
       select: (response) => {
-        console.log('API Response:', response)
-        return (response as any).data//mecbur kaldım ..
+        console.log('Material Group API Response:', response);
+        return (response as any)?.data ?? [];
       }
     }
-  })
+  });
 
-  useEffect(() => {
-    console.log('Material Group Data:', materialGroup)
-    if (materialGroupError) {
-      console.error('Material Group Fetch Error:', materialGroupError)
-    }
-  }, [materialGroup, materialGroupError])
-
-  const { data: materialCard, error: materialCardError } = useGetMaterialCard(selectedGroup, {
+  const { data: materialCard } = useGetMaterialCard(selectedGroup, {
     query: {
-      enabled: selectedGroup !== 0,
+      enabled: selectedGroup !== null && selectedGroup !== 0,
       select: (response) => {
-        console.log('API Response:', response)
-        return Array.isArray(response) ? response : [response]
+        console.log('Material Card API Response:', response);
+        return Array.isArray(response) ? response : [response];
       }
     }
-  })
+  });
 
   const columnsTree = useMemo<MRT_ColumnDef<MaterialGroupTreeItem>[]>(
     () => [
-
-      {
-        header: 'Code',
-        accessorKey: 'code',
-        accessorFn: (row) => {
-          const { id } = row
-
-          if (!id) {
-            return null
-          }
-
-          return <button onClick={() => setSelectedGroup(id)}>{row.code}</button>
-        }
-      },
-      {
-        header: 'Name',
-        accessorKey: 'name'
-      }
+      { header: t('Code'), accessorKey: 'code' },
+      { header: t('Name'), accessorKey: 'name' }
     ],
-    []
-  )
+    [t]
+  );
 
   const columnsMaterialCard = useMemo<MRT_ColumnDef<any>[]>(
     () => [
-      {
-        header: 'Card Code',
-        accessorKey: 'materialCode'
-      },
-      {
-        header: 'Card Name',
-        accessorKey: 'materialName'
-      }
+      { header: t('Card Code'), accessorKey: 'materialCode' },
+      { header: t('Card Name'), accessorKey: 'materialName' }
     ],
-    []
-  )
+    [t]
+  );
 
   const materialCardTable = useMaterialReactTable({
     columns: columnsMaterialCard,
-    data: Array.isArray(materialCard) ? materialCard : [],
-    initialState: {
-      density: 'compact'
-    },
-    muiTableContainerProps: {
-      sx: { maxHeight: '80vh' }
-    }
-  })
-
+    data: materialCard ?? [],
+    initialState: { density: 'compact' },
+    muiTableContainerProps: { sx: { maxHeight: '80vh' } },
+    renderEmptyRowsFallback: () => (
+      <div style={{ textAlign: 'center', padding: '16px' }}>{t('No data available')}</div>
+    )
+  });
 
   useEffect(() => {
-    console.log('Material Card Data:', materialCard)
-  }, [materialCard])
-
+    console.log('Selected Group:', selectedGroup);
+    console.log('Material Card Data:', materialCard);
+  }, [selectedGroup, materialCard]);
 
   const groupListTable = useMaterialReactTable({
     columns: columnsTree,
-    data: materialGroup || [],
+    enablePagination: false,
+    data: materialGroup ?? [],
     enableExpanding: true,
     getSubRows: (row) => row.children || [],
-    initialState: {
-      expanded: true,
-      density: 'comfortable'
-    },
+    initialState: { expanded: false, density: 'comfortable' },
     enableColumnOrdering: false,
     enableGlobalFilter: true,
-    enableHiding: false
-  })
-  const MaterialGroupListActions = () => {
-    return (
-      <>
-        <Button
-          variant={'contained'}
-          size={'small'}
-          onClick={() => navigate({ to: MaterialGroupRoute.fullPath })}
-        >
-          Yeni Material Group Ekle
-        </Button>
+    enableHiding: false,
+    enableRowSelection: false,
+    muiTableBodyRowProps: ({ row }) => ({
+      onClick: () => {
+        setSelectedGroup((prev) => (prev === row.original.id ? null : row.original.id));
+      },
+      selected: selectedGroup === row.original.id,
+      sx: {
+        cursor: 'pointer',
+        backgroundColor: selectedGroup === row.original.id ? '#e0f7fa' : 'inherit'
+      }
+    })
+  });
 
-        <Button
-          variant={'contained'}
-          size={'small'}
-          onClick={() => navigate({ to: MaterialNewRoute.fullPath })}
-        >
-          Yeni Material Card Ekle
-        </Button>
-      </>
-    )
-  }
+  const MaterialGroupListActions = () => (
+    <>
+      <Button variant="contained" size="small" onClick={() => navigate({ to: MaterialGroupRoute.fullPath })}>
+        {t('Add New Material Group')}
+      </Button>
+      <Button variant="contained" size="small" onClick={() => navigate({ to: MaterialNewRoute.fullPath })}>
+        {t('Add New Material Card')}
+      </Button>
+    </>
+  );
 
-  return <Stack direction="column" spacing={2} sx={{ p: 2 }}>
-    {/* Page Title - Üst Kısımda Gösterilecek */}
-    <div>
+  return (
+    <Stack direction="column" spacing={2} sx={{ p: 2 }}>
       <PageTitle title="Catalog" actions={<MaterialGroupListActions />} />
-    </div>
-
-
-    <Stack direction="row" spacing={2} sx={{ width: '100%' }}>
-      {/* Grup Tablosu (Sol Taraf) */}
-      <div style={{ flex: 1 }}>
-        <MaterialReactTable table={groupListTable} />
-      </div>
-
-      {/* Material Card Tablosu (Sağ Taraf) */}
-      <div style={{ flex: 1 }}>
-        <MaterialReactTable table={materialCardTable} />
-      </div>
+      <Stack direction="row" spacing={2} sx={{ width: '100%' }}>
+        <div style={{ flex: 1 }}>
+          <MaterialReactTable table={groupListTable} />
+        </div>
+        <div style={{ flex: 1 }}>
+          <MaterialReactTable table={materialCardTable} />
+        </div>
+      </Stack>
     </Stack>
-  </Stack>
-
-
-}
+  );
+};

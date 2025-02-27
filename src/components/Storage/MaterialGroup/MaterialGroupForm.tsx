@@ -14,6 +14,7 @@ import { TextField } from 'formik-material-ui'
 import { apiRequest } from '@/utils/apiDefaults'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
+import { useTranslation } from 'react-i18next'
 
 interface FormMaterialGroupProps {
   materialGroupId?: number
@@ -44,6 +45,7 @@ const validationSchema = Yup.object().shape({
 
 export const MaterialGroupForm = (props: FormMaterialGroupProps) => {
   const classes = useStyles()
+  const { t } = useTranslation('common')
 
   // API isteği için mutate
   const { mutateAsync } = useMutation({
@@ -54,29 +56,26 @@ export const MaterialGroupForm = (props: FormMaterialGroupProps) => {
         method: 'POST'
       }),
     onSuccess: () => {
-      toast.success('Material Group Created Successfully')
+      toast.success(t('Material Group Created Successfully'))
     },
     onError: (error) => {
-      toast.error('Error Creating Material Group')
+      toast.error(t('Error Creating Material Group'))
       console.error('Error:', error)
     }
   })
 
-  const onSubmit = async (values:any) => {
-    const payload = { ...values };
+  const onSubmit = async (values: any) => {
+    const payload = { ...values }
 
-    // Parent ID varsa sayıya çevir, boşsa hiç göndermemek için undefined yap
-    const parentId = values.parent.id ? Number(values.parent.id) : undefined;
+    const parentId = values.parent.id ? Number(values.parent.id) : undefined
 
     if (!parentId) {
-      delete payload.parent; // Parent boşsa tamamen kaldır
+      delete payload.parent
     } else {
-      payload.parent = { id: parentId };
+      payload.parent = { id: parentId }
     }
-
-    await mutateAsync(payload);
-    console.log('Gönderilen Payload:', payload);
-  };
+    await mutateAsync(payload)
+  }
 
   return (
     <Grid container justifyContent="center">
