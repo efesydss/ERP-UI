@@ -1,18 +1,18 @@
-import React, { useMemo, useState, useEffect } from 'react';
-import { MaterialReactTable, MRT_ColumnDef, useMaterialReactTable } from 'material-react-table';
-import { useGetMaterialCard, useGetMaterialGroupTreeSuspense } from '@/api/openAPIDefinition';
-import { type MaterialGroupTreeItem } from '@/api/model';
-import { Button, Stack } from '@mui/material';
-import { PageTitle } from '@/components/Common/PageTitle/PageTitle';
-import { Route as MaterialGroupRoute } from '@/routes/_authenticated/storage/materialGroups/new';
-import { Route as MaterialNewRoute } from '@/routes/_authenticated/storage/materialCards/new';
-import { useNavigate } from '@tanstack/react-router';
-import { useTranslation } from 'react-i18next';
+import React, { useMemo, useState, useEffect } from 'react'
+import { MaterialReactTable, MRT_ColumnDef, useMaterialReactTable } from 'material-react-table'
+import { useGetMaterialCard, useGetMaterialGroupTreeSuspense } from '@/api/openAPIDefinition'
+import { type MaterialGroupTreeItem } from '@/api/model'
+import { Button, Stack } from '@mui/material'
+import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
+import { Route as MaterialGroupRoute } from '@/routes/_authenticated/storage/materialGroups/new'
+import { Route as MaterialNewRoute } from '@/routes/_authenticated/storage/materialCards/new'
+import { useNavigate } from '@tanstack/react-router'
+import { useTranslation } from 'react-i18next'
 
 export const MaterialGroupList = () => {
-  const [selectedGroup, setSelectedGroup] = useState<number | null>(null);
-  const navigate = useNavigate();
-  const { t } = useTranslation('common');
+  const [selectedGroup, setSelectedGroup] = useState<number | null>(null)
+  const navigate = useNavigate()
+  const { t } = useTranslation('common')
 
   type MaterialGroupResponse = {
     message: string | null;
@@ -24,22 +24,25 @@ export const MaterialGroupList = () => {
 
   const { data: materialGroup } = useGetMaterialGroupTreeSuspense<MaterialGroupResponse>({
     query: {
+      staleTime: 1000 * 60 * 15, // 15 minutes interval .. @Behçet abi buraya bir göz atarmısın ? mantıklı mı ?
+
       select: (response) => {
-        console.log('Material Group API Response:', response);
-        return (response as any)?.data ?? [];
+
+        console.log('Tree Data burası :: Material Group API Response:', response)
+        return (response as any)?.data ?? []
       }
     }
-  });
+  })
 
   const { data: materialCard } = useGetMaterialCard(selectedGroup, {
     query: {
       enabled: selectedGroup !== null && selectedGroup !== 0,
       select: (response) => {
-        console.log('Material Card API Response:', response);
-        return Array.isArray(response) ? response : [response];
+        console.log('Material Card API Response:', response)
+        return Array.isArray(response) ? response : [response]
       }
     }
-  });
+  })
 
   const columnsTree = useMemo<MRT_ColumnDef<MaterialGroupTreeItem>[]>(
     () => [
@@ -47,7 +50,7 @@ export const MaterialGroupList = () => {
       { header: t('Name'), accessorKey: 'name' }
     ],
     [t]
-  );
+  )
 
   const columnsMaterialCard = useMemo<MRT_ColumnDef<any>[]>(
     () => [
@@ -55,7 +58,7 @@ export const MaterialGroupList = () => {
       { header: t('Card Name'), accessorKey: 'materialName' }
     ],
     [t]
-  );
+  )
 
   const materialCardTable = useMaterialReactTable({
     columns: columnsMaterialCard,
@@ -65,12 +68,12 @@ export const MaterialGroupList = () => {
     renderEmptyRowsFallback: () => (
       <div style={{ textAlign: 'center', padding: '16px' }}>{t('No data available')}</div>
     )
-  });
+  })
 
   useEffect(() => {
-    console.log('Selected Group:', selectedGroup);
-    console.log('Material Card Data:', materialCard);
-  }, [selectedGroup, materialCard]);
+    console.log('Selected Group:', selectedGroup)
+    console.log('Material Card Data:', materialCard)
+  }, [selectedGroup, materialCard])
 
   const groupListTable = useMaterialReactTable({
     columns: columnsTree,
@@ -85,7 +88,7 @@ export const MaterialGroupList = () => {
     enableRowSelection: false,
     muiTableBodyRowProps: ({ row }) => ({
       onClick: () => {
-        setSelectedGroup((prev) => (prev === row.original.id ? null : row.original.id));
+        setSelectedGroup((prev) => (prev === row.original.id ? null : row.original.id))
       },
       selected: selectedGroup === row.original.id,
       sx: {
@@ -93,7 +96,7 @@ export const MaterialGroupList = () => {
         backgroundColor: selectedGroup === row.original.id ? '#e0f7fa' : 'inherit'
       }
     })
-  });
+  })
 
   const MaterialGroupListActions = () => (
     <>
@@ -104,7 +107,7 @@ export const MaterialGroupList = () => {
         {t('Add New Material Card')}
       </Button>
     </>
-  );
+  )
 
   return (
     <Stack direction="column" spacing={2} sx={{ p: 2 }}>
@@ -118,5 +121,5 @@ export const MaterialGroupList = () => {
         </div>
       </Stack>
     </Stack>
-  );
-};
+  )
+}

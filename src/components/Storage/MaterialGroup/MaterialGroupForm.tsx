@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   Grid,
   Card,
@@ -9,12 +9,13 @@ import {
 } from '@material-ui/core'
 import * as Yup from 'yup'
 import { makeStyles } from '@material-ui/core/styles'
-import { Formik, Form, Field } from 'formik'
+import { Formik, Form, Field, useFormikContext } from 'formik'
 import { TextField } from 'formik-material-ui'
 import { apiRequest } from '@/utils/apiDefaults'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
+import { BaseSelect } from '@/components/Common/Form/Select/BaseSelect'
 
 interface FormMaterialGroupProps {
   materialGroupId?: number
@@ -34,19 +35,23 @@ const initialValues = {
   code: '',
   parent: { id: '' }
 }
-
+interface FormValues {
+  name: string;
+  code: string;
+  parent: { id: string | number };
+  department?: { id: string | number };
+}
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Required'),
-  code: Yup.string().required('Required'),
-  parent: Yup.object().shape({
+  code: Yup.string().required('Required')
+  /*parent: Yup.object().shape({
     id: Yup.number().optional() // parent ID optional
-  })
+  })*/
 })
 
 export const MaterialGroupForm = (props: FormMaterialGroupProps) => {
   const classes = useStyles()
   const { t } = useTranslation('common')
-
   // API isteği için mutate
   const { mutateAsync } = useMutation({
     mutationFn: (values) =>
@@ -77,6 +82,18 @@ export const MaterialGroupForm = (props: FormMaterialGroupProps) => {
     await mutateAsync(payload)
   }
 
+  const DepartmentHandler = () => {
+    const { values, setFieldValue } = useFormikContext<FormValues>();
+
+    useEffect(() => {
+      if (values.department) {
+        setFieldValue('parent.id', values.department.id);
+      }
+    }, [values.department, setFieldValue]);
+
+    return null;
+  };
+
   return (
     <Grid container justifyContent="center">
       <Grid item md={6}>
@@ -89,6 +106,7 @@ export const MaterialGroupForm = (props: FormMaterialGroupProps) => {
           >
             {({ dirty, isValid }) => (
               <Form>
+                <DepartmentHandler />
                 <CardContent>
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
@@ -108,17 +126,11 @@ export const MaterialGroupForm = (props: FormMaterialGroupProps) => {
                         name="code"
                         component={TextField}
                       />
-                    </Grid>
-                    <Grid item xs={12}>
-                      {/* Parent optional alanı */}
-                      <Field
-                        label="Parent ID"
-                        variant="outlined"
-                        fullWidth
-                        name="parent.id"
-                        component={TextField}
-                        type="number"
-                      />
+
+                      <Grid item xs={12}>
+                        <BaseSelect name="parent.id" endpoint="materialGroups" />
+                      </Grid>
+
                     </Grid>
                   </Grid>
                 </CardContent>
