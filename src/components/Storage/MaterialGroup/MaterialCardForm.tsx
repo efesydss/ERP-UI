@@ -19,6 +19,7 @@ import { apiRequest } from '@/utils/apiDefaults'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
+import { BaseSelect } from '@/components/Common/Form/Select/BaseSelect'
 
 interface FormMaterialGroupProps {
   materialGroupId?: number
@@ -35,13 +36,13 @@ const useStyles = makeStyles((theme) => ({
 const initialValues = {
   materialCode: '1.01.10',
   materialName: 'Efe Form Material',
-  materialGroup: { id: 1 },
+  materialGroup: { id: 0 },
   defaultUnit: 'KG',
   materialType: 'MAIN_MATERIAL',
   optimalLevel: 5,
   minimumLevel: 5,
   specialCode: 'SPEC525',
-  shelfLocation: 'A1-001',
+  shelfLocation: '',
   materialCardUnits: [
     {
       id: 1,
@@ -57,19 +58,12 @@ const validationSchema = Yup.object().shape({
   materialType: Yup.string().required('Required'),
   optimalLevel: Yup.number().positive().required('Required'),
   minimumLevel: Yup.number().positive().required('Required'),
-  specialCode: Yup.string().required('Required'),
-  shelfLocation: Yup.string().required('Required')
+  specialCode: Yup.string().required('Required')
 })
 export const MaterialCardForm = (props: FormMaterialGroupProps) => {
   console.log(props)
   const classes = useStyles()
   const { t } = useTranslation('common')
-
-  const materialGroups = [
-    { id: 1, name: 'A' },
-    { id: 2, name: 'B' },
-    { id: 3, name: 'C' }
-  ]
 
 
   const { mutateAsync } = useMutation({
@@ -92,6 +86,21 @@ export const MaterialCardForm = (props: FormMaterialGroupProps) => {
     await mutateAsync(values)
     console.log('Payload:', values)
   }
+  const handleSubmit = async (values) => {
+    const fixedData = {
+      ...values,
+      materialGroup: values.materialGroup?.id?.id
+        ? { id: values.materialGroup.id.id }
+        : { id: values.materialGroup?.id },
+
+      shelfLocation: values.shelfLocation?.name,
+    }
+
+    console.log('Fixed Payload:', fixedData)
+    const response = await mutateAsync(fixedData)
+    console.log('API Response:', response)
+
+  }
 
 
   return (
@@ -102,7 +111,7 @@ export const MaterialCardForm = (props: FormMaterialGroupProps) => {
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
-            onSubmit={onSubmit}
+            onSubmit={handleSubmit}
           >
             {({ dirty, isValid, values, handleChange, handleBlur }) => (
               <Form>
@@ -128,18 +137,10 @@ export const MaterialCardForm = (props: FormMaterialGroupProps) => {
                     </Grid>
                     <Grid item xs={12}>
                       <FormControl variant="outlined" fullWidth>
-                        <InputLabel>Material Group</InputLabel>
-                        <Field
-                          name="materialGroup"
-                          component={Select}
-                          label="Material Group"
-                        >
-                          {materialGroups.map((group) => (
-                            <MenuItem key={group.id} value={group.id}>
-                              {group.name}
-                            </MenuItem>
-                          ))}
-                        </Field>
+                        <BaseSelect
+                          name="materialGroup.id"
+                          endpoint={'materialGroups'}
+                        />
                       </FormControl>
                     </Grid>
 
@@ -191,12 +192,10 @@ export const MaterialCardForm = (props: FormMaterialGroupProps) => {
                       />
                     </Grid>
                     <Grid item xs={12}>
-                      <Field
-                        label="Shelf Location"
-                        variant="outlined"
-                        fullWidth
+
+                      <BaseSelect
                         name="shelfLocation"
-                        component={TextField}
+                        endpoint={'shelves'}
                       />
                     </Grid>
                   </Grid>

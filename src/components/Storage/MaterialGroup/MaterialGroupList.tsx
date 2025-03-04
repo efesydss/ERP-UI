@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect } from 'react'
 import { MaterialReactTable, MRT_ColumnDef, useMaterialReactTable } from 'material-react-table'
 import { useGetMaterialCard, useGetMaterialGroupTreeSuspense } from '@/api/openAPIDefinition'
-import { type MaterialGroupTreeItem } from '@/api/model'
+import { type MaterialCard, type MaterialGroupTreeItem } from '@/api/model'
 import { Button, Stack } from '@mui/material'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import { Route as MaterialGroupRoute } from '@/routes/_authenticated/storage/materialGroups/new'
@@ -10,27 +10,13 @@ import { useNavigate } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 
 export const MaterialGroupList = () => {
-  const [selectedGroup, setSelectedGroup] = useState<number | null>(null)
+  const [selectedGroup, setSelectedGroup] = useState<number>()
   const navigate = useNavigate()
   const { t } = useTranslation('common')
 
-  type MaterialGroupResponse = {
-    message: string | null;
-    data: MaterialGroupTreeItem[];
-    total: number;
-    page: number;
-    pageSize: number;
-  };
-
-  const { data: materialGroup } = useGetMaterialGroupTreeSuspense<MaterialGroupResponse>({
+  const { data: materialGroup } = useGetMaterialGroupTreeSuspense({
     query: {
-      staleTime: 1000 * 60 * 15, // 15 minutes interval .. @Behçet abi buraya bir göz atarmısın ? mantıklı mı ?
-
-      select: (response) => {
-
-        console.log('Tree Data burası :: Material Group API Response:', response)
-        return (response as any)?.data ?? []
-      }
+      select: (response) => response.data ?? []
     }
   })
 
@@ -52,7 +38,7 @@ export const MaterialGroupList = () => {
     [t]
   )
 
-  const columnsMaterialCard = useMemo<MRT_ColumnDef<any>[]>(
+  const columnsMaterialCard = useMemo<MRT_ColumnDef<MaterialCard>[]>(
     () => [
       { header: t('Card Code'), accessorKey: 'materialCode' },
       { header: t('Card Name'), accessorKey: 'materialName' }
@@ -63,6 +49,7 @@ export const MaterialGroupList = () => {
   const materialCardTable = useMaterialReactTable({
     columns: columnsMaterialCard,
     data: materialCard ?? [],
+    enablePagination: false,
     initialState: { density: 'compact' },
     muiTableContainerProps: { sx: { maxHeight: '80vh' } },
     renderEmptyRowsFallback: () => (

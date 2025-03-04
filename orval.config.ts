@@ -1,9 +1,9 @@
 import { defineConfig } from 'orval'
-
+/*https://falcons-erp-api-dev.sd.iafl.net/api-docs?group=full-api */
 export default defineConfig({
   erpApi: {
     input: {
-      target: './openapi.yaml'
+      target: './openapi.json'
     },
     output: {
       mock: true,

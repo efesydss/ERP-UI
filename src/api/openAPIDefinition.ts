@@ -80,12 +80,13 @@ import type {
   Invoices,
   LoginRequest,
   LoginResponse,
+  Logout200,
   Machine,
   Machines,
   MaterialCard,
   MaterialCards,
   MaterialGroup,
-  MaterialGroupTree,
+  MaterialGroupTreeDataResponse,
   MaterialGroups,
   PaymentMethod,
   PaymentMethods,
@@ -96,6 +97,8 @@ import type {
   ProductGroups,
   Project,
   Projects,
+  Proposal,
+  Proposals,
   PublicHoliday,
   PublicHolidays,
   PurchaseOrder,
@@ -3184,6 +3187,261 @@ const {mutation: mutationOptions} = options ?
       > => {
 
       const mutationOptions = getDeleteAssignmentCardMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * Get Proposal
+ */
+export const getProposal = (
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Proposal>(
+      {url: `/api/sales/proposal/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
+
+export const getGetProposalQueryKey = (id: number,) => {
+    return [`/api/sales/proposal/${id}`] as const;
+    }
+
+    
+export const getGetProposalQueryOptions = <TData = Awaited<ReturnType<typeof getProposal>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProposal>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetProposalQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProposal>>> = ({ signal }) => getProposal(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getProposal>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetProposalQueryResult = NonNullable<Awaited<ReturnType<typeof getProposal>>>
+export type GetProposalQueryError = ErrorResponse
+
+
+export function useGetProposal<TData = Awaited<ReturnType<typeof getProposal>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProposal>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getProposal>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, }
+
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetProposal<TData = Awaited<ReturnType<typeof getProposal>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProposal>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getProposal>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetProposal<TData = Awaited<ReturnType<typeof getProposal>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProposal>>, TError, TData>>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetProposal<TData = Awaited<ReturnType<typeof getProposal>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProposal>>, TError, TData>>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetProposalQueryOptions(id,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+export const getGetProposalSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getProposal>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProposal>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetProposalQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProposal>>> = ({ signal }) => getProposal(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProposal>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetProposalSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getProposal>>>
+export type GetProposalSuspenseQueryError = ErrorResponse
+
+
+export function useGetProposalSuspense<TData = Awaited<ReturnType<typeof getProposal>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProposal>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetProposalSuspense<TData = Awaited<ReturnType<typeof getProposal>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProposal>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetProposalSuspense<TData = Awaited<ReturnType<typeof getProposal>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProposal>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetProposalSuspense<TData = Awaited<ReturnType<typeof getProposal>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProposal>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetProposalSuspenseQueryOptions(id,options)
+
+  const query = useSuspenseQuery(queryOptions) as  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+/**
+ * Update Proposal
+ */
+export const updateProposal = (
+    id: number,
+    proposal: Proposal,
+ ) => {
+      
+      
+      return customMutator<Proposal>(
+      {url: `/api/sales/proposal/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: proposal
+    },
+      );
+    }
+  
+
+
+export const getUpdateProposalMutationOptions = <TData = Awaited<ReturnType<typeof updateProposal>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Proposal}, TContext>, }
+) => {
+const mutationKey = ['updateProposal'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateProposal>>, {id: number;data: Proposal}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  updateProposal(id,data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions } as UseMutationOptions<TData, TError,{id: number;data: Proposal}, TContext>}
+
+    export type UpdateProposalMutationResult = NonNullable<Awaited<ReturnType<typeof updateProposal>>>
+    export type UpdateProposalMutationBody = Proposal
+    export type UpdateProposalMutationError = ErrorResponse
+
+    export const useUpdateProposal = <TData = Awaited<ReturnType<typeof updateProposal>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Proposal}, TContext>, }
+): UseMutationResult<
+        TData,
+        TError,
+        {id: number;data: Proposal},
+        TContext
+      > => {
+
+      const mutationOptions = getUpdateProposalMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * Delete Proposal
+ */
+export const deleteProposal = (
+    id: number,
+ ) => {
+      
+      
+      return customMutator<Proposal>(
+      {url: `/api/sales/proposal/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
+
+
+export const getDeleteProposalMutationOptions = <TData = Awaited<ReturnType<typeof deleteProposal>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
+) => {
+const mutationKey = ['deleteProposal'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteProposal>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  deleteProposal(id,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions } as UseMutationOptions<TData, TError,{id: number}, TContext>}
+
+    export type DeleteProposalMutationResult = NonNullable<Awaited<ReturnType<typeof deleteProposal>>>
+    
+    export type DeleteProposalMutationError = ResponseBase
+
+    export const useDeleteProposal = <TData = Awaited<ReturnType<typeof deleteProposal>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
+): UseMutationResult<
+        TData,
+        TError,
+        {id: number},
+        TContext
+      > => {
+
+      const mutationOptions = getDeleteProposalMutationOptions(options);
 
       return useMutation(mutationOptions);
     }
@@ -10201,7 +10459,7 @@ export const logout = (
 ) => {
       
       
-      return customMutator<void>(
+      return customMutator<Logout200>(
       {url: `/api/user/logout`, method: 'POST', signal
     },
       );
@@ -11772,6 +12030,128 @@ const {mutation: mutationOptions} = options ?
       > => {
 
       const mutationOptions = getAddAssignmentCardMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * List Proposals. Supports filtering via rsql.
+ */
+export const proposals = (
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Proposals>(
+      {url: `/api/sales/proposals`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
+
+
+export const getProposalsMutationOptions = <TData = Awaited<ReturnType<typeof proposals>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: FilteringRequest}, TContext>, }
+) => {
+const mutationKey = ['proposals'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof proposals>>, {data: FilteringRequest}> = (props) => {
+          const {data} = props ?? {};
+
+          return  proposals(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions } as UseMutationOptions<TData, TError,{data: FilteringRequest}, TContext>}
+
+    export type ProposalsMutationResult = NonNullable<Awaited<ReturnType<typeof proposals>>>
+    export type ProposalsMutationBody = FilteringRequest
+    export type ProposalsMutationError = ErrorResponse
+
+    export const useProposals = <TData = Awaited<ReturnType<typeof proposals>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: FilteringRequest}, TContext>, }
+): UseMutationResult<
+        TData,
+        TError,
+        {data: FilteringRequest},
+        TContext
+      > => {
+
+      const mutationOptions = getProposalsMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * Add new Proposal
+ */
+export const addProposal = (
+    proposal: Proposal,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Proposal>(
+      {url: `/api/sales/proposal`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: proposal, signal
+    },
+      );
+    }
+  
+
+
+export const getAddProposalMutationOptions = <TData = Awaited<ReturnType<typeof addProposal>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Proposal}, TContext>, }
+) => {
+const mutationKey = ['addProposal'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof addProposal>>, {data: Proposal}> = (props) => {
+          const {data} = props ?? {};
+
+          return  addProposal(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions } as UseMutationOptions<TData, TError,{data: Proposal}, TContext>}
+
+    export type AddProposalMutationResult = NonNullable<Awaited<ReturnType<typeof addProposal>>>
+    export type AddProposalMutationBody = Proposal
+    export type AddProposalMutationError = ErrorResponse
+
+    export const useAddProposal = <TData = Awaited<ReturnType<typeof addProposal>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Proposal}, TContext>, }
+): UseMutationResult<
+        TData,
+        TError,
+        {data: Proposal},
+        TContext
+      > => {
+
+      const mutationOptions = getAddProposalMutationOptions(options);
 
       return useMutation(mutationOptions);
     }
@@ -15782,7 +16162,7 @@ export const getMaterialGroupTree = (
 ) => {
       
       
-      return customMutator<MaterialGroupTree>(
+      return customMutator<MaterialGroupTreeDataResponse>(
       {url: `/api/storage/materialGroup/tree`, method: 'GET', signal
     },
       );

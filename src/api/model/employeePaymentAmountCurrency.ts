@@ -7,9 +7,9 @@
 
 export type EmployeePaymentAmountCurrency = {
   currencyCode?: string;
-  numericCode?: number;
-  numericCodeAsString?: string;
   displayName?: string;
   symbol?: string;
   defaultFractionDigits?: number;
+  numericCode?: number;
+  numericCodeAsString?: string;
 };

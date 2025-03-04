@@ -10,5 +10,5 @@ export interface MaterialGroupTreeItem {
   id?: number | null;
   name: string;
   code: string;
-  children?: MaterialGroupTreeItem[];
+  children: MaterialGroupTreeItem[];
 }
