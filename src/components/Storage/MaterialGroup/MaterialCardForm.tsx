@@ -82,10 +82,7 @@ export const MaterialCardForm = (props: FormMaterialGroupProps) => {
     }
   })
 
-  const onSubmit = async (values: void) => {
-    await mutateAsync(values)
-    console.log('Payload:', values)
-  }
+
   const handleSubmit = async (values) => {
     const fixedData = {
       ...values,

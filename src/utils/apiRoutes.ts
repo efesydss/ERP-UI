@@ -175,7 +175,8 @@ export const apiRoutes = {
     materialGroupAdd: 'storage/materialGroup',
     materialGroupDelete: 'storage/materialGroup/{materialGroupId}',
     materialGroupUpdate: 'storage/materialGroup/{materialGroupId}',
-    materialTree: 'storage/materialGroup/tree',
+    materialGroupTree: 'storage/materialGroup/tree',
+    materialGroupFlat:'storage/materialGroup/flatList',
 
     //Storage / Product Group
     productGroups: 'storage/productGroups',

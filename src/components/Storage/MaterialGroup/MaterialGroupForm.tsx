@@ -17,10 +17,6 @@ import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
 import { BaseSelect } from '@/components/Common/Form/Select/BaseSelect'
 
-interface FormMaterialGroupProps {
-  materialGroupId?: number
-}
-
 const useStyles = makeStyles((theme) => ({
   padding: {
     padding: theme.spacing(3)
@@ -33,26 +29,17 @@ const useStyles = makeStyles((theme) => ({
 const initialValues = {
   name: '',
   code: '',
-  parent: { id: '' }
+  parent: { id: 0 }
 }
-interface FormValues {
-  name: string;
-  code: string;
-  parent: { id: string | number };
-  department?: { id: string | number };
-}
+
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Required'),
   code: Yup.string().required('Required')
-  /*parent: Yup.object().shape({
-    id: Yup.number().optional() // parent ID optional
-  })*/
 })
 
-export const MaterialGroupForm = (props: FormMaterialGroupProps) => {
+export const MaterialGroupForm = () => {
   const classes = useStyles()
   const { t } = useTranslation('common')
-  // API isteği için mutate
   const { mutateAsync } = useMutation({
     mutationFn: (values) =>
       apiRequest({
@@ -69,30 +56,39 @@ export const MaterialGroupForm = (props: FormMaterialGroupProps) => {
     }
   })
 
-  const onSubmit = async (values: any) => {
-    const payload = { ...values }
-
-    const parentId = values.parent.id ? Number(values.parent.id) : undefined
-
-    if (!parentId) {
-      delete payload.parent
-    } else {
-      payload.parent = { id: parentId }
-    }
-    await mutateAsync(payload)
+  interface FormValues {
+    parent?: {
+      id?: {
+        id?: string;
+      };
+    };
   }
 
-  const DepartmentHandler = () => {
-    const { values, setFieldValue } = useFormikContext<FormValues>();
+  const handleSubmit = async (values: FormValues) => {
+    const fixedData = {
+      ...values,
+      parent: values.parent?.id?.id
+        ? { id: values.parent.id.id }
+        : { id: values.parent?.id }
+    }
+
+    console.log('Fixed Payload:', fixedData)
+    const response = await mutateAsync(fixedData)
+    console.log('API Response:', response)
+
+  }
+
+  const ValueHandler = () => {
+    const { values, setFieldValue } = useFormikContext<FormValues>()
 
     useEffect(() => {
-      if (values.department) {
-        setFieldValue('parent.id', values.department.id);
+      if (values.parent) {
+        setFieldValue('parent.id', values.parent.id)
       }
-    }, [values.department, setFieldValue]);
+    }, [values.parent, setFieldValue])
 
-    return null;
-  };
+    return null
+  }
 
   return (
     <Grid container justifyContent="center">
@@ -102,11 +98,11 @@ export const MaterialGroupForm = (props: FormMaterialGroupProps) => {
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
-            onSubmit={onSubmit}
+            onSubmit={handleSubmit}
           >
             {({ dirty, isValid }) => (
               <Form>
-                <DepartmentHandler />
+                <ValueHandler />
                 <CardContent>
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
@@ -127,9 +123,7 @@ export const MaterialGroupForm = (props: FormMaterialGroupProps) => {
                         component={TextField}
                       />
 
-                      <Grid item xs={12}>
-                        <BaseSelect name="parent.id" endpoint="materialGroups" />
-                      </Grid>
+                      <BaseSelect name="parent.id" endpoint="materialGroupFlat" isGET />
 
                     </Grid>
                   </Grid>

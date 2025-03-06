@@ -10,7 +10,7 @@ import { useNavigate } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 
 export const MaterialGroupList = () => {
-  const [selectedGroup, setSelectedGroup] = useState<number>()
+  const [selectedGroup, setSelectedGroup] = useState<number | null>(null)
   const navigate = useNavigate()
   const { t } = useTranslation('common')
 
@@ -20,13 +20,10 @@ export const MaterialGroupList = () => {
     }
   })
 
-  const { data: materialCard } = useGetMaterialCard(selectedGroup, {
+  const { data: materialCard } = useGetMaterialCard(selectedGroup ?? 0, {
     query: {
       enabled: selectedGroup !== null && selectedGroup !== 0,
-      select: (response) => {
-        console.log('Material Card API Response:', response)
-        return Array.isArray(response) ? response : [response]
-      }
+      select: (response) => response ?? []
     }
   })
 
