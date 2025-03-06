@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect } from 'react'
 import { MaterialReactTable, MRT_ColumnDef, useMaterialReactTable } from 'material-react-table'
 import { useGetMaterialCard, useGetMaterialGroupTreeSuspense, useDeleteMaterialGroup } from '@/api/openAPIDefinition'
 import { type MaterialCard, type MaterialGroupTreeItem } from '@/api/model'
-import { Button, Stack } from '@mui/material'
+import { Button, Stack, Tooltip } from '@mui/material'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import { Route as MaterialGroupRoute } from '@/routes/_authenticated/storage/materialGroups/new'
 import { Route as MaterialNewRoute } from '@/routes/_authenticated/storage/materialCards/new'
@@ -13,8 +13,7 @@ export const MaterialGroupList = () => {
   const [selectedGroup, setSelectedGroup] = useState<number | null>(null)
   const navigate = useNavigate()
   const { t } = useTranslation('common')
-  const [hasMaterialCards, setHasMaterialCards] = useState(false);//delete fonskiyonu için kullanıyorum..
-  const [canDelete, setCanDelete] = useState<boolean>(true); // Silme kontrolü
+  const [canDelete, setCanDelete] = useState<boolean>(true) // Silme kontrolü
 
 
   const { data: materialGroup } = useGetMaterialGroupTreeSuspense({
@@ -30,49 +29,45 @@ export const MaterialGroupList = () => {
     }
   })
   const { mutateAsync: DeleteMaterialGroup } = useDeleteMaterialGroup()
-  useEffect(() => {
-    // Eğer materialCard bir array ise ve içinde eleman varsa, true olarak set et
-    setHasMaterialCards(Array.isArray(materialCard) && materialCard.length > 0);
-  }, [materialCard]);
+
 
   useEffect(() => {
-    if (Array.isArray(materialCard) && materialCard.length === 0 ) {
-      setCanDelete(true); // Eğer materialCard boşsa silme işlemi yapılabilir
+    if (Array.isArray(materialCard) && materialCard.length === 0) {
+      setCanDelete(true)
     } else if (Array.isArray(materialCard) && materialCard.length > 0) {
-      setCanDelete(false); // Eğer materialCard varsa, grup silinemez
+      setCanDelete(false)
     }
-  }, [materialCard]);
+  }, [materialCard])
   const handleDelete = async (id: number) => {
     try {
-      const groupToDelete = materialGroup.find(group => group.id === id);
+      const groupToDelete = materialGroup.find(group => group.id === id)
 
       // Eğer grup çocuk içeriyorsa engelle
       if (groupToDelete?.children && groupToDelete.children.length > 0) {
-        alert(t('Cannot delete a group with child elements.'));
-        return;
+        alert(t('Cannot delete a group with child elements.'))
+        return
       }
 
       if (!canDelete) {
-        alert(t('This group is linked to a Material Card and cannot be deleted.'));
-        return;
+        alert(t('This group is linked to a Material Card and cannot be deleted.'))
+        return
       }
 
-      //todo ef bu içeriğinde material card varsa silme meselesi düzgün değil halen referans gpt linki :: https://chatgpt.com/share/67ca0ab7-1d38-8008-9cc5-05143ca49fca
-     // setSelectedGroup(id)
-     // console.log("Material Group Data:", materialGroup);
+       // setSelectedGroup(id)
+      // console.log("Material Group Data:", materialGroup);
 
       if (materialGroup.some(group => group.id === id)) {
-        alert(t('This group is linked to a Material Card and cannot be deleted.'));
-        return;
+        alert(t('This group is linked to a Material Card and cannot be deleted.'))
+        return
       }
 
-      await DeleteMaterialGroup({ id });
-      alert(t('Group deleted successfully.'));
+      await DeleteMaterialGroup({ id })
+      alert(t('Group deleted successfully.'))
     } catch (error: any) {
-      console.error('Error deleting group:', error);
-      alert(t('Error deleting group.'));
+      console.error('Error deleting group:', error)
+      alert(t('Error deleting group.'))
     }
-  };
+  }
 
   const columnsTree = useMemo<MRT_ColumnDef<MaterialGroupTreeItem>[]>(
     () => [
@@ -83,19 +78,24 @@ export const MaterialGroupList = () => {
         id: 'actions',
         Cell: ({ row }) => {
           return (
-            <Button
-              variant="outlined"
-              color="error"
-              size="small"
-              onClick={() => handleDelete(row.original.id)}  // Silme butonuna tıklandığında handleDelete çalışacak
-            >
-              {t('Delete')}
-            </Button>
+            <Tooltip title="Development in progress">
+      <span>
+        <Button
+          variant="outlined"
+          color="error"
+          size="small"
+          disabled
+          onClick={() => handleDelete(row.original.id)}
+        >
+          {t('Delete')}
+        </Button>
+      </span>
+            </Tooltip>
           )
         }
       }
     ],
-    [t,canDelete]
+    [t, canDelete]
   )
 
   const columnsMaterialCard = useMemo<MRT_ColumnDef<MaterialCard>[]>(

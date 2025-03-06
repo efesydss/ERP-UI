@@ -20,6 +20,7 @@ import { useMutation } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 import { useTranslation } from 'react-i18next'
 import { BaseSelect } from '@/components/Common/Form/Select/BaseSelect'
+import { Tooltip } from '@mui/material'
 
 interface FormMaterialGroupProps {
   materialGroupId?: number
@@ -52,13 +53,19 @@ const initialValues = {
   ]
 }
 const validationSchema = Yup.object().shape({
-  materialCode: Yup.string().required('Required'),
+  materialCode: Yup.string().required('Required and Must be Unique!'),
   materialName: Yup.string().required('Required'),
   defaultUnit: Yup.string().required('Required'),
   materialType: Yup.string().required('Required'),
   optimalLevel: Yup.number().positive().required('Required'),
   minimumLevel: Yup.number().positive().required('Required'),
-  specialCode: Yup.string().required('Required')
+  specialCode: Yup.string().required('Required'),
+  materialGroup: Yup.object().shape({
+    id: Yup.number()
+      .typeError('Material Group is required')
+      .required('Material Group is required')
+      .test('is-not-zero', 'Material Group is required', (value) => !!value)
+  })
 })
 export const MaterialCardForm = (props: FormMaterialGroupProps) => {
   console.log(props)
@@ -90,13 +97,21 @@ export const MaterialCardForm = (props: FormMaterialGroupProps) => {
         ? { id: values.materialGroup.id.id }
         : { id: values.materialGroup?.id },
 
-      shelfLocation: values.shelfLocation?.name,
+      shelfLocation: values.shelfLocation?.name
     }
 
     console.log('Fixed Payload:', fixedData)
     const response = await mutateAsync(fixedData)
     console.log('API Response:', response)
 
+  }
+  const handleMaterialGroupChange = (event: any) => {
+    handleChange({
+      target: {
+        name: 'materialGroup',
+        value: { id: event.target.value }
+      }
+    } as React.ChangeEvent<{ name: string; value: { id: number } }>)
   }
 
 
@@ -115,13 +130,20 @@ export const MaterialCardForm = (props: FormMaterialGroupProps) => {
                 <CardContent>
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
-                      <Field
-                        label="Material Code"
-                        variant="outlined"
-                        fullWidth
-                        name="materialCode"
-                        component={TextField}
-                      />
+                      <Tooltip
+                        title="Please note, the system does not check if this value is unique. Manual validation is required at this time. This is a work in progress."
+                        placement="top"
+                      >
+                        <div>
+                          <Field
+                            label="Material Code"
+                            variant="outlined"
+                            fullWidth
+                            name="materialCode"
+                            component={TextField}
+                          />
+                        </div>
+                      </Tooltip>
                     </Grid>
                     <Grid item xs={12}>
                       <Field
@@ -135,8 +157,9 @@ export const MaterialCardForm = (props: FormMaterialGroupProps) => {
                     <Grid item xs={12}>
                       <FormControl variant="outlined" fullWidth>
                         <BaseSelect
-                          name="materialGroup.id"
+                          name="materialGroup"
                           endpoint={'materialGroups'}
+                          onChange={handleMaterialGroupChange}
                         />
                       </FormControl>
                     </Grid>
@@ -147,16 +170,35 @@ export const MaterialCardForm = (props: FormMaterialGroupProps) => {
                         variant="outlined"
                         fullWidth
                         name="defaultUnit"
-                        component={TextField}
+                        component={({ field }) => (
+                          <FormControl fullWidth variant="outlined">
+                            <InputLabel>Default Unit</InputLabel>
+                            <Select {...field} label="Default Unit">
+                              {/* Enum Değerlerini MenuItem olarak ekliyoruz */}
+                              {[
+                                'KG', 'GR', 'METER', 'M2', 'M3', 'LITRE', 'PIECE', 'PACKAGE', 'PAIR', 'PLATE', 'MM'
+                              ].map((unit) => (
+                                <MenuItem key={unit} value={unit}>
+                                  {unit}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </FormControl>
+                        )}
                       />
                     </Grid>
                     <Grid item xs={12}>
                       <Field
-                        label="Material Type"
-                        variant="outlined"
-                        fullWidth
                         name="materialType"
-                        component={TextField}
+                        component={({ field }) => (
+                          <FormControl fullWidth variant="outlined">
+                            <InputLabel>Material Type</InputLabel>
+                            <Select {...field} label="Material Type">
+                              <MenuItem value="MAIN_MATERIAL">Main Material</MenuItem>
+                              <MenuItem value="CONSUMPTION_MATERIAL">Consumption Material</MenuItem>
+                            </Select>
+                          </FormControl>
+                        )}
                       />
                     </Grid>
                     <Grid item xs={6}>
