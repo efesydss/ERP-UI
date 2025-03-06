@@ -14,6 +14,7 @@ export const MaterialGroupList = () => {
   const navigate = useNavigate()
   const { t } = useTranslation('common')
   const [hasMaterialCards, setHasMaterialCards] = useState(false);//delete fonskiyonu için kullanıyorum..
+  const [canDelete, setCanDelete] = useState<boolean>(true); // Silme kontrolü
 
 
   const { data: materialGroup } = useGetMaterialGroupTreeSuspense({
@@ -33,6 +34,14 @@ export const MaterialGroupList = () => {
     // Eğer materialCard bir array ise ve içinde eleman varsa, true olarak set et
     setHasMaterialCards(Array.isArray(materialCard) && materialCard.length > 0);
   }, [materialCard]);
+
+  useEffect(() => {
+    if (Array.isArray(materialCard) && materialCard.length === 0 ) {
+      setCanDelete(true); // Eğer materialCard boşsa silme işlemi yapılabilir
+    } else if (Array.isArray(materialCard) && materialCard.length > 0) {
+      setCanDelete(false); // Eğer materialCard varsa, grup silinemez
+    }
+  }, [materialCard]);
   const handleDelete = async (id: number) => {
     try {
       const groupToDelete = materialGroup.find(group => group.id === id);
@@ -43,10 +52,14 @@ export const MaterialGroupList = () => {
         return;
       }
 
+      if (!canDelete) {
+        alert(t('This group is linked to a Material Card and cannot be deleted.'));
+        return;
+      }
 
       //todo ef bu içeriğinde material card varsa silme meselesi düzgün değil halen referans gpt linki :: https://chatgpt.com/share/67ca0ab7-1d38-8008-9cc5-05143ca49fca
-      setSelectedGroup(id)
-      console.log("Material Group Data:", materialGroup);
+     // setSelectedGroup(id)
+     // console.log("Material Group Data:", materialGroup);
 
       if (materialGroup.some(group => group.id === id)) {
         alert(t('This group is linked to a Material Card and cannot be deleted.'));
@@ -82,7 +95,7 @@ export const MaterialGroupList = () => {
         }
       }
     ],
-    [t]
+    [t,canDelete]
   )
 
   const columnsMaterialCard = useMemo<MRT_ColumnDef<MaterialCard>[]>(
