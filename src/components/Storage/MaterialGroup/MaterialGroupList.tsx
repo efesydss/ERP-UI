@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useEffect } from 'react'
 import { MaterialReactTable, MRT_ColumnDef, useMaterialReactTable } from 'material-react-table'
-import { useGetMaterialCard, useGetMaterialGroupTreeSuspense } from '@/api/openAPIDefinition'
+import { useGetMaterialCard, useGetMaterialGroupTreeSuspense, useDeleteMaterialGroup } from '@/api/openAPIDefinition'
 import { type MaterialCard, type MaterialGroupTreeItem } from '@/api/model'
 import { Button, Stack } from '@mui/material'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
@@ -13,6 +13,8 @@ export const MaterialGroupList = () => {
   const [selectedGroup, setSelectedGroup] = useState<number | null>(null)
   const navigate = useNavigate()
   const { t } = useTranslation('common')
+  const [hasMaterialCards, setHasMaterialCards] = useState(false);//delete fonskiyonu için kullanıyorum..
+
 
   const { data: materialGroup } = useGetMaterialGroupTreeSuspense({
     query: {
@@ -26,11 +28,59 @@ export const MaterialGroupList = () => {
       select: (response) => response ?? []
     }
   })
+  const { mutateAsync: DeleteMaterialGroup } = useDeleteMaterialGroup()
+  useEffect(() => {
+    // Eğer materialCard bir array ise ve içinde eleman varsa, true olarak set et
+    setHasMaterialCards(Array.isArray(materialCard) && materialCard.length > 0);
+  }, [materialCard]);
+  const handleDelete = async (id: number) => {
+    try {
+      const groupToDelete = materialGroup.find(group => group.id === id);
+
+      // Eğer grup çocuk içeriyorsa engelle
+      if (groupToDelete?.children && groupToDelete.children.length > 0) {
+        alert(t('Cannot delete a group with child elements.'));
+        return;
+      }
+
+
+      //todo ef bu içeriğinde material card varsa silme meselesi düzgün değil halen referans gpt linki :: https://chatgpt.com/share/67ca0ab7-1d38-8008-9cc5-05143ca49fca
+      setSelectedGroup(id)
+      console.log("Material Group Data:", materialGroup);
+
+      if (materialGroup.some(group => group.id === id)) {
+        alert(t('This group is linked to a Material Card and cannot be deleted.'));
+        return;
+      }
+
+      await DeleteMaterialGroup({ id });
+      alert(t('Group deleted successfully.'));
+    } catch (error: any) {
+      console.error('Error deleting group:', error);
+      alert(t('Error deleting group.'));
+    }
+  };
 
   const columnsTree = useMemo<MRT_ColumnDef<MaterialGroupTreeItem>[]>(
     () => [
       { header: t('Code'), accessorKey: 'code' },
-      { header: t('Name'), accessorKey: 'name' }
+      { header: t('Name'), accessorKey: 'name' },
+      {
+        header: t('Actions'),
+        id: 'actions',
+        Cell: ({ row }) => {
+          return (
+            <Button
+              variant="outlined"
+              color="error"
+              size="small"
+              onClick={() => handleDelete(row.original.id)}  // Silme butonuna tıklandığında handleDelete çalışacak
+            >
+              {t('Delete')}
+            </Button>
+          )
+        }
+      }
     ],
     [t]
   )
@@ -55,8 +105,6 @@ export const MaterialGroupList = () => {
   })
 
   useEffect(() => {
-    console.log('Selected Group:', selectedGroup)
-    console.log('Material Card Data:', materialCard)
   }, [selectedGroup, materialCard])
 
   const groupListTable = useMaterialReactTable({
@@ -65,14 +113,14 @@ export const MaterialGroupList = () => {
     data: materialGroup ?? [],
     enableExpanding: true,
     getSubRows: (row) => row.children || [],
-    initialState: { expanded: false, density: 'comfortable' },
+    initialState: { expanded: {}, density: 'comfortable' },
     enableColumnOrdering: false,
     enableGlobalFilter: true,
     enableHiding: false,
     enableRowSelection: false,
     muiTableBodyRowProps: ({ row }) => ({
       onClick: () => {
-        setSelectedGroup((prev) => (prev === row.original.id ? null : row.original.id))
+        setSelectedGroup((prev) => (prev === row.original.id ? null : row.original.id ?? null))
       },
       selected: selectedGroup === row.original.id,
       sx: {
