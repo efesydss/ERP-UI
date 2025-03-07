@@ -130,10 +130,6 @@ export const navMenuItems: MenuItemProps[] = [
               label: 'projects',
               icon: FaRProject
             },
-            {
-                label: 'productPlans',
-                icon: FaRProject
-            },
           ]
         },
 
@@ -181,36 +177,8 @@ export const navMenuItems: MenuItemProps[] = [
               icon: TbUserStar
         },
         {
-            label: 'fixtureCards',
-            icon: TbUserStar
-        },
-        {
-            label: 'fixtureGroups',
-            icon: TbUserStar
-        },
-        {
-                label: 'materialCards',
-                icon: TbUserStar
-        },
-        {
-                label: 'materialGroups',
-                icon: TbUserStar
-        },
-        {
-                label: 'productCards',
-                icon: TbUserStar
-        },
-        {
-                label: 'productGroups',
-                icon: TbUserStar
-        },
-        {
-                label: 'serviceCards',
-                icon: TbUserStar
-        },
-        {
-                label: 'serviceGroups',
-                icon: TbUserStar
+                label:'catalog',
+                icon:TbUserStar
         },
         {
         label: 'shelves',

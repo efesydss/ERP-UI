@@ -13,7 +13,7 @@ export const MaterialGroupList = () => {
   const [selectedGroup, setSelectedGroup] = useState<number | null>(null)
   const navigate = useNavigate()
   const { t } = useTranslation('common')
-  const [canDelete, setCanDelete] = useState<boolean>(true) // Silme kontrolü
+  const [canDelete, setCanDelete] = useState<boolean>(true)
 
 
   const { data: materialGroup } = useGetMaterialGroupTreeSuspense({
