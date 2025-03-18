@@ -14,7 +14,7 @@ import { RoleForm } from '@/components/Admin/Role/RoleForm'
 
 const initialRole: Role = {
   id: 0,
-  name: '',
+  name: 'efe',
 }
   export const RoleAdd = () => {
     const navigate = useNavigate()

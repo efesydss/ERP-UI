@@ -14,7 +14,7 @@ import { t } from 'i18next'
 
 const initialDepot: DepotResponse = {
   id: 1,
-  name: ''
+  name: 'DepotName'
 }
 
 export const DepotAdd = () => {

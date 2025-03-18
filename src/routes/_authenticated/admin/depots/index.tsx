@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { AdvancedDepotList } from '@/components/Admin/Depot/AdvancedDepotList'
+import { DepotList } from '@/components/Admin/Depot/DepotList'
 
 export const Route = createFileRoute('/_authenticated/admin/depots/')({
-  component: () => <AdvancedDepotList />
+  component: () => <DepotList/>
 })
