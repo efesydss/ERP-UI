@@ -1,8 +1,8 @@
 # ERP-UI
 Falcons ERP Web App UI
 
-- Automatically deployed on : https://falcons-erp-api-dev.sd.iafl.net/ | [Alternative](https://octopus-app-2cww7.ondigitalocean.app/swagger-ui/index.html)
-- Swagger UI: https://falcons-erp-api-dev.sd.iafl.net/swagger-ui/index.html  | [Alternative](https://octopus-app-2cww7.ondigitalocean.app/swagger-ui/index.html)
+- Automatically deployed on : https://dev.falcons.iafl.net/swagger-ui/index.html)
+- Swagger UI: https://dev.falcons.iafl.net/swagger-ui/index.html 
 
 
 to run locally, first clone and execute below codes at root directory 

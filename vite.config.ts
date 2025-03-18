@@ -13,11 +13,11 @@ export default defineConfig({
 
   //todo: this is a temp fix for cors
   //http://localhost:8080/api
-  //https://falcons-erp-api-dev.sd.iafl.net/api/
+  //https://dev.falcons.iafl.net/api/
   server: {
     proxy: {
       '/api': {
-        target: 'https://falcons-erp-api-dev.sd.iafl.net/api/',
+        target: 'https://dev.falcons.iafl.net/api/',
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/api/, '')
