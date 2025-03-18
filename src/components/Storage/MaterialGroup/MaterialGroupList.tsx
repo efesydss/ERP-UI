@@ -1,6 +1,6 @@
-import React, { useMemo, useState, useEffect } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { MaterialReactTable, MRT_ColumnDef, useMaterialReactTable } from 'material-react-table'
-import { useGetMaterialCard, useGetMaterialGroupTreeSuspense, useDeleteMaterialGroup } from '@/api/openAPIDefinition'
+import { useDeleteMaterialGroup, useGetMaterialCard, useGetMaterialGroupTreeSuspense } from '@/api/openAPIDefinition'
 import { type MaterialCard, type MaterialGroupTreeItem } from '@/api/model'
 import { Button, Stack, Tooltip } from '@mui/material'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
@@ -28,8 +28,9 @@ export const MaterialGroupList = () => {
       select: (response) => response ?? []
     }
   })
-  const { mutateAsync: DeleteMaterialGroup } = useDeleteMaterialGroup()
 
+
+  const { mutateAsync: DeleteMaterialGroup } = useDeleteMaterialGroup()
 
   useEffect(() => {
     if (Array.isArray(materialCard) && materialCard.length === 0) {
@@ -38,6 +39,7 @@ export const MaterialGroupList = () => {
       setCanDelete(false)
     }
   }, [materialCard])
+
   const handleDelete = async (id: number) => {
     try {
       const groupToDelete = materialGroup.find(group => group.id === id)
@@ -53,7 +55,7 @@ export const MaterialGroupList = () => {
         return
       }
 
-       // setSelectedGroup(id)
+      // setSelectedGroup(id)
       // console.log("Material Group Data:", materialGroup);
 
       if (materialGroup.some(group => group.id === id)) {
@@ -85,7 +87,7 @@ export const MaterialGroupList = () => {
           color="error"
           size="small"
           disabled
-          onClick={() => handleDelete(row.original.id)}
+          onClick={() => row.original.id && handleDelete(row.original.id)}
         >
           {t('Delete')}
         </Button>
@@ -95,7 +97,7 @@ export const MaterialGroupList = () => {
         }
       }
     ],
-    [t, canDelete]
+    [t, handleDelete]
   )
 
   const columnsMaterialCard = useMemo<MRT_ColumnDef<MaterialCard>[]>(
@@ -108,7 +110,7 @@ export const MaterialGroupList = () => {
 
   const materialCardTable = useMaterialReactTable({
     columns: columnsMaterialCard,
-    data: materialCard ?? [],
+    data: materialCard || [],
     enablePagination: false,
     initialState: { density: 'compact' },
     muiTableContainerProps: { sx: { maxHeight: '80vh' } },
@@ -123,7 +125,7 @@ export const MaterialGroupList = () => {
   const groupListTable = useMaterialReactTable({
     columns: columnsTree,
     enablePagination: false,
-    data: materialGroup ?? [],
+    data: materialGroup,
     enableExpanding: true,
     getSubRows: (row) => row.children || [],
     initialState: { expanded: {}, density: 'comfortable' },
