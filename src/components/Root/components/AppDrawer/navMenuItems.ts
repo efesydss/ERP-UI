@@ -1,134 +1,182 @@
 import { MdOutlineBeachAccess } from 'react-icons/md'
 import { TbUserStar } from 'react-icons/tb'
-import { MenuItemProps } from '@/components/Root/typesRoot'
+import { AppEnvironment, MenuItemProps } from '@/components/Root/typesRoot'
 import { FaPeopleRoof, FaRProject } from 'react-icons/fa6'
 import { RiAdminLine } from 'react-icons/ri'
 import { HiOutlineCash } from 'react-icons/hi'
 import { PiFlag } from 'react-icons/pi'
 
-export const navMenuItems: MenuItemProps[] = [
+const env = import.meta.env.MODE
+const environment = env === 'development' ? AppEnvironment.DEVELOPMENT : AppEnvironment.PRODUCTION
+
+const getItems = (items: MenuItemProps[], env: AppEnvironment) : MenuItemProps[] => {
+  return items.filter(item => {
+    return item.env && item.env.includes(env)
+  }).map(item => {
+    if (item.sub && item.sub.length > 0) {
+      return {
+        icon: item.icon,
+        label: item.label,
+        sub: getItems(item.sub, env)
+      }
+    }
+    return {
+      icon: item.icon,
+      label: item.label
+    }
+  })
+}
+
+export const allMenuItems: MenuItemProps[] = [
   {
     label: 'hr',
     icon: FaPeopleRoof,
+    env: [AppEnvironment.DEVELOPMENT, AppEnvironment.PRODUCTION],
     sub: [
       {
         label: 'employees',
-        icon: TbUserStar
+        icon: TbUserStar,
+        env: [AppEnvironment.DEVELOPMENT, AppEnvironment.PRODUCTION],
       },
       {
         label: 'vacations',
-        icon: MdOutlineBeachAccess
+        icon: MdOutlineBeachAccess,
+        env: [AppEnvironment.DEVELOPMENT, AppEnvironment.PRODUCTION],
       },
       {
         label: 'finances',
-        icon: HiOutlineCash
+        icon: HiOutlineCash,
+        env: [AppEnvironment.DEVELOPMENT, AppEnvironment.PRODUCTION],
       },
       {
         label: 'timekeeping',
-        icon: PiFlag
+        icon: PiFlag,
+        env: [AppEnvironment.DEVELOPMENT, AppEnvironment.PRODUCTION],
       }
     ]
   },
   {
     label: 'admin',
     icon: RiAdminLine,
+    env: [AppEnvironment.DEVELOPMENT],
     sub: [
       {
         label: 'depots',
-        icon: FaRProject
+        icon: FaRProject,
+        env: [AppEnvironment.DEVELOPMENT],
       },
       {
-              label:'roles',
-              icon: FaRProject
+        label:'roles',
+        icon: FaRProject,
+        env: [AppEnvironment.DEVELOPMENT],
       },
       {
-      label:'machines',
-      icon: FaRProject
+        label:'machines',
+        icon: FaRProject,
+        env: [AppEnvironment.DEVELOPMENT],
       },
       {
         label:'companies',
-        icon: FaRProject
+        icon: FaRProject,
+        env: [AppEnvironment.DEVELOPMENT],
       },
       {
           label:'paymentMethods',
-          icon: FaRProject
+          icon: FaRProject,
+          env: [AppEnvironment.DEVELOPMENT],
       },
       {
             label:'publicHolidays',
-            icon: FaRProject
+            icon: FaRProject,
+            env: [AppEnvironment.DEVELOPMENT],
       },
       {
               label:'sections',
-              icon: FaRProject
+              icon: FaRProject,
+              env: [AppEnvironment.DEVELOPMENT],
       },
 
     ]
   },
-   {
-      label: 'company',
-      icon: RiAdminLine,
-      sub: [
-        {
-          label: 'branches',
-          icon: FaRProject
-        },
-        {
-           label: 'departments',
-           icon: FaRProject
-        },
+  {
+    label: 'company',
+    icon: RiAdminLine,
+    env: [AppEnvironment.DEVELOPMENT],
+    sub: [
+      {
+        label: 'branches',
+        icon: FaRProject,
+        env: [AppEnvironment.DEVELOPMENT],
+      },
+      {
+          label: 'departments',
+          icon: FaRProject,
+          env: [AppEnvironment.DEVELOPMENT],
+      },
 
-      ]
-    },
+    ]
+  },
 
   {
     label: 'accounting',
     icon: FaRProject,
+    env: [AppEnvironment.DEVELOPMENT, AppEnvironment.PRODUCTION],
     sub: [
       {
         label: 'CashAccounts',
-        icon: TbUserStar
+        icon: TbUserStar,
+        env: [AppEnvironment.DEVELOPMENT, AppEnvironment.PRODUCTION],
       },
       {
-          label:'cashAccountTransactions',
-          icon: TbUserStar
+        label:'cashAccountTransactions',
+        icon: TbUserStar,
+        env: [AppEnvironment.DEVELOPMENT, AppEnvironment.PRODUCTION],
       },
       {
-          label:'expenseCards',
-          icon: TbUserStar
+        label:'expenseCards',
+        icon: TbUserStar,
+        env: [AppEnvironment.DEVELOPMENT, AppEnvironment.PRODUCTION],
       },
      {
-            label:'expenseInvoices',
-            icon: TbUserStar
+        label:'expenseInvoices',
+        icon: TbUserStar,
+        env: [AppEnvironment.DEVELOPMENT, AppEnvironment.PRODUCTION],
      },
 
     ]
   },
   {
-        label: 'finance',
-        icon: RiAdminLine,
-        sub: [
-          {
-            label: 'banks',
-            icon: FaRProject
-          },
-          {
-             label: 'bankAccounts',
-             icon: FaRProject
-          },
-          {
-              label: 'bankBranches',
-              icon: FaRProject
-          },
-
-        ]
+    label: 'finance',
+    icon: RiAdminLine,
+    env: [AppEnvironment.DEVELOPMENT],
+    sub: [
+      {
+        label: 'banks',
+        icon: FaRProject,
+        env: [AppEnvironment.DEVELOPMENT],
       },
+      {
+          label: 'bankAccounts',
+          icon: FaRProject,
+          env: [AppEnvironment.DEVELOPMENT],
+      },
+      {
+          label: 'bankBranches',
+          icon: FaRProject,
+          env: [AppEnvironment.DEVELOPMENT],
+      },
+
+    ]
+  },
   {
           label: 'production',
           icon: RiAdminLine,
+          env: [AppEnvironment.DEVELOPMENT],
           sub: [
             {
               label: 'projects',
-              icon: FaRProject
+              icon: FaRProject,
+              env: [AppEnvironment.DEVELOPMENT],
             },
           ]
         },
@@ -136,26 +184,32 @@ export const navMenuItems: MenuItemProps[] = [
     {
             label: 'purchasing',
             icon: RiAdminLine,
+            env: [AppEnvironment.DEVELOPMENT],
             sub: [
               {
                 label: 'additionalCosts',
-                icon: FaRProject
+                icon: FaRProject,
+                env: [AppEnvironment.DEVELOPMENT],
               },
               {
                  label: 'currentAccounts',
-                 icon: FaRProject
+                 icon: FaRProject,
+                 env: [AppEnvironment.DEVELOPMENT],
               },
               {
                   label: 'currentAccountBankAccounts',
-                  icon: FaRProject
+                  icon: FaRProject,
+                  env: [AppEnvironment.DEVELOPMENT],
               },
               {
                   label: 'currentAccountTransactions',
-                  icon: FaRProject
+                  icon: FaRProject,
+                  env: [AppEnvironment.DEVELOPMENT],
               },
               {
                 label: 'invoices',
-                icon: FaRProject
+                icon: FaRProject,
+                env: [AppEnvironment.DEVELOPMENT],
               },
             ]
           },
@@ -163,56 +217,71 @@ export const navMenuItems: MenuItemProps[] = [
   {
       label: 'storage',
       icon: FaPeopleRoof,
+      env: [AppEnvironment.DEVELOPMENT],
       sub: [
         {
           label: 'assignmentCards',
-          icon: TbUserStar
+          icon: TbUserStar,
+          env: [AppEnvironment.DEVELOPMENT],
         },
         {
               label: 'assignmentTransactions',
-              icon: TbUserStar
+              icon: TbUserStar,
+              env: [AppEnvironment.DEVELOPMENT],
         },
         {
             label: 'fixtureCards',
-            icon: TbUserStar
+            icon: TbUserStar,
+            env: [AppEnvironment.DEVELOPMENT],
         },
         {
             label: 'fixtureGroups',
-            icon: TbUserStar
+            icon: TbUserStar,
+            env: [AppEnvironment.DEVELOPMENT],
         },
         {
                 label: 'materialCards',
-                icon: TbUserStar
+                icon: TbUserStar,
+                env: [AppEnvironment.DEVELOPMENT],
         },
         {
                 label: 'materialGroups',
-                icon: TbUserStar
+                icon: TbUserStar,
+                env: [AppEnvironment.DEVELOPMENT],
         },
         {
                 label: 'productCards',
-                icon: TbUserStar
+                icon: TbUserStar,
+                env: [AppEnvironment.DEVELOPMENT],
         },
         {
                 label: 'productGroups',
-                icon: TbUserStar
+                icon: TbUserStar,
+                env: [AppEnvironment.DEVELOPMENT],
         },
         {
                 label: 'serviceCards',
-                icon: TbUserStar
+                icon: TbUserStar,
+                env: [AppEnvironment.DEVELOPMENT],
         },
         {
                 label: 'serviceGroups',
-                icon: TbUserStar
+                icon: TbUserStar,
+                env: [AppEnvironment.DEVELOPMENT],
         },
         {
-        label: 'shelves',
-        icon: TbUserStar
+          label: 'shelves',
+          icon: TbUserStar,
+          env: [AppEnvironment.DEVELOPMENT],
         },
         {
-            label: 'units',
-
-            icon: TbUserStar
+          label: 'units',
+          icon: TbUserStar,
+          env: [AppEnvironment.DEVELOPMENT],
         },
       ]
     },
 ]
+
+
+export const navMenuItems = getItems(allMenuItems, environment)
