@@ -1,11 +1,11 @@
 # use the official Bun image
 # see all versions at https://hub.docker.com/r/oven/bun/tags
-# original backend (ef)endpoint = https://falcons-erp-api-dev.sd.iafl.net/
+# original backend (ef)endpoint = https://dev.falcons.iafl.net/
 FROM oven/bun:1-debian AS bun
 
 WORKDIR /usr/src/app
 
-ENV VITE_BACKEND_ENDPOINT=https://falcons-erp-api-dev.sd.iafl.net/
+ENV VITE_BACKEND_ENDPOINT=https://dev.falcons.iafl.net/
 
 COPY . .
 RUN bun install
