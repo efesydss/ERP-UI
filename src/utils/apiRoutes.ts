@@ -61,6 +61,13 @@ export const apiRoutes = {
     currentAccountTransactionDelete:'purchasing/currentAccountTransaction/{currentAccountTransactionId}',
     currentAccountTransactionUpdate:'purchasing/currentAccountTransaction/{currentAccountTransactionId}',
 
+     // Purchasing / Purchase Order
+        purchaseOrders:'purchasing/purchaseOrders',
+        purchaseOrder:'purchasing/purchaseOrder/{purchaseOrderId}',
+        purchaseOrderAdd:'purchasing/purchaseOrder',
+        purchaseOrderDelete:'purchasing/purchaseOrder/{purchaseOrderId}',
+        purchaseOrderUpdate:'purchasing/purchaseOrder/{purchaseOrderId}',
+
     // Production / Project
     projects:'production/projects',
     project:'production/project/{projectId}',
@@ -155,6 +162,30 @@ export const apiRoutes = {
   assignmentCardDelete:'storage/assignmentCard/{assignmentCardId}',
   assignmentCardUpdate:'storage/assignmentCard/{assignmentCardId}',
 
+  //Storage / MaterialCard
+    materialCards: 'storage/materialCards',
+    materialCard: 'storage/materialCard/{materialCardId}',
+    materialCardAdd: 'storage/materialCard',
+    materialCardDelete: 'storage/materialCard/{materialCardId}',
+    materialCardUpdate: 'storage/materialCard/{materialCardId}',
+
+    //Storage / MaterialGroup
+    materialGroups: 'storage/materialGroups',
+    materialGroup: 'storage/materialGroup/{materialGroupId}',
+    materialGroupAdd: 'storage/materialGroup',
+    materialGroupDelete: 'storage/materialGroup/{materialGroupId}',
+    materialGroupUpdate: 'storage/materialGroup/{materialGroupId}',
+    materialGroupTree: 'storage/materialGroup/tree',
+    materialGroupFlat:'storage/materialGroup/flatList',
+
+    //Storage / Product Group
+    productGroups: 'storage/productGroups',
+    productGroup: 'storage/productGroup/{productGroupId}',
+    productGroupAdd: 'storage/productGroup',
+    productGroupDelete: 'storage/productGroup/{productGroupId}',
+    productGroupUpdate: 'storage/productGroup/{productGroupId}',
+    productTree: 'storage/productGroup/tree',
+
   //Storage / FixtureCard
   fixtureCards: 'storage/fixtureCards',
   fixtureCard:'storage/fixtureCard/{fixtureCardId}',
@@ -189,6 +220,19 @@ export const apiRoutes = {
     unitAdd:'storage/unit',
     unitDelete:'storage/unit/{unitId}',
     unitUpdate:'storage/unit/{unitId}',
+
+
+   // Sales / Proposal
+    proposals:'sales/proposals',
+    proposal:'sales/proposal/{proposalId}',
+    proposalAdd:'sales/proposal',
+    proposalDelete:'sales/proposal/{proposalId}',
+    proposalUpdate:'sales/proposal/{proposalId}',
+
+
+
+
+
 
   // Employee Vacation Management
   employeeVacationStatuses: 'hr/employees/timeoffstatuses',

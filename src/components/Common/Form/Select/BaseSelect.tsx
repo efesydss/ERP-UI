@@ -28,12 +28,14 @@ interface BaseSelectProps {
   isOptional?: boolean
   placeholder?: string
   fieldName?: string
+  isGET?: boolean
 }
 
 export const BaseSelect = (props: BaseSelectProps) => {
   const {
     options,
     name,
+    isGET,
     nameSpace,
     selectLabel,
     isLoading,
@@ -49,23 +51,21 @@ export const BaseSelect = (props: BaseSelectProps) => {
   const [field, { touched, error }, { setValue }] = useField(name)
   const theme = useTheme()
 
-  //todo: can we get rid off 'branches'
   const { data: fetchedOptions, isLoading: isFetching } = useQuery({
     queryKey: [`${endpoint}List`],
     queryFn: () =>
       apiRequest<ApiResponse<NamedEntity>>({
-        endpoint: endpoint || 'branches',
-        payload: {
-          filter: '',
-          page: 0,
-          pageSize: 200
-        }
+        endpoint: endpoint!,
+        method: isGET ? 'GET' : 'POST', // Varsayılan olarak POST, isGET true ise GET
+        ...(isGET
+          ? { queryParams: { page: 0, pageSize: 200 } } // GET için queryParams
+          : { payload: { filter: '', page: 0, pageSize: 200 } }) // POST için payload
       }),
     select: (res): OptionType[] => {
-      const fieldKey = props.fieldName || 'name' // Dinamik alan belirleme
+      const fieldKey = props.fieldName || 'name'
       return res.data.map((r) => ({
         value: r.id,
-        label: r[fieldKey as keyof NamedEntity] || r.name || 'Please provide fieldName for label' // Tür dönüştürme
+        label: r[fieldKey as keyof NamedEntity] || r.name || 'Please provide fieldName for label'
       }))
     },
     enabled: !options && !!endpoint
@@ -73,7 +73,7 @@ export const BaseSelect = (props: BaseSelectProps) => {
 
   //todo: onChange only supports singleValue for now
   const handleChange = (newValue: MultiValue<OptionType> | SingleValue<OptionType> | null) => {
-    const fieldKey = props.fieldName || 'name' // Varsayılan olarak 'name' kullanıyoruz
+    const fieldKey = props.fieldName || 'name'
 
     if (isEnum) {
       if (newValue === null) {
@@ -151,7 +151,16 @@ export const BaseSelect = (props: BaseSelectProps) => {
         onChange={handleChange}
         options={options || fetchedOptions}
         isMulti={isMulti}
-        styles={getSelectStyles(theme, hasError)}
+        menuPlacement="auto"
+        menuPortalTarget={document.body}
+        styles={{
+          menu: (base) => ({
+            ...base,
+            maxHeight: 300,
+            overflowY: 'auto'
+          }),
+          ...getSelectStyles(theme, hasError)
+        }}
         placeholder={placeholder}
         isLoading={isLoading || isFetching}
       />

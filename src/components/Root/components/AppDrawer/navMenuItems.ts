@@ -211,6 +211,10 @@ export const allMenuItems: MenuItemProps[] = [
                 icon: FaRProject,
                 env: [AppEnvironment.DEVELOPMENT],
               },
+              {
+                  label: 'purchaseOrders',
+                 icon: FaRProject
+              },
             ]
           },
 
@@ -270,6 +274,11 @@ export const allMenuItems: MenuItemProps[] = [
                 env: [AppEnvironment.DEVELOPMENT],
         },
         {
+          label:'catalog',
+          icon:TbUserStar,
+          env: [AppEnvironment.DEVELOPMENT],
+        },
+        {
           label: 'shelves',
           icon: TbUserStar,
           env: [AppEnvironment.DEVELOPMENT],
@@ -278,6 +287,16 @@ export const allMenuItems: MenuItemProps[] = [
           label: 'units',
           icon: TbUserStar,
           env: [AppEnvironment.DEVELOPMENT],
+        },
+      ]
+    },
+{
+      label: 'sales',
+      icon: RiAdminLine,
+      sub: [
+        {
+          label: 'proposals',
+          icon: FaRProject
         },
       ]
     },
