@@ -3,13 +3,15 @@
 # original backend (ef)endpoint = https://dev.falcons.iafl.net/
 FROM oven/bun:1-debian AS bun
 
+ARG VITE_ENV=development
+
 WORKDIR /usr/src/app
 
 ENV VITE_BACKEND_ENDPOINT=https://dev.falcons.iafl.net/
 
 COPY . .
 RUN bun install
-RUN bunx --bun vite build
+RUN bunx --bun vite build --mode ${VITE_ENV}
 
 FROM nginx:latest
 
