@@ -67,11 +67,13 @@ export interface TokenResponse {
 export let tokenGlobal: string | undefined = undefined
 
 export const getRefreshToken = async () => {
+  console.log('getRefreshToken')
   if (tokenGlobal) {
     return tokenGlobal
   }
 
   try {
+    console.info('Refreshing token...')
     const refreshedToken = await axiosBase.post<TokenResponse>(apiRoutes.userRefresh)
 
     return refreshedToken.data.token
@@ -96,6 +98,7 @@ export const setAuthToken = (token: string | undefined) => {
 
 export const refreshAuth = async (failedRequest: AxiosError) => {
   try {
+    console.info('refreshAuth')
     const tokenRefreshResponse = await axiosBase.post<TokenResponse>(apiRoutes.userRefresh)
     const newAccessToken = tokenRefreshResponse.data.token
     setAuthToken(newAccessToken)
