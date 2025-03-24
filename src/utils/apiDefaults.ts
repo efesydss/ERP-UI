@@ -112,10 +112,10 @@ export const refreshAuth = async (failedRequest: AxiosError) => {
     if (axios.isAxiosError(error) && error.response?.status === 401) {
       console.warn('Refresh token is invalid or expired. Redirecting to login...')
       setAuthToken(undefined) // Clear the global token
-      throw redirect({ to: '/login' })
+      window.location.href = '/login';
     } else {
       console.error('An unexpected error occurred during token refresh:', error)
-      throw redirect({ to: '/login' })
+      window.location.href = '/login';
     }
 
     return Promise.reject(error)
