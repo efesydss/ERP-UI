@@ -2,6 +2,7 @@ import axios, { AxiosError, AxiosHeaders, AxiosRequestConfig, AxiosResponse } fr
 import createAuthRefreshInterceptor from 'axios-auth-refresh'
 import { apiRoutes } from '@/utils/apiRoutes'
 import { CustomAxiosRequestConfig } from 'axios-auth-refresh/dist/utils'
+import { redirect } from '@tanstack/react-router'
 
 export const backendURL = import.meta.env.VITE_BACKEND_ENDPOINT
 
@@ -105,6 +106,15 @@ export const refreshAuth = async (failedRequest: AxiosError) => {
 
     return Promise.resolve()
   } catch (error) {
+    if (axios.isAxiosError(error) && error.response?.status === 401) {
+      console.warn('Refresh token is invalid or expired. Redirecting to login...')
+      setAuthToken(undefined) // Clear the global token
+      throw redirect({ to: '/login' })
+    } else {
+      console.error('An unexpected error occurred during token refresh:', error)
+      throw redirect({ to: '/login' })
+    }
+
     return Promise.reject(error)
   }
 }
