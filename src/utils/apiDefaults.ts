@@ -8,10 +8,10 @@ export const backendURL = import.meta.env.VITE_BACKEND_ENDPOINT
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
 
 interface RequestConfig<TRequest = unknown> {
-  endpoint: keyof typeof apiRoutes
+  endpoint: string
   method?: HttpMethod
   payload?: TRequest
-  headers?: AxiosHeaders
+  headers?: AxiosRequestConfig['headers']
   id?: number
   params?: Record<string, string>
 }
@@ -36,7 +36,9 @@ export const axiosBase = axios.create({
 export const apiRequest = async <TResponse, TRequest = unknown>(options: RequestConfig<TRequest>): Promise<TResponse> => {
   const { endpoint, payload, method = 'POST', headers = new AxiosHeaders(), id, params } = options
 
-  let url = apiRoutes[endpoint]
+
+//todo: temp until we migrate to orval
+  let url = endpoint.startsWith('/api') ? endpoint.replace(/^\/api/, '') : apiRoutes[endpoint as keyof typeof apiRoutes]
 
   if (id) {
     url = `${url}/${id}`
@@ -66,13 +68,11 @@ export interface TokenResponse {
 export let tokenGlobal: string | undefined = undefined
 
 export const getRefreshToken = async () => {
-  console.log('getRefreshToken')
   if (tokenGlobal) {
     return tokenGlobal
   }
 
   try {
-    console.info('Refreshing token...')
     const refreshedToken = await axiosBase.post<TokenResponse>(apiRoutes.userRefresh)
 
     return refreshedToken.data.token
@@ -97,26 +97,17 @@ export const setAuthToken = (token: string | undefined) => {
 
 export const refreshAuth = async (failedRequest: AxiosError) => {
   try {
-    console.info('refreshAuth')
     const tokenRefreshResponse = await axiosBase.post<TokenResponse>(apiRoutes.userRefresh)
     const newAccessToken = tokenRefreshResponse.data.token
     setAuthToken(newAccessToken)
 
-    if (failedRequest.response && failedRequest.response.config) {
+    if (failedRequest.response?.config) {
       failedRequest.response.config.headers['Authorization'] = `Bearer ${newAccessToken}`
     }
 
-    return Promise.resolve()
+    return Promise.resolve(newAccessToken)
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response?.status === 401) {
-      console.warn('Refresh token is invalid or expired. Redirecting to login...')
-      setAuthToken(undefined) // Clear the global token
-      window.location.href = '/login';
-    } else {
-      console.error('An unexpected error occurred during token refresh:', error)
-      window.location.href = '/login';
-    }
-
+    console.error('Failed to refresh token', error)
     return Promise.reject(error)
   }
 }
