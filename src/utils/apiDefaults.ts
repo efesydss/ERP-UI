@@ -2,7 +2,6 @@ import axios, { AxiosError, AxiosHeaders, AxiosRequestConfig, AxiosResponse } fr
 import createAuthRefreshInterceptor from 'axios-auth-refresh'
 import { apiRoutes } from '@/utils/apiRoutes'
 import { CustomAxiosRequestConfig } from 'axios-auth-refresh/dist/utils'
-import { redirect } from '@tanstack/react-router'
 
 export const backendURL = import.meta.env.VITE_BACKEND_ENDPOINT
 
