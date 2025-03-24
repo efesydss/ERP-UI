@@ -3,11 +3,7 @@ import { Box, Button, DialogActions, DialogContent, IconButton, Tooltip } from '
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { apiRequest, ApiResponse } from '@/utils/apiDefaults'
 import { toast } from 'react-toastify'
-import FileDownloadIcon from '@mui/icons-material/FileDownload'
 import EditIcon from '@mui/icons-material/Edit'
-import * as XLSX from 'xlsx'
-import { jsPDF } from 'jspdf'
-import autoTable from 'jspdf-autotable'
 import {
   MaterialReactTable,
   MRT_ColumnDef,
@@ -161,24 +157,6 @@ export const DepotList = () => {
     }
   }
 
-  const handleExportExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(apiResponse?.data || [])
-
-    const workbook = XLSX.utils.book_new()
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Depots')
-
-    XLSX.writeFile(workbook, 'Depots.xlsx')
-  }
-  const handleExportRows = (rows: MRT_Row<Depot>[]) => {
-    const doc = new jsPDF()
-    const tableData = rows.map((row) => Object.values(row.original))
-    const tableHeaders = columns.map((c) => c.header)
-    autoTable(doc, {
-      head: [tableHeaders],
-      body: tableData
-    })
-    doc.save('Depot Table.pdf')
-  }
   const table = useMaterialReactTable({
     columns,
     data: apiResponse?.data || [],
@@ -210,22 +188,6 @@ export const DepotList = () => {
           }}
         >
           Create New User
-        </Button>
-        <Button
-          onClick={handleExportExcel}
-          startIcon={<FileDownloadIcon />}
-        >
-          Export to Excel
-        </Button>
-        <Button
-          disabled={table.getPrePaginationRowModel().rows.length === 0}
-          //export all rows, including from the next page, (still respects filtering and sorting)
-          onClick={() =>
-            handleExportRows(table.getPrePaginationRowModel().rows)
-          }
-          startIcon={<FileDownloadIcon />}
-        >
-          Export to PDF
         </Button>
       </Box>
     ),
