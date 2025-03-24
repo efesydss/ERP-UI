@@ -7,7 +7,8 @@
     "dev": "bunx --bun vite --host",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings=-1",
     "build": "tsc && bun lint && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "orval:gen": "bunx orval --config orval.config.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
@@ -55,6 +56,7 @@
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.6",
+    "orval": "^7.7.0",
     "typescript": "^5.5.3",
     "vite": "^5.3.3"
   }
