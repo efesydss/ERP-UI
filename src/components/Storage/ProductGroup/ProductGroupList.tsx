@@ -1,24 +1,24 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { MaterialReactTable, MRT_ColumnDef, useMaterialReactTable } from 'material-react-table'
-import { useDeleteMaterialGroup, useGetMaterialCard, useGetMaterialGroupTreeSuspense } from '@/api/openAPIDefinition'
-import { type MaterialCard, type MaterialGroupTreeItem } from '@/api/model'
+import { useDeleteProductGroup, useGetProductCard, useGetProductGroupTreeSuspense } from '@/api/openAPIDefinition'
+import { type ProductCard, type ProductGroupTreeItem } from '@/api/model'
 import { Button, MenuItem, Select, Stack, Tooltip } from '@mui/material'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
-import { Route as MaterialGroupRoute } from '@/routes/_authenticated/storage/materialGroups/new'
-import { Route as MaterialNewRoute } from '@/routes/_authenticated/storage/materialCards/new'
+import { Route as ProductGroupRoute } from '@/routes/_authenticated/storage/productGroups/new'
+import { Route as ProductNewRoute } from '@/routes/_authenticated/storage/productCards/new'
 import { useNavigate } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 
-export const MaterialGroupList = () => {
+export const ProductGroupList = () => {
   const [selectedGroup, setSelectedGroup] = useState<number | null>(null)
   const navigate = useNavigate()
   const { t } = useTranslation('common')
   const [canDelete, setCanDelete] = useState<boolean>(true)
 
 
-  const { data: materialGroup } = useGetMaterialGroupTreeSuspense({
+  const { data: productGroup } = useGetProductGroupTreeSuspense({
     query: {
-      select: (response) => response.data ?? []
+      select: (response) => response.productGroups ?? []
     }
   })
   const [endpoint, setEndpoint] = useState('1')
@@ -26,14 +26,14 @@ export const MaterialGroupList = () => {
     setEndpoint(value)
     navigate({
       to: value === '1'
-        ? '/storage/materialGroups'
+        ? '/storage/productGroups'
         : value === '2'
-          ? '/storage/productGroups'
+          ? '/storage/materialGroups'
           : '/serviceGroups'
     })
   }
 
-  const { data: materialCard } = useGetMaterialCard(selectedGroup ?? 0, {
+  const { data: productCard } = useGetProductCard(selectedGroup ?? 0, {
     query: {
       enabled: selectedGroup !== null && selectedGroup !== 0,
       select: (response) => response ?? []
@@ -41,40 +41,38 @@ export const MaterialGroupList = () => {
   })
 
 
-  const { mutateAsync: DeleteMaterialGroup } = useDeleteMaterialGroup()
+  const { mutateAsync: DeleteProductGroup } = useDeleteProductGroup()
 
   useEffect(() => {
-    if (Array.isArray(materialCard) && materialCard.length === 0) {
+    if (Array.isArray(productCard) && productCard.length === 0) {
       setCanDelete(true)
-    } else if (Array.isArray(materialCard) && materialCard.length > 0) {
+    } else if (Array.isArray(productCard) && productCard.length > 0) {
       setCanDelete(false)
     }
-  }, [materialCard])
+  }, [productCard])
 
   const handleDelete = async (id: number) => {
     try {
-      const groupToDelete = materialGroup.find(group => group.id === id)
+      const groupToDelete = productGroup.find(group => group.id === id)
 
-      // Eğer grup çocuk içeriyorsa engelle
       if (groupToDelete?.children && groupToDelete.children.length > 0) {
         alert(t('Cannot delete a group with child elements.'))
         return
       }
 
       if (!canDelete) {
-        alert(t('This group is linked to a Material Card and cannot be deleted.'))
+        alert(t('This group is linked to a Product Card and cannot be deleted.'))
         return
       }
 
-      // setSelectedGroup(id)
-      // console.log("Material Group Data:", materialGroup);
+       console.log("Product Group Data:", productGroup);
 
-      if (materialGroup.some(group => group.id === id)) {
-        alert(t('This group is linked to a Material Card and cannot be deleted.'))
+      if (productGroup.some(group => group.id === id)) {
+        alert(t('This group is linked to a Product Card and cannot be deleted.'))
         return
       }
 
-      await DeleteMaterialGroup({ id })
+      await DeleteProductGroup({ id })
       alert(t('Group deleted successfully.'))
     } catch (error: any) {
       console.error('Error deleting group:', error)
@@ -82,7 +80,7 @@ export const MaterialGroupList = () => {
     }
   }
 
-  const columnsTree = useMemo<MRT_ColumnDef<MaterialGroupTreeItem>[]>(
+  const columnsTree = useMemo<MRT_ColumnDef<ProductGroupTreeItem>[]>(
     () => [
       { header: t('Code'), accessorKey: 'code' },
       { header: t('Name'), accessorKey: 'name' },
@@ -111,17 +109,17 @@ export const MaterialGroupList = () => {
     [t, handleDelete]
   )
 
-  const columnsMaterialCard = useMemo<MRT_ColumnDef<MaterialCard>[]>(
+  const columnsProductCard = useMemo<MRT_ColumnDef<ProductCard>[]>(
     () => [
-      { header: t('Card Code'), accessorKey: 'materialCode' },
-      { header: t('Card Name'), accessorKey: 'materialName' }
+      { header: t('Card Code'), accessorKey: 'productCode' },
+      { header: t('Card Name'), accessorKey: 'productName' }
     ],
     [t]
   )
 
-  const materialCardTable = useMaterialReactTable({
-    columns: columnsMaterialCard,
-    data: materialCard || [],
+  const productCardTable = useMaterialReactTable({
+    columns: columnsProductCard,
+    data: productCard || [],
     enablePagination: false,
     initialState: { density: 'compact' },
     muiTableContainerProps: { sx: { maxHeight: '80vh' } },
@@ -131,12 +129,12 @@ export const MaterialGroupList = () => {
   })
 
   useEffect(() => {
-  }, [selectedGroup, materialCard])
+  }, [selectedGroup, productCard])
 
   const groupListTable = useMaterialReactTable({
     columns: columnsTree,
     enablePagination: false,
-    data: materialGroup,
+    data: productGroup,
     enableExpanding: true,
     getSubRows: (row) => row.children || [],
     initialState: { expanded: {}, density: 'comfortable' },
@@ -156,13 +154,13 @@ export const MaterialGroupList = () => {
     })
   })
 
-  const MaterialGroupListActions = () => (
+  const ProductGroupListActions = () => (
     <>
-      <Button variant="contained" size="small" onClick={() => navigate({ to: MaterialGroupRoute.fullPath })}>
-        {t('Add New Material Group')}
+      <Button variant="contained" size="small" onClick={() => navigate({ to: ProductGroupRoute.fullPath })}>
+        {t('Add New Product Group')}
       </Button>
-      <Button variant="contained" size="small" onClick={() => navigate({ to: MaterialNewRoute.fullPath })}>
-        {t('Add New Material Card')}
+      <Button variant="contained" size="small" onClick={() => navigate({ to: ProductNewRoute.fullPath })}>
+        {t('Add New Product Card')}
       </Button>
     </>
   )
@@ -173,7 +171,7 @@ export const MaterialGroupList = () => {
         title="Catalog"
         actions={
           <>
-            <MaterialGroupListActions />
+            <ProductGroupListActions />
             <Select
               value={endpoint}
               onChange={(e) => handleCatalogChange(e.target.value)}
@@ -191,7 +189,7 @@ export const MaterialGroupList = () => {
           <MaterialReactTable table={groupListTable} />
         </div>
         <div style={{ flex: 1 }}>
-          <MaterialReactTable table={materialCardTable} />
+          <MaterialReactTable table={productCardTable} />
         </div>
       </Stack>
     </Stack>
