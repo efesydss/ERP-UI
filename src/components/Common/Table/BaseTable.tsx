@@ -148,9 +148,9 @@ export const BaseTable = <TData extends RowData>(props: BaseTableProps<TData>) =
       .map((filter) => {
         const filterInfo = filterOperators.find((operator) => operator.columnId === filter.id)
         const filterOperator = getFilterOperator(filterInfo?.filterVariant || 'text')
-        const originalId = filter.id.replace(/.*_/, '')
+        const formattedId = filter.id.replace(/_/, '.')
 
-        return `${originalId}${filterOperator}${labelParser(filter.value as string, '_', 'before')}`
+        return `${formattedId}${filterOperator}${labelParser(filter.value as string, '_', 'before')}`
       })
       .join(';')
 

@@ -43,11 +43,12 @@ export const FinanceList = () => {
       },
       {
         header: t('common:department'),
-        accessorKey: 'department',
+        accessorKey: 'employee.department',
         accessorFn: (row) => row.employee?.department.name,
         meta: {
           filterVariant: 'select',
           filterOptionsEndpoint: 'departments'
+
         }
       },
       {
