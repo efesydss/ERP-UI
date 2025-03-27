@@ -19,6 +19,10 @@ export default defineConfig({
         query:{
           useSuspenseQuery: true
         },
+        mutator: {
+          path: './src/api/customMutator.ts',
+          name: 'customMutator'
+        }
       }
     }
   },
@@ -42,6 +46,10 @@ export default defineConfig({
            shouldExportMutatorHooks: false,
            useSuspenseQuery: true
          },
+         mutator: {
+          path: './src/api/customMutator.ts',
+          name: 'customMutator'
+        }
        }
     }
   }

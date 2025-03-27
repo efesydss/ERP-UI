@@ -14,10 +14,10 @@ export const Authenticated = () => {
         <AppDrawer />
         <Box sx={{ width: `calc(100% - ${isDrawerOpen ? drawerWidth : drawerCollapsed}px)` }}>
           <AppBar />
-          <Main component={'main'}>
+          <Box component={"main"}>
             <DrawerHeader />
             <Outlet />
-          </Main>
+          </Box>
         </Box>
       </RootWrapper>
     </>
