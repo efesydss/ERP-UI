@@ -10,5 +10,5 @@ export interface FixtureGroupTreeItem {
   id?: number | null;
   name: string;
   code: string;
-  children?: FixtureGroupTreeItem[];
+  children: FixtureGroupTreeItem[];
 }

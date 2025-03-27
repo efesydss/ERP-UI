@@ -3,7 +3,11 @@ import { defineConfig } from 'orval'
 export default defineConfig({
   erpApi: {
     input: {
-      target: './openapi.json'
+      target: './openapi.json',
+      filters: {
+        mode: 'exclude',
+        tags: ['filtering'],
+      },
     },
     output: {
       mock: true,
@@ -15,18 +19,30 @@ export default defineConfig({
         query:{
           useSuspenseQuery: true
         },
-       /* operations: {
-          MaterialGroups: {
-            query: {
-              useSuspenseQuery: true,
-            }
-          }
-        },*/
-        mutator: {
-          path: './src/api/customMutator.ts',
-          name: 'customMutator'
-        }
       }
+    }
+  },
+  erpApiFiltering: {
+    input: {
+      target: './openapi.json',
+      filters: {
+        mode: 'include',
+        tags: ['filtering'],
+      },
+    },
+    output: {
+      mock: true,
+      target: './src/api/filtering.ts',
+      mode: 'split',
+      client: 'react-query',
+      schemas: './src/api/model',
+      override: {
+         query:{
+           useMutation: false,
+           shouldExportMutatorHooks: false,
+           useSuspenseQuery: true
+         },
+       }
     }
   }
 })

@@ -6,6 +6,11 @@
  */
 import type { ServiceGroupTreeItem } from './serviceGroupTreeItem';
 
-export interface ServiceGroupTree {
-  serviceGroups?: ServiceGroupTreeItem[];
+export interface ServiceGroupTreeDataResponse {
+  message?: string;
+  error?: string;
+  data?: ServiceGroupTreeItem[];
+  total?: number;
+  page?: number;
+  pageSize?: number;
 }

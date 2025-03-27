@@ -6,6 +6,11 @@
  */
 import type { ProductGroupTreeItem } from './productGroupTreeItem';
 
-export interface ProductGroupTree {
-  productGroups?: ProductGroupTreeItem[];
+export interface ProductGroupTreeDataResponse {
+  message?: string;
+  error?: string;
+  data?: ProductGroupTreeItem[];
+  total?: number;
+  page?: number;
+  pageSize?: number;
 }

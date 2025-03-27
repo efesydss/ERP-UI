@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { MaterialReactTable, MRT_ColumnDef, useMaterialReactTable } from 'material-react-table'
-import { useDeleteMaterialGroup, useGetMaterialCard, useGetMaterialGroupTreeSuspense } from '@/api/openAPIDefinition'
+import { useDeleteMaterialGroup, useGetMaterialGroupTreeSuspense } from '@/api/openAPIDefinition'
 import { type MaterialCard, type MaterialGroupTreeItem } from '@/api/model'
 import { Button, Stack, Tooltip } from '@mui/material'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
@@ -8,27 +8,33 @@ import { Route as MaterialGroupRoute } from '@/routes/_authenticated/storage/mat
 import { Route as MaterialNewRoute } from '@/routes/_authenticated/storage/materialCards/new'
 import { useNavigate } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
+import { materialCards } from '@/api/filtering'
 
 export const MaterialGroupList = () => {
   const [selectedGroup, setSelectedGroup] = useState<number | null>(null)
   const navigate = useNavigate()
   const { t } = useTranslation('common')
   const [canDelete, setCanDelete] = useState<boolean>(true)
-
+  const [materialCard, setMaterialCard] = useState<MaterialCard[]>([])
 
   const { data: materialGroup } = useGetMaterialGroupTreeSuspense({
     query: {
-      select: (response) => response.data ?? []
+      select: (response) => response.data.data ?? []
     }
   })
 
-  const { data: materialCard } = useGetMaterialCard(selectedGroup ?? 0, {
-    query: {
-      enabled: selectedGroup !== null && selectedGroup !== 0,
-      select: (response) => response ?? []
+  useEffect(() => {
+    const fetchMaterialCards = async () => {
+      const response = await materialCards({
+        filter: `materialGroup.id eq ${selectedGroup ?? 0}`,
+      })
+      setMaterialCard(response.data.data ?? [])
     }
-  })
 
+    if (selectedGroup !== null) {
+      fetchMaterialCards()
+    }
+  }, [selectedGroup])
 
   const { mutateAsync: DeleteMaterialGroup } = useDeleteMaterialGroup()
 
@@ -110,7 +116,7 @@ export const MaterialGroupList = () => {
 
   const materialCardTable = useMaterialReactTable({
     columns: columnsMaterialCard,
-    data: materialCard || [],
+    data: materialCard,
     enablePagination: false,
     initialState: { density: 'compact' },
     muiTableContainerProps: { sx: { maxHeight: '80vh' } },

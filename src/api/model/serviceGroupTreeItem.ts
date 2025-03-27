@@ -10,5 +10,5 @@ export interface ServiceGroupTreeItem {
   id?: number | null;
   name: string;
   code: string;
-  children?: ServiceGroupTreeItem[];
+  children: ServiceGroupTreeItem[];
 }
