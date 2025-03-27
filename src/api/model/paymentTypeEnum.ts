@@ -8,7 +8,6 @@
 export type PaymentTypeEnum = typeof PaymentTypeEnum[keyof typeof PaymentTypeEnum];
 
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PaymentTypeEnum = {
   NO_PAYMENT: 'NO_PAYMENT',
   CASH: 'CASH',

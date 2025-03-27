@@ -8,7 +8,7 @@
 export type MaterialTypeEnum = typeof MaterialTypeEnum[keyof typeof MaterialTypeEnum];
 
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
+
 export const MaterialTypeEnum = {
   MAIN_MATERIAL: 'MAIN_MATERIAL',
   CONSUMPTION_MATERIAL: 'CONSUMPTION_MATERIAL',
