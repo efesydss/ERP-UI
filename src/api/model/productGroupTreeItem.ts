@@ -10,5 +10,5 @@ export interface ProductGroupTreeItem {
   id?: number | null;
   name: string;
   code: string;
-  children?: ProductGroupTreeItem[];
+  children: ProductGroupTreeItem[];
 }

@@ -6,6 +6,11 @@
  */
 import type { FixtureGroupTreeItem } from './fixtureGroupTreeItem';
 
-export interface FixtureGroupTree {
-  fixtureGroups?: FixtureGroupTreeItem[];
+export interface FixtureGroupTreeDataResponse {
+  message?: string;
+  error?: string;
+  data?: FixtureGroupTreeItem[];
+  total?: number;
+  page?: number;
+  pageSize?: number;
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { MaterialReactTable, MRT_ColumnDef, useMaterialReactTable } from 'material-react-table'
-import { useDeleteMaterialGroup, useGetMaterialCard, useGetMaterialGroupTreeSuspense } from '@/api/openAPIDefinition'
-import { type MaterialCard, type MaterialGroupTreeItem } from '@/api/model'
+import {  getMaterialGroupTree, useGetMaterialGroupTreeSuspense } from '@/api/openAPIDefinition'
+import { type MaterialGroupTreeDataResponse, type MaterialCard, type MaterialGroupTreeItem } from '@/api/model'
 import { Button, MenuItem, Select, Stack, Tooltip } from '@mui/material'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import { Route as MaterialGroupRoute } from '@/routes/_authenticated/storage/materialGroups/new'
@@ -15,72 +15,8 @@ export const MaterialGroupList = () => {
   const { t } = useTranslation('common')
   const [canDelete, setCanDelete] = useState<boolean>(true)
 
-
-  const { data: materialGroup } = useGetMaterialGroupTreeSuspense({
-    query: {
-      select: (response) => response.data ?? []
-    }
-  })
-  const [endpoint, setEndpoint] = useState('1')
-  const handleCatalogChange = (value: string) => {
-    setEndpoint(value)
-    navigate({
-      to: value === '1'
-        ? '/storage/materialGroups'
-        : value === '2'
-          ? '/storage/productGroups'
-          : '/serviceGroups'
-    })
-  }
-
-  const { data: materialCard } = useGetMaterialCard(selectedGroup ?? 0, {
-    query: {
-      enabled: selectedGroup !== null && selectedGroup !== 0,
-      select: (response) => response ?? []
-    }
-  })
-
-
-  const { mutateAsync: DeleteMaterialGroup } = useDeleteMaterialGroup()
-
-  useEffect(() => {
-    if (Array.isArray(materialCard) && materialCard.length === 0) {
-      setCanDelete(true)
-    } else if (Array.isArray(materialCard) && materialCard.length > 0) {
-      setCanDelete(false)
-    }
-  }, [materialCard])
-
-  const handleDelete = async (id: number) => {
-    try {
-      const groupToDelete = materialGroup.find(group => group.id === id)
-
-      // Eğer grup çocuk içeriyorsa engelle
-      if (groupToDelete?.children && groupToDelete.children.length > 0) {
-        alert(t('Cannot delete a group with child elements.'))
-        return
-      }
-
-      if (!canDelete) {
-        alert(t('This group is linked to a Material Card and cannot be deleted.'))
-        return
-      }
-
-      // setSelectedGroup(id)
-      // console.log("Material Group Data:", materialGroup);
-
-      if (materialGroup.some(group => group.id === id)) {
-        alert(t('This group is linked to a Material Card and cannot be deleted.'))
-        return
-      }
-
-      await DeleteMaterialGroup({ id })
-      alert(t('Group deleted successfully.'))
-    } catch (error: any) {
-      console.error('Error deleting group:', error)
-      alert(t('Error deleting group.'))
-    }
-  }
+  const { data: materialGroupResponse } = useGetMaterialGroupTreeSuspense()
+  const materialGroup = (materialGroupResponse?.data ?? []) as MaterialGroupTreeItem[]
 
   const columnsTree = useMemo<MRT_ColumnDef<MaterialGroupTreeItem>[]>(
     () => [
@@ -98,7 +34,7 @@ export const MaterialGroupList = () => {
           color="error"
           size="small"
           disabled
-          onClick={() => row.original.id && handleDelete(row.original.id)}
+          
         >
           {t('Delete')}
         </Button>
@@ -108,7 +44,7 @@ export const MaterialGroupList = () => {
         }
       }
     ],
-    [t, handleDelete]
+    [t]
   )
 
   const columnsMaterialCard = useMemo<MRT_ColumnDef<MaterialCard>[]>(
@@ -119,26 +55,24 @@ export const MaterialGroupList = () => {
     [t]
   )
 
-  const materialCardTable = useMaterialReactTable({
-    columns: columnsMaterialCard,
-    data: materialCard || [],
-    enablePagination: false,
-    initialState: { density: 'compact' },
-    muiTableContainerProps: { sx: { maxHeight: '80vh' } },
-    renderEmptyRowsFallback: () => (
-      <div style={{ textAlign: 'center', padding: '16px' }}>{t('No data available')}</div>
-    )
+
+
+
+
+  const { data : materialGroupTreeResponse } = useGetMaterialGroupTreeSuspense({
+   
   })
 
-  useEffect(() => {
-  }, [selectedGroup, materialCard])
+  const materialGroupTreeItems = materialGroupTreeResponse?.data?.data ?? []
+  
+
 
   const groupListTable = useMaterialReactTable({
     columns: columnsTree,
     enablePagination: false,
-    data: materialGroup,
+    data: materialGroupTreeItems,
     enableExpanding: true,
-    getSubRows: (row) => row.children || [],
+    getSubRows: (row) => (row as MaterialGroupTreeItem).children || [],
     initialState: { expanded: {}, density: 'comfortable' },
     enableColumnOrdering: false,
     enableGlobalFilter: true,
@@ -146,12 +80,12 @@ export const MaterialGroupList = () => {
     enableRowSelection: false,
     muiTableBodyRowProps: ({ row }) => ({
       onClick: () => {
-        setSelectedGroup((prev) => (prev === row.original.id ? null : row.original.id ?? null))
+        setSelectedGroup((prev) => (prev === (row.original as MaterialGroupTreeItem).id ? null : (row.original as MaterialGroupTreeItem).id ?? null))
       },
-      selected: selectedGroup === row.original.id,
+      selected: selectedGroup === (row.original as MaterialGroupTreeItem).id,
       sx: {
         cursor: 'pointer',
-        backgroundColor: selectedGroup === row.original.id ? '#e0f7fa' : 'inherit'
+        backgroundColor: selectedGroup === (row.original as MaterialGroupTreeItem).id ? '#e0f7fa' : 'inherit'
       }
     })
   })
@@ -168,31 +102,22 @@ export const MaterialGroupList = () => {
   )
 
   return (
+    
     <Stack direction="column" spacing={2} sx={{ p: 2 }}>
+     
       <PageTitle
         title="Catalog"
-        actions={
-          <>
-            <MaterialGroupListActions />
-            <Select
-              value={endpoint}
-              onChange={(e) => handleCatalogChange(e.target.value)}
-              sx={{ minWidth: 200, ml: 2 }}
-            >
-              <MenuItem value="1">Material Groups</MenuItem>
-              <MenuItem value="2">Product Groups</MenuItem>
-              <MenuItem value="3">Another Groups</MenuItem>
-            </Select>
-          </>
-        }
       />
+      
       <Stack direction="row" spacing={2} sx={{ width: '100%' }}>
         <div style={{ flex: 1 }}>
           <MaterialReactTable table={groupListTable} />
         </div>
+        
         <div style={{ flex: 1 }}>
-          <MaterialReactTable table={materialCardTable} />
+          
         </div>
+       
       </Stack>
     </Stack>
   )

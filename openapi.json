@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "https://falcons-erp-api-dev.sd.iafl.net",
+      "url": "http://localhost:8080",
       "description": "Generated server url"
     }
   ],
@@ -30,22 +30,22 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Unit"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unit"
                 }
               }
             }
@@ -95,22 +95,22 @@
               }
             }
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Unit"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unit"
                 }
               }
             }
@@ -399,22 +399,22 @@
           "required": true
         },
         "responses": {
-          "409": {
-            "description": "Already Exists",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ServiceGroup"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Already Exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -501,22 +501,12 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ServiceCard"
+                  "type": "string"
                 }
               }
             }
@@ -668,22 +658,22 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProductGroup"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductGroup"
                 }
               }
             }
@@ -733,22 +723,22 @@
               }
             }
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProductGroup"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductGroup"
                 }
               }
             }
@@ -834,16 +824,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
           }
         },
         "security": [
@@ -890,22 +870,22 @@
               }
             }
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProductCard"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductCard"
                 }
               }
             }
@@ -1037,22 +1017,22 @@
           "required": true
         },
         "responses": {
-          "409": {
-            "description": "Already Exists",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MaterialGroup"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Already Exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -1148,16 +1128,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
           }
         },
         "security": [
@@ -1204,16 +1174,6 @@
               }
             }
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MaterialCard"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
@@ -1230,6 +1190,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MaterialCard"
                 }
               }
             }
@@ -1361,22 +1331,22 @@
           "required": true
         },
         "responses": {
-          "409": {
-            "description": "Already Exists",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/FixtureGroup"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Already Exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -1468,17 +1438,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FixtureCard"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "type": "string"
                 }
               }
             }
@@ -1528,22 +1488,22 @@
               }
             }
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FixtureCard"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FixtureCard"
                 }
               }
             }
@@ -1620,22 +1580,22 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AssignmentTransaction"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssignmentTransaction"
                 }
               }
             }
@@ -1685,22 +1645,22 @@
               }
             }
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AssignmentTransaction"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssignmentTransaction"
                 }
               }
             }
@@ -1934,22 +1894,22 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Proposal"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Proposal"
                 }
               }
             }
@@ -1989,16 +1949,6 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Proposal"
-                }
-              }
-            }
-          },
           "409": {
             "description": "Already Exists",
             "content": {
@@ -2015,6 +1965,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Proposal"
                 }
               }
             }
@@ -2091,22 +2051,22 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PurchaseOrder"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -2146,6 +2106,16 @@
           "required": true
         },
         "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PurchaseOrder"
+                }
+              }
+            }
+          },
           "409": {
             "description": "Already Exists",
             "content": {
@@ -2162,16 +2132,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PurchaseOrder"
                 }
               }
             }
@@ -2248,22 +2208,22 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Invoice"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Invoice"
                 }
               }
             }
@@ -2303,16 +2263,6 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Invoice"
-                }
-              }
-            }
-          },
           "409": {
             "description": "Already Exists",
             "content": {
@@ -2329,6 +2279,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Invoice"
                 }
               }
             }
@@ -2754,22 +2714,22 @@
           "required": true
         },
         "responses": {
-          "409": {
-            "description": "Already Exists",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CurrentAccount"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Already Exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -2827,7 +2787,7 @@
         ]
       }
     },
-    "/api/purchasing/additionalcost/{id}": {
+    "/api/purchasing/additionalCost/{id}": {
       "get": {
         "tags": [
           "Purchasing / AdditionalCost"
@@ -2846,22 +2806,22 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AdditionalCost"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdditionalCost"
                 }
               }
             }
@@ -2911,22 +2871,22 @@
               }
             }
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AdditionalCost"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdditionalCost"
                 }
               }
             }
@@ -3160,22 +3120,22 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TimeKeeping"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimeKeeping"
                 }
               }
             }
@@ -3225,22 +3185,22 @@
               }
             }
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TimeKeeping"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimeKeeping"
                 }
               }
             }
@@ -3473,16 +3433,6 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "Invalid ID supplied",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResponseBase"
-                }
-              }
-            }
-          },
           "200": {
             "description": "TimeOff deleted successfully",
             "content": {
@@ -3505,6 +3455,16 @@
           },
           "404": {
             "description": "TimeOff not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseBase"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied",
             "content": {
               "application/json": {
                 "schema": {
@@ -3641,16 +3601,6 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "Invalid ID supplied",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResponseBase"
-                }
-              }
-            }
-          },
           "200": {
             "description": "TimeOff deleted successfully",
             "content": {
@@ -3673,6 +3623,16 @@
           },
           "404": {
             "description": "TimeOff not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseBase"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied",
             "content": {
               "application/json": {
                 "schema": {
@@ -3895,6 +3855,16 @@
               }
             }
           },
+          "405": {
+            "description": "Invalid Input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
           "200": {
             "description": "Success",
             "content": {
@@ -3904,16 +3874,6 @@
                   "items": {
                     "$ref": "#/components/schemas/EmployeeOvertime"
                   }
-                }
-              }
-            }
-          },
-          "405": {
-            "description": "Invalid Input",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -3966,6 +3926,16 @@
               }
             }
           },
+          "405": {
+            "description": "Invalid Input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
           "200": {
             "description": "Success",
             "content": {
@@ -3975,16 +3945,6 @@
                   "items": {
                     "$ref": "#/components/schemas/EmployeeOvertime"
                   }
-                }
-              }
-            }
-          },
-          "405": {
-            "description": "Invalid Input",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -4071,22 +4031,22 @@
               }
             }
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BankBranch"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BankBranch"
                 }
               }
             }
@@ -4116,8 +4076,8 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "Invalid ID supplied",
+          "403": {
+            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -4136,22 +4096,22 @@
               }
             }
           },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResponseBase"
-                }
-              }
-            }
-          },
           "204": {
             "description": "Bank Branch deleted successfully",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/BankBranch"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseBase"
                 }
               }
             }
@@ -4258,22 +4218,22 @@
               }
             }
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BankAccount"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BankAccount"
                 }
               }
             }
@@ -4303,18 +4263,8 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "Invalid ID supplied",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResponseBase"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Bank Branch not found",
+          "403": {
+            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": {
@@ -4333,8 +4283,18 @@
               }
             }
           },
-          "403": {
-            "description": "Forbidden",
+          "404": {
+            "description": "Bank Branch not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseBase"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied",
             "content": {
               "application/json": {
                 "schema": {
@@ -4390,22 +4350,22 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Bank"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Bank"
                 }
               }
             }
@@ -4455,22 +4415,22 @@
               }
             }
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Bank"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Bank"
                 }
               }
             }
@@ -4547,22 +4507,22 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Department"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Department"
                 }
               }
             }
@@ -4612,22 +4572,22 @@
               }
             }
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Department"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Department"
                 }
               }
             }
@@ -4704,22 +4664,22 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Branch"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Branch"
                 }
               }
             }
@@ -4769,22 +4729,22 @@
               }
             }
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Branch"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Branch"
                 }
               }
             }
@@ -4861,22 +4821,22 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Section"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Section"
                 }
               }
             }
@@ -4926,22 +4886,22 @@
               }
             }
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Section"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Section"
                 }
               }
             }
@@ -5175,22 +5135,22 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicHoliday"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -5240,22 +5200,22 @@
               }
             }
           },
-          "405": {
-            "description": "Invalid Input",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicHoliday"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid Input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -5332,22 +5292,22 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaymentMethod"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentMethod"
                 }
               }
             }
@@ -5397,22 +5357,22 @@
               }
             }
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaymentMethod"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentMethod"
                 }
               }
             }
@@ -5701,22 +5661,22 @@
           "required": true
         },
         "responses": {
-          "409": {
-            "description": "Already Exists",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Depot"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Already Exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -5858,22 +5818,22 @@
           "required": true
         },
         "responses": {
-          "409": {
-            "description": "Already Exists",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Company"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Already Exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -5960,22 +5920,22 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExpenseInvoice"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExpenseInvoice"
                 }
               }
             }
@@ -6025,22 +5985,22 @@
               }
             }
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExpenseInvoice"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExpenseInvoice"
                 }
               }
             }
@@ -6117,22 +6077,22 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExpenseCard"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExpenseCard"
                 }
               }
             }
@@ -6182,22 +6142,22 @@
               }
             }
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExpenseCard"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExpenseCard"
                 }
               }
             }
@@ -6329,22 +6289,22 @@
           "required": true
         },
         "responses": {
-          "409": {
-            "description": "Already Exists",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CashAccountTransaction"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Already Exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -6431,22 +6391,22 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CashAccount"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -6496,22 +6456,22 @@
               }
             }
           },
-          "405": {
-            "description": "Invalid Input",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CashAccount"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid Input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -6572,7 +6532,8 @@
     "/api/user/users": {
       "post": {
         "tags": [
-          "ERP / User"
+          "ERP / User",
+          "filtering"
         ],
         "description": "List Users. Supports filtering via rsql.",
         "externalDocs": {
@@ -6591,22 +6552,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Users"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Users"
                 }
               }
             }
@@ -6636,22 +6597,22 @@
           }
         ],
         "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResponseBase"
-                }
-              }
-            }
-          },
           "200": {
             "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/RefreshResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseBase"
                 }
               }
             }
@@ -6707,22 +6668,22 @@
           "required": true
         },
         "responses": {
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResponseBase"
-                }
-              }
-            }
-          },
           "200": {
             "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseBase"
                 }
               }
             }
@@ -6738,7 +6699,8 @@
     "/api/storage/units": {
       "post": {
         "tags": [
-          "Storage / Unit"
+          "Storage / Unit",
+          "filtering"
         ],
         "description": "List Units. Supports filtering via rsql.",
         "externalDocs": {
@@ -6757,22 +6719,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Units"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Units"
                 }
               }
             }
@@ -6813,22 +6775,22 @@
               }
             }
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Unit"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unit"
                 }
               }
             }
@@ -6844,6 +6806,7 @@
     "/api/storage/shelves": {
       "post": {
         "tags": [
+          "filtering",
           "Storage / Shelf"
         ],
         "description": "List Shelves. Supports filtering via rsql.",
@@ -6863,22 +6826,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Shelves"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Shelves"
                 }
               }
             }
@@ -6950,7 +6913,8 @@
     "/api/storage/serviceGroups": {
       "post": {
         "tags": [
-          "Storage / Service Group"
+          "Storage / Service Group",
+          "filtering"
         ],
         "description": "List ServiceGroups. Supports filtering via rsql.",
         "externalDocs": {
@@ -6969,22 +6933,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ServiceGroups"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceGroups"
                 }
               }
             }
@@ -7015,22 +6979,22 @@
           "required": true
         },
         "responses": {
-          "409": {
-            "description": "Already Exists",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ServiceGroup"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Already Exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -7056,7 +7020,8 @@
     "/api/storage/serviceCards": {
       "post": {
         "tags": [
-          "Storage / Service Card"
+          "Storage / Service Card",
+          "filtering"
         ],
         "description": "List ServiceCards. Supports filtering via rsql.",
         "externalDocs": {
@@ -7075,22 +7040,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ServiceCards"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceCards"
                 }
               }
             }
@@ -7162,6 +7127,7 @@
     "/api/storage/productGroups": {
       "post": {
         "tags": [
+          "filtering",
           "Storage / ProductGroup"
         ],
         "description": "List ProductGroups. Supports filtering via rsql.",
@@ -7181,22 +7147,22 @@
           "required": true
         },
         "responses": {
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProductGroups"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -7237,22 +7203,22 @@
               }
             }
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProductGroup"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductGroup"
                 }
               }
             }
@@ -7268,6 +7234,7 @@
     "/api/storage/productCards": {
       "post": {
         "tags": [
+          "filtering",
           "Storage / ProductCard"
         ],
         "description": "List ProductCards. Supports filtering via rsql.",
@@ -7343,22 +7310,22 @@
               }
             }
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProductCard"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductCard"
                 }
               }
             }
@@ -7374,7 +7341,8 @@
     "/api/storage/materialGroups": {
       "post": {
         "tags": [
-          "Storage / Material Group"
+          "Storage / Material Group",
+          "filtering"
         ],
         "description": "List MaterialGroups. Supports filtering via rsql.",
         "externalDocs": {
@@ -7393,22 +7361,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MaterialGroups"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MaterialGroups"
                 }
               }
             }
@@ -7439,22 +7407,22 @@
           "required": true
         },
         "responses": {
-          "409": {
-            "description": "Already Exists",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/MaterialGroup"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Already Exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -7480,7 +7448,8 @@
     "/api/storage/materialCards": {
       "post": {
         "tags": [
-          "Storage / Material Card"
+          "Storage / Material Card",
+          "filtering"
         ],
         "description": "List MaterialCards. Supports filtering via rsql.",
         "externalDocs": {
@@ -7555,22 +7524,22 @@
               }
             }
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MaterialCard"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MaterialCard"
                 }
               }
             }
@@ -7586,7 +7555,8 @@
     "/api/storage/fixtureGroups": {
       "post": {
         "tags": [
-          "Storage / Fixture Group"
+          "Storage / Fixture Group",
+          "filtering"
         ],
         "description": "List Fixture Groups. Supports filtering via rsql.",
         "externalDocs": {
@@ -7651,22 +7621,22 @@
           "required": true
         },
         "responses": {
-          "409": {
-            "description": "Already Exists",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/FixtureGroup"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Already Exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -7692,6 +7662,7 @@
     "/api/storage/fixtureCards": {
       "post": {
         "tags": [
+          "filtering",
           "Storage / Fixture Card"
         ],
         "description": "List FixtureCards. Supports filtering via rsql.",
@@ -7767,22 +7738,22 @@
               }
             }
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FixtureCard"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FixtureCard"
                 }
               }
             }
@@ -7798,7 +7769,8 @@
     "/api/storage/assignmentTransactions": {
       "post": {
         "tags": [
-          "Storage / AssignmentTransaction"
+          "Storage / AssignmentTransaction",
+          "filtering"
         ],
         "description": "List AssignmentTransactions. Supports filtering via rsql.",
         "externalDocs": {
@@ -7873,22 +7845,22 @@
               }
             }
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AssignmentTransaction"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssignmentTransaction"
                 }
               }
             }
@@ -7904,7 +7876,8 @@
     "/api/storage/assignmentCards": {
       "post": {
         "tags": [
-          "Storage / AssignmentCard"
+          "Storage / AssignmentCard",
+          "filtering"
         ],
         "description": "List AssignmentCards. Supports filtering via rsql.",
         "externalDocs": {
@@ -8010,6 +7983,7 @@
     "/api/sales/proposals": {
       "post": {
         "tags": [
+          "filtering",
           "Sales / Proposal"
         ],
         "description": "List Proposals. Supports filtering via rsql.",
@@ -8029,22 +8003,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Proposals"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Proposals"
                 }
               }
             }
@@ -8075,16 +8049,6 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Proposal"
-                }
-              }
-            }
-          },
           "409": {
             "description": "Already Exists",
             "content": {
@@ -8104,6 +8068,16 @@
                 }
               }
             }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Proposal"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -8116,6 +8090,7 @@
     "/api/purchasing/purchaseOrders": {
       "post": {
         "tags": [
+          "filtering",
           "Purchasing / PurchaseOrder"
         ],
         "description": "List PurchaseOrders. Supports filtering via rsql.",
@@ -8135,22 +8110,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PurchaseOrders"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PurchaseOrders"
                 }
               }
             }
@@ -8181,6 +8156,16 @@
           "required": true
         },
         "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PurchaseOrder"
+                }
+              }
+            }
+          },
           "409": {
             "description": "Already Exists",
             "content": {
@@ -8200,16 +8185,6 @@
                 }
               }
             }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PurchaseOrder"
-                }
-              }
-            }
           }
         },
         "security": [
@@ -8222,7 +8197,8 @@
     "/api/purchasing/invoices": {
       "post": {
         "tags": [
-          "Purchasing / Invoice"
+          "Purchasing / Invoice",
+          "filtering"
         ],
         "description": "List Invoices. Supports filtering via rsql.",
         "externalDocs": {
@@ -8287,16 +8263,6 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Invoice"
-                }
-              }
-            }
-          },
           "409": {
             "description": "Already Exists",
             "content": {
@@ -8313,6 +8279,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Invoice"
                 }
               }
             }
@@ -8343,22 +8319,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InvoiceCalculationResult"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceCalculationResult"
                 }
               }
             }
@@ -8374,7 +8350,8 @@
     "/api/purchasing/currentAccounts": {
       "post": {
         "tags": [
-          "Purchasing / Current Account"
+          "Purchasing / Current Account",
+          "filtering"
         ],
         "description": "List Current Accounts. Supports filtering via rsql.",
         "externalDocs": {
@@ -8439,22 +8416,22 @@
           "required": true
         },
         "responses": {
-          "409": {
-            "description": "Already Exists",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CurrentAccount"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Already Exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -8480,7 +8457,8 @@
     "/api/purchasing/currentAccountTransactions": {
       "post": {
         "tags": [
-          "Purchasing / Current Account Transaction"
+          "Purchasing / Current Account Transaction",
+          "filtering"
         ],
         "description": "List Current Account Transactions. Supports filtering via rsql.",
         "externalDocs": {
@@ -8499,22 +8477,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CurrentAccountTransactions"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentAccountTransactions"
                 }
               }
             }
@@ -8586,7 +8564,8 @@
     "/api/purchasing/currentAccountBankAccounts": {
       "post": {
         "tags": [
-          "Purchasing / CurrentAccountBankAccount"
+          "Purchasing / CurrentAccountBankAccount",
+          "filtering"
         ],
         "description": "List CurrentAccountBankAccounts. Supports filtering via rsql.",
         "externalDocs": {
@@ -8689,9 +8668,10 @@
         ]
       }
     },
-    "/api/purchasing/additionalcosts": {
+    "/api/purchasing/additionalCosts": {
       "post": {
         "tags": [
+          "filtering",
           "Purchasing / AdditionalCost"
         ],
         "description": "List AdditionalCosts. Supports filtering via rsql.",
@@ -8699,7 +8679,7 @@
           "description": "Rsql JPA Syntax",
           "url": "https://github.com/perplexhub/rsql-jpa-specification?tab=readme-ov-file#rsql-syntax-reference"
         },
-        "operationId": "additionalcosts",
+        "operationId": "additionalCosts",
         "requestBody": {
           "content": {
             "application/json": {
@@ -8711,22 +8691,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AdditionalCosts"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdditionalCosts"
                 }
               }
             }
@@ -8739,7 +8719,7 @@
         ]
       }
     },
-    "/api/purchasing/additionalcost": {
+    "/api/purchasing/additionalCost": {
       "post": {
         "tags": [
           "Purchasing / AdditionalCost"
@@ -8767,22 +8747,22 @@
               }
             }
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AdditionalCost"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdditionalCost"
                 }
               }
             }
@@ -8798,7 +8778,8 @@
     "/api/production/projects": {
       "post": {
         "tags": [
-          "Production / Project"
+          "Production / Project",
+          "filtering"
         ],
         "description": "List Projects. Supports filtering via rsql.",
         "externalDocs": {
@@ -8817,22 +8798,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Projects"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Projects"
                 }
               }
             }
@@ -8904,7 +8885,8 @@
     "/api/hr/timekeepings": {
       "post": {
         "tags": [
-          "Human Resources / Time Keeping"
+          "Human Resources / Time Keeping",
+          "filtering"
         ],
         "description": "List TimeKeepings. Supports filtering via rsql.",
         "externalDocs": {
@@ -8923,22 +8905,22 @@
           "required": true
         },
         "responses": {
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/TimeKeepings"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -8979,22 +8961,22 @@
               }
             }
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TimeKeeping"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimeKeeping"
                 }
               }
             }
@@ -9025,22 +9007,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TimeKeepingCalculationResult"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimeKeepingCalculationResult"
                 }
               }
             }
@@ -9056,7 +9038,8 @@
     "/api/hr/employees": {
       "post": {
         "tags": [
-          "Human Resources / Employee"
+          "Human Resources / Employee",
+          "filtering"
         ],
         "description": "List Employees. Supports filtering via rsql.",
         "externalDocs": {
@@ -9075,22 +9058,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Employees"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Employees"
                 }
               }
             }
@@ -9106,6 +9089,7 @@
     "/api/hr/employees/timeoffstatuses": {
       "post": {
         "tags": [
+          "filtering",
           "Human Resources / TimeOff"
         ],
         "description": "List Employee TimeOff Statuses. Supports filtering via rsql.",
@@ -9125,22 +9109,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TimeOffStatuses"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimeOffStatuses"
                 }
               }
             }
@@ -9212,6 +9196,7 @@
     "/api/hr/employee/{id}/timeoffs": {
       "post": {
         "tags": [
+          "filtering",
           "Human Resources / TimeOff"
         ],
         "description": "List Employee timeoffs. Supports filtering via rsql.",
@@ -9242,22 +9227,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TimeOffs"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimeOffs"
                 }
               }
             }
@@ -9340,7 +9325,8 @@
     "/api/hr/employee/{id}/payments": {
       "post": {
         "tags": [
-          "Human Resources / Employee Payment"
+          "Human Resources / Employee Payment",
+          "filtering"
         ],
         "description": "List Employee - Employee Payments. Supports filtering via rsql.",
         "externalDocs": {
@@ -9401,7 +9387,8 @@
     "/api/hr/employee/{id}/overtimes": {
       "post": {
         "tags": [
-          "Human Resources / Employee Overtime"
+          "Human Resources / Employee Overtime",
+          "filtering"
         ],
         "description": "List Employee - Employee Overtimes. Supports filtering via rsql.",
         "externalDocs": {
@@ -9431,22 +9418,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EmployeeOvertimes"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmployeeOvertimes"
                 }
               }
             }
@@ -9531,22 +9518,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EmployeeOvertimes"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmployeeOvertimes"
                 }
               }
             }
@@ -9562,7 +9549,8 @@
     "/api/finance/banks": {
       "post": {
         "tags": [
-          "Finance / Bank"
+          "Finance / Bank",
+          "filtering"
         ],
         "description": "List Banks. Supports filtering via rsql.",
         "externalDocs": {
@@ -9581,22 +9569,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Banks"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Banks"
                 }
               }
             }
@@ -9637,22 +9625,22 @@
               }
             }
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Bank"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Bank"
                 }
               }
             }
@@ -9668,7 +9656,8 @@
     "/api/finance/bankBranches": {
       "post": {
         "tags": [
-          "Finance / Bank Branch"
+          "Finance / Bank Branch",
+          "filtering"
         ],
         "description": "List Bank Branches. Supports filtering via rsql.",
         "externalDocs": {
@@ -9743,22 +9732,22 @@
               }
             }
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BankBranch"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BankBranch"
                 }
               }
             }
@@ -9774,7 +9763,8 @@
     "/api/finance/bankAccounts": {
       "post": {
         "tags": [
-          "Finance / Bank Account"
+          "Finance / Bank Account",
+          "filtering"
         ],
         "description": "List Bank Accounts. Supports filtering via rsql.",
         "externalDocs": {
@@ -9793,22 +9783,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BankAccounts"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BankAccounts"
                 }
               }
             }
@@ -9849,22 +9839,22 @@
               }
             }
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BankAccount"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BankAccount"
                 }
               }
             }
@@ -9880,7 +9870,8 @@
     "/api/company/departments": {
       "post": {
         "tags": [
-          "Company / Department"
+          "Company / Department",
+          "filtering"
         ],
         "description": "List Departments. Supports filtering via rsql.",
         "externalDocs": {
@@ -9899,22 +9890,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Departments"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Departments"
                 }
               }
             }
@@ -9955,22 +9946,22 @@
               }
             }
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Department"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Department"
                 }
               }
             }
@@ -9986,7 +9977,8 @@
     "/api/company/branches": {
       "post": {
         "tags": [
-          "Company / Branch"
+          "Company / Branch",
+          "filtering"
         ],
         "description": "List Branches. Supports filtering via rsql.",
         "externalDocs": {
@@ -10061,22 +10053,22 @@
               }
             }
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Branch"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Branch"
                 }
               }
             }
@@ -10092,7 +10084,8 @@
     "/api/admin/sections": {
       "post": {
         "tags": [
-          "Admin / Section"
+          "Admin / Section",
+          "filtering"
         ],
         "description": "List Sections. Supports filtering via rsql.",
         "externalDocs": {
@@ -10111,22 +10104,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Sections"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sections"
                 }
               }
             }
@@ -10167,22 +10160,22 @@
               }
             }
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Section"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Section"
                 }
               }
             }
@@ -10198,7 +10191,8 @@
     "/api/admin/roles": {
       "post": {
         "tags": [
-          "Admin / Role"
+          "Admin / Role",
+          "filtering"
         ],
         "description": "List Roles. Supports filtering via rsql.",
         "externalDocs": {
@@ -10217,22 +10211,22 @@
           "required": true
         },
         "responses": {
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Roles"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -10304,7 +10298,8 @@
     "/api/admin/publicHolidays": {
       "post": {
         "tags": [
-          "Admin / Public Holiday"
+          "Admin / Public Holiday",
+          "filtering"
         ],
         "description": "List Public Holidays. Supports filtering via rsql.",
         "externalDocs": {
@@ -10323,22 +10318,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PublicHolidays"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicHolidays"
                 }
               }
             }
@@ -10379,22 +10374,22 @@
               }
             }
           },
-          "405": {
-            "description": "Invalid Input",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PublicHoliday"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid Input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -10410,6 +10405,7 @@
     "/api/admin/paymentMethods": {
       "post": {
         "tags": [
+          "filtering",
           "Admin / PaymentMethod"
         ],
         "description": "List PaymentMethods. Supports filtering via rsql.",
@@ -10429,22 +10425,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaymentMethods"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentMethods"
                 }
               }
             }
@@ -10485,22 +10481,22 @@
               }
             }
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaymentMethod"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentMethod"
                 }
               }
             }
@@ -10516,7 +10512,8 @@
     "/api/admin/machines": {
       "post": {
         "tags": [
-          "Admin / Machine"
+          "Admin / Machine",
+          "filtering"
         ],
         "description": "List Machines. Supports filtering via rsql.",
         "externalDocs": {
@@ -10535,22 +10532,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Machines"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Machines"
                 }
               }
             }
@@ -10622,7 +10619,8 @@
     "/api/admin/depots": {
       "post": {
         "tags": [
-          "Admin / Depot"
+          "Admin / Depot",
+          "filtering"
         ],
         "description": "List Depots. Supports filtering via rsql.",
         "externalDocs": {
@@ -10641,22 +10639,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Depots"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Depots"
                 }
               }
             }
@@ -10687,22 +10685,22 @@
           "required": true
         },
         "responses": {
-          "409": {
-            "description": "Already Exists",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Depot"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Already Exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -10743,22 +10741,22 @@
           "required": true
         },
         "responses": {
-          "409": {
-            "description": "Already Exists",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Company"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Already Exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -10784,7 +10782,8 @@
     "/api/admin/companies": {
       "post": {
         "tags": [
-          "Admin / Company"
+          "Admin / Company",
+          "filtering"
         ],
         "description": "List Companies. Supports filtering via rsql.",
         "externalDocs": {
@@ -10803,22 +10802,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Companies"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Companies"
                 }
               }
             }
@@ -10834,6 +10833,7 @@
     "/api/accounting/expenseInvoices": {
       "post": {
         "tags": [
+          "filtering",
           "Accounting / ExpenseInvoice"
         ],
         "description": "List ExpenseInvoices. Supports filtering via rsql.",
@@ -10853,22 +10853,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExpenseInvoices"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExpenseInvoices"
                 }
               }
             }
@@ -10909,22 +10909,22 @@
               }
             }
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExpenseInvoice"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExpenseInvoice"
                 }
               }
             }
@@ -10955,22 +10955,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExpenseInvoiceCalculationResult"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExpenseInvoiceCalculationResult"
                 }
               }
             }
@@ -10986,7 +10986,8 @@
     "/api/accounting/expenseCards": {
       "post": {
         "tags": [
-          "Accounting / ExpenseCard"
+          "Accounting / ExpenseCard",
+          "filtering"
         ],
         "description": "List ExpenseCards. Supports filtering via rsql.",
         "externalDocs": {
@@ -11005,22 +11006,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExpenseCards"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExpenseCards"
                 }
               }
             }
@@ -11061,22 +11062,22 @@
               }
             }
           },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ExpenseCard"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExpenseCard"
                 }
               }
             }
@@ -11092,7 +11093,8 @@
     "/api/accounting/cashAccounts": {
       "post": {
         "tags": [
-          "Accounting / CashAccount"
+          "Accounting / CashAccount",
+          "filtering"
         ],
         "description": "List CashAccounts. Supports filtering via rsql.",
         "externalDocs": {
@@ -11111,22 +11113,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CashAccounts"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CashAccounts"
                 }
               }
             }
@@ -11167,22 +11169,22 @@
               }
             }
           },
-          "405": {
-            "description": "Invalid Input",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CashAccount"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid Input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -11198,7 +11200,8 @@
     "/api/accounting/cashAccountTransactions": {
       "post": {
         "tags": [
-          "Accounting / CashAccountTransaction"
+          "Accounting / CashAccountTransaction",
+          "filtering"
         ],
         "description": "List CashAccountTransactions. Supports filtering via rsql.",
         "externalDocs": {
@@ -11217,22 +11220,22 @@
           "required": true
         },
         "responses": {
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CashAccountTransactions"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -11263,22 +11266,22 @@
           "required": true
         },
         "responses": {
-          "409": {
-            "description": "Already Exists",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CashAccountTransaction"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Already Exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -11322,22 +11325,22 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CashAccountBalanceResult"
-                }
-              }
-            }
-          },
           "405": {
             "description": "Invalid Input",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CashAccountBalanceResult"
                 }
               }
             }
@@ -11363,7 +11366,33 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ServiceGroupTree"
+                  "$ref": "#/components/schemas/ServiceGroupTreeDataResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/storage/serviceGroup/flatList": {
+      "get": {
+        "tags": [
+          "Storage / Service Group"
+        ],
+        "description": "Get Service Group Flat List",
+        "operationId": "getServiceGroupFlatList",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceGroupTreeDataResponse"
                 }
               }
             }
@@ -11389,7 +11418,33 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProductGroupTree"
+                  "$ref": "#/components/schemas/ProductGroupTreeDataResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/storage/productGroup/flatList": {
+      "get": {
+        "tags": [
+          "Storage / ProductGroup"
+        ],
+        "description": "Get ProductGroup Flat List",
+        "operationId": "getProductGroupFlatList",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductGroupTreeDataResponse"
                 }
               }
             }
@@ -11428,6 +11483,32 @@
         ]
       }
     },
+    "/api/storage/materialGroup/flatList": {
+      "get": {
+        "tags": [
+          "Storage / Material Group"
+        ],
+        "description": "Get MaterialGroup Flat List",
+        "operationId": "getMaterialGroupFlatList",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MaterialGroupTreeDataResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
     "/api/storage/fixtureGroup/tree": {
       "get": {
         "tags": [
@@ -11441,7 +11522,33 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FixtureGroupTree"
+                  "$ref": "#/components/schemas/FixtureGroupTreeDataResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/api/storage/fixtureGroup/flatList": {
+      "get": {
+        "tags": [
+          "Storage / Fixture Group"
+        ],
+        "description": "Get FixtureGroup Flat List",
+        "operationId": "getFixtureGroupFlatList",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FixtureGroupTreeDataResponse"
                 }
               }
             }
@@ -11491,16 +11598,6 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TimeKeeping"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
@@ -11517,6 +11614,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimeKeeping"
                 }
               }
             }
@@ -11548,22 +11655,22 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TimeOffStatus"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimeOffStatus"
                 }
               }
             }
@@ -11648,16 +11755,6 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "Invalid ID supplied",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResponseBase"
-                }
-              }
-            }
-          },
           "403": {
             "description": "Forbidden",
             "content": {
@@ -11670,6 +11767,26 @@
           },
           "404": {
             "description": "TimeOff not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseBase"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Employee Payment deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmployeePayment"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied",
             "content": {
               "application/json": {
                 "schema": {
@@ -11694,16 +11811,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ResponseBase"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Employee Payment deleted successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EmployeePayment"
                 }
               }
             }
@@ -11788,26 +11895,6 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "Invalid ID supplied",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResponseBase"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Employee Overtime deleted successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EmployeeOvertime"
-                }
-              }
-            }
-          },
           "403": {
             "description": "Forbidden",
             "content": {
@@ -11828,12 +11915,32 @@
               }
             }
           },
+          "400": {
+            "description": "Invalid ID supplied",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseBase"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Internal server error",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ResponseBase"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Employee Overtime deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmployeeOvertime"
                 }
               }
             }
@@ -13084,6 +13191,13 @@
               "currencyCode": {
                 "type": "string"
               },
+              "numericCode": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "numericCodeAsString": {
+                "type": "string"
+              },
               "displayName": {
                 "type": "string"
               },
@@ -13093,13 +13207,6 @@
               "defaultFractionDigits": {
                 "type": "integer",
                 "format": "int32"
-              },
-              "numericCode": {
-                "type": "integer",
-                "format": "int32"
-              },
-              "numericCodeAsString": {
-                "type": "string"
               }
             },
             "example": "USD"
@@ -13419,17 +13526,17 @@
           "manHour": {
             "type": "number",
             "description": "Man / Hour",
-            "example": 0
+            "example": 0.0
           },
           "manHourCost": {
             "type": "number",
             "description": "Man Hour Cost",
-            "example": 0
+            "example": 0.0
           },
           "cost": {
             "type": "number",
             "description": "Cost",
-            "example": 0
+            "example": 0.0
           }
         },
         "description": "Proposal Labor Cost Items"
@@ -13457,32 +13564,32 @@
           "discount": {
             "type": "number",
             "description": "Discount",
-            "example": 0
+            "example": 0.0
           },
           "expense": {
             "type": "number",
             "description": "Expense",
-            "example": 0
+            "example": 0.0
           },
           "profit": {
             "type": "number",
             "description": "Profit",
-            "example": 0
+            "example": 0.0
           },
           "profitMargin": {
             "type": "number",
             "description": "Profit Margin %",
-            "example": 0
+            "example": 0.0
           },
           "price": {
             "type": "number",
             "description": "Price",
-            "example": 0
+            "example": 0.0
           },
           "rowTotal": {
             "type": "number",
             "description": "Row Total",
-            "example": 0
+            "example": 0.0
           }
         },
         "description": "Proposal Product Rows"
@@ -13533,22 +13640,22 @@
           "discount": {
             "type": "number",
             "description": "Proposal Discount",
-            "example": 0
+            "example": 0.0
           },
           "expense": {
             "type": "number",
             "description": "Proposal Expense",
-            "example": 0
+            "example": 0.0
           },
           "tax": {
             "type": "number",
             "description": "Proposal Tax",
-            "example": 0
+            "example": 0.0
           },
           "total": {
             "type": "number",
             "description": "Proposal Total",
-            "example": 0
+            "example": 0.0
           },
           "description": {
             "type": "string",
@@ -13578,22 +13685,22 @@
           "unitDiscount": {
             "type": "number",
             "description": "Proposal Unit Discount",
-            "example": 0
+            "example": 0.0
           },
           "totalTax": {
             "type": "number",
             "description": "Proposal Total Tax",
-            "example": 0
+            "example": 0.0
           },
           "additionalCosts": {
             "type": "number",
             "description": "Proposal Additional Costs",
-            "example": 0
+            "example": 0.0
           },
           "finalTotal": {
             "type": "number",
             "description": "Proposal Final Total",
-            "example": 0
+            "example": 0.0
           },
           "extras": {
             "$ref": "#/components/schemas/Extras"
@@ -13945,16 +14052,23 @@
           },
           "transactionCost": {
             "type": "number",
-            "example": 50
+            "example": 50.0
           },
           "amount": {
             "type": "number",
-            "example": 1500
+            "example": 1500.0
           },
           "amountCurrency": {
             "type": "object",
             "properties": {
               "currencyCode": {
+                "type": "string"
+              },
+              "numericCode": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "numericCodeAsString": {
                 "type": "string"
               },
               "displayName": {
@@ -13966,13 +14080,6 @@
               "defaultFractionDigits": {
                 "type": "integer",
                 "format": "int32"
-              },
-              "numericCode": {
-                "type": "integer",
-                "format": "int32"
-              },
-              "numericCodeAsString": {
-                "type": "string"
               }
             },
             "example": "USD"
@@ -14097,7 +14204,7 @@
           },
           "title": {
             "type": "string",
-            "example": "Şubat Ayı Puantajı"
+            "example": "Åžubat AyÄ± PuantajÄ±"
           },
           "deductions": {
             "type": "array",
@@ -14599,11 +14706,11 @@
           },
           "total": {
             "type": "number",
-            "example": 50
+            "example": 50.0
           },
           "balance": {
             "type": "number",
-            "example": 50
+            "example": 50.0
           }
         }
       },
@@ -14647,7 +14754,7 @@
             }
           }
         },
-        "description": "Filtering request via RSQL. Empty filter returns everything. \n\nExample filter: (endDate\u003E2023-05-05 and endDate\u003C2024-05-08) and name==Jon \n\nExample sort: id,asc;company.id,desc"
+        "description": "Filtering request via RSQL. Empty filter returns everything. \n\nExample filter: (endDate>2023-05-05 and endDate<2024-05-08) and name==Jon \n\nExample sort: id,asc;company.id,desc"
       },
       "User": {
         "required": [
@@ -14705,17 +14812,6 @@
           }
         }
       },
-      "ResponseBase": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string"
-          },
-          "error": {
-            "type": "string"
-          }
-        }
-      },
       "RefreshResponse": {
         "type": "object",
         "properties": {
@@ -14726,6 +14822,17 @@
             "type": "string"
           },
           "token": {
+            "type": "string"
+          }
+        }
+      },
+      "ResponseBase": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "error": {
             "type": "string"
           }
         }
@@ -14973,7 +15080,7 @@
           "data": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/MaterialCards"
+              "$ref": "#/components/schemas/MaterialCard"
             }
           },
           "total": {
@@ -16128,6 +16235,13 @@
               "currencyCode": {
                 "type": "string"
               },
+              "numericCode": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "numericCodeAsString": {
+                "type": "string"
+              },
               "displayName": {
                 "type": "string"
               },
@@ -16137,13 +16251,6 @@
               "defaultFractionDigits": {
                 "type": "integer",
                 "format": "int32"
-              },
-              "numericCode": {
-                "type": "integer",
-                "format": "int32"
-              },
-              "numericCodeAsString": {
-                "type": "string"
               }
             }
           }
@@ -16557,19 +16664,38 @@
           }
         }
       },
-      "ServiceGroupTree": {
+      "ServiceGroupTreeDataResponse": {
         "type": "object",
         "properties": {
-          "serviceGroups": {
+          "message": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          },
+          "data": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ServiceGroupTreeItem"
             }
+          },
+          "total": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
       "ServiceGroupTreeItem": {
         "required": [
+          "children",
           "code",
           "name"
         ],
@@ -16597,19 +16723,38 @@
           }
         }
       },
-      "ProductGroupTree": {
+      "ProductGroupTreeDataResponse": {
         "type": "object",
         "properties": {
-          "productGroups": {
+          "message": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          },
+          "data": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ProductGroupTreeItem"
             }
+          },
+          "total": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
       "ProductGroupTreeItem": {
         "required": [
+          "children",
           "code",
           "name"
         ],
@@ -16696,19 +16841,38 @@
           }
         }
       },
-      "FixtureGroupTree": {
+      "FixtureGroupTreeDataResponse": {
         "type": "object",
         "properties": {
-          "fixtureGroups": {
+          "message": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          },
+          "data": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/FixtureGroupTreeItem"
             }
+          },
+          "total": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
       "FixtureGroupTreeItem": {
         "required": [
+          "children",
           "code",
           "name"
         ],

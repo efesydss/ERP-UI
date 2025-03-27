@@ -4,11 +4,12 @@
  * OpenAPI definition
  * OpenAPI spec version: v0
  */
+import type { MaterialCard } from './materialCard';
 
 export interface MaterialCards {
   message?: string;
   error?: string;
-  data?: MaterialCards[];
+  data?: MaterialCard[];
   total?: number;
   page?: number;
   pageSize?: number;
