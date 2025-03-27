@@ -111,6 +111,7 @@ export const refreshAuth = async (failedRequest: AxiosError) => {
       setAuthToken(undefined)
       window.location.href = '/login'
     }
+
     return Promise.reject(error)
   }
 }
