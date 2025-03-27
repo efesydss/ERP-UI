@@ -8,7 +8,6 @@
 export type CurrentAccountEntitySector = typeof CurrentAccountEntitySector[keyof typeof CurrentAccountEntitySector];
 
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CurrentAccountEntitySector = {
   METAL: 'METAL',
   YACHTING: 'YACHTING',

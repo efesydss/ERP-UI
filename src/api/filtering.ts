@@ -4,11 +4,6 @@
  * OpenAPI definition
  * OpenAPI spec version: v0
  */
-import * as axios from 'axios';
-import type {
-  AxiosRequestConfig,
-  AxiosResponse
-} from 'axios'
 import type {
   AdditionalCosts,
   AssignmentCards,
@@ -55,6 +50,7 @@ import type {
   Units,
   Users
 } from './model'
+import { customMutator } from './customMutator';
 
 
 
@@ -62,384 +58,456 @@ import type {
  * List Users. Supports filtering via rsql.
  */
 export const users = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Users>> => {
-    
-    
-    return axios.default.post(
-      `/api/user/users`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Users>(
+      {url: `/api/user/users`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List Units. Supports filtering via rsql.
  */
 export const units = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Units>> => {
-    
-    
-    return axios.default.post(
-      `/api/storage/units`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Units>(
+      {url: `/api/storage/units`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List Shelves. Supports filtering via rsql.
  */
 export const shelves = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Shelves>> => {
-    
-    
-    return axios.default.post(
-      `/api/storage/shelves`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Shelves>(
+      {url: `/api/storage/shelves`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List ServiceGroups. Supports filtering via rsql.
  */
 export const serviceGroups = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ServiceGroups>> => {
-    
-    
-    return axios.default.post(
-      `/api/storage/serviceGroups`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<ServiceGroups>(
+      {url: `/api/storage/serviceGroups`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List ServiceCards. Supports filtering via rsql.
  */
 export const serviceCards = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ServiceCards>> => {
-    
-    
-    return axios.default.post(
-      `/api/storage/serviceCards`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<ServiceCards>(
+      {url: `/api/storage/serviceCards`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List ProductGroups. Supports filtering via rsql.
  */
 export const productGroups = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ProductGroups>> => {
-    
-    
-    return axios.default.post(
-      `/api/storage/productGroups`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<ProductGroups>(
+      {url: `/api/storage/productGroups`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List ProductCards. Supports filtering via rsql.
  */
 export const productCards = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ProductCards>> => {
-    
-    
-    return axios.default.post(
-      `/api/storage/productCards`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<ProductCards>(
+      {url: `/api/storage/productCards`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List MaterialGroups. Supports filtering via rsql.
  */
 export const materialGroups = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<MaterialGroups>> => {
-    
-    
-    return axios.default.post(
-      `/api/storage/materialGroups`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<MaterialGroups>(
+      {url: `/api/storage/materialGroups`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List MaterialCards. Supports filtering via rsql.
  */
 export const materialCards = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<MaterialCards>> => {
-    
-    
-    return axios.default.post(
-      `/api/storage/materialCards`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<MaterialCards>(
+      {url: `/api/storage/materialCards`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List Fixture Groups. Supports filtering via rsql.
  */
 export const fixtureGroups = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<FixtureGroups>> => {
-    
-    
-    return axios.default.post(
-      `/api/storage/fixtureGroups`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<FixtureGroups>(
+      {url: `/api/storage/fixtureGroups`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List FixtureCards. Supports filtering via rsql.
  */
 export const fixtureCards = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<FixtureCards>> => {
-    
-    
-    return axios.default.post(
-      `/api/storage/fixtureCards`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<FixtureCards>(
+      {url: `/api/storage/fixtureCards`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List AssignmentTransactions. Supports filtering via rsql.
  */
 export const assignmentTransactions = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<AssignmentTransactions>> => {
-    
-    
-    return axios.default.post(
-      `/api/storage/assignmentTransactions`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<AssignmentTransactions>(
+      {url: `/api/storage/assignmentTransactions`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List AssignmentCards. Supports filtering via rsql.
  */
 export const assignmentCards = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<AssignmentCards>> => {
-    
-    
-    return axios.default.post(
-      `/api/storage/assignmentCards`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<AssignmentCards>(
+      {url: `/api/storage/assignmentCards`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List Proposals. Supports filtering via rsql.
  */
 export const proposals = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Proposals>> => {
-    
-    
-    return axios.default.post(
-      `/api/sales/proposals`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Proposals>(
+      {url: `/api/sales/proposals`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List PurchaseOrders. Supports filtering via rsql.
  */
 export const purchaseOrders = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<PurchaseOrders>> => {
-    
-    
-    return axios.default.post(
-      `/api/purchasing/purchaseOrders`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<PurchaseOrders>(
+      {url: `/api/purchasing/purchaseOrders`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List Invoices. Supports filtering via rsql.
  */
 export const getInvoices = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Invoices>> => {
-    
-    
-    return axios.default.post(
-      `/api/purchasing/invoices`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Invoices>(
+      {url: `/api/purchasing/invoices`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List Current Accounts. Supports filtering via rsql.
  */
 export const currentAccounts = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<CurrentAccounts>> => {
-    
-    
-    return axios.default.post(
-      `/api/purchasing/currentAccounts`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<CurrentAccounts>(
+      {url: `/api/purchasing/currentAccounts`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List Current Account Transactions. Supports filtering via rsql.
  */
 export const getCurrentAccountTransactions = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<CurrentAccountTransactions>> => {
-    
-    
-    return axios.default.post(
-      `/api/purchasing/currentAccountTransactions`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<CurrentAccountTransactions>(
+      {url: `/api/purchasing/currentAccountTransactions`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List CurrentAccountBankAccounts. Supports filtering via rsql.
  */
 export const currentAccountBankAccounts = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<CurrentAccountBankAccounts>> => {
-    
-    
-    return axios.default.post(
-      `/api/purchasing/currentAccountBankAccounts`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<CurrentAccountBankAccounts>(
+      {url: `/api/purchasing/currentAccountBankAccounts`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List AdditionalCosts. Supports filtering via rsql.
  */
 export const additionalCosts = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<AdditionalCosts>> => {
-    
-    
-    return axios.default.post(
-      `/api/purchasing/additionalCosts`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<AdditionalCosts>(
+      {url: `/api/purchasing/additionalCosts`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List Projects. Supports filtering via rsql.
  */
 export const projects = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Projects>> => {
-    
-    
-    return axios.default.post(
-      `/api/production/projects`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Projects>(
+      {url: `/api/production/projects`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List TimeKeepings. Supports filtering via rsql.
  */
 export const timeKeepings = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<TimeKeepings>> => {
-    
-    
-    return axios.default.post(
-      `/api/hr/timekeepings`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<TimeKeepings>(
+      {url: `/api/hr/timekeepings`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List Employees. Supports filtering via rsql.
  */
 export const employees = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Employees>> => {
-    
-    
-    return axios.default.post(
-      `/api/hr/employees`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Employees>(
+      {url: `/api/hr/employees`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List Employee TimeOff Statuses. Supports filtering via rsql.
  */
 export const employeeTimeOffStatuses = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<TimeOffStatuses>> => {
-    
-    
-    return axios.default.post(
-      `/api/hr/employees/timeoffstatuses`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<TimeOffStatuses>(
+      {url: `/api/hr/employees/timeoffstatuses`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
@@ -447,16 +515,19 @@ export const employeeTimeOffStatuses = (
  */
 export const timeoffs = (
     id: number,
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<TimeOffs>> => {
-    
-    
-    return axios.default.post(
-      `/api/hr/employee/${id}/timeoffs`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<TimeOffs>(
+      {url: `/api/hr/employee/${id}/timeoffs`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
@@ -464,16 +535,19 @@ export const timeoffs = (
  */
 export const employeePayments = (
     id: number,
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<EmployeePayments>> => {
-    
-    
-    return axios.default.post(
-      `/api/hr/employee/${id}/payments`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<EmployeePayments>(
+      {url: `/api/hr/employee/${id}/payments`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
@@ -481,271 +555,322 @@ export const employeePayments = (
  */
 export const employeeOvertimes = (
     id: number,
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<EmployeeOvertimes>> => {
-    
-    
-    return axios.default.post(
-      `/api/hr/employee/${id}/overtimes`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<EmployeeOvertimes>(
+      {url: `/api/hr/employee/${id}/overtimes`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List Banks. Supports filtering via rsql.
  */
 export const banks = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Banks>> => {
-    
-    
-    return axios.default.post(
-      `/api/finance/banks`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Banks>(
+      {url: `/api/finance/banks`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List Bank Branches. Supports filtering via rsql.
  */
 export const bankBranches = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<BankBranches>> => {
-    
-    
-    return axios.default.post(
-      `/api/finance/bankBranches`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<BankBranches>(
+      {url: `/api/finance/bankBranches`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List Bank Accounts. Supports filtering via rsql.
  */
 export const bankAccounts = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<BankAccounts>> => {
-    
-    
-    return axios.default.post(
-      `/api/finance/bankAccounts`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<BankAccounts>(
+      {url: `/api/finance/bankAccounts`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List Departments. Supports filtering via rsql.
  */
 export const departments = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Departments>> => {
-    
-    
-    return axios.default.post(
-      `/api/company/departments`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Departments>(
+      {url: `/api/company/departments`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List Branches. Supports filtering via rsql.
  */
 export const branches = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Branches>> => {
-    
-    
-    return axios.default.post(
-      `/api/company/branches`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Branches>(
+      {url: `/api/company/branches`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List Sections. Supports filtering via rsql.
  */
 export const sections = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Sections>> => {
-    
-    
-    return axios.default.post(
-      `/api/admin/sections`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Sections>(
+      {url: `/api/admin/sections`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List Roles. Supports filtering via rsql.
  */
 export const roles = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Roles>> => {
-    
-    
-    return axios.default.post(
-      `/api/admin/roles`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Roles>(
+      {url: `/api/admin/roles`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List Public Holidays. Supports filtering via rsql.
  */
 export const publicHolidays = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<PublicHolidays>> => {
-    
-    
-    return axios.default.post(
-      `/api/admin/publicHolidays`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<PublicHolidays>(
+      {url: `/api/admin/publicHolidays`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List PaymentMethods. Supports filtering via rsql.
  */
 export const paymentMethods = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<PaymentMethods>> => {
-    
-    
-    return axios.default.post(
-      `/api/admin/paymentMethods`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<PaymentMethods>(
+      {url: `/api/admin/paymentMethods`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List Machines. Supports filtering via rsql.
  */
 export const machines = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Machines>> => {
-    
-    
-    return axios.default.post(
-      `/api/admin/machines`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Machines>(
+      {url: `/api/admin/machines`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List Depots. Supports filtering via rsql.
  */
 export const depots = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Depots>> => {
-    
-    
-    return axios.default.post(
-      `/api/admin/depots`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Depots>(
+      {url: `/api/admin/depots`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List Companies. Supports filtering via rsql.
  */
 export const companies = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Companies>> => {
-    
-    
-    return axios.default.post(
-      `/api/admin/companies`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Companies>(
+      {url: `/api/admin/companies`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List ExpenseInvoices. Supports filtering via rsql.
  */
 export const expenseInvoices = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ExpenseInvoices>> => {
-    
-    
-    return axios.default.post(
-      `/api/accounting/expenseInvoices`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<ExpenseInvoices>(
+      {url: `/api/accounting/expenseInvoices`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List ExpenseCards. Supports filtering via rsql.
  */
 export const expenseCards = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ExpenseCards>> => {
-    
-    
-    return axios.default.post(
-      `/api/accounting/expenseCards`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<ExpenseCards>(
+      {url: `/api/accounting/expenseCards`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List CashAccounts. Supports filtering via rsql.
  */
 export const cashAccounts = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<CashAccounts>> => {
-    
-    
-    return axios.default.post(
-      `/api/accounting/cashAccounts`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<CashAccounts>(
+      {url: `/api/accounting/cashAccounts`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
 /**
  * List CashAccountTransactions. Supports filtering via rsql.
  */
 export const cashAccountTransactions = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<CashAccountTransactions>> => {
-    
-    
-    return axios.default.post(
-      `/api/accounting/cashAccountTransactions`,
-      filteringRequest,options
-    );
-  }
-
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<CashAccountTransactions>(
+      {url: `/api/accounting/cashAccountTransactions`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 

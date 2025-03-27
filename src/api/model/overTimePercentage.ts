@@ -8,7 +8,6 @@
 export type OverTimePercentage = typeof OverTimePercentage[keyof typeof OverTimePercentage];
 
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const OverTimePercentage = {
   P50: 'P50',
   P100: 'P100',

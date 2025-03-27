@@ -8,7 +8,6 @@
 export type CurrencyEnum = typeof CurrencyEnum[keyof typeof CurrencyEnum];
 
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CurrencyEnum = {
   TRY: 'TRY',
   USD: 'USD',

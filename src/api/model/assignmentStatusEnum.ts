@@ -8,7 +8,6 @@
 export type AssignmentStatusEnum = typeof AssignmentStatusEnum[keyof typeof AssignmentStatusEnum];
 
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AssignmentStatusEnum = {
   ASSIGNED: 'ASSIGNED',
   UNASSIGNED: 'UNASSIGNED',

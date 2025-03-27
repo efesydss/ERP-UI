@@ -1,6 +1,5 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { MaterialGroupForm } from '@/components/Storage/MaterialGroup/MaterialGroupForm'
+import { createFileRoute, Outlet } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_authenticated/storage/materialGroups/new')({
-  component: () => <MaterialGroupForm />
+  component: () => <Outlet />
 })

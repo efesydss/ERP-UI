@@ -19,7 +19,7 @@ export const MaterialGroupList = () => {
 
   const { data: materialGroup } = useGetMaterialGroupTreeSuspense({
     query: {
-      select: (response) => response.data.data ?? []
+      select: (response) => response.data ?? []
     }
   })
 
@@ -28,7 +28,7 @@ export const MaterialGroupList = () => {
       const response = await materialCards({
         filter: `materialGroup.id eq ${selectedGroup ?? 0}`,
       })
-      setMaterialCard(response.data.data ?? [])
+      setMaterialCard(response.data ?? [])
     }
 
     if (selectedGroup !== null) {

@@ -8,7 +8,7 @@
 export type FixtureTypeEnum = typeof FixtureTypeEnum[keyof typeof FixtureTypeEnum];
 
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
+
 export const FixtureTypeEnum = {
   MAIN_MATERIAL: 'MAIN_MATERIAL',
   CONSUMPTION_MATERIAL: 'CONSUMPTION_MATERIAL',

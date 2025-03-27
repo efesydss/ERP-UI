@@ -8,7 +8,6 @@
 export type UserEntityRole = typeof UserEntityRole[keyof typeof UserEntityRole];
 
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UserEntityRole = {
   USER: 'USER',
   ADMIN: 'ADMIN',

@@ -1,6 +1,5 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { MaterialCardForm } from '@/components/Storage/MaterialGroup/MaterialCardForm'
+import { createFileRoute, Outlet } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_authenticated/storage/materialCards/new')({
-  component: () => <MaterialCardForm />
+  component: () => <Outlet />
 })

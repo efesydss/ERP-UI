@@ -24,12 +24,6 @@ import type {
   UseSuspenseQueryOptions,
   UseSuspenseQueryResult
 } from '@tanstack/react-query'
-import * as axios from 'axios';
-import type {
-  AxiosError,
-  AxiosRequestConfig,
-  AxiosResponse
-} from 'axios'
 import type {
   AdditionalCost,
   AssignmentCard,
@@ -92,6 +86,7 @@ import type {
   TimeOffStatus,
   Unit
 } from './model'
+import { customMutator } from './customMutator';
 
 
 
@@ -99,31 +94,33 @@ import type {
  * Get Unit
  */
 export const getUnit = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Unit>> => {
-    
-    
-    return axios.default.get(
-      `/api/storage/unit/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Unit>(
+      {url: `/api/storage/unit/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetUnitQueryKey = (id: number,) => {
     return [`/api/storage/unit/${id}`] as const;
     }
 
     
-export const getGetUnitQueryOptions = <TData = Awaited<ReturnType<typeof getUnit>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUnit>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetUnitQueryOptions = <TData = Awaited<ReturnType<typeof getUnit>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUnit>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetUnitQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUnit>>> = ({ signal }) => getUnit(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUnit>>> = ({ signal }) => getUnit(id, signal);
 
       
 
@@ -133,36 +130,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetUnitQueryResult = NonNullable<Awaited<ReturnType<typeof getUnit>>>
-export type GetUnitQueryError = AxiosError<ErrorResponse>
+export type GetUnitQueryError = ErrorResponse
 
 
-export function useGetUnit<TData = Awaited<ReturnType<typeof getUnit>>, TError = AxiosError<ErrorResponse>>(
+export function useGetUnit<TData = Awaited<ReturnType<typeof getUnit>>, TError = ErrorResponse>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUnit>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getUnit>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetUnit<TData = Awaited<ReturnType<typeof getUnit>>, TError = AxiosError<ErrorResponse>>(
+export function useGetUnit<TData = Awaited<ReturnType<typeof getUnit>>, TError = ErrorResponse>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUnit>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getUnit>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetUnit<TData = Awaited<ReturnType<typeof getUnit>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUnit>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetUnit<TData = Awaited<ReturnType<typeof getUnit>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUnit>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetUnit<TData = Awaited<ReturnType<typeof getUnit>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUnit>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetUnit<TData = Awaited<ReturnType<typeof getUnit>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUnit>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -177,16 +174,16 @@ export function useGetUnit<TData = Awaited<ReturnType<typeof getUnit>>, TError =
 
 
 
-export const getGetUnitSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getUnit>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getUnit>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetUnitSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getUnit>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getUnit>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetUnitQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUnit>>> = ({ signal }) => getUnit(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUnit>>> = ({ signal }) => getUnit(id, signal);
 
       
 
@@ -196,24 +193,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetUnitSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getUnit>>>
-export type GetUnitSuspenseQueryError = AxiosError<ErrorResponse>
+export type GetUnitSuspenseQueryError = ErrorResponse
 
 
-export function useGetUnitSuspense<TData = Awaited<ReturnType<typeof getUnit>>, TError = AxiosError<ErrorResponse>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getUnit>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetUnitSuspense<TData = Awaited<ReturnType<typeof getUnit>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getUnit>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetUnitSuspense<TData = Awaited<ReturnType<typeof getUnit>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getUnit>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetUnitSuspense<TData = Awaited<ReturnType<typeof getUnit>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getUnit>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetUnitSuspense<TData = Awaited<ReturnType<typeof getUnit>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getUnit>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetUnitSuspense<TData = Awaited<ReturnType<typeof getUnit>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getUnit>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetUnitSuspense<TData = Awaited<ReturnType<typeof getUnit>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getUnit>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetUnitSuspense<TData = Awaited<ReturnType<typeof getUnit>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getUnit>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -234,27 +231,29 @@ export function useGetUnitSuspense<TData = Awaited<ReturnType<typeof getUnit>>, 
  */
 export const updateUnit = (
     id: number,
-    unit: Unit, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Unit>> => {
-    
-    
-    return axios.default.put(
-      `/api/storage/unit/${id}`,
-      unit,options
-    );
-  }
+    unit: Unit,
+ ) => {
+      
+      
+      return customMutator<Unit>(
+      {url: `/api/storage/unit/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: unit
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateUnitMutationOptions = <TData = Awaited<ReturnType<typeof updateUnit>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Unit}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateUnitMutationOptions = <TData = Awaited<ReturnType<typeof updateUnit>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Unit}, TContext>, }
 ) => {
 const mutationKey = ['updateUnit'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -262,7 +261,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateUnit>>, {id: number;data: Unit}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateUnit(id,data,axiosOptions)
+          return  updateUnit(id,data,)
         }
 
         
@@ -272,10 +271,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateUnitMutationResult = NonNullable<Awaited<ReturnType<typeof updateUnit>>>
     export type UpdateUnitMutationBody = Unit
-    export type UpdateUnitMutationError = AxiosError<ErrorResponse>
+    export type UpdateUnitMutationError = ErrorResponse
 
-    export const useUpdateUnit = <TData = Awaited<ReturnType<typeof updateUnit>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Unit}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateUnit = <TData = Awaited<ReturnType<typeof updateUnit>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Unit}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -292,26 +291,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete Unit
  */
 export const deleteUnit = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Unit>> => {
-    
-    
-    return axios.default.delete(
-      `/api/storage/unit/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<Unit>(
+      {url: `/api/storage/unit/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteUnitMutationOptions = <TData = Awaited<ReturnType<typeof deleteUnit>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteUnitMutationOptions = <TData = Awaited<ReturnType<typeof deleteUnit>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteUnit'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -319,7 +319,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteUnit>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteUnit(id,axiosOptions)
+          return  deleteUnit(id,)
         }
 
         
@@ -329,10 +329,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteUnitMutationResult = NonNullable<Awaited<ReturnType<typeof deleteUnit>>>
     
-    export type DeleteUnitMutationError = AxiosError<ResponseBase>
+    export type DeleteUnitMutationError = ResponseBase
 
-    export const useDeleteUnit = <TData = Awaited<ReturnType<typeof deleteUnit>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteUnit = <TData = Awaited<ReturnType<typeof deleteUnit>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -349,31 +349,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get Shelf
  */
 export const getShelf = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Shelf>> => {
-    
-    
-    return axios.default.get(
-      `/api/storage/shelf/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Shelf>(
+      {url: `/api/storage/shelf/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetShelfQueryKey = (id: number,) => {
     return [`/api/storage/shelf/${id}`] as const;
     }
 
     
-export const getGetShelfQueryOptions = <TData = Awaited<ReturnType<typeof getShelf>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getShelf>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetShelfQueryOptions = <TData = Awaited<ReturnType<typeof getShelf>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getShelf>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetShelfQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getShelf>>> = ({ signal }) => getShelf(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getShelf>>> = ({ signal }) => getShelf(id, signal);
 
       
 
@@ -383,36 +385,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetShelfQueryResult = NonNullable<Awaited<ReturnType<typeof getShelf>>>
-export type GetShelfQueryError = AxiosError<ErrorResponse>
+export type GetShelfQueryError = ErrorResponse
 
 
-export function useGetShelf<TData = Awaited<ReturnType<typeof getShelf>>, TError = AxiosError<ErrorResponse>>(
+export function useGetShelf<TData = Awaited<ReturnType<typeof getShelf>>, TError = ErrorResponse>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getShelf>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getShelf>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetShelf<TData = Awaited<ReturnType<typeof getShelf>>, TError = AxiosError<ErrorResponse>>(
+export function useGetShelf<TData = Awaited<ReturnType<typeof getShelf>>, TError = ErrorResponse>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getShelf>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getShelf>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetShelf<TData = Awaited<ReturnType<typeof getShelf>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getShelf>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetShelf<TData = Awaited<ReturnType<typeof getShelf>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getShelf>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetShelf<TData = Awaited<ReturnType<typeof getShelf>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getShelf>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetShelf<TData = Awaited<ReturnType<typeof getShelf>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getShelf>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -427,16 +429,16 @@ export function useGetShelf<TData = Awaited<ReturnType<typeof getShelf>>, TError
 
 
 
-export const getGetShelfSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getShelf>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getShelf>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetShelfSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getShelf>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getShelf>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetShelfQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getShelf>>> = ({ signal }) => getShelf(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getShelf>>> = ({ signal }) => getShelf(id, signal);
 
       
 
@@ -446,24 +448,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetShelfSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getShelf>>>
-export type GetShelfSuspenseQueryError = AxiosError<ErrorResponse>
+export type GetShelfSuspenseQueryError = ErrorResponse
 
 
-export function useGetShelfSuspense<TData = Awaited<ReturnType<typeof getShelf>>, TError = AxiosError<ErrorResponse>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getShelf>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetShelfSuspense<TData = Awaited<ReturnType<typeof getShelf>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getShelf>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetShelfSuspense<TData = Awaited<ReturnType<typeof getShelf>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getShelf>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetShelfSuspense<TData = Awaited<ReturnType<typeof getShelf>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getShelf>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetShelfSuspense<TData = Awaited<ReturnType<typeof getShelf>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getShelf>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetShelfSuspense<TData = Awaited<ReturnType<typeof getShelf>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getShelf>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetShelfSuspense<TData = Awaited<ReturnType<typeof getShelf>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getShelf>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetShelfSuspense<TData = Awaited<ReturnType<typeof getShelf>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getShelf>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -484,27 +486,29 @@ export function useGetShelfSuspense<TData = Awaited<ReturnType<typeof getShelf>>
  */
 export const updateShelf = (
     id: number,
-    shelf: Shelf, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Shelf>> => {
-    
-    
-    return axios.default.put(
-      `/api/storage/shelf/${id}`,
-      shelf,options
-    );
-  }
+    shelf: Shelf,
+ ) => {
+      
+      
+      return customMutator<Shelf>(
+      {url: `/api/storage/shelf/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: shelf
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateShelfMutationOptions = <TData = Awaited<ReturnType<typeof updateShelf>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Shelf}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateShelfMutationOptions = <TData = Awaited<ReturnType<typeof updateShelf>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Shelf}, TContext>, }
 ) => {
 const mutationKey = ['updateShelf'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -512,7 +516,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateShelf>>, {id: number;data: Shelf}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateShelf(id,data,axiosOptions)
+          return  updateShelf(id,data,)
         }
 
         
@@ -522,10 +526,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateShelfMutationResult = NonNullable<Awaited<ReturnType<typeof updateShelf>>>
     export type UpdateShelfMutationBody = Shelf
-    export type UpdateShelfMutationError = AxiosError<ErrorResponse>
+    export type UpdateShelfMutationError = ErrorResponse
 
-    export const useUpdateShelf = <TData = Awaited<ReturnType<typeof updateShelf>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Shelf}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateShelf = <TData = Awaited<ReturnType<typeof updateShelf>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Shelf}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -542,26 +546,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete Shelf
  */
 export const deleteShelf = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Shelf>> => {
-    
-    
-    return axios.default.delete(
-      `/api/storage/shelf/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<Shelf>(
+      {url: `/api/storage/shelf/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteShelfMutationOptions = <TData = Awaited<ReturnType<typeof deleteShelf>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteShelfMutationOptions = <TData = Awaited<ReturnType<typeof deleteShelf>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteShelf'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -569,7 +574,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteShelf>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteShelf(id,axiosOptions)
+          return  deleteShelf(id,)
         }
 
         
@@ -579,10 +584,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteShelfMutationResult = NonNullable<Awaited<ReturnType<typeof deleteShelf>>>
     
-    export type DeleteShelfMutationError = AxiosError<ResponseBase>
+    export type DeleteShelfMutationError = ResponseBase
 
-    export const useDeleteShelf = <TData = Awaited<ReturnType<typeof deleteShelf>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteShelf = <TData = Awaited<ReturnType<typeof deleteShelf>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -599,31 +604,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get ServiceGroup
  */
 export const getServiceGroup = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ServiceGroup>> => {
-    
-    
-    return axios.default.get(
-      `/api/storage/serviceGroup/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<ServiceGroup>(
+      {url: `/api/storage/serviceGroup/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetServiceGroupQueryKey = (id: number,) => {
     return [`/api/storage/serviceGroup/${id}`] as const;
     }
 
     
-export const getGetServiceGroupQueryOptions = <TData = Awaited<ReturnType<typeof getServiceGroup>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getServiceGroup>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetServiceGroupQueryOptions = <TData = Awaited<ReturnType<typeof getServiceGroup>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getServiceGroup>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetServiceGroupQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getServiceGroup>>> = ({ signal }) => getServiceGroup(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getServiceGroup>>> = ({ signal }) => getServiceGroup(id, signal);
 
       
 
@@ -633,36 +640,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetServiceGroupQueryResult = NonNullable<Awaited<ReturnType<typeof getServiceGroup>>>
-export type GetServiceGroupQueryError = AxiosError<ErrorResponse>
+export type GetServiceGroupQueryError = ErrorResponse
 
 
-export function useGetServiceGroup<TData = Awaited<ReturnType<typeof getServiceGroup>>, TError = AxiosError<ErrorResponse>>(
+export function useGetServiceGroup<TData = Awaited<ReturnType<typeof getServiceGroup>>, TError = ErrorResponse>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getServiceGroup>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getServiceGroup>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetServiceGroup<TData = Awaited<ReturnType<typeof getServiceGroup>>, TError = AxiosError<ErrorResponse>>(
+export function useGetServiceGroup<TData = Awaited<ReturnType<typeof getServiceGroup>>, TError = ErrorResponse>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getServiceGroup>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getServiceGroup>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetServiceGroup<TData = Awaited<ReturnType<typeof getServiceGroup>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getServiceGroup>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetServiceGroup<TData = Awaited<ReturnType<typeof getServiceGroup>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getServiceGroup>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetServiceGroup<TData = Awaited<ReturnType<typeof getServiceGroup>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getServiceGroup>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetServiceGroup<TData = Awaited<ReturnType<typeof getServiceGroup>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getServiceGroup>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -677,16 +684,16 @@ export function useGetServiceGroup<TData = Awaited<ReturnType<typeof getServiceG
 
 
 
-export const getGetServiceGroupSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getServiceGroup>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroup>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetServiceGroupSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getServiceGroup>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroup>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetServiceGroupQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getServiceGroup>>> = ({ signal }) => getServiceGroup(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getServiceGroup>>> = ({ signal }) => getServiceGroup(id, signal);
 
       
 
@@ -696,24 +703,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetServiceGroupSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getServiceGroup>>>
-export type GetServiceGroupSuspenseQueryError = AxiosError<ErrorResponse>
+export type GetServiceGroupSuspenseQueryError = ErrorResponse
 
 
-export function useGetServiceGroupSuspense<TData = Awaited<ReturnType<typeof getServiceGroup>>, TError = AxiosError<ErrorResponse>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroup>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetServiceGroupSuspense<TData = Awaited<ReturnType<typeof getServiceGroup>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroup>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetServiceGroupSuspense<TData = Awaited<ReturnType<typeof getServiceGroup>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroup>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetServiceGroupSuspense<TData = Awaited<ReturnType<typeof getServiceGroup>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroup>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetServiceGroupSuspense<TData = Awaited<ReturnType<typeof getServiceGroup>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroup>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetServiceGroupSuspense<TData = Awaited<ReturnType<typeof getServiceGroup>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroup>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetServiceGroupSuspense<TData = Awaited<ReturnType<typeof getServiceGroup>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroup>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetServiceGroupSuspense<TData = Awaited<ReturnType<typeof getServiceGroup>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroup>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -734,27 +741,29 @@ export function useGetServiceGroupSuspense<TData = Awaited<ReturnType<typeof get
  */
 export const updateServiceGroup = (
     id: number,
-    serviceGroup: ServiceGroup, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ServiceGroup>> => {
-    
-    
-    return axios.default.put(
-      `/api/storage/serviceGroup/${id}`,
-      serviceGroup,options
-    );
-  }
+    serviceGroup: ServiceGroup,
+ ) => {
+      
+      
+      return customMutator<ServiceGroup>(
+      {url: `/api/storage/serviceGroup/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: serviceGroup
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateServiceGroupMutationOptions = <TData = Awaited<ReturnType<typeof updateServiceGroup>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: ServiceGroup}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateServiceGroupMutationOptions = <TData = Awaited<ReturnType<typeof updateServiceGroup>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: ServiceGroup}, TContext>, }
 ) => {
 const mutationKey = ['updateServiceGroup'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -762,7 +771,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateServiceGroup>>, {id: number;data: ServiceGroup}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateServiceGroup(id,data,axiosOptions)
+          return  updateServiceGroup(id,data,)
         }
 
         
@@ -772,10 +781,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateServiceGroupMutationResult = NonNullable<Awaited<ReturnType<typeof updateServiceGroup>>>
     export type UpdateServiceGroupMutationBody = ServiceGroup
-    export type UpdateServiceGroupMutationError = AxiosError<ErrorResponse>
+    export type UpdateServiceGroupMutationError = ErrorResponse
 
-    export const useUpdateServiceGroup = <TData = Awaited<ReturnType<typeof updateServiceGroup>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: ServiceGroup}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateServiceGroup = <TData = Awaited<ReturnType<typeof updateServiceGroup>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: ServiceGroup}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -792,26 +801,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete ServiceGroup
  */
 export const deleteServiceGroup = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ServiceGroup>> => {
-    
-    
-    return axios.default.delete(
-      `/api/storage/serviceGroup/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<ServiceGroup>(
+      {url: `/api/storage/serviceGroup/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteServiceGroupMutationOptions = <TData = Awaited<ReturnType<typeof deleteServiceGroup>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteServiceGroupMutationOptions = <TData = Awaited<ReturnType<typeof deleteServiceGroup>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteServiceGroup'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -819,7 +829,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteServiceGroup>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteServiceGroup(id,axiosOptions)
+          return  deleteServiceGroup(id,)
         }
 
         
@@ -829,10 +839,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteServiceGroupMutationResult = NonNullable<Awaited<ReturnType<typeof deleteServiceGroup>>>
     
-    export type DeleteServiceGroupMutationError = AxiosError<ResponseBase>
+    export type DeleteServiceGroupMutationError = ResponseBase
 
-    export const useDeleteServiceGroup = <TData = Awaited<ReturnType<typeof deleteServiceGroup>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteServiceGroup = <TData = Awaited<ReturnType<typeof deleteServiceGroup>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -849,31 +859,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get ServiceCard
  */
 export const getServiceCard = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<string>> => {
-    
-    
-    return axios.default.get(
-      `/api/storage/serviceCard/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<string>(
+      {url: `/api/storage/serviceCard/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetServiceCardQueryKey = (id: number,) => {
     return [`/api/storage/serviceCard/${id}`] as const;
     }
 
     
-export const getGetServiceCardQueryOptions = <TData = Awaited<ReturnType<typeof getServiceCard>>, TError = AxiosError<unknown>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getServiceCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetServiceCardQueryOptions = <TData = Awaited<ReturnType<typeof getServiceCard>>, TError = unknown>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getServiceCard>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetServiceCardQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getServiceCard>>> = ({ signal }) => getServiceCard(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getServiceCard>>> = ({ signal }) => getServiceCard(id, signal);
 
       
 
@@ -883,36 +895,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetServiceCardQueryResult = NonNullable<Awaited<ReturnType<typeof getServiceCard>>>
-export type GetServiceCardQueryError = AxiosError<unknown>
+export type GetServiceCardQueryError = unknown
 
 
-export function useGetServiceCard<TData = Awaited<ReturnType<typeof getServiceCard>>, TError = AxiosError<unknown>>(
+export function useGetServiceCard<TData = Awaited<ReturnType<typeof getServiceCard>>, TError = unknown>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getServiceCard>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getServiceCard>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetServiceCard<TData = Awaited<ReturnType<typeof getServiceCard>>, TError = AxiosError<unknown>>(
+export function useGetServiceCard<TData = Awaited<ReturnType<typeof getServiceCard>>, TError = unknown>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getServiceCard>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getServiceCard>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetServiceCard<TData = Awaited<ReturnType<typeof getServiceCard>>, TError = AxiosError<unknown>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getServiceCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetServiceCard<TData = Awaited<ReturnType<typeof getServiceCard>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getServiceCard>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetServiceCard<TData = Awaited<ReturnType<typeof getServiceCard>>, TError = AxiosError<unknown>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getServiceCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetServiceCard<TData = Awaited<ReturnType<typeof getServiceCard>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getServiceCard>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -927,16 +939,16 @@ export function useGetServiceCard<TData = Awaited<ReturnType<typeof getServiceCa
 
 
 
-export const getGetServiceCardSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getServiceCard>>, TError = AxiosError<unknown>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetServiceCardSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getServiceCard>>, TError = unknown>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceCard>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetServiceCardQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getServiceCard>>> = ({ signal }) => getServiceCard(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getServiceCard>>> = ({ signal }) => getServiceCard(id, signal);
 
       
 
@@ -946,24 +958,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetServiceCardSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getServiceCard>>>
-export type GetServiceCardSuspenseQueryError = AxiosError<unknown>
+export type GetServiceCardSuspenseQueryError = unknown
 
 
-export function useGetServiceCardSuspense<TData = Awaited<ReturnType<typeof getServiceCard>>, TError = AxiosError<unknown>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceCard>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetServiceCardSuspense<TData = Awaited<ReturnType<typeof getServiceCard>>, TError = AxiosError<unknown>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetServiceCardSuspense<TData = Awaited<ReturnType<typeof getServiceCard>>, TError = unknown>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceCard>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetServiceCardSuspense<TData = Awaited<ReturnType<typeof getServiceCard>>, TError = AxiosError<unknown>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetServiceCardSuspense<TData = Awaited<ReturnType<typeof getServiceCard>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceCard>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetServiceCardSuspense<TData = Awaited<ReturnType<typeof getServiceCard>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceCard>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetServiceCardSuspense<TData = Awaited<ReturnType<typeof getServiceCard>>, TError = AxiosError<unknown>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetServiceCardSuspense<TData = Awaited<ReturnType<typeof getServiceCard>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceCard>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -984,27 +996,29 @@ export function useGetServiceCardSuspense<TData = Awaited<ReturnType<typeof getS
  */
 export const updateServiceCard = (
     id: number,
-    serviceCard: ServiceCard, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ServiceCard>> => {
-    
-    
-    return axios.default.put(
-      `/api/storage/serviceCard/${id}`,
-      serviceCard,options
-    );
-  }
+    serviceCard: ServiceCard,
+ ) => {
+      
+      
+      return customMutator<ServiceCard>(
+      {url: `/api/storage/serviceCard/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: serviceCard
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateServiceCardMutationOptions = <TData = Awaited<ReturnType<typeof updateServiceCard>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: ServiceCard}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateServiceCardMutationOptions = <TData = Awaited<ReturnType<typeof updateServiceCard>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: ServiceCard}, TContext>, }
 ) => {
 const mutationKey = ['updateServiceCard'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -1012,7 +1026,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateServiceCard>>, {id: number;data: ServiceCard}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateServiceCard(id,data,axiosOptions)
+          return  updateServiceCard(id,data,)
         }
 
         
@@ -1022,10 +1036,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateServiceCardMutationResult = NonNullable<Awaited<ReturnType<typeof updateServiceCard>>>
     export type UpdateServiceCardMutationBody = ServiceCard
-    export type UpdateServiceCardMutationError = AxiosError<ErrorResponse>
+    export type UpdateServiceCardMutationError = ErrorResponse
 
-    export const useUpdateServiceCard = <TData = Awaited<ReturnType<typeof updateServiceCard>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: ServiceCard}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateServiceCard = <TData = Awaited<ReturnType<typeof updateServiceCard>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: ServiceCard}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -1042,26 +1056,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete ServiceCard
  */
 export const deleteServiceCard = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ServiceCard>> => {
-    
-    
-    return axios.default.delete(
-      `/api/storage/serviceCard/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<ServiceCard>(
+      {url: `/api/storage/serviceCard/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteServiceCardMutationOptions = <TData = Awaited<ReturnType<typeof deleteServiceCard>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteServiceCardMutationOptions = <TData = Awaited<ReturnType<typeof deleteServiceCard>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteServiceCard'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -1069,7 +1084,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteServiceCard>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteServiceCard(id,axiosOptions)
+          return  deleteServiceCard(id,)
         }
 
         
@@ -1079,10 +1094,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteServiceCardMutationResult = NonNullable<Awaited<ReturnType<typeof deleteServiceCard>>>
     
-    export type DeleteServiceCardMutationError = AxiosError<ResponseBase>
+    export type DeleteServiceCardMutationError = ResponseBase
 
-    export const useDeleteServiceCard = <TData = Awaited<ReturnType<typeof deleteServiceCard>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteServiceCard = <TData = Awaited<ReturnType<typeof deleteServiceCard>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -1099,31 +1114,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get ProductGroup
  */
 export const getProductGroup = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ProductGroup>> => {
-    
-    
-    return axios.default.get(
-      `/api/storage/productGroup/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<ProductGroup>(
+      {url: `/api/storage/productGroup/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetProductGroupQueryKey = (id: number,) => {
     return [`/api/storage/productGroup/${id}`] as const;
     }
 
     
-export const getGetProductGroupQueryOptions = <TData = Awaited<ReturnType<typeof getProductGroup>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductGroup>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetProductGroupQueryOptions = <TData = Awaited<ReturnType<typeof getProductGroup>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductGroup>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetProductGroupQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProductGroup>>> = ({ signal }) => getProductGroup(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProductGroup>>> = ({ signal }) => getProductGroup(id, signal);
 
       
 
@@ -1133,36 +1150,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetProductGroupQueryResult = NonNullable<Awaited<ReturnType<typeof getProductGroup>>>
-export type GetProductGroupQueryError = AxiosError<ErrorResponse>
+export type GetProductGroupQueryError = ErrorResponse
 
 
-export function useGetProductGroup<TData = Awaited<ReturnType<typeof getProductGroup>>, TError = AxiosError<ErrorResponse>>(
+export function useGetProductGroup<TData = Awaited<ReturnType<typeof getProductGroup>>, TError = ErrorResponse>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductGroup>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getProductGroup>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetProductGroup<TData = Awaited<ReturnType<typeof getProductGroup>>, TError = AxiosError<ErrorResponse>>(
+export function useGetProductGroup<TData = Awaited<ReturnType<typeof getProductGroup>>, TError = ErrorResponse>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductGroup>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getProductGroup>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetProductGroup<TData = Awaited<ReturnType<typeof getProductGroup>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductGroup>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProductGroup<TData = Awaited<ReturnType<typeof getProductGroup>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductGroup>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetProductGroup<TData = Awaited<ReturnType<typeof getProductGroup>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductGroup>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProductGroup<TData = Awaited<ReturnType<typeof getProductGroup>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductGroup>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -1177,16 +1194,16 @@ export function useGetProductGroup<TData = Awaited<ReturnType<typeof getProductG
 
 
 
-export const getGetProductGroupSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getProductGroup>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroup>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetProductGroupSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getProductGroup>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroup>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetProductGroupQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProductGroup>>> = ({ signal }) => getProductGroup(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProductGroup>>> = ({ signal }) => getProductGroup(id, signal);
 
       
 
@@ -1196,24 +1213,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetProductGroupSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getProductGroup>>>
-export type GetProductGroupSuspenseQueryError = AxiosError<ErrorResponse>
+export type GetProductGroupSuspenseQueryError = ErrorResponse
 
 
-export function useGetProductGroupSuspense<TData = Awaited<ReturnType<typeof getProductGroup>>, TError = AxiosError<ErrorResponse>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroup>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetProductGroupSuspense<TData = Awaited<ReturnType<typeof getProductGroup>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroup>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProductGroupSuspense<TData = Awaited<ReturnType<typeof getProductGroup>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroup>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetProductGroupSuspense<TData = Awaited<ReturnType<typeof getProductGroup>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroup>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProductGroupSuspense<TData = Awaited<ReturnType<typeof getProductGroup>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroup>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetProductGroupSuspense<TData = Awaited<ReturnType<typeof getProductGroup>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroup>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetProductGroupSuspense<TData = Awaited<ReturnType<typeof getProductGroup>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroup>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProductGroupSuspense<TData = Awaited<ReturnType<typeof getProductGroup>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroup>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -1234,27 +1251,29 @@ export function useGetProductGroupSuspense<TData = Awaited<ReturnType<typeof get
  */
 export const updateProductGroup = (
     id: number,
-    productGroup: ProductGroup, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ProductGroup>> => {
-    
-    
-    return axios.default.put(
-      `/api/storage/productGroup/${id}`,
-      productGroup,options
-    );
-  }
+    productGroup: ProductGroup,
+ ) => {
+      
+      
+      return customMutator<ProductGroup>(
+      {url: `/api/storage/productGroup/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: productGroup
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateProductGroupMutationOptions = <TData = Awaited<ReturnType<typeof updateProductGroup>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: ProductGroup}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateProductGroupMutationOptions = <TData = Awaited<ReturnType<typeof updateProductGroup>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: ProductGroup}, TContext>, }
 ) => {
 const mutationKey = ['updateProductGroup'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -1262,7 +1281,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateProductGroup>>, {id: number;data: ProductGroup}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateProductGroup(id,data,axiosOptions)
+          return  updateProductGroup(id,data,)
         }
 
         
@@ -1272,10 +1291,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateProductGroupMutationResult = NonNullable<Awaited<ReturnType<typeof updateProductGroup>>>
     export type UpdateProductGroupMutationBody = ProductGroup
-    export type UpdateProductGroupMutationError = AxiosError<ErrorResponse>
+    export type UpdateProductGroupMutationError = ErrorResponse
 
-    export const useUpdateProductGroup = <TData = Awaited<ReturnType<typeof updateProductGroup>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: ProductGroup}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateProductGroup = <TData = Awaited<ReturnType<typeof updateProductGroup>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: ProductGroup}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -1292,26 +1311,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete ProductGroup
  */
 export const deleteProductGroup = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ProductGroup>> => {
-    
-    
-    return axios.default.delete(
-      `/api/storage/productGroup/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<ProductGroup>(
+      {url: `/api/storage/productGroup/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteProductGroupMutationOptions = <TData = Awaited<ReturnType<typeof deleteProductGroup>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteProductGroupMutationOptions = <TData = Awaited<ReturnType<typeof deleteProductGroup>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteProductGroup'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -1319,7 +1339,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteProductGroup>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteProductGroup(id,axiosOptions)
+          return  deleteProductGroup(id,)
         }
 
         
@@ -1329,10 +1349,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteProductGroupMutationResult = NonNullable<Awaited<ReturnType<typeof deleteProductGroup>>>
     
-    export type DeleteProductGroupMutationError = AxiosError<ResponseBase>
+    export type DeleteProductGroupMutationError = ResponseBase
 
-    export const useDeleteProductGroup = <TData = Awaited<ReturnType<typeof deleteProductGroup>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteProductGroup = <TData = Awaited<ReturnType<typeof deleteProductGroup>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -1349,31 +1369,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get ProductCard
  */
 export const getProductCard = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ProductCard>> => {
-    
-    
-    return axios.default.get(
-      `/api/storage/productCard/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<ProductCard>(
+      {url: `/api/storage/productCard/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetProductCardQueryKey = (id: number,) => {
     return [`/api/storage/productCard/${id}`] as const;
     }
 
     
-export const getGetProductCardQueryOptions = <TData = Awaited<ReturnType<typeof getProductCard>>, TError = AxiosError<unknown>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetProductCardQueryOptions = <TData = Awaited<ReturnType<typeof getProductCard>>, TError = unknown>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductCard>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetProductCardQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProductCard>>> = ({ signal }) => getProductCard(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProductCard>>> = ({ signal }) => getProductCard(id, signal);
 
       
 
@@ -1383,36 +1405,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetProductCardQueryResult = NonNullable<Awaited<ReturnType<typeof getProductCard>>>
-export type GetProductCardQueryError = AxiosError<unknown>
+export type GetProductCardQueryError = unknown
 
 
-export function useGetProductCard<TData = Awaited<ReturnType<typeof getProductCard>>, TError = AxiosError<unknown>>(
+export function useGetProductCard<TData = Awaited<ReturnType<typeof getProductCard>>, TError = unknown>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductCard>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getProductCard>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetProductCard<TData = Awaited<ReturnType<typeof getProductCard>>, TError = AxiosError<unknown>>(
+export function useGetProductCard<TData = Awaited<ReturnType<typeof getProductCard>>, TError = unknown>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductCard>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getProductCard>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetProductCard<TData = Awaited<ReturnType<typeof getProductCard>>, TError = AxiosError<unknown>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProductCard<TData = Awaited<ReturnType<typeof getProductCard>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductCard>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetProductCard<TData = Awaited<ReturnType<typeof getProductCard>>, TError = AxiosError<unknown>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProductCard<TData = Awaited<ReturnType<typeof getProductCard>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductCard>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -1427,16 +1449,16 @@ export function useGetProductCard<TData = Awaited<ReturnType<typeof getProductCa
 
 
 
-export const getGetProductCardSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getProductCard>>, TError = AxiosError<unknown>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetProductCardSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getProductCard>>, TError = unknown>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductCard>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetProductCardQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProductCard>>> = ({ signal }) => getProductCard(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProductCard>>> = ({ signal }) => getProductCard(id, signal);
 
       
 
@@ -1446,24 +1468,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetProductCardSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getProductCard>>>
-export type GetProductCardSuspenseQueryError = AxiosError<unknown>
+export type GetProductCardSuspenseQueryError = unknown
 
 
-export function useGetProductCardSuspense<TData = Awaited<ReturnType<typeof getProductCard>>, TError = AxiosError<unknown>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductCard>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetProductCardSuspense<TData = Awaited<ReturnType<typeof getProductCard>>, TError = AxiosError<unknown>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProductCardSuspense<TData = Awaited<ReturnType<typeof getProductCard>>, TError = unknown>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductCard>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetProductCardSuspense<TData = Awaited<ReturnType<typeof getProductCard>>, TError = AxiosError<unknown>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProductCardSuspense<TData = Awaited<ReturnType<typeof getProductCard>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductCard>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetProductCardSuspense<TData = Awaited<ReturnType<typeof getProductCard>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductCard>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetProductCardSuspense<TData = Awaited<ReturnType<typeof getProductCard>>, TError = AxiosError<unknown>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProductCardSuspense<TData = Awaited<ReturnType<typeof getProductCard>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductCard>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -1484,27 +1506,29 @@ export function useGetProductCardSuspense<TData = Awaited<ReturnType<typeof getP
  */
 export const updateProductCard = (
     id: number,
-    productCard: ProductCard, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ProductCard>> => {
-    
-    
-    return axios.default.put(
-      `/api/storage/productCard/${id}`,
-      productCard,options
-    );
-  }
+    productCard: ProductCard,
+ ) => {
+      
+      
+      return customMutator<ProductCard>(
+      {url: `/api/storage/productCard/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: productCard
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateProductCardMutationOptions = <TData = Awaited<ReturnType<typeof updateProductCard>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: ProductCard}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateProductCardMutationOptions = <TData = Awaited<ReturnType<typeof updateProductCard>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: ProductCard}, TContext>, }
 ) => {
 const mutationKey = ['updateProductCard'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -1512,7 +1536,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateProductCard>>, {id: number;data: ProductCard}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateProductCard(id,data,axiosOptions)
+          return  updateProductCard(id,data,)
         }
 
         
@@ -1522,10 +1546,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateProductCardMutationResult = NonNullable<Awaited<ReturnType<typeof updateProductCard>>>
     export type UpdateProductCardMutationBody = ProductCard
-    export type UpdateProductCardMutationError = AxiosError<ErrorResponse>
+    export type UpdateProductCardMutationError = ErrorResponse
 
-    export const useUpdateProductCard = <TData = Awaited<ReturnType<typeof updateProductCard>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: ProductCard}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateProductCard = <TData = Awaited<ReturnType<typeof updateProductCard>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: ProductCard}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -1542,26 +1566,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete ProductCard
  */
 export const deleteProductCard = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ProductCard>> => {
-    
-    
-    return axios.default.delete(
-      `/api/storage/productCard/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<ProductCard>(
+      {url: `/api/storage/productCard/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteProductCardMutationOptions = <TData = Awaited<ReturnType<typeof deleteProductCard>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteProductCardMutationOptions = <TData = Awaited<ReturnType<typeof deleteProductCard>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteProductCard'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -1569,7 +1594,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteProductCard>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteProductCard(id,axiosOptions)
+          return  deleteProductCard(id,)
         }
 
         
@@ -1579,10 +1604,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteProductCardMutationResult = NonNullable<Awaited<ReturnType<typeof deleteProductCard>>>
     
-    export type DeleteProductCardMutationError = AxiosError<ResponseBase>
+    export type DeleteProductCardMutationError = ResponseBase
 
-    export const useDeleteProductCard = <TData = Awaited<ReturnType<typeof deleteProductCard>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteProductCard = <TData = Awaited<ReturnType<typeof deleteProductCard>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -1599,31 +1624,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get MaterialGroup
  */
 export const getMaterialGroup = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<MaterialGroup>> => {
-    
-    
-    return axios.default.get(
-      `/api/storage/materialGroup/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<MaterialGroup>(
+      {url: `/api/storage/materialGroup/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetMaterialGroupQueryKey = (id: number,) => {
     return [`/api/storage/materialGroup/${id}`] as const;
     }
 
     
-export const getGetMaterialGroupQueryOptions = <TData = Awaited<ReturnType<typeof getMaterialGroup>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMaterialGroup>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetMaterialGroupQueryOptions = <TData = Awaited<ReturnType<typeof getMaterialGroup>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMaterialGroup>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetMaterialGroupQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMaterialGroup>>> = ({ signal }) => getMaterialGroup(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMaterialGroup>>> = ({ signal }) => getMaterialGroup(id, signal);
 
       
 
@@ -1633,36 +1660,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetMaterialGroupQueryResult = NonNullable<Awaited<ReturnType<typeof getMaterialGroup>>>
-export type GetMaterialGroupQueryError = AxiosError<ErrorResponse>
+export type GetMaterialGroupQueryError = ErrorResponse
 
 
-export function useGetMaterialGroup<TData = Awaited<ReturnType<typeof getMaterialGroup>>, TError = AxiosError<ErrorResponse>>(
+export function useGetMaterialGroup<TData = Awaited<ReturnType<typeof getMaterialGroup>>, TError = ErrorResponse>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMaterialGroup>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getMaterialGroup>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetMaterialGroup<TData = Awaited<ReturnType<typeof getMaterialGroup>>, TError = AxiosError<ErrorResponse>>(
+export function useGetMaterialGroup<TData = Awaited<ReturnType<typeof getMaterialGroup>>, TError = ErrorResponse>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMaterialGroup>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getMaterialGroup>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetMaterialGroup<TData = Awaited<ReturnType<typeof getMaterialGroup>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMaterialGroup>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetMaterialGroup<TData = Awaited<ReturnType<typeof getMaterialGroup>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMaterialGroup>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetMaterialGroup<TData = Awaited<ReturnType<typeof getMaterialGroup>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMaterialGroup>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetMaterialGroup<TData = Awaited<ReturnType<typeof getMaterialGroup>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMaterialGroup>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -1677,16 +1704,16 @@ export function useGetMaterialGroup<TData = Awaited<ReturnType<typeof getMateria
 
 
 
-export const getGetMaterialGroupSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getMaterialGroup>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroup>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetMaterialGroupSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getMaterialGroup>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroup>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetMaterialGroupQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMaterialGroup>>> = ({ signal }) => getMaterialGroup(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMaterialGroup>>> = ({ signal }) => getMaterialGroup(id, signal);
 
       
 
@@ -1696,24 +1723,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetMaterialGroupSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getMaterialGroup>>>
-export type GetMaterialGroupSuspenseQueryError = AxiosError<ErrorResponse>
+export type GetMaterialGroupSuspenseQueryError = ErrorResponse
 
 
-export function useGetMaterialGroupSuspense<TData = Awaited<ReturnType<typeof getMaterialGroup>>, TError = AxiosError<ErrorResponse>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroup>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetMaterialGroupSuspense<TData = Awaited<ReturnType<typeof getMaterialGroup>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroup>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetMaterialGroupSuspense<TData = Awaited<ReturnType<typeof getMaterialGroup>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroup>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetMaterialGroupSuspense<TData = Awaited<ReturnType<typeof getMaterialGroup>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroup>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetMaterialGroupSuspense<TData = Awaited<ReturnType<typeof getMaterialGroup>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroup>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetMaterialGroupSuspense<TData = Awaited<ReturnType<typeof getMaterialGroup>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroup>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetMaterialGroupSuspense<TData = Awaited<ReturnType<typeof getMaterialGroup>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroup>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetMaterialGroupSuspense<TData = Awaited<ReturnType<typeof getMaterialGroup>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroup>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -1734,27 +1761,29 @@ export function useGetMaterialGroupSuspense<TData = Awaited<ReturnType<typeof ge
  */
 export const updateMaterialGroup = (
     id: number,
-    materialGroup: MaterialGroup, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<MaterialGroup>> => {
-    
-    
-    return axios.default.put(
-      `/api/storage/materialGroup/${id}`,
-      materialGroup,options
-    );
-  }
+    materialGroup: MaterialGroup,
+ ) => {
+      
+      
+      return customMutator<MaterialGroup>(
+      {url: `/api/storage/materialGroup/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: materialGroup
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateMaterialGroupMutationOptions = <TData = Awaited<ReturnType<typeof updateMaterialGroup>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: MaterialGroup}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateMaterialGroupMutationOptions = <TData = Awaited<ReturnType<typeof updateMaterialGroup>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: MaterialGroup}, TContext>, }
 ) => {
 const mutationKey = ['updateMaterialGroup'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -1762,7 +1791,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateMaterialGroup>>, {id: number;data: MaterialGroup}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateMaterialGroup(id,data,axiosOptions)
+          return  updateMaterialGroup(id,data,)
         }
 
         
@@ -1772,10 +1801,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateMaterialGroupMutationResult = NonNullable<Awaited<ReturnType<typeof updateMaterialGroup>>>
     export type UpdateMaterialGroupMutationBody = MaterialGroup
-    export type UpdateMaterialGroupMutationError = AxiosError<ErrorResponse>
+    export type UpdateMaterialGroupMutationError = ErrorResponse
 
-    export const useUpdateMaterialGroup = <TData = Awaited<ReturnType<typeof updateMaterialGroup>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: MaterialGroup}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateMaterialGroup = <TData = Awaited<ReturnType<typeof updateMaterialGroup>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: MaterialGroup}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -1792,26 +1821,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete MaterialGroup
  */
 export const deleteMaterialGroup = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<MaterialGroup>> => {
-    
-    
-    return axios.default.delete(
-      `/api/storage/materialGroup/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<MaterialGroup>(
+      {url: `/api/storage/materialGroup/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteMaterialGroupMutationOptions = <TData = Awaited<ReturnType<typeof deleteMaterialGroup>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteMaterialGroupMutationOptions = <TData = Awaited<ReturnType<typeof deleteMaterialGroup>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteMaterialGroup'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -1819,7 +1849,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteMaterialGroup>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteMaterialGroup(id,axiosOptions)
+          return  deleteMaterialGroup(id,)
         }
 
         
@@ -1829,10 +1859,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteMaterialGroupMutationResult = NonNullable<Awaited<ReturnType<typeof deleteMaterialGroup>>>
     
-    export type DeleteMaterialGroupMutationError = AxiosError<ResponseBase>
+    export type DeleteMaterialGroupMutationError = ResponseBase
 
-    export const useDeleteMaterialGroup = <TData = Awaited<ReturnType<typeof deleteMaterialGroup>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteMaterialGroup = <TData = Awaited<ReturnType<typeof deleteMaterialGroup>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -1849,31 +1879,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get MaterialCard
  */
 export const getMaterialCard = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<MaterialCard>> => {
-    
-    
-    return axios.default.get(
-      `/api/storage/materialCard/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<MaterialCard>(
+      {url: `/api/storage/materialCard/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetMaterialCardQueryKey = (id: number,) => {
     return [`/api/storage/materialCard/${id}`] as const;
     }
 
     
-export const getGetMaterialCardQueryOptions = <TData = Awaited<ReturnType<typeof getMaterialCard>>, TError = AxiosError<unknown>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMaterialCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetMaterialCardQueryOptions = <TData = Awaited<ReturnType<typeof getMaterialCard>>, TError = unknown>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMaterialCard>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetMaterialCardQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMaterialCard>>> = ({ signal }) => getMaterialCard(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMaterialCard>>> = ({ signal }) => getMaterialCard(id, signal);
 
       
 
@@ -1883,36 +1915,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetMaterialCardQueryResult = NonNullable<Awaited<ReturnType<typeof getMaterialCard>>>
-export type GetMaterialCardQueryError = AxiosError<unknown>
+export type GetMaterialCardQueryError = unknown
 
 
-export function useGetMaterialCard<TData = Awaited<ReturnType<typeof getMaterialCard>>, TError = AxiosError<unknown>>(
+export function useGetMaterialCard<TData = Awaited<ReturnType<typeof getMaterialCard>>, TError = unknown>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMaterialCard>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getMaterialCard>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetMaterialCard<TData = Awaited<ReturnType<typeof getMaterialCard>>, TError = AxiosError<unknown>>(
+export function useGetMaterialCard<TData = Awaited<ReturnType<typeof getMaterialCard>>, TError = unknown>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMaterialCard>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getMaterialCard>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetMaterialCard<TData = Awaited<ReturnType<typeof getMaterialCard>>, TError = AxiosError<unknown>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMaterialCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetMaterialCard<TData = Awaited<ReturnType<typeof getMaterialCard>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMaterialCard>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetMaterialCard<TData = Awaited<ReturnType<typeof getMaterialCard>>, TError = AxiosError<unknown>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMaterialCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetMaterialCard<TData = Awaited<ReturnType<typeof getMaterialCard>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMaterialCard>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -1927,16 +1959,16 @@ export function useGetMaterialCard<TData = Awaited<ReturnType<typeof getMaterial
 
 
 
-export const getGetMaterialCardSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getMaterialCard>>, TError = AxiosError<unknown>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetMaterialCardSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getMaterialCard>>, TError = unknown>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialCard>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetMaterialCardQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMaterialCard>>> = ({ signal }) => getMaterialCard(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMaterialCard>>> = ({ signal }) => getMaterialCard(id, signal);
 
       
 
@@ -1946,24 +1978,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetMaterialCardSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getMaterialCard>>>
-export type GetMaterialCardSuspenseQueryError = AxiosError<unknown>
+export type GetMaterialCardSuspenseQueryError = unknown
 
 
-export function useGetMaterialCardSuspense<TData = Awaited<ReturnType<typeof getMaterialCard>>, TError = AxiosError<unknown>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialCard>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetMaterialCardSuspense<TData = Awaited<ReturnType<typeof getMaterialCard>>, TError = AxiosError<unknown>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetMaterialCardSuspense<TData = Awaited<ReturnType<typeof getMaterialCard>>, TError = unknown>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialCard>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetMaterialCardSuspense<TData = Awaited<ReturnType<typeof getMaterialCard>>, TError = AxiosError<unknown>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetMaterialCardSuspense<TData = Awaited<ReturnType<typeof getMaterialCard>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialCard>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetMaterialCardSuspense<TData = Awaited<ReturnType<typeof getMaterialCard>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialCard>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetMaterialCardSuspense<TData = Awaited<ReturnType<typeof getMaterialCard>>, TError = AxiosError<unknown>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetMaterialCardSuspense<TData = Awaited<ReturnType<typeof getMaterialCard>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialCard>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -1984,27 +2016,29 @@ export function useGetMaterialCardSuspense<TData = Awaited<ReturnType<typeof get
  */
 export const updateMaterialCard = (
     id: number,
-    materialCard: MaterialCard, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<MaterialCard>> => {
-    
-    
-    return axios.default.put(
-      `/api/storage/materialCard/${id}`,
-      materialCard,options
-    );
-  }
+    materialCard: MaterialCard,
+ ) => {
+      
+      
+      return customMutator<MaterialCard>(
+      {url: `/api/storage/materialCard/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: materialCard
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateMaterialCardMutationOptions = <TData = Awaited<ReturnType<typeof updateMaterialCard>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: MaterialCard}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateMaterialCardMutationOptions = <TData = Awaited<ReturnType<typeof updateMaterialCard>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: MaterialCard}, TContext>, }
 ) => {
 const mutationKey = ['updateMaterialCard'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -2012,7 +2046,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateMaterialCard>>, {id: number;data: MaterialCard}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateMaterialCard(id,data,axiosOptions)
+          return  updateMaterialCard(id,data,)
         }
 
         
@@ -2022,10 +2056,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateMaterialCardMutationResult = NonNullable<Awaited<ReturnType<typeof updateMaterialCard>>>
     export type UpdateMaterialCardMutationBody = MaterialCard
-    export type UpdateMaterialCardMutationError = AxiosError<ErrorResponse>
+    export type UpdateMaterialCardMutationError = ErrorResponse
 
-    export const useUpdateMaterialCard = <TData = Awaited<ReturnType<typeof updateMaterialCard>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: MaterialCard}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateMaterialCard = <TData = Awaited<ReturnType<typeof updateMaterialCard>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: MaterialCard}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -2042,26 +2076,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete MaterialCard
  */
 export const deleteMaterialCard = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<MaterialCard>> => {
-    
-    
-    return axios.default.delete(
-      `/api/storage/materialCard/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<MaterialCard>(
+      {url: `/api/storage/materialCard/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteMaterialCardMutationOptions = <TData = Awaited<ReturnType<typeof deleteMaterialCard>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteMaterialCardMutationOptions = <TData = Awaited<ReturnType<typeof deleteMaterialCard>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteMaterialCard'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -2069,7 +2104,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteMaterialCard>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteMaterialCard(id,axiosOptions)
+          return  deleteMaterialCard(id,)
         }
 
         
@@ -2079,10 +2114,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteMaterialCardMutationResult = NonNullable<Awaited<ReturnType<typeof deleteMaterialCard>>>
     
-    export type DeleteMaterialCardMutationError = AxiosError<ResponseBase>
+    export type DeleteMaterialCardMutationError = ResponseBase
 
-    export const useDeleteMaterialCard = <TData = Awaited<ReturnType<typeof deleteMaterialCard>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteMaterialCard = <TData = Awaited<ReturnType<typeof deleteMaterialCard>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -2099,31 +2134,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get FixtureGroup
  */
 export const getFixtureGroup = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<FixtureGroup>> => {
-    
-    
-    return axios.default.get(
-      `/api/storage/fixtureGroup/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<FixtureGroup>(
+      {url: `/api/storage/fixtureGroup/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetFixtureGroupQueryKey = (id: number,) => {
     return [`/api/storage/fixtureGroup/${id}`] as const;
     }
 
     
-export const getGetFixtureGroupQueryOptions = <TData = Awaited<ReturnType<typeof getFixtureGroup>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFixtureGroup>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetFixtureGroupQueryOptions = <TData = Awaited<ReturnType<typeof getFixtureGroup>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFixtureGroup>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetFixtureGroupQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFixtureGroup>>> = ({ signal }) => getFixtureGroup(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFixtureGroup>>> = ({ signal }) => getFixtureGroup(id, signal);
 
       
 
@@ -2133,36 +2170,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetFixtureGroupQueryResult = NonNullable<Awaited<ReturnType<typeof getFixtureGroup>>>
-export type GetFixtureGroupQueryError = AxiosError<ErrorResponse>
+export type GetFixtureGroupQueryError = ErrorResponse
 
 
-export function useGetFixtureGroup<TData = Awaited<ReturnType<typeof getFixtureGroup>>, TError = AxiosError<ErrorResponse>>(
+export function useGetFixtureGroup<TData = Awaited<ReturnType<typeof getFixtureGroup>>, TError = ErrorResponse>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFixtureGroup>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getFixtureGroup>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetFixtureGroup<TData = Awaited<ReturnType<typeof getFixtureGroup>>, TError = AxiosError<ErrorResponse>>(
+export function useGetFixtureGroup<TData = Awaited<ReturnType<typeof getFixtureGroup>>, TError = ErrorResponse>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFixtureGroup>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getFixtureGroup>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetFixtureGroup<TData = Awaited<ReturnType<typeof getFixtureGroup>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFixtureGroup>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetFixtureGroup<TData = Awaited<ReturnType<typeof getFixtureGroup>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFixtureGroup>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetFixtureGroup<TData = Awaited<ReturnType<typeof getFixtureGroup>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFixtureGroup>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetFixtureGroup<TData = Awaited<ReturnType<typeof getFixtureGroup>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFixtureGroup>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -2177,16 +2214,16 @@ export function useGetFixtureGroup<TData = Awaited<ReturnType<typeof getFixtureG
 
 
 
-export const getGetFixtureGroupSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getFixtureGroup>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroup>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetFixtureGroupSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getFixtureGroup>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroup>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetFixtureGroupQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFixtureGroup>>> = ({ signal }) => getFixtureGroup(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFixtureGroup>>> = ({ signal }) => getFixtureGroup(id, signal);
 
       
 
@@ -2196,24 +2233,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetFixtureGroupSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getFixtureGroup>>>
-export type GetFixtureGroupSuspenseQueryError = AxiosError<ErrorResponse>
+export type GetFixtureGroupSuspenseQueryError = ErrorResponse
 
 
-export function useGetFixtureGroupSuspense<TData = Awaited<ReturnType<typeof getFixtureGroup>>, TError = AxiosError<ErrorResponse>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroup>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetFixtureGroupSuspense<TData = Awaited<ReturnType<typeof getFixtureGroup>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroup>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetFixtureGroupSuspense<TData = Awaited<ReturnType<typeof getFixtureGroup>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroup>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetFixtureGroupSuspense<TData = Awaited<ReturnType<typeof getFixtureGroup>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroup>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetFixtureGroupSuspense<TData = Awaited<ReturnType<typeof getFixtureGroup>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroup>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetFixtureGroupSuspense<TData = Awaited<ReturnType<typeof getFixtureGroup>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroup>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetFixtureGroupSuspense<TData = Awaited<ReturnType<typeof getFixtureGroup>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroup>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetFixtureGroupSuspense<TData = Awaited<ReturnType<typeof getFixtureGroup>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroup>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -2234,27 +2271,29 @@ export function useGetFixtureGroupSuspense<TData = Awaited<ReturnType<typeof get
  */
 export const updateFixtureGroup = (
     id: number,
-    fixtureGroup: FixtureGroup, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<FixtureGroup>> => {
-    
-    
-    return axios.default.put(
-      `/api/storage/fixtureGroup/${id}`,
-      fixtureGroup,options
-    );
-  }
+    fixtureGroup: FixtureGroup,
+ ) => {
+      
+      
+      return customMutator<FixtureGroup>(
+      {url: `/api/storage/fixtureGroup/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: fixtureGroup
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateFixtureGroupMutationOptions = <TData = Awaited<ReturnType<typeof updateFixtureGroup>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: FixtureGroup}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateFixtureGroupMutationOptions = <TData = Awaited<ReturnType<typeof updateFixtureGroup>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: FixtureGroup}, TContext>, }
 ) => {
 const mutationKey = ['updateFixtureGroup'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -2262,7 +2301,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateFixtureGroup>>, {id: number;data: FixtureGroup}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateFixtureGroup(id,data,axiosOptions)
+          return  updateFixtureGroup(id,data,)
         }
 
         
@@ -2272,10 +2311,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateFixtureGroupMutationResult = NonNullable<Awaited<ReturnType<typeof updateFixtureGroup>>>
     export type UpdateFixtureGroupMutationBody = FixtureGroup
-    export type UpdateFixtureGroupMutationError = AxiosError<ErrorResponse>
+    export type UpdateFixtureGroupMutationError = ErrorResponse
 
-    export const useUpdateFixtureGroup = <TData = Awaited<ReturnType<typeof updateFixtureGroup>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: FixtureGroup}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateFixtureGroup = <TData = Awaited<ReturnType<typeof updateFixtureGroup>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: FixtureGroup}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -2292,26 +2331,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete FixtureGroup
  */
 export const deleteFixtureGroup = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<FixtureGroup>> => {
-    
-    
-    return axios.default.delete(
-      `/api/storage/fixtureGroup/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<FixtureGroup>(
+      {url: `/api/storage/fixtureGroup/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteFixtureGroupMutationOptions = <TData = Awaited<ReturnType<typeof deleteFixtureGroup>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteFixtureGroupMutationOptions = <TData = Awaited<ReturnType<typeof deleteFixtureGroup>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteFixtureGroup'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -2319,7 +2359,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteFixtureGroup>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteFixtureGroup(id,axiosOptions)
+          return  deleteFixtureGroup(id,)
         }
 
         
@@ -2329,10 +2369,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteFixtureGroupMutationResult = NonNullable<Awaited<ReturnType<typeof deleteFixtureGroup>>>
     
-    export type DeleteFixtureGroupMutationError = AxiosError<ResponseBase>
+    export type DeleteFixtureGroupMutationError = ResponseBase
 
-    export const useDeleteFixtureGroup = <TData = Awaited<ReturnType<typeof deleteFixtureGroup>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteFixtureGroup = <TData = Awaited<ReturnType<typeof deleteFixtureGroup>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -2349,31 +2389,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get FixtureCard
  */
 export const getFixtureCard = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<string>> => {
-    
-    
-    return axios.default.get(
-      `/api/storage/fixtureCard/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<string>(
+      {url: `/api/storage/fixtureCard/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetFixtureCardQueryKey = (id: number,) => {
     return [`/api/storage/fixtureCard/${id}`] as const;
     }
 
     
-export const getGetFixtureCardQueryOptions = <TData = Awaited<ReturnType<typeof getFixtureCard>>, TError = AxiosError<unknown>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFixtureCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetFixtureCardQueryOptions = <TData = Awaited<ReturnType<typeof getFixtureCard>>, TError = unknown>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFixtureCard>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetFixtureCardQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFixtureCard>>> = ({ signal }) => getFixtureCard(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFixtureCard>>> = ({ signal }) => getFixtureCard(id, signal);
 
       
 
@@ -2383,36 +2425,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetFixtureCardQueryResult = NonNullable<Awaited<ReturnType<typeof getFixtureCard>>>
-export type GetFixtureCardQueryError = AxiosError<unknown>
+export type GetFixtureCardQueryError = unknown
 
 
-export function useGetFixtureCard<TData = Awaited<ReturnType<typeof getFixtureCard>>, TError = AxiosError<unknown>>(
+export function useGetFixtureCard<TData = Awaited<ReturnType<typeof getFixtureCard>>, TError = unknown>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFixtureCard>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getFixtureCard>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetFixtureCard<TData = Awaited<ReturnType<typeof getFixtureCard>>, TError = AxiosError<unknown>>(
+export function useGetFixtureCard<TData = Awaited<ReturnType<typeof getFixtureCard>>, TError = unknown>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFixtureCard>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getFixtureCard>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetFixtureCard<TData = Awaited<ReturnType<typeof getFixtureCard>>, TError = AxiosError<unknown>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFixtureCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetFixtureCard<TData = Awaited<ReturnType<typeof getFixtureCard>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFixtureCard>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetFixtureCard<TData = Awaited<ReturnType<typeof getFixtureCard>>, TError = AxiosError<unknown>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFixtureCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetFixtureCard<TData = Awaited<ReturnType<typeof getFixtureCard>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFixtureCard>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -2427,16 +2469,16 @@ export function useGetFixtureCard<TData = Awaited<ReturnType<typeof getFixtureCa
 
 
 
-export const getGetFixtureCardSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getFixtureCard>>, TError = AxiosError<unknown>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetFixtureCardSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getFixtureCard>>, TError = unknown>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureCard>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetFixtureCardQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFixtureCard>>> = ({ signal }) => getFixtureCard(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFixtureCard>>> = ({ signal }) => getFixtureCard(id, signal);
 
       
 
@@ -2446,24 +2488,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetFixtureCardSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getFixtureCard>>>
-export type GetFixtureCardSuspenseQueryError = AxiosError<unknown>
+export type GetFixtureCardSuspenseQueryError = unknown
 
 
-export function useGetFixtureCardSuspense<TData = Awaited<ReturnType<typeof getFixtureCard>>, TError = AxiosError<unknown>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureCard>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetFixtureCardSuspense<TData = Awaited<ReturnType<typeof getFixtureCard>>, TError = AxiosError<unknown>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetFixtureCardSuspense<TData = Awaited<ReturnType<typeof getFixtureCard>>, TError = unknown>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureCard>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetFixtureCardSuspense<TData = Awaited<ReturnType<typeof getFixtureCard>>, TError = AxiosError<unknown>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetFixtureCardSuspense<TData = Awaited<ReturnType<typeof getFixtureCard>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureCard>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetFixtureCardSuspense<TData = Awaited<ReturnType<typeof getFixtureCard>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureCard>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetFixtureCardSuspense<TData = Awaited<ReturnType<typeof getFixtureCard>>, TError = AxiosError<unknown>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetFixtureCardSuspense<TData = Awaited<ReturnType<typeof getFixtureCard>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureCard>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -2484,27 +2526,29 @@ export function useGetFixtureCardSuspense<TData = Awaited<ReturnType<typeof getF
  */
 export const updateFixtureCard = (
     id: number,
-    fixtureCard: FixtureCard, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<FixtureCard>> => {
-    
-    
-    return axios.default.put(
-      `/api/storage/fixtureCard/${id}`,
-      fixtureCard,options
-    );
-  }
+    fixtureCard: FixtureCard,
+ ) => {
+      
+      
+      return customMutator<FixtureCard>(
+      {url: `/api/storage/fixtureCard/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: fixtureCard
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateFixtureCardMutationOptions = <TData = Awaited<ReturnType<typeof updateFixtureCard>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: FixtureCard}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateFixtureCardMutationOptions = <TData = Awaited<ReturnType<typeof updateFixtureCard>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: FixtureCard}, TContext>, }
 ) => {
 const mutationKey = ['updateFixtureCard'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -2512,7 +2556,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateFixtureCard>>, {id: number;data: FixtureCard}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateFixtureCard(id,data,axiosOptions)
+          return  updateFixtureCard(id,data,)
         }
 
         
@@ -2522,10 +2566,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateFixtureCardMutationResult = NonNullable<Awaited<ReturnType<typeof updateFixtureCard>>>
     export type UpdateFixtureCardMutationBody = FixtureCard
-    export type UpdateFixtureCardMutationError = AxiosError<ErrorResponse>
+    export type UpdateFixtureCardMutationError = ErrorResponse
 
-    export const useUpdateFixtureCard = <TData = Awaited<ReturnType<typeof updateFixtureCard>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: FixtureCard}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateFixtureCard = <TData = Awaited<ReturnType<typeof updateFixtureCard>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: FixtureCard}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -2542,26 +2586,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete FixtureCard
  */
 export const deleteFixtureCard = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<FixtureCard>> => {
-    
-    
-    return axios.default.delete(
-      `/api/storage/fixtureCard/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<FixtureCard>(
+      {url: `/api/storage/fixtureCard/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteFixtureCardMutationOptions = <TData = Awaited<ReturnType<typeof deleteFixtureCard>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteFixtureCardMutationOptions = <TData = Awaited<ReturnType<typeof deleteFixtureCard>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteFixtureCard'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -2569,7 +2614,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteFixtureCard>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteFixtureCard(id,axiosOptions)
+          return  deleteFixtureCard(id,)
         }
 
         
@@ -2579,10 +2624,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteFixtureCardMutationResult = NonNullable<Awaited<ReturnType<typeof deleteFixtureCard>>>
     
-    export type DeleteFixtureCardMutationError = AxiosError<ResponseBase>
+    export type DeleteFixtureCardMutationError = ResponseBase
 
-    export const useDeleteFixtureCard = <TData = Awaited<ReturnType<typeof deleteFixtureCard>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteFixtureCard = <TData = Awaited<ReturnType<typeof deleteFixtureCard>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -2599,31 +2644,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get AssignmentTransaction
  */
 export const getAssignmentTransaction = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<AssignmentTransaction>> => {
-    
-    
-    return axios.default.get(
-      `/api/storage/assignmentTransaction/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<AssignmentTransaction>(
+      {url: `/api/storage/assignmentTransaction/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetAssignmentTransactionQueryKey = (id: number,) => {
     return [`/api/storage/assignmentTransaction/${id}`] as const;
     }
 
     
-export const getGetAssignmentTransactionQueryOptions = <TData = Awaited<ReturnType<typeof getAssignmentTransaction>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAssignmentTransaction>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetAssignmentTransactionQueryOptions = <TData = Awaited<ReturnType<typeof getAssignmentTransaction>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAssignmentTransaction>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetAssignmentTransactionQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAssignmentTransaction>>> = ({ signal }) => getAssignmentTransaction(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAssignmentTransaction>>> = ({ signal }) => getAssignmentTransaction(id, signal);
 
       
 
@@ -2633,36 +2680,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetAssignmentTransactionQueryResult = NonNullable<Awaited<ReturnType<typeof getAssignmentTransaction>>>
-export type GetAssignmentTransactionQueryError = AxiosError<ErrorResponse>
+export type GetAssignmentTransactionQueryError = ErrorResponse
 
 
-export function useGetAssignmentTransaction<TData = Awaited<ReturnType<typeof getAssignmentTransaction>>, TError = AxiosError<ErrorResponse>>(
+export function useGetAssignmentTransaction<TData = Awaited<ReturnType<typeof getAssignmentTransaction>>, TError = ErrorResponse>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAssignmentTransaction>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getAssignmentTransaction>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetAssignmentTransaction<TData = Awaited<ReturnType<typeof getAssignmentTransaction>>, TError = AxiosError<ErrorResponse>>(
+export function useGetAssignmentTransaction<TData = Awaited<ReturnType<typeof getAssignmentTransaction>>, TError = ErrorResponse>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAssignmentTransaction>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getAssignmentTransaction>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetAssignmentTransaction<TData = Awaited<ReturnType<typeof getAssignmentTransaction>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAssignmentTransaction>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetAssignmentTransaction<TData = Awaited<ReturnType<typeof getAssignmentTransaction>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAssignmentTransaction>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetAssignmentTransaction<TData = Awaited<ReturnType<typeof getAssignmentTransaction>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAssignmentTransaction>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetAssignmentTransaction<TData = Awaited<ReturnType<typeof getAssignmentTransaction>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAssignmentTransaction>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -2677,16 +2724,16 @@ export function useGetAssignmentTransaction<TData = Awaited<ReturnType<typeof ge
 
 
 
-export const getGetAssignmentTransactionSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getAssignmentTransaction>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAssignmentTransaction>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetAssignmentTransactionSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getAssignmentTransaction>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAssignmentTransaction>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetAssignmentTransactionQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAssignmentTransaction>>> = ({ signal }) => getAssignmentTransaction(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAssignmentTransaction>>> = ({ signal }) => getAssignmentTransaction(id, signal);
 
       
 
@@ -2696,24 +2743,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetAssignmentTransactionSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getAssignmentTransaction>>>
-export type GetAssignmentTransactionSuspenseQueryError = AxiosError<ErrorResponse>
+export type GetAssignmentTransactionSuspenseQueryError = ErrorResponse
 
 
-export function useGetAssignmentTransactionSuspense<TData = Awaited<ReturnType<typeof getAssignmentTransaction>>, TError = AxiosError<ErrorResponse>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAssignmentTransaction>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetAssignmentTransactionSuspense<TData = Awaited<ReturnType<typeof getAssignmentTransaction>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAssignmentTransaction>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetAssignmentTransactionSuspense<TData = Awaited<ReturnType<typeof getAssignmentTransaction>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAssignmentTransaction>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetAssignmentTransactionSuspense<TData = Awaited<ReturnType<typeof getAssignmentTransaction>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAssignmentTransaction>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetAssignmentTransactionSuspense<TData = Awaited<ReturnType<typeof getAssignmentTransaction>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAssignmentTransaction>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetAssignmentTransactionSuspense<TData = Awaited<ReturnType<typeof getAssignmentTransaction>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAssignmentTransaction>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetAssignmentTransactionSuspense<TData = Awaited<ReturnType<typeof getAssignmentTransaction>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAssignmentTransaction>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetAssignmentTransactionSuspense<TData = Awaited<ReturnType<typeof getAssignmentTransaction>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAssignmentTransaction>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -2734,27 +2781,29 @@ export function useGetAssignmentTransactionSuspense<TData = Awaited<ReturnType<t
  */
 export const updateAssignmentTransaction = (
     id: number,
-    assignmentTransaction: AssignmentTransaction, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<AssignmentTransaction>> => {
-    
-    
-    return axios.default.put(
-      `/api/storage/assignmentTransaction/${id}`,
-      assignmentTransaction,options
-    );
-  }
+    assignmentTransaction: AssignmentTransaction,
+ ) => {
+      
+      
+      return customMutator<AssignmentTransaction>(
+      {url: `/api/storage/assignmentTransaction/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: assignmentTransaction
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateAssignmentTransactionMutationOptions = <TData = Awaited<ReturnType<typeof updateAssignmentTransaction>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: AssignmentTransaction}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateAssignmentTransactionMutationOptions = <TData = Awaited<ReturnType<typeof updateAssignmentTransaction>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: AssignmentTransaction}, TContext>, }
 ) => {
 const mutationKey = ['updateAssignmentTransaction'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -2762,7 +2811,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateAssignmentTransaction>>, {id: number;data: AssignmentTransaction}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateAssignmentTransaction(id,data,axiosOptions)
+          return  updateAssignmentTransaction(id,data,)
         }
 
         
@@ -2772,10 +2821,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateAssignmentTransactionMutationResult = NonNullable<Awaited<ReturnType<typeof updateAssignmentTransaction>>>
     export type UpdateAssignmentTransactionMutationBody = AssignmentTransaction
-    export type UpdateAssignmentTransactionMutationError = AxiosError<ErrorResponse>
+    export type UpdateAssignmentTransactionMutationError = ErrorResponse
 
-    export const useUpdateAssignmentTransaction = <TData = Awaited<ReturnType<typeof updateAssignmentTransaction>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: AssignmentTransaction}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateAssignmentTransaction = <TData = Awaited<ReturnType<typeof updateAssignmentTransaction>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: AssignmentTransaction}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -2792,26 +2841,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete AssignmentTransaction
  */
 export const deleteAssignmentTransaction = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<AssignmentTransaction>> => {
-    
-    
-    return axios.default.delete(
-      `/api/storage/assignmentTransaction/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<AssignmentTransaction>(
+      {url: `/api/storage/assignmentTransaction/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteAssignmentTransactionMutationOptions = <TData = Awaited<ReturnType<typeof deleteAssignmentTransaction>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteAssignmentTransactionMutationOptions = <TData = Awaited<ReturnType<typeof deleteAssignmentTransaction>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteAssignmentTransaction'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -2819,7 +2869,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteAssignmentTransaction>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteAssignmentTransaction(id,axiosOptions)
+          return  deleteAssignmentTransaction(id,)
         }
 
         
@@ -2829,10 +2879,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteAssignmentTransactionMutationResult = NonNullable<Awaited<ReturnType<typeof deleteAssignmentTransaction>>>
     
-    export type DeleteAssignmentTransactionMutationError = AxiosError<ResponseBase>
+    export type DeleteAssignmentTransactionMutationError = ResponseBase
 
-    export const useDeleteAssignmentTransaction = <TData = Awaited<ReturnType<typeof deleteAssignmentTransaction>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteAssignmentTransaction = <TData = Awaited<ReturnType<typeof deleteAssignmentTransaction>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -2849,31 +2899,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get AssignmentCard
  */
 export const getAssignmentCard = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<AssignmentCard>> => {
-    
-    
-    return axios.default.get(
-      `/api/storage/assignmentCard/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<AssignmentCard>(
+      {url: `/api/storage/assignmentCard/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetAssignmentCardQueryKey = (id: number,) => {
     return [`/api/storage/assignmentCard/${id}`] as const;
     }
 
     
-export const getGetAssignmentCardQueryOptions = <TData = Awaited<ReturnType<typeof getAssignmentCard>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAssignmentCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetAssignmentCardQueryOptions = <TData = Awaited<ReturnType<typeof getAssignmentCard>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAssignmentCard>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetAssignmentCardQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAssignmentCard>>> = ({ signal }) => getAssignmentCard(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAssignmentCard>>> = ({ signal }) => getAssignmentCard(id, signal);
 
       
 
@@ -2883,36 +2935,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetAssignmentCardQueryResult = NonNullable<Awaited<ReturnType<typeof getAssignmentCard>>>
-export type GetAssignmentCardQueryError = AxiosError<ErrorResponse>
+export type GetAssignmentCardQueryError = ErrorResponse
 
 
-export function useGetAssignmentCard<TData = Awaited<ReturnType<typeof getAssignmentCard>>, TError = AxiosError<ErrorResponse>>(
+export function useGetAssignmentCard<TData = Awaited<ReturnType<typeof getAssignmentCard>>, TError = ErrorResponse>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAssignmentCard>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getAssignmentCard>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetAssignmentCard<TData = Awaited<ReturnType<typeof getAssignmentCard>>, TError = AxiosError<ErrorResponse>>(
+export function useGetAssignmentCard<TData = Awaited<ReturnType<typeof getAssignmentCard>>, TError = ErrorResponse>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAssignmentCard>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getAssignmentCard>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetAssignmentCard<TData = Awaited<ReturnType<typeof getAssignmentCard>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAssignmentCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetAssignmentCard<TData = Awaited<ReturnType<typeof getAssignmentCard>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAssignmentCard>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetAssignmentCard<TData = Awaited<ReturnType<typeof getAssignmentCard>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAssignmentCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetAssignmentCard<TData = Awaited<ReturnType<typeof getAssignmentCard>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAssignmentCard>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -2927,16 +2979,16 @@ export function useGetAssignmentCard<TData = Awaited<ReturnType<typeof getAssign
 
 
 
-export const getGetAssignmentCardSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getAssignmentCard>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAssignmentCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetAssignmentCardSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getAssignmentCard>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAssignmentCard>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetAssignmentCardQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAssignmentCard>>> = ({ signal }) => getAssignmentCard(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAssignmentCard>>> = ({ signal }) => getAssignmentCard(id, signal);
 
       
 
@@ -2946,24 +2998,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetAssignmentCardSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getAssignmentCard>>>
-export type GetAssignmentCardSuspenseQueryError = AxiosError<ErrorResponse>
+export type GetAssignmentCardSuspenseQueryError = ErrorResponse
 
 
-export function useGetAssignmentCardSuspense<TData = Awaited<ReturnType<typeof getAssignmentCard>>, TError = AxiosError<ErrorResponse>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAssignmentCard>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetAssignmentCardSuspense<TData = Awaited<ReturnType<typeof getAssignmentCard>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAssignmentCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetAssignmentCardSuspense<TData = Awaited<ReturnType<typeof getAssignmentCard>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAssignmentCard>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetAssignmentCardSuspense<TData = Awaited<ReturnType<typeof getAssignmentCard>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAssignmentCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetAssignmentCardSuspense<TData = Awaited<ReturnType<typeof getAssignmentCard>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAssignmentCard>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetAssignmentCardSuspense<TData = Awaited<ReturnType<typeof getAssignmentCard>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAssignmentCard>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetAssignmentCardSuspense<TData = Awaited<ReturnType<typeof getAssignmentCard>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAssignmentCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetAssignmentCardSuspense<TData = Awaited<ReturnType<typeof getAssignmentCard>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAssignmentCard>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -2984,27 +3036,29 @@ export function useGetAssignmentCardSuspense<TData = Awaited<ReturnType<typeof g
  */
 export const updateAssignmentCard = (
     id: number,
-    assignmentCard: AssignmentCard, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<AssignmentCard>> => {
-    
-    
-    return axios.default.put(
-      `/api/storage/assignmentCard/${id}`,
-      assignmentCard,options
-    );
-  }
+    assignmentCard: AssignmentCard,
+ ) => {
+      
+      
+      return customMutator<AssignmentCard>(
+      {url: `/api/storage/assignmentCard/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: assignmentCard
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateAssignmentCardMutationOptions = <TData = Awaited<ReturnType<typeof updateAssignmentCard>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: AssignmentCard}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateAssignmentCardMutationOptions = <TData = Awaited<ReturnType<typeof updateAssignmentCard>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: AssignmentCard}, TContext>, }
 ) => {
 const mutationKey = ['updateAssignmentCard'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -3012,7 +3066,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateAssignmentCard>>, {id: number;data: AssignmentCard}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateAssignmentCard(id,data,axiosOptions)
+          return  updateAssignmentCard(id,data,)
         }
 
         
@@ -3022,10 +3076,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateAssignmentCardMutationResult = NonNullable<Awaited<ReturnType<typeof updateAssignmentCard>>>
     export type UpdateAssignmentCardMutationBody = AssignmentCard
-    export type UpdateAssignmentCardMutationError = AxiosError<ErrorResponse>
+    export type UpdateAssignmentCardMutationError = ErrorResponse
 
-    export const useUpdateAssignmentCard = <TData = Awaited<ReturnType<typeof updateAssignmentCard>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: AssignmentCard}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateAssignmentCard = <TData = Awaited<ReturnType<typeof updateAssignmentCard>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: AssignmentCard}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -3042,26 +3096,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete AssignmentCard
  */
 export const deleteAssignmentCard = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<AssignmentCard>> => {
-    
-    
-    return axios.default.delete(
-      `/api/storage/assignmentCard/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<AssignmentCard>(
+      {url: `/api/storage/assignmentCard/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteAssignmentCardMutationOptions = <TData = Awaited<ReturnType<typeof deleteAssignmentCard>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteAssignmentCardMutationOptions = <TData = Awaited<ReturnType<typeof deleteAssignmentCard>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteAssignmentCard'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -3069,7 +3124,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteAssignmentCard>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteAssignmentCard(id,axiosOptions)
+          return  deleteAssignmentCard(id,)
         }
 
         
@@ -3079,10 +3134,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteAssignmentCardMutationResult = NonNullable<Awaited<ReturnType<typeof deleteAssignmentCard>>>
     
-    export type DeleteAssignmentCardMutationError = AxiosError<ResponseBase>
+    export type DeleteAssignmentCardMutationError = ResponseBase
 
-    export const useDeleteAssignmentCard = <TData = Awaited<ReturnType<typeof deleteAssignmentCard>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteAssignmentCard = <TData = Awaited<ReturnType<typeof deleteAssignmentCard>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -3099,31 +3154,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get Proposal
  */
 export const getProposal = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Proposal>> => {
-    
-    
-    return axios.default.get(
-      `/api/sales/proposal/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Proposal>(
+      {url: `/api/sales/proposal/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetProposalQueryKey = (id: number,) => {
     return [`/api/sales/proposal/${id}`] as const;
     }
 
     
-export const getGetProposalQueryOptions = <TData = Awaited<ReturnType<typeof getProposal>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProposal>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetProposalQueryOptions = <TData = Awaited<ReturnType<typeof getProposal>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProposal>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetProposalQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProposal>>> = ({ signal }) => getProposal(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProposal>>> = ({ signal }) => getProposal(id, signal);
 
       
 
@@ -3133,36 +3190,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetProposalQueryResult = NonNullable<Awaited<ReturnType<typeof getProposal>>>
-export type GetProposalQueryError = AxiosError<ErrorResponse>
+export type GetProposalQueryError = ErrorResponse
 
 
-export function useGetProposal<TData = Awaited<ReturnType<typeof getProposal>>, TError = AxiosError<ErrorResponse>>(
+export function useGetProposal<TData = Awaited<ReturnType<typeof getProposal>>, TError = ErrorResponse>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProposal>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getProposal>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetProposal<TData = Awaited<ReturnType<typeof getProposal>>, TError = AxiosError<ErrorResponse>>(
+export function useGetProposal<TData = Awaited<ReturnType<typeof getProposal>>, TError = ErrorResponse>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProposal>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getProposal>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetProposal<TData = Awaited<ReturnType<typeof getProposal>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProposal>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProposal<TData = Awaited<ReturnType<typeof getProposal>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProposal>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetProposal<TData = Awaited<ReturnType<typeof getProposal>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProposal>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProposal<TData = Awaited<ReturnType<typeof getProposal>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProposal>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -3177,16 +3234,16 @@ export function useGetProposal<TData = Awaited<ReturnType<typeof getProposal>>, 
 
 
 
-export const getGetProposalSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getProposal>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProposal>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetProposalSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getProposal>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProposal>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetProposalQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProposal>>> = ({ signal }) => getProposal(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProposal>>> = ({ signal }) => getProposal(id, signal);
 
       
 
@@ -3196,24 +3253,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetProposalSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getProposal>>>
-export type GetProposalSuspenseQueryError = AxiosError<ErrorResponse>
+export type GetProposalSuspenseQueryError = ErrorResponse
 
 
-export function useGetProposalSuspense<TData = Awaited<ReturnType<typeof getProposal>>, TError = AxiosError<ErrorResponse>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProposal>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetProposalSuspense<TData = Awaited<ReturnType<typeof getProposal>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProposal>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProposalSuspense<TData = Awaited<ReturnType<typeof getProposal>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProposal>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetProposalSuspense<TData = Awaited<ReturnType<typeof getProposal>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProposal>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProposalSuspense<TData = Awaited<ReturnType<typeof getProposal>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProposal>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetProposalSuspense<TData = Awaited<ReturnType<typeof getProposal>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProposal>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetProposalSuspense<TData = Awaited<ReturnType<typeof getProposal>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProposal>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProposalSuspense<TData = Awaited<ReturnType<typeof getProposal>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProposal>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -3234,27 +3291,29 @@ export function useGetProposalSuspense<TData = Awaited<ReturnType<typeof getProp
  */
 export const updateProposal = (
     id: number,
-    proposal: Proposal, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Proposal>> => {
-    
-    
-    return axios.default.put(
-      `/api/sales/proposal/${id}`,
-      proposal,options
-    );
-  }
+    proposal: Proposal,
+ ) => {
+      
+      
+      return customMutator<Proposal>(
+      {url: `/api/sales/proposal/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: proposal
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateProposalMutationOptions = <TData = Awaited<ReturnType<typeof updateProposal>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Proposal}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateProposalMutationOptions = <TData = Awaited<ReturnType<typeof updateProposal>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Proposal}, TContext>, }
 ) => {
 const mutationKey = ['updateProposal'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -3262,7 +3321,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateProposal>>, {id: number;data: Proposal}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateProposal(id,data,axiosOptions)
+          return  updateProposal(id,data,)
         }
 
         
@@ -3272,10 +3331,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateProposalMutationResult = NonNullable<Awaited<ReturnType<typeof updateProposal>>>
     export type UpdateProposalMutationBody = Proposal
-    export type UpdateProposalMutationError = AxiosError<ErrorResponse>
+    export type UpdateProposalMutationError = ErrorResponse
 
-    export const useUpdateProposal = <TData = Awaited<ReturnType<typeof updateProposal>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Proposal}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateProposal = <TData = Awaited<ReturnType<typeof updateProposal>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Proposal}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -3292,26 +3351,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete Proposal
  */
 export const deleteProposal = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Proposal>> => {
-    
-    
-    return axios.default.delete(
-      `/api/sales/proposal/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<Proposal>(
+      {url: `/api/sales/proposal/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteProposalMutationOptions = <TData = Awaited<ReturnType<typeof deleteProposal>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteProposalMutationOptions = <TData = Awaited<ReturnType<typeof deleteProposal>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteProposal'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -3319,7 +3379,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteProposal>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteProposal(id,axiosOptions)
+          return  deleteProposal(id,)
         }
 
         
@@ -3329,10 +3389,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteProposalMutationResult = NonNullable<Awaited<ReturnType<typeof deleteProposal>>>
     
-    export type DeleteProposalMutationError = AxiosError<ResponseBase>
+    export type DeleteProposalMutationError = ResponseBase
 
-    export const useDeleteProposal = <TData = Awaited<ReturnType<typeof deleteProposal>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteProposal = <TData = Awaited<ReturnType<typeof deleteProposal>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -3349,31 +3409,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get Purchase Order
  */
 export const getPurchaseOrder = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<PurchaseOrder>> => {
-    
-    
-    return axios.default.get(
-      `/api/purchasing/purchaseOrder/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<PurchaseOrder>(
+      {url: `/api/purchasing/purchaseOrder/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetPurchaseOrderQueryKey = (id: number,) => {
     return [`/api/purchasing/purchaseOrder/${id}`] as const;
     }
 
     
-export const getGetPurchaseOrderQueryOptions = <TData = Awaited<ReturnType<typeof getPurchaseOrder>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPurchaseOrder>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetPurchaseOrderQueryOptions = <TData = Awaited<ReturnType<typeof getPurchaseOrder>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPurchaseOrder>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetPurchaseOrderQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPurchaseOrder>>> = ({ signal }) => getPurchaseOrder(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPurchaseOrder>>> = ({ signal }) => getPurchaseOrder(id, signal);
 
       
 
@@ -3383,36 +3445,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetPurchaseOrderQueryResult = NonNullable<Awaited<ReturnType<typeof getPurchaseOrder>>>
-export type GetPurchaseOrderQueryError = AxiosError<ErrorResponse>
+export type GetPurchaseOrderQueryError = ErrorResponse
 
 
-export function useGetPurchaseOrder<TData = Awaited<ReturnType<typeof getPurchaseOrder>>, TError = AxiosError<ErrorResponse>>(
+export function useGetPurchaseOrder<TData = Awaited<ReturnType<typeof getPurchaseOrder>>, TError = ErrorResponse>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPurchaseOrder>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getPurchaseOrder>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetPurchaseOrder<TData = Awaited<ReturnType<typeof getPurchaseOrder>>, TError = AxiosError<ErrorResponse>>(
+export function useGetPurchaseOrder<TData = Awaited<ReturnType<typeof getPurchaseOrder>>, TError = ErrorResponse>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPurchaseOrder>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getPurchaseOrder>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetPurchaseOrder<TData = Awaited<ReturnType<typeof getPurchaseOrder>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPurchaseOrder>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetPurchaseOrder<TData = Awaited<ReturnType<typeof getPurchaseOrder>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPurchaseOrder>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetPurchaseOrder<TData = Awaited<ReturnType<typeof getPurchaseOrder>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPurchaseOrder>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetPurchaseOrder<TData = Awaited<ReturnType<typeof getPurchaseOrder>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPurchaseOrder>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -3427,16 +3489,16 @@ export function useGetPurchaseOrder<TData = Awaited<ReturnType<typeof getPurchas
 
 
 
-export const getGetPurchaseOrderSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getPurchaseOrder>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPurchaseOrder>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetPurchaseOrderSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getPurchaseOrder>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPurchaseOrder>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetPurchaseOrderQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPurchaseOrder>>> = ({ signal }) => getPurchaseOrder(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPurchaseOrder>>> = ({ signal }) => getPurchaseOrder(id, signal);
 
       
 
@@ -3446,24 +3508,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetPurchaseOrderSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getPurchaseOrder>>>
-export type GetPurchaseOrderSuspenseQueryError = AxiosError<ErrorResponse>
+export type GetPurchaseOrderSuspenseQueryError = ErrorResponse
 
 
-export function useGetPurchaseOrderSuspense<TData = Awaited<ReturnType<typeof getPurchaseOrder>>, TError = AxiosError<ErrorResponse>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPurchaseOrder>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetPurchaseOrderSuspense<TData = Awaited<ReturnType<typeof getPurchaseOrder>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPurchaseOrder>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetPurchaseOrderSuspense<TData = Awaited<ReturnType<typeof getPurchaseOrder>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPurchaseOrder>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetPurchaseOrderSuspense<TData = Awaited<ReturnType<typeof getPurchaseOrder>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPurchaseOrder>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetPurchaseOrderSuspense<TData = Awaited<ReturnType<typeof getPurchaseOrder>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPurchaseOrder>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetPurchaseOrderSuspense<TData = Awaited<ReturnType<typeof getPurchaseOrder>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPurchaseOrder>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetPurchaseOrderSuspense<TData = Awaited<ReturnType<typeof getPurchaseOrder>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPurchaseOrder>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetPurchaseOrderSuspense<TData = Awaited<ReturnType<typeof getPurchaseOrder>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPurchaseOrder>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -3484,27 +3546,29 @@ export function useGetPurchaseOrderSuspense<TData = Awaited<ReturnType<typeof ge
  */
 export const updatePurchaseOrder = (
     id: number,
-    purchaseOrder: PurchaseOrder, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<PurchaseOrder>> => {
-    
-    
-    return axios.default.put(
-      `/api/purchasing/purchaseOrder/${id}`,
-      purchaseOrder,options
-    );
-  }
+    purchaseOrder: PurchaseOrder,
+ ) => {
+      
+      
+      return customMutator<PurchaseOrder>(
+      {url: `/api/purchasing/purchaseOrder/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: purchaseOrder
+    },
+      );
+    }
+  
 
 
-
-export const getUpdatePurchaseOrderMutationOptions = <TData = Awaited<ReturnType<typeof updatePurchaseOrder>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: PurchaseOrder}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdatePurchaseOrderMutationOptions = <TData = Awaited<ReturnType<typeof updatePurchaseOrder>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: PurchaseOrder}, TContext>, }
 ) => {
 const mutationKey = ['updatePurchaseOrder'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -3512,7 +3576,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updatePurchaseOrder>>, {id: number;data: PurchaseOrder}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updatePurchaseOrder(id,data,axiosOptions)
+          return  updatePurchaseOrder(id,data,)
         }
 
         
@@ -3522,10 +3586,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdatePurchaseOrderMutationResult = NonNullable<Awaited<ReturnType<typeof updatePurchaseOrder>>>
     export type UpdatePurchaseOrderMutationBody = PurchaseOrder
-    export type UpdatePurchaseOrderMutationError = AxiosError<ErrorResponse>
+    export type UpdatePurchaseOrderMutationError = ErrorResponse
 
-    export const useUpdatePurchaseOrder = <TData = Awaited<ReturnType<typeof updatePurchaseOrder>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: PurchaseOrder}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdatePurchaseOrder = <TData = Awaited<ReturnType<typeof updatePurchaseOrder>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: PurchaseOrder}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -3542,26 +3606,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete PurchaseOrder
  */
 export const deletePurchaseOrder = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<PurchaseOrder>> => {
-    
-    
-    return axios.default.delete(
-      `/api/purchasing/purchaseOrder/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<PurchaseOrder>(
+      {url: `/api/purchasing/purchaseOrder/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeletePurchaseOrderMutationOptions = <TData = Awaited<ReturnType<typeof deletePurchaseOrder>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeletePurchaseOrderMutationOptions = <TData = Awaited<ReturnType<typeof deletePurchaseOrder>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deletePurchaseOrder'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -3569,7 +3634,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deletePurchaseOrder>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deletePurchaseOrder(id,axiosOptions)
+          return  deletePurchaseOrder(id,)
         }
 
         
@@ -3579,10 +3644,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeletePurchaseOrderMutationResult = NonNullable<Awaited<ReturnType<typeof deletePurchaseOrder>>>
     
-    export type DeletePurchaseOrderMutationError = AxiosError<ResponseBase>
+    export type DeletePurchaseOrderMutationError = ResponseBase
 
-    export const useDeletePurchaseOrder = <TData = Awaited<ReturnType<typeof deletePurchaseOrder>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeletePurchaseOrder = <TData = Awaited<ReturnType<typeof deletePurchaseOrder>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -3599,31 +3664,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get Invoice
  */
 export const getInvoice = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Invoice>> => {
-    
-    
-    return axios.default.get(
-      `/api/purchasing/invoice/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Invoice>(
+      {url: `/api/purchasing/invoice/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetInvoiceQueryKey = (id: number,) => {
     return [`/api/purchasing/invoice/${id}`] as const;
     }
 
     
-export const getGetInvoiceQueryOptions = <TData = Awaited<ReturnType<typeof getInvoice>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getInvoice>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetInvoiceQueryOptions = <TData = Awaited<ReturnType<typeof getInvoice>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getInvoice>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetInvoiceQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getInvoice>>> = ({ signal }) => getInvoice(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getInvoice>>> = ({ signal }) => getInvoice(id, signal);
 
       
 
@@ -3633,36 +3700,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetInvoiceQueryResult = NonNullable<Awaited<ReturnType<typeof getInvoice>>>
-export type GetInvoiceQueryError = AxiosError<ErrorResponse>
+export type GetInvoiceQueryError = ErrorResponse
 
 
-export function useGetInvoice<TData = Awaited<ReturnType<typeof getInvoice>>, TError = AxiosError<ErrorResponse>>(
+export function useGetInvoice<TData = Awaited<ReturnType<typeof getInvoice>>, TError = ErrorResponse>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getInvoice>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getInvoice>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetInvoice<TData = Awaited<ReturnType<typeof getInvoice>>, TError = AxiosError<ErrorResponse>>(
+export function useGetInvoice<TData = Awaited<ReturnType<typeof getInvoice>>, TError = ErrorResponse>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getInvoice>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getInvoice>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetInvoice<TData = Awaited<ReturnType<typeof getInvoice>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getInvoice>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetInvoice<TData = Awaited<ReturnType<typeof getInvoice>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getInvoice>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetInvoice<TData = Awaited<ReturnType<typeof getInvoice>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getInvoice>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetInvoice<TData = Awaited<ReturnType<typeof getInvoice>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getInvoice>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -3677,16 +3744,16 @@ export function useGetInvoice<TData = Awaited<ReturnType<typeof getInvoice>>, TE
 
 
 
-export const getGetInvoiceSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getInvoice>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getInvoice>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetInvoiceSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getInvoice>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getInvoice>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetInvoiceQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getInvoice>>> = ({ signal }) => getInvoice(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getInvoice>>> = ({ signal }) => getInvoice(id, signal);
 
       
 
@@ -3696,24 +3763,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetInvoiceSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getInvoice>>>
-export type GetInvoiceSuspenseQueryError = AxiosError<ErrorResponse>
+export type GetInvoiceSuspenseQueryError = ErrorResponse
 
 
-export function useGetInvoiceSuspense<TData = Awaited<ReturnType<typeof getInvoice>>, TError = AxiosError<ErrorResponse>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getInvoice>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetInvoiceSuspense<TData = Awaited<ReturnType<typeof getInvoice>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getInvoice>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetInvoiceSuspense<TData = Awaited<ReturnType<typeof getInvoice>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getInvoice>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetInvoiceSuspense<TData = Awaited<ReturnType<typeof getInvoice>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getInvoice>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetInvoiceSuspense<TData = Awaited<ReturnType<typeof getInvoice>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getInvoice>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetInvoiceSuspense<TData = Awaited<ReturnType<typeof getInvoice>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getInvoice>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetInvoiceSuspense<TData = Awaited<ReturnType<typeof getInvoice>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getInvoice>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetInvoiceSuspense<TData = Awaited<ReturnType<typeof getInvoice>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getInvoice>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -3734,27 +3801,29 @@ export function useGetInvoiceSuspense<TData = Awaited<ReturnType<typeof getInvoi
  */
 export const updateInvoice = (
     id: number,
-    invoice: Invoice, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Invoice>> => {
-    
-    
-    return axios.default.put(
-      `/api/purchasing/invoice/${id}`,
-      invoice,options
-    );
-  }
+    invoice: Invoice,
+ ) => {
+      
+      
+      return customMutator<Invoice>(
+      {url: `/api/purchasing/invoice/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: invoice
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateInvoiceMutationOptions = <TData = Awaited<ReturnType<typeof updateInvoice>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Invoice}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateInvoiceMutationOptions = <TData = Awaited<ReturnType<typeof updateInvoice>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Invoice}, TContext>, }
 ) => {
 const mutationKey = ['updateInvoice'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -3762,7 +3831,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateInvoice>>, {id: number;data: Invoice}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateInvoice(id,data,axiosOptions)
+          return  updateInvoice(id,data,)
         }
 
         
@@ -3772,10 +3841,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateInvoiceMutationResult = NonNullable<Awaited<ReturnType<typeof updateInvoice>>>
     export type UpdateInvoiceMutationBody = Invoice
-    export type UpdateInvoiceMutationError = AxiosError<ErrorResponse>
+    export type UpdateInvoiceMutationError = ErrorResponse
 
-    export const useUpdateInvoice = <TData = Awaited<ReturnType<typeof updateInvoice>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Invoice}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateInvoice = <TData = Awaited<ReturnType<typeof updateInvoice>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Invoice}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -3792,26 +3861,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete Invoice by document reference
  */
 export const deleteInvoice = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Invoice>> => {
-    
-    
-    return axios.default.delete(
-      `/api/purchasing/invoice/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<Invoice>(
+      {url: `/api/purchasing/invoice/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteInvoiceMutationOptions = <TData = Awaited<ReturnType<typeof deleteInvoice>>, TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteInvoiceMutationOptions = <TData = Awaited<ReturnType<typeof deleteInvoice>>, TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteInvoice'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -3819,7 +3889,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteInvoice>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteInvoice(id,axiosOptions)
+          return  deleteInvoice(id,)
         }
 
         
@@ -3829,10 +3899,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteInvoiceMutationResult = NonNullable<Awaited<ReturnType<typeof deleteInvoice>>>
     
-    export type DeleteInvoiceMutationError = AxiosError<unknown>
+    export type DeleteInvoiceMutationError = unknown
 
-    export const useDeleteInvoice = <TData = Awaited<ReturnType<typeof deleteInvoice>>, TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteInvoice = <TData = Awaited<ReturnType<typeof deleteInvoice>>, TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -3849,31 +3919,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get Current Account Transaction
  */
 export const getCurrentAccountTransaction = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<CurrentAccountTransaction>> => {
-    
-    
-    return axios.default.get(
-      `/api/purchasing/currentAccountTransaction/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<CurrentAccountTransaction>(
+      {url: `/api/purchasing/currentAccountTransaction/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetCurrentAccountTransactionQueryKey = (id: number,) => {
     return [`/api/purchasing/currentAccountTransaction/${id}`] as const;
     }
 
     
-export const getGetCurrentAccountTransactionQueryOptions = <TData = Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetCurrentAccountTransactionQueryOptions = <TData = Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetCurrentAccountTransactionQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCurrentAccountTransaction>>> = ({ signal }) => getCurrentAccountTransaction(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCurrentAccountTransaction>>> = ({ signal }) => getCurrentAccountTransaction(id, signal);
 
       
 
@@ -3883,36 +3955,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetCurrentAccountTransactionQueryResult = NonNullable<Awaited<ReturnType<typeof getCurrentAccountTransaction>>>
-export type GetCurrentAccountTransactionQueryError = AxiosError<ErrorResponse>
+export type GetCurrentAccountTransactionQueryError = ErrorResponse
 
 
-export function useGetCurrentAccountTransaction<TData = Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError = AxiosError<ErrorResponse>>(
+export function useGetCurrentAccountTransaction<TData = Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError = ErrorResponse>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getCurrentAccountTransaction>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetCurrentAccountTransaction<TData = Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError = AxiosError<ErrorResponse>>(
+export function useGetCurrentAccountTransaction<TData = Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError = ErrorResponse>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getCurrentAccountTransaction>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetCurrentAccountTransaction<TData = Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetCurrentAccountTransaction<TData = Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetCurrentAccountTransaction<TData = Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetCurrentAccountTransaction<TData = Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -3927,16 +3999,16 @@ export function useGetCurrentAccountTransaction<TData = Awaited<ReturnType<typeo
 
 
 
-export const getGetCurrentAccountTransactionSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetCurrentAccountTransactionSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetCurrentAccountTransactionQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCurrentAccountTransaction>>> = ({ signal }) => getCurrentAccountTransaction(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCurrentAccountTransaction>>> = ({ signal }) => getCurrentAccountTransaction(id, signal);
 
       
 
@@ -3946,24 +4018,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetCurrentAccountTransactionSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getCurrentAccountTransaction>>>
-export type GetCurrentAccountTransactionSuspenseQueryError = AxiosError<ErrorResponse>
+export type GetCurrentAccountTransactionSuspenseQueryError = ErrorResponse
 
 
-export function useGetCurrentAccountTransactionSuspense<TData = Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError = AxiosError<ErrorResponse>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetCurrentAccountTransactionSuspense<TData = Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetCurrentAccountTransactionSuspense<TData = Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetCurrentAccountTransactionSuspense<TData = Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetCurrentAccountTransactionSuspense<TData = Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetCurrentAccountTransactionSuspense<TData = Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetCurrentAccountTransactionSuspense<TData = Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetCurrentAccountTransactionSuspense<TData = Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountTransaction>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -3984,27 +4056,29 @@ export function useGetCurrentAccountTransactionSuspense<TData = Awaited<ReturnTy
  */
 export const updateCurrentAccountTransaction = (
     id: number,
-    currentAccountTransaction: CurrentAccountTransaction, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<CurrentAccountTransaction>> => {
-    
-    
-    return axios.default.put(
-      `/api/purchasing/currentAccountTransaction/${id}`,
-      currentAccountTransaction,options
-    );
-  }
+    currentAccountTransaction: CurrentAccountTransaction,
+ ) => {
+      
+      
+      return customMutator<CurrentAccountTransaction>(
+      {url: `/api/purchasing/currentAccountTransaction/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: currentAccountTransaction
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateCurrentAccountTransactionMutationOptions = <TData = Awaited<ReturnType<typeof updateCurrentAccountTransaction>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: CurrentAccountTransaction}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateCurrentAccountTransactionMutationOptions = <TData = Awaited<ReturnType<typeof updateCurrentAccountTransaction>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: CurrentAccountTransaction}, TContext>, }
 ) => {
 const mutationKey = ['updateCurrentAccountTransaction'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -4012,7 +4086,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateCurrentAccountTransaction>>, {id: number;data: CurrentAccountTransaction}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateCurrentAccountTransaction(id,data,axiosOptions)
+          return  updateCurrentAccountTransaction(id,data,)
         }
 
         
@@ -4022,10 +4096,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateCurrentAccountTransactionMutationResult = NonNullable<Awaited<ReturnType<typeof updateCurrentAccountTransaction>>>
     export type UpdateCurrentAccountTransactionMutationBody = CurrentAccountTransaction
-    export type UpdateCurrentAccountTransactionMutationError = AxiosError<ErrorResponse>
+    export type UpdateCurrentAccountTransactionMutationError = ErrorResponse
 
-    export const useUpdateCurrentAccountTransaction = <TData = Awaited<ReturnType<typeof updateCurrentAccountTransaction>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: CurrentAccountTransaction}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateCurrentAccountTransaction = <TData = Awaited<ReturnType<typeof updateCurrentAccountTransaction>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: CurrentAccountTransaction}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -4042,26 +4116,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete Current Account Transaction by document reference
  */
 export const deleteCurrentAccountTransaction = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<CurrentAccountTransaction>> => {
-    
-    
-    return axios.default.delete(
-      `/api/purchasing/currentAccountTransaction/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<CurrentAccountTransaction>(
+      {url: `/api/purchasing/currentAccountTransaction/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteCurrentAccountTransactionMutationOptions = <TData = Awaited<ReturnType<typeof deleteCurrentAccountTransaction>>, TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteCurrentAccountTransactionMutationOptions = <TData = Awaited<ReturnType<typeof deleteCurrentAccountTransaction>>, TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteCurrentAccountTransaction'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -4069,7 +4144,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteCurrentAccountTransaction>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteCurrentAccountTransaction(id,axiosOptions)
+          return  deleteCurrentAccountTransaction(id,)
         }
 
         
@@ -4079,10 +4154,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteCurrentAccountTransactionMutationResult = NonNullable<Awaited<ReturnType<typeof deleteCurrentAccountTransaction>>>
     
-    export type DeleteCurrentAccountTransactionMutationError = AxiosError<unknown>
+    export type DeleteCurrentAccountTransactionMutationError = unknown
 
-    export const useDeleteCurrentAccountTransaction = <TData = Awaited<ReturnType<typeof deleteCurrentAccountTransaction>>, TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteCurrentAccountTransaction = <TData = Awaited<ReturnType<typeof deleteCurrentAccountTransaction>>, TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -4099,31 +4174,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get CurrentAccountBankAccount
  */
 export const getCurrentAccountBankAccount = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<CurrentAccountBankAccount>> => {
-    
-    
-    return axios.default.get(
-      `/api/purchasing/currentAccountBankAccount/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<CurrentAccountBankAccount>(
+      {url: `/api/purchasing/currentAccountBankAccount/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetCurrentAccountBankAccountQueryKey = (id: number,) => {
     return [`/api/purchasing/currentAccountBankAccount/${id}`] as const;
     }
 
     
-export const getGetCurrentAccountBankAccountQueryOptions = <TData = Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetCurrentAccountBankAccountQueryOptions = <TData = Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetCurrentAccountBankAccountQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCurrentAccountBankAccount>>> = ({ signal }) => getCurrentAccountBankAccount(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCurrentAccountBankAccount>>> = ({ signal }) => getCurrentAccountBankAccount(id, signal);
 
       
 
@@ -4133,36 +4210,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetCurrentAccountBankAccountQueryResult = NonNullable<Awaited<ReturnType<typeof getCurrentAccountBankAccount>>>
-export type GetCurrentAccountBankAccountQueryError = AxiosError<ErrorResponse>
+export type GetCurrentAccountBankAccountQueryError = ErrorResponse
 
 
-export function useGetCurrentAccountBankAccount<TData = Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError = AxiosError<ErrorResponse>>(
+export function useGetCurrentAccountBankAccount<TData = Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError = ErrorResponse>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getCurrentAccountBankAccount>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetCurrentAccountBankAccount<TData = Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError = AxiosError<ErrorResponse>>(
+export function useGetCurrentAccountBankAccount<TData = Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError = ErrorResponse>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getCurrentAccountBankAccount>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetCurrentAccountBankAccount<TData = Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetCurrentAccountBankAccount<TData = Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetCurrentAccountBankAccount<TData = Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetCurrentAccountBankAccount<TData = Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -4177,16 +4254,16 @@ export function useGetCurrentAccountBankAccount<TData = Awaited<ReturnType<typeo
 
 
 
-export const getGetCurrentAccountBankAccountSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetCurrentAccountBankAccountSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetCurrentAccountBankAccountQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCurrentAccountBankAccount>>> = ({ signal }) => getCurrentAccountBankAccount(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCurrentAccountBankAccount>>> = ({ signal }) => getCurrentAccountBankAccount(id, signal);
 
       
 
@@ -4196,24 +4273,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetCurrentAccountBankAccountSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getCurrentAccountBankAccount>>>
-export type GetCurrentAccountBankAccountSuspenseQueryError = AxiosError<ErrorResponse>
+export type GetCurrentAccountBankAccountSuspenseQueryError = ErrorResponse
 
 
-export function useGetCurrentAccountBankAccountSuspense<TData = Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError = AxiosError<ErrorResponse>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetCurrentAccountBankAccountSuspense<TData = Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetCurrentAccountBankAccountSuspense<TData = Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetCurrentAccountBankAccountSuspense<TData = Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetCurrentAccountBankAccountSuspense<TData = Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetCurrentAccountBankAccountSuspense<TData = Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetCurrentAccountBankAccountSuspense<TData = Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetCurrentAccountBankAccountSuspense<TData = Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccountBankAccount>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -4234,27 +4311,29 @@ export function useGetCurrentAccountBankAccountSuspense<TData = Awaited<ReturnTy
  */
 export const updateCurrentAccountBankAccount = (
     id: number,
-    currentAccountBankAccount: CurrentAccountBankAccount, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<CurrentAccountBankAccount>> => {
-    
-    
-    return axios.default.put(
-      `/api/purchasing/currentAccountBankAccount/${id}`,
-      currentAccountBankAccount,options
-    );
-  }
+    currentAccountBankAccount: CurrentAccountBankAccount,
+ ) => {
+      
+      
+      return customMutator<CurrentAccountBankAccount>(
+      {url: `/api/purchasing/currentAccountBankAccount/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: currentAccountBankAccount
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateCurrentAccountBankAccountMutationOptions = <TData = Awaited<ReturnType<typeof updateCurrentAccountBankAccount>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: CurrentAccountBankAccount}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateCurrentAccountBankAccountMutationOptions = <TData = Awaited<ReturnType<typeof updateCurrentAccountBankAccount>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: CurrentAccountBankAccount}, TContext>, }
 ) => {
 const mutationKey = ['updateCurrentAccountBankAccount'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -4262,7 +4341,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateCurrentAccountBankAccount>>, {id: number;data: CurrentAccountBankAccount}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateCurrentAccountBankAccount(id,data,axiosOptions)
+          return  updateCurrentAccountBankAccount(id,data,)
         }
 
         
@@ -4272,10 +4351,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateCurrentAccountBankAccountMutationResult = NonNullable<Awaited<ReturnType<typeof updateCurrentAccountBankAccount>>>
     export type UpdateCurrentAccountBankAccountMutationBody = CurrentAccountBankAccount
-    export type UpdateCurrentAccountBankAccountMutationError = AxiosError<ErrorResponse>
+    export type UpdateCurrentAccountBankAccountMutationError = ErrorResponse
 
-    export const useUpdateCurrentAccountBankAccount = <TData = Awaited<ReturnType<typeof updateCurrentAccountBankAccount>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: CurrentAccountBankAccount}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateCurrentAccountBankAccount = <TData = Awaited<ReturnType<typeof updateCurrentAccountBankAccount>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: CurrentAccountBankAccount}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -4292,26 +4371,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete CurrentAccountBankAccount
  */
 export const deleteCurrentAccountBankAccount = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<CurrentAccountBankAccount>> => {
-    
-    
-    return axios.default.delete(
-      `/api/purchasing/currentAccountBankAccount/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<CurrentAccountBankAccount>(
+      {url: `/api/purchasing/currentAccountBankAccount/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteCurrentAccountBankAccountMutationOptions = <TData = Awaited<ReturnType<typeof deleteCurrentAccountBankAccount>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteCurrentAccountBankAccountMutationOptions = <TData = Awaited<ReturnType<typeof deleteCurrentAccountBankAccount>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteCurrentAccountBankAccount'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -4319,7 +4399,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteCurrentAccountBankAccount>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteCurrentAccountBankAccount(id,axiosOptions)
+          return  deleteCurrentAccountBankAccount(id,)
         }
 
         
@@ -4329,10 +4409,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteCurrentAccountBankAccountMutationResult = NonNullable<Awaited<ReturnType<typeof deleteCurrentAccountBankAccount>>>
     
-    export type DeleteCurrentAccountBankAccountMutationError = AxiosError<ResponseBase>
+    export type DeleteCurrentAccountBankAccountMutationError = ResponseBase
 
-    export const useDeleteCurrentAccountBankAccount = <TData = Awaited<ReturnType<typeof deleteCurrentAccountBankAccount>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteCurrentAccountBankAccount = <TData = Awaited<ReturnType<typeof deleteCurrentAccountBankAccount>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -4349,31 +4429,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get Current Account
  */
 export const getCurrentAccount = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<CurrentAccount>> => {
-    
-    
-    return axios.default.get(
-      `/api/purchasing/currentAccount/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<CurrentAccount>(
+      {url: `/api/purchasing/currentAccount/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetCurrentAccountQueryKey = (id: number,) => {
     return [`/api/purchasing/currentAccount/${id}`] as const;
     }
 
     
-export const getGetCurrentAccountQueryOptions = <TData = Awaited<ReturnType<typeof getCurrentAccount>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCurrentAccount>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetCurrentAccountQueryOptions = <TData = Awaited<ReturnType<typeof getCurrentAccount>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCurrentAccount>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetCurrentAccountQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCurrentAccount>>> = ({ signal }) => getCurrentAccount(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCurrentAccount>>> = ({ signal }) => getCurrentAccount(id, signal);
 
       
 
@@ -4383,36 +4465,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetCurrentAccountQueryResult = NonNullable<Awaited<ReturnType<typeof getCurrentAccount>>>
-export type GetCurrentAccountQueryError = AxiosError<ErrorResponse>
+export type GetCurrentAccountQueryError = ErrorResponse
 
 
-export function useGetCurrentAccount<TData = Awaited<ReturnType<typeof getCurrentAccount>>, TError = AxiosError<ErrorResponse>>(
+export function useGetCurrentAccount<TData = Awaited<ReturnType<typeof getCurrentAccount>>, TError = ErrorResponse>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCurrentAccount>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getCurrentAccount>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetCurrentAccount<TData = Awaited<ReturnType<typeof getCurrentAccount>>, TError = AxiosError<ErrorResponse>>(
+export function useGetCurrentAccount<TData = Awaited<ReturnType<typeof getCurrentAccount>>, TError = ErrorResponse>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCurrentAccount>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getCurrentAccount>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetCurrentAccount<TData = Awaited<ReturnType<typeof getCurrentAccount>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCurrentAccount>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetCurrentAccount<TData = Awaited<ReturnType<typeof getCurrentAccount>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCurrentAccount>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetCurrentAccount<TData = Awaited<ReturnType<typeof getCurrentAccount>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCurrentAccount>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetCurrentAccount<TData = Awaited<ReturnType<typeof getCurrentAccount>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCurrentAccount>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -4427,16 +4509,16 @@ export function useGetCurrentAccount<TData = Awaited<ReturnType<typeof getCurren
 
 
 
-export const getGetCurrentAccountSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getCurrentAccount>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccount>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetCurrentAccountSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getCurrentAccount>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccount>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetCurrentAccountQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCurrentAccount>>> = ({ signal }) => getCurrentAccount(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCurrentAccount>>> = ({ signal }) => getCurrentAccount(id, signal);
 
       
 
@@ -4446,24 +4528,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetCurrentAccountSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getCurrentAccount>>>
-export type GetCurrentAccountSuspenseQueryError = AxiosError<ErrorResponse>
+export type GetCurrentAccountSuspenseQueryError = ErrorResponse
 
 
-export function useGetCurrentAccountSuspense<TData = Awaited<ReturnType<typeof getCurrentAccount>>, TError = AxiosError<ErrorResponse>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccount>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetCurrentAccountSuspense<TData = Awaited<ReturnType<typeof getCurrentAccount>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccount>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetCurrentAccountSuspense<TData = Awaited<ReturnType<typeof getCurrentAccount>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccount>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetCurrentAccountSuspense<TData = Awaited<ReturnType<typeof getCurrentAccount>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccount>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetCurrentAccountSuspense<TData = Awaited<ReturnType<typeof getCurrentAccount>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccount>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetCurrentAccountSuspense<TData = Awaited<ReturnType<typeof getCurrentAccount>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccount>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetCurrentAccountSuspense<TData = Awaited<ReturnType<typeof getCurrentAccount>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccount>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetCurrentAccountSuspense<TData = Awaited<ReturnType<typeof getCurrentAccount>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCurrentAccount>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -4484,27 +4566,29 @@ export function useGetCurrentAccountSuspense<TData = Awaited<ReturnType<typeof g
  */
 export const updateCurrentAccount = (
     id: number,
-    currentAccount: CurrentAccount, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<CurrentAccount>> => {
-    
-    
-    return axios.default.put(
-      `/api/purchasing/currentAccount/${id}`,
-      currentAccount,options
-    );
-  }
+    currentAccount: CurrentAccount,
+ ) => {
+      
+      
+      return customMutator<CurrentAccount>(
+      {url: `/api/purchasing/currentAccount/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: currentAccount
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateCurrentAccountMutationOptions = <TData = Awaited<ReturnType<typeof updateCurrentAccount>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: CurrentAccount}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateCurrentAccountMutationOptions = <TData = Awaited<ReturnType<typeof updateCurrentAccount>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: CurrentAccount}, TContext>, }
 ) => {
 const mutationKey = ['updateCurrentAccount'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -4512,7 +4596,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateCurrentAccount>>, {id: number;data: CurrentAccount}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateCurrentAccount(id,data,axiosOptions)
+          return  updateCurrentAccount(id,data,)
         }
 
         
@@ -4522,10 +4606,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateCurrentAccountMutationResult = NonNullable<Awaited<ReturnType<typeof updateCurrentAccount>>>
     export type UpdateCurrentAccountMutationBody = CurrentAccount
-    export type UpdateCurrentAccountMutationError = AxiosError<ErrorResponse>
+    export type UpdateCurrentAccountMutationError = ErrorResponse
 
-    export const useUpdateCurrentAccount = <TData = Awaited<ReturnType<typeof updateCurrentAccount>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: CurrentAccount}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateCurrentAccount = <TData = Awaited<ReturnType<typeof updateCurrentAccount>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: CurrentAccount}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -4542,26 +4626,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete Current Account by document reference
  */
 export const deleteCurrentAccount = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<CurrentAccount>> => {
-    
-    
-    return axios.default.delete(
-      `/api/purchasing/currentAccount/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<CurrentAccount>(
+      {url: `/api/purchasing/currentAccount/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteCurrentAccountMutationOptions = <TData = Awaited<ReturnType<typeof deleteCurrentAccount>>, TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteCurrentAccountMutationOptions = <TData = Awaited<ReturnType<typeof deleteCurrentAccount>>, TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteCurrentAccount'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -4569,7 +4654,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteCurrentAccount>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteCurrentAccount(id,axiosOptions)
+          return  deleteCurrentAccount(id,)
         }
 
         
@@ -4579,10 +4664,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteCurrentAccountMutationResult = NonNullable<Awaited<ReturnType<typeof deleteCurrentAccount>>>
     
-    export type DeleteCurrentAccountMutationError = AxiosError<unknown>
+    export type DeleteCurrentAccountMutationError = unknown
 
-    export const useDeleteCurrentAccount = <TData = Awaited<ReturnType<typeof deleteCurrentAccount>>, TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteCurrentAccount = <TData = Awaited<ReturnType<typeof deleteCurrentAccount>>, TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -4599,31 +4684,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get AdditionalCost
  */
 export const getAdditionalCost = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<AdditionalCost>> => {
-    
-    
-    return axios.default.get(
-      `/api/purchasing/additionalCost/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<AdditionalCost>(
+      {url: `/api/purchasing/additionalCost/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetAdditionalCostQueryKey = (id: number,) => {
     return [`/api/purchasing/additionalCost/${id}`] as const;
     }
 
     
-export const getGetAdditionalCostQueryOptions = <TData = Awaited<ReturnType<typeof getAdditionalCost>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdditionalCost>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetAdditionalCostQueryOptions = <TData = Awaited<ReturnType<typeof getAdditionalCost>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdditionalCost>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetAdditionalCostQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdditionalCost>>> = ({ signal }) => getAdditionalCost(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdditionalCost>>> = ({ signal }) => getAdditionalCost(id, signal);
 
       
 
@@ -4633,36 +4720,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetAdditionalCostQueryResult = NonNullable<Awaited<ReturnType<typeof getAdditionalCost>>>
-export type GetAdditionalCostQueryError = AxiosError<ErrorResponse>
+export type GetAdditionalCostQueryError = ErrorResponse
 
 
-export function useGetAdditionalCost<TData = Awaited<ReturnType<typeof getAdditionalCost>>, TError = AxiosError<ErrorResponse>>(
+export function useGetAdditionalCost<TData = Awaited<ReturnType<typeof getAdditionalCost>>, TError = ErrorResponse>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdditionalCost>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getAdditionalCost>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetAdditionalCost<TData = Awaited<ReturnType<typeof getAdditionalCost>>, TError = AxiosError<ErrorResponse>>(
+export function useGetAdditionalCost<TData = Awaited<ReturnType<typeof getAdditionalCost>>, TError = ErrorResponse>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdditionalCost>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getAdditionalCost>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetAdditionalCost<TData = Awaited<ReturnType<typeof getAdditionalCost>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdditionalCost>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetAdditionalCost<TData = Awaited<ReturnType<typeof getAdditionalCost>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdditionalCost>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetAdditionalCost<TData = Awaited<ReturnType<typeof getAdditionalCost>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdditionalCost>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetAdditionalCost<TData = Awaited<ReturnType<typeof getAdditionalCost>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAdditionalCost>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -4677,16 +4764,16 @@ export function useGetAdditionalCost<TData = Awaited<ReturnType<typeof getAdditi
 
 
 
-export const getGetAdditionalCostSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getAdditionalCost>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAdditionalCost>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetAdditionalCostSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getAdditionalCost>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAdditionalCost>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetAdditionalCostQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdditionalCost>>> = ({ signal }) => getAdditionalCost(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdditionalCost>>> = ({ signal }) => getAdditionalCost(id, signal);
 
       
 
@@ -4696,24 +4783,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetAdditionalCostSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getAdditionalCost>>>
-export type GetAdditionalCostSuspenseQueryError = AxiosError<ErrorResponse>
+export type GetAdditionalCostSuspenseQueryError = ErrorResponse
 
 
-export function useGetAdditionalCostSuspense<TData = Awaited<ReturnType<typeof getAdditionalCost>>, TError = AxiosError<ErrorResponse>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAdditionalCost>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetAdditionalCostSuspense<TData = Awaited<ReturnType<typeof getAdditionalCost>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAdditionalCost>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetAdditionalCostSuspense<TData = Awaited<ReturnType<typeof getAdditionalCost>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAdditionalCost>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetAdditionalCostSuspense<TData = Awaited<ReturnType<typeof getAdditionalCost>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAdditionalCost>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetAdditionalCostSuspense<TData = Awaited<ReturnType<typeof getAdditionalCost>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAdditionalCost>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetAdditionalCostSuspense<TData = Awaited<ReturnType<typeof getAdditionalCost>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAdditionalCost>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetAdditionalCostSuspense<TData = Awaited<ReturnType<typeof getAdditionalCost>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAdditionalCost>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetAdditionalCostSuspense<TData = Awaited<ReturnType<typeof getAdditionalCost>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getAdditionalCost>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -4734,27 +4821,29 @@ export function useGetAdditionalCostSuspense<TData = Awaited<ReturnType<typeof g
  */
 export const updateAdditionalCost = (
     id: number,
-    additionalCost: AdditionalCost, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<AdditionalCost>> => {
-    
-    
-    return axios.default.put(
-      `/api/purchasing/additionalCost/${id}`,
-      additionalCost,options
-    );
-  }
+    additionalCost: AdditionalCost,
+ ) => {
+      
+      
+      return customMutator<AdditionalCost>(
+      {url: `/api/purchasing/additionalCost/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: additionalCost
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateAdditionalCostMutationOptions = <TData = Awaited<ReturnType<typeof updateAdditionalCost>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: AdditionalCost}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateAdditionalCostMutationOptions = <TData = Awaited<ReturnType<typeof updateAdditionalCost>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: AdditionalCost}, TContext>, }
 ) => {
 const mutationKey = ['updateAdditionalCost'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -4762,7 +4851,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateAdditionalCost>>, {id: number;data: AdditionalCost}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateAdditionalCost(id,data,axiosOptions)
+          return  updateAdditionalCost(id,data,)
         }
 
         
@@ -4772,10 +4861,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateAdditionalCostMutationResult = NonNullable<Awaited<ReturnType<typeof updateAdditionalCost>>>
     export type UpdateAdditionalCostMutationBody = AdditionalCost
-    export type UpdateAdditionalCostMutationError = AxiosError<ErrorResponse>
+    export type UpdateAdditionalCostMutationError = ErrorResponse
 
-    export const useUpdateAdditionalCost = <TData = Awaited<ReturnType<typeof updateAdditionalCost>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: AdditionalCost}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateAdditionalCost = <TData = Awaited<ReturnType<typeof updateAdditionalCost>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: AdditionalCost}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -4792,26 +4881,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete AdditionalCost
  */
 export const deleteAdditionalCost = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<AdditionalCost>> => {
-    
-    
-    return axios.default.delete(
-      `/api/purchasing/additionalCost/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<AdditionalCost>(
+      {url: `/api/purchasing/additionalCost/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteAdditionalCostMutationOptions = <TData = Awaited<ReturnType<typeof deleteAdditionalCost>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteAdditionalCostMutationOptions = <TData = Awaited<ReturnType<typeof deleteAdditionalCost>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteAdditionalCost'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -4819,7 +4909,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteAdditionalCost>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteAdditionalCost(id,axiosOptions)
+          return  deleteAdditionalCost(id,)
         }
 
         
@@ -4829,10 +4919,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteAdditionalCostMutationResult = NonNullable<Awaited<ReturnType<typeof deleteAdditionalCost>>>
     
-    export type DeleteAdditionalCostMutationError = AxiosError<ResponseBase>
+    export type DeleteAdditionalCostMutationError = ResponseBase
 
-    export const useDeleteAdditionalCost = <TData = Awaited<ReturnType<typeof deleteAdditionalCost>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteAdditionalCost = <TData = Awaited<ReturnType<typeof deleteAdditionalCost>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -4849,31 +4939,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get Project
  */
 export const getProject = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Project>> => {
-    
-    
-    return axios.default.get(
-      `/api/production/project/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Project>(
+      {url: `/api/production/project/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetProjectQueryKey = (id: number,) => {
     return [`/api/production/project/${id}`] as const;
     }
 
     
-export const getGetProjectQueryOptions = <TData = Awaited<ReturnType<typeof getProject>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProject>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetProjectQueryOptions = <TData = Awaited<ReturnType<typeof getProject>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProject>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetProjectQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProject>>> = ({ signal }) => getProject(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProject>>> = ({ signal }) => getProject(id, signal);
 
       
 
@@ -4883,36 +4975,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetProjectQueryResult = NonNullable<Awaited<ReturnType<typeof getProject>>>
-export type GetProjectQueryError = AxiosError<ErrorResponse>
+export type GetProjectQueryError = ErrorResponse
 
 
-export function useGetProject<TData = Awaited<ReturnType<typeof getProject>>, TError = AxiosError<ErrorResponse>>(
+export function useGetProject<TData = Awaited<ReturnType<typeof getProject>>, TError = ErrorResponse>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProject>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getProject>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetProject<TData = Awaited<ReturnType<typeof getProject>>, TError = AxiosError<ErrorResponse>>(
+export function useGetProject<TData = Awaited<ReturnType<typeof getProject>>, TError = ErrorResponse>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProject>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getProject>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetProject<TData = Awaited<ReturnType<typeof getProject>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProject>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProject<TData = Awaited<ReturnType<typeof getProject>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProject>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetProject<TData = Awaited<ReturnType<typeof getProject>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProject>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProject<TData = Awaited<ReturnType<typeof getProject>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProject>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -4927,16 +5019,16 @@ export function useGetProject<TData = Awaited<ReturnType<typeof getProject>>, TE
 
 
 
-export const getGetProjectSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getProject>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProject>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetProjectSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getProject>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProject>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetProjectQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProject>>> = ({ signal }) => getProject(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProject>>> = ({ signal }) => getProject(id, signal);
 
       
 
@@ -4946,24 +5038,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetProjectSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getProject>>>
-export type GetProjectSuspenseQueryError = AxiosError<ErrorResponse>
+export type GetProjectSuspenseQueryError = ErrorResponse
 
 
-export function useGetProjectSuspense<TData = Awaited<ReturnType<typeof getProject>>, TError = AxiosError<ErrorResponse>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProject>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetProjectSuspense<TData = Awaited<ReturnType<typeof getProject>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProject>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProjectSuspense<TData = Awaited<ReturnType<typeof getProject>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProject>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetProjectSuspense<TData = Awaited<ReturnType<typeof getProject>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProject>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProjectSuspense<TData = Awaited<ReturnType<typeof getProject>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProject>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetProjectSuspense<TData = Awaited<ReturnType<typeof getProject>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProject>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetProjectSuspense<TData = Awaited<ReturnType<typeof getProject>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProject>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProjectSuspense<TData = Awaited<ReturnType<typeof getProject>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProject>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -4984,27 +5076,29 @@ export function useGetProjectSuspense<TData = Awaited<ReturnType<typeof getProje
  */
 export const updateProject = (
     id: number,
-    project: Project, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Project>> => {
-    
-    
-    return axios.default.put(
-      `/api/production/project/${id}`,
-      project,options
-    );
-  }
+    project: Project,
+ ) => {
+      
+      
+      return customMutator<Project>(
+      {url: `/api/production/project/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: project
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateProjectMutationOptions = <TData = Awaited<ReturnType<typeof updateProject>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Project}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateProjectMutationOptions = <TData = Awaited<ReturnType<typeof updateProject>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Project}, TContext>, }
 ) => {
 const mutationKey = ['updateProject'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -5012,7 +5106,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateProject>>, {id: number;data: Project}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateProject(id,data,axiosOptions)
+          return  updateProject(id,data,)
         }
 
         
@@ -5022,10 +5116,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateProjectMutationResult = NonNullable<Awaited<ReturnType<typeof updateProject>>>
     export type UpdateProjectMutationBody = Project
-    export type UpdateProjectMutationError = AxiosError<ErrorResponse>
+    export type UpdateProjectMutationError = ErrorResponse
 
-    export const useUpdateProject = <TData = Awaited<ReturnType<typeof updateProject>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Project}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateProject = <TData = Awaited<ReturnType<typeof updateProject>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Project}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -5042,26 +5136,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete Project
  */
 export const deleteProject = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Project>> => {
-    
-    
-    return axios.default.delete(
-      `/api/production/project/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<Project>(
+      {url: `/api/production/project/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteProjectMutationOptions = <TData = Awaited<ReturnType<typeof deleteProject>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteProjectMutationOptions = <TData = Awaited<ReturnType<typeof deleteProject>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteProject'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -5069,7 +5164,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteProject>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteProject(id,axiosOptions)
+          return  deleteProject(id,)
         }
 
         
@@ -5079,10 +5174,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteProjectMutationResult = NonNullable<Awaited<ReturnType<typeof deleteProject>>>
     
-    export type DeleteProjectMutationError = AxiosError<ResponseBase>
+    export type DeleteProjectMutationError = ResponseBase
 
-    export const useDeleteProject = <TData = Awaited<ReturnType<typeof deleteProject>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteProject = <TData = Awaited<ReturnType<typeof deleteProject>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -5099,31 +5194,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get Time Keeping
  */
 export const getTimeKeeping = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<TimeKeeping>> => {
-    
-    
-    return axios.default.get(
-      `/api/hr/timekeeping/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<TimeKeeping>(
+      {url: `/api/hr/timekeeping/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetTimeKeepingQueryKey = (id: number,) => {
     return [`/api/hr/timekeeping/${id}`] as const;
     }
 
     
-export const getGetTimeKeepingQueryOptions = <TData = Awaited<ReturnType<typeof getTimeKeeping>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeKeeping>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetTimeKeepingQueryOptions = <TData = Awaited<ReturnType<typeof getTimeKeeping>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeKeeping>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetTimeKeepingQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTimeKeeping>>> = ({ signal }) => getTimeKeeping(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTimeKeeping>>> = ({ signal }) => getTimeKeeping(id, signal);
 
       
 
@@ -5133,36 +5230,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetTimeKeepingQueryResult = NonNullable<Awaited<ReturnType<typeof getTimeKeeping>>>
-export type GetTimeKeepingQueryError = AxiosError<ErrorResponse>
+export type GetTimeKeepingQueryError = ErrorResponse
 
 
-export function useGetTimeKeeping<TData = Awaited<ReturnType<typeof getTimeKeeping>>, TError = AxiosError<ErrorResponse>>(
+export function useGetTimeKeeping<TData = Awaited<ReturnType<typeof getTimeKeeping>>, TError = ErrorResponse>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeKeeping>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getTimeKeeping>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetTimeKeeping<TData = Awaited<ReturnType<typeof getTimeKeeping>>, TError = AxiosError<ErrorResponse>>(
+export function useGetTimeKeeping<TData = Awaited<ReturnType<typeof getTimeKeeping>>, TError = ErrorResponse>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeKeeping>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getTimeKeeping>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetTimeKeeping<TData = Awaited<ReturnType<typeof getTimeKeeping>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeKeeping>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetTimeKeeping<TData = Awaited<ReturnType<typeof getTimeKeeping>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeKeeping>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetTimeKeeping<TData = Awaited<ReturnType<typeof getTimeKeeping>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeKeeping>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetTimeKeeping<TData = Awaited<ReturnType<typeof getTimeKeeping>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeKeeping>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -5177,16 +5274,16 @@ export function useGetTimeKeeping<TData = Awaited<ReturnType<typeof getTimeKeepi
 
 
 
-export const getGetTimeKeepingSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getTimeKeeping>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeKeeping>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetTimeKeepingSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getTimeKeeping>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeKeeping>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetTimeKeepingQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTimeKeeping>>> = ({ signal }) => getTimeKeeping(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTimeKeeping>>> = ({ signal }) => getTimeKeeping(id, signal);
 
       
 
@@ -5196,24 +5293,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetTimeKeepingSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getTimeKeeping>>>
-export type GetTimeKeepingSuspenseQueryError = AxiosError<ErrorResponse>
+export type GetTimeKeepingSuspenseQueryError = ErrorResponse
 
 
-export function useGetTimeKeepingSuspense<TData = Awaited<ReturnType<typeof getTimeKeeping>>, TError = AxiosError<ErrorResponse>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeKeeping>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetTimeKeepingSuspense<TData = Awaited<ReturnType<typeof getTimeKeeping>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeKeeping>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetTimeKeepingSuspense<TData = Awaited<ReturnType<typeof getTimeKeeping>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeKeeping>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetTimeKeepingSuspense<TData = Awaited<ReturnType<typeof getTimeKeeping>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeKeeping>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetTimeKeepingSuspense<TData = Awaited<ReturnType<typeof getTimeKeeping>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeKeeping>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetTimeKeepingSuspense<TData = Awaited<ReturnType<typeof getTimeKeeping>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeKeeping>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetTimeKeepingSuspense<TData = Awaited<ReturnType<typeof getTimeKeeping>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeKeeping>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetTimeKeepingSuspense<TData = Awaited<ReturnType<typeof getTimeKeeping>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeKeeping>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -5234,27 +5331,29 @@ export function useGetTimeKeepingSuspense<TData = Awaited<ReturnType<typeof getT
  */
 export const updateTimeKeeping = (
     id: number,
-    timeKeeping: TimeKeeping, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<TimeKeeping>> => {
-    
-    
-    return axios.default.put(
-      `/api/hr/timekeeping/${id}`,
-      timeKeeping,options
-    );
-  }
+    timeKeeping: TimeKeeping,
+ ) => {
+      
+      
+      return customMutator<TimeKeeping>(
+      {url: `/api/hr/timekeeping/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: timeKeeping
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateTimeKeepingMutationOptions = <TData = Awaited<ReturnType<typeof updateTimeKeeping>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: TimeKeeping}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateTimeKeepingMutationOptions = <TData = Awaited<ReturnType<typeof updateTimeKeeping>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: TimeKeeping}, TContext>, }
 ) => {
 const mutationKey = ['updateTimeKeeping'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -5262,7 +5361,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateTimeKeeping>>, {id: number;data: TimeKeeping}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateTimeKeeping(id,data,axiosOptions)
+          return  updateTimeKeeping(id,data,)
         }
 
         
@@ -5272,10 +5371,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateTimeKeepingMutationResult = NonNullable<Awaited<ReturnType<typeof updateTimeKeeping>>>
     export type UpdateTimeKeepingMutationBody = TimeKeeping
-    export type UpdateTimeKeepingMutationError = AxiosError<ErrorResponse>
+    export type UpdateTimeKeepingMutationError = ErrorResponse
 
-    export const useUpdateTimeKeeping = <TData = Awaited<ReturnType<typeof updateTimeKeeping>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: TimeKeeping}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateTimeKeeping = <TData = Awaited<ReturnType<typeof updateTimeKeeping>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: TimeKeeping}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -5292,26 +5391,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete Time Keeping by document reference
  */
 export const deleteTimeKeeping = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<TimeKeeping>> => {
-    
-    
-    return axios.default.delete(
-      `/api/hr/timekeeping/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<TimeKeeping>(
+      {url: `/api/hr/timekeeping/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteTimeKeepingMutationOptions = <TData = Awaited<ReturnType<typeof deleteTimeKeeping>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteTimeKeepingMutationOptions = <TData = Awaited<ReturnType<typeof deleteTimeKeeping>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteTimeKeeping'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -5319,7 +5419,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteTimeKeeping>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteTimeKeeping(id,axiosOptions)
+          return  deleteTimeKeeping(id,)
         }
 
         
@@ -5329,10 +5429,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteTimeKeepingMutationResult = NonNullable<Awaited<ReturnType<typeof deleteTimeKeeping>>>
     
-    export type DeleteTimeKeepingMutationError = AxiosError<ResponseBase>
+    export type DeleteTimeKeepingMutationError = ResponseBase
 
-    export const useDeleteTimeKeeping = <TData = Awaited<ReturnType<typeof deleteTimeKeeping>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteTimeKeeping = <TData = Awaited<ReturnType<typeof deleteTimeKeeping>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -5349,31 +5449,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get Employee
  */
 export const getEmployee = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Employee>> => {
-    
-    
-    return axios.default.get(
-      `/api/hr/employee/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Employee>(
+      {url: `/api/hr/employee/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetEmployeeQueryKey = (id: number,) => {
     return [`/api/hr/employee/${id}`] as const;
     }
 
     
-export const getGetEmployeeQueryOptions = <TData = Awaited<ReturnType<typeof getEmployee>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEmployee>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetEmployeeQueryOptions = <TData = Awaited<ReturnType<typeof getEmployee>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEmployee>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetEmployeeQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEmployee>>> = ({ signal }) => getEmployee(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEmployee>>> = ({ signal }) => getEmployee(id, signal);
 
       
 
@@ -5383,36 +5485,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetEmployeeQueryResult = NonNullable<Awaited<ReturnType<typeof getEmployee>>>
-export type GetEmployeeQueryError = AxiosError<ErrorResponse>
+export type GetEmployeeQueryError = ErrorResponse
 
 
-export function useGetEmployee<TData = Awaited<ReturnType<typeof getEmployee>>, TError = AxiosError<ErrorResponse>>(
+export function useGetEmployee<TData = Awaited<ReturnType<typeof getEmployee>>, TError = ErrorResponse>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEmployee>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getEmployee>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetEmployee<TData = Awaited<ReturnType<typeof getEmployee>>, TError = AxiosError<ErrorResponse>>(
+export function useGetEmployee<TData = Awaited<ReturnType<typeof getEmployee>>, TError = ErrorResponse>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEmployee>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getEmployee>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetEmployee<TData = Awaited<ReturnType<typeof getEmployee>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEmployee>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetEmployee<TData = Awaited<ReturnType<typeof getEmployee>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEmployee>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetEmployee<TData = Awaited<ReturnType<typeof getEmployee>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEmployee>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetEmployee<TData = Awaited<ReturnType<typeof getEmployee>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEmployee>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -5427,16 +5529,16 @@ export function useGetEmployee<TData = Awaited<ReturnType<typeof getEmployee>>, 
 
 
 
-export const getGetEmployeeSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getEmployee>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployee>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetEmployeeSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getEmployee>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployee>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetEmployeeQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEmployee>>> = ({ signal }) => getEmployee(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEmployee>>> = ({ signal }) => getEmployee(id, signal);
 
       
 
@@ -5446,24 +5548,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetEmployeeSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getEmployee>>>
-export type GetEmployeeSuspenseQueryError = AxiosError<ErrorResponse>
+export type GetEmployeeSuspenseQueryError = ErrorResponse
 
 
-export function useGetEmployeeSuspense<TData = Awaited<ReturnType<typeof getEmployee>>, TError = AxiosError<ErrorResponse>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployee>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetEmployeeSuspense<TData = Awaited<ReturnType<typeof getEmployee>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployee>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetEmployeeSuspense<TData = Awaited<ReturnType<typeof getEmployee>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployee>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetEmployeeSuspense<TData = Awaited<ReturnType<typeof getEmployee>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployee>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetEmployeeSuspense<TData = Awaited<ReturnType<typeof getEmployee>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployee>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetEmployeeSuspense<TData = Awaited<ReturnType<typeof getEmployee>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployee>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetEmployeeSuspense<TData = Awaited<ReturnType<typeof getEmployee>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployee>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetEmployeeSuspense<TData = Awaited<ReturnType<typeof getEmployee>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployee>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -5484,27 +5586,29 @@ export function useGetEmployeeSuspense<TData = Awaited<ReturnType<typeof getEmpl
  */
 export const updateEmployee = (
     id: number,
-    employee: Employee, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Employee>> => {
-    
-    
-    return axios.default.put(
-      `/api/hr/employee/${id}`,
-      employee,options
-    );
-  }
+    employee: Employee,
+ ) => {
+      
+      
+      return customMutator<Employee>(
+      {url: `/api/hr/employee/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: employee
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateEmployeeMutationOptions = <TData = Awaited<ReturnType<typeof updateEmployee>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Employee}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateEmployeeMutationOptions = <TData = Awaited<ReturnType<typeof updateEmployee>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Employee}, TContext>, }
 ) => {
 const mutationKey = ['updateEmployee'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -5512,7 +5616,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateEmployee>>, {id: number;data: Employee}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateEmployee(id,data,axiosOptions)
+          return  updateEmployee(id,data,)
         }
 
         
@@ -5522,10 +5626,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateEmployeeMutationResult = NonNullable<Awaited<ReturnType<typeof updateEmployee>>>
     export type UpdateEmployeeMutationBody = Employee
-    export type UpdateEmployeeMutationError = AxiosError<ErrorResponse>
+    export type UpdateEmployeeMutationError = ErrorResponse
 
-    export const useUpdateEmployee = <TData = Awaited<ReturnType<typeof updateEmployee>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Employee}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateEmployee = <TData = Awaited<ReturnType<typeof updateEmployee>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Employee}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -5542,26 +5646,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete Employee by document reference
  */
 export const deleteEmployee = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Employee>> => {
-    
-    
-    return axios.default.delete(
-      `/api/hr/employee/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<Employee>(
+      {url: `/api/hr/employee/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteEmployeeMutationOptions = <TData = Awaited<ReturnType<typeof deleteEmployee>>, TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteEmployeeMutationOptions = <TData = Awaited<ReturnType<typeof deleteEmployee>>, TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteEmployee'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -5569,7 +5674,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteEmployee>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteEmployee(id,axiosOptions)
+          return  deleteEmployee(id,)
         }
 
         
@@ -5579,10 +5684,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteEmployeeMutationResult = NonNullable<Awaited<ReturnType<typeof deleteEmployee>>>
     
-    export type DeleteEmployeeMutationError = AxiosError<unknown>
+    export type DeleteEmployeeMutationError = unknown
 
-    export const useDeleteEmployee = <TData = Awaited<ReturnType<typeof deleteEmployee>>, TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteEmployee = <TData = Awaited<ReturnType<typeof deleteEmployee>>, TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -5600,15 +5705,17 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  */
 export const getTimeOff = (
     id: number,
-    timeOffId: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<TimeOff>> => {
-    
-    
-    return axios.default.get(
-      `/api/hr/employee/${id}/timeoff/${timeOffId}`,options
-    );
-  }
-
+    timeOffId: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<TimeOff>(
+      {url: `/api/hr/employee/${id}/timeoff/${timeOffId}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetTimeOffQueryKey = (id: number,
     timeOffId: number,) => {
@@ -5616,17 +5723,17 @@ export const getGetTimeOffQueryKey = (id: number,
     }
 
     
-export const getGetTimeOffQueryOptions = <TData = Awaited<ReturnType<typeof getTimeOff>>, TError = AxiosError<ResponseBase>>(id: number,
-    timeOffId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeOff>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetTimeOffQueryOptions = <TData = Awaited<ReturnType<typeof getTimeOff>>, TError = ResponseBase>(id: number,
+    timeOffId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeOff>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetTimeOffQueryKey(id,timeOffId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTimeOff>>> = ({ signal }) => getTimeOff(id,timeOffId, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTimeOff>>> = ({ signal }) => getTimeOff(id,timeOffId, signal);
 
       
 
@@ -5636,10 +5743,10 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetTimeOffQueryResult = NonNullable<Awaited<ReturnType<typeof getTimeOff>>>
-export type GetTimeOffQueryError = AxiosError<ResponseBase>
+export type GetTimeOffQueryError = ResponseBase
 
 
-export function useGetTimeOff<TData = Awaited<ReturnType<typeof getTimeOff>>, TError = AxiosError<ResponseBase>>(
+export function useGetTimeOff<TData = Awaited<ReturnType<typeof getTimeOff>>, TError = ResponseBase>(
  id: number,
     timeOffId: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeOff>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
@@ -5647,10 +5754,10 @@ export function useGetTimeOff<TData = Awaited<ReturnType<typeof getTimeOff>>, TE
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetTimeOff<TData = Awaited<ReturnType<typeof getTimeOff>>, TError = AxiosError<ResponseBase>>(
+export function useGetTimeOff<TData = Awaited<ReturnType<typeof getTimeOff>>, TError = ResponseBase>(
  id: number,
     timeOffId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeOff>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
@@ -5658,18 +5765,18 @@ export function useGetTimeOff<TData = Awaited<ReturnType<typeof getTimeOff>>, TE
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetTimeOff<TData = Awaited<ReturnType<typeof getTimeOff>>, TError = AxiosError<ResponseBase>>(
+export function useGetTimeOff<TData = Awaited<ReturnType<typeof getTimeOff>>, TError = ResponseBase>(
  id: number,
-    timeOffId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeOff>>, TError, TData>>, axios?: AxiosRequestConfig}
+    timeOffId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeOff>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetTimeOff<TData = Awaited<ReturnType<typeof getTimeOff>>, TError = AxiosError<ResponseBase>>(
+export function useGetTimeOff<TData = Awaited<ReturnType<typeof getTimeOff>>, TError = ResponseBase>(
  id: number,
-    timeOffId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeOff>>, TError, TData>>, axios?: AxiosRequestConfig}
+    timeOffId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeOff>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -5684,17 +5791,17 @@ export function useGetTimeOff<TData = Awaited<ReturnType<typeof getTimeOff>>, TE
 
 
 
-export const getGetTimeOffSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getTimeOff>>, TError = AxiosError<ResponseBase>>(id: number,
-    timeOffId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeOff>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetTimeOffSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getTimeOff>>, TError = ResponseBase>(id: number,
+    timeOffId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeOff>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetTimeOffQueryKey(id,timeOffId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTimeOff>>> = ({ signal }) => getTimeOff(id,timeOffId, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTimeOff>>> = ({ signal }) => getTimeOff(id,timeOffId, signal);
 
       
 
@@ -5704,28 +5811,28 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetTimeOffSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getTimeOff>>>
-export type GetTimeOffSuspenseQueryError = AxiosError<ResponseBase>
+export type GetTimeOffSuspenseQueryError = ResponseBase
 
 
-export function useGetTimeOffSuspense<TData = Awaited<ReturnType<typeof getTimeOff>>, TError = AxiosError<ResponseBase>>(
+export function useGetTimeOffSuspense<TData = Awaited<ReturnType<typeof getTimeOff>>, TError = ResponseBase>(
  id: number,
-    timeOffId: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeOff>>, TError, TData>>, axios?: AxiosRequestConfig}
+    timeOffId: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeOff>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetTimeOffSuspense<TData = Awaited<ReturnType<typeof getTimeOff>>, TError = AxiosError<ResponseBase>>(
+export function useGetTimeOffSuspense<TData = Awaited<ReturnType<typeof getTimeOff>>, TError = ResponseBase>(
  id: number,
-    timeOffId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeOff>>, TError, TData>>, axios?: AxiosRequestConfig}
+    timeOffId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeOff>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetTimeOffSuspense<TData = Awaited<ReturnType<typeof getTimeOff>>, TError = AxiosError<ResponseBase>>(
+export function useGetTimeOffSuspense<TData = Awaited<ReturnType<typeof getTimeOff>>, TError = ResponseBase>(
  id: number,
-    timeOffId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeOff>>, TError, TData>>, axios?: AxiosRequestConfig}
+    timeOffId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeOff>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetTimeOffSuspense<TData = Awaited<ReturnType<typeof getTimeOff>>, TError = AxiosError<ResponseBase>>(
+export function useGetTimeOffSuspense<TData = Awaited<ReturnType<typeof getTimeOff>>, TError = ResponseBase>(
  id: number,
-    timeOffId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeOff>>, TError, TData>>, axios?: AxiosRequestConfig}
+    timeOffId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeOff>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -5747,27 +5854,29 @@ export function useGetTimeOffSuspense<TData = Awaited<ReturnType<typeof getTimeO
 export const updateTimeoff = (
     id: number,
     timeOffId: number,
-    timeOff: TimeOff, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<TimeOff>> => {
-    
-    
-    return axios.default.put(
-      `/api/hr/employee/${id}/timeoff/${timeOffId}`,
-      timeOff,options
-    );
-  }
+    timeOff: TimeOff,
+ ) => {
+      
+      
+      return customMutator<TimeOff>(
+      {url: `/api/hr/employee/${id}/timeoff/${timeOffId}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: timeOff
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateTimeoffMutationOptions = <TData = Awaited<ReturnType<typeof updateTimeoff>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;timeOffId: number;data: TimeOff}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateTimeoffMutationOptions = <TData = Awaited<ReturnType<typeof updateTimeoff>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;timeOffId: number;data: TimeOff}, TContext>, }
 ) => {
 const mutationKey = ['updateTimeoff'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -5775,7 +5884,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateTimeoff>>, {id: number;timeOffId: number;data: TimeOff}> = (props) => {
           const {id,timeOffId,data} = props ?? {};
 
-          return  updateTimeoff(id,timeOffId,data,axiosOptions)
+          return  updateTimeoff(id,timeOffId,data,)
         }
 
         
@@ -5785,10 +5894,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateTimeoffMutationResult = NonNullable<Awaited<ReturnType<typeof updateTimeoff>>>
     export type UpdateTimeoffMutationBody = TimeOff
-    export type UpdateTimeoffMutationError = AxiosError<ErrorResponse>
+    export type UpdateTimeoffMutationError = ErrorResponse
 
-    export const useUpdateTimeoff = <TData = Awaited<ReturnType<typeof updateTimeoff>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;timeOffId: number;data: TimeOff}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateTimeoff = <TData = Awaited<ReturnType<typeof updateTimeoff>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;timeOffId: number;data: TimeOff}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -5806,26 +5915,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  */
 export const deleteTimeOff = (
     id: number,
-    timeOffId: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<TimeOff>> => {
-    
-    
-    return axios.default.delete(
-      `/api/hr/employee/${id}/timeoff/${timeOffId}`,options
-    );
-  }
+    timeOffId: number,
+ ) => {
+      
+      
+      return customMutator<TimeOff>(
+      {url: `/api/hr/employee/${id}/timeoff/${timeOffId}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteTimeOffMutationOptions = <TData = Awaited<ReturnType<typeof deleteTimeOff>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;timeOffId: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteTimeOffMutationOptions = <TData = Awaited<ReturnType<typeof deleteTimeOff>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;timeOffId: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteTimeOff'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -5833,7 +5943,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteTimeOff>>, {id: number;timeOffId: number}> = (props) => {
           const {id,timeOffId} = props ?? {};
 
-          return  deleteTimeOff(id,timeOffId,axiosOptions)
+          return  deleteTimeOff(id,timeOffId,)
         }
 
         
@@ -5843,10 +5953,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteTimeOffMutationResult = NonNullable<Awaited<ReturnType<typeof deleteTimeOff>>>
     
-    export type DeleteTimeOffMutationError = AxiosError<ResponseBase>
+    export type DeleteTimeOffMutationError = ResponseBase
 
-    export const useDeleteTimeOff = <TData = Awaited<ReturnType<typeof deleteTimeOff>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;timeOffId: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteTimeOff = <TData = Awaited<ReturnType<typeof deleteTimeOff>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;timeOffId: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -5864,27 +5974,29 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  */
 export const updateEmployeePayments = (
     id: number,
-    employeePayment: EmployeePayment[], options?: AxiosRequestConfig
- ): Promise<AxiosResponse<EmployeePayment[]>> => {
-    
-    
-    return axios.default.put(
-      `/api/hr/employee/${id}/payment`,
-      employeePayment,options
-    );
-  }
+    employeePayment: EmployeePayment[],
+ ) => {
+      
+      
+      return customMutator<EmployeePayment[]>(
+      {url: `/api/hr/employee/${id}/payment`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: employeePayment
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateEmployeePaymentsMutationOptions = <TData = Awaited<ReturnType<typeof updateEmployeePayments>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: EmployeePayment[]}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateEmployeePaymentsMutationOptions = <TData = Awaited<ReturnType<typeof updateEmployeePayments>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: EmployeePayment[]}, TContext>, }
 ) => {
 const mutationKey = ['updateEmployeePayments'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -5892,7 +6004,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateEmployeePayments>>, {id: number;data: EmployeePayment[]}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateEmployeePayments(id,data,axiosOptions)
+          return  updateEmployeePayments(id,data,)
         }
 
         
@@ -5902,10 +6014,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateEmployeePaymentsMutationResult = NonNullable<Awaited<ReturnType<typeof updateEmployeePayments>>>
     export type UpdateEmployeePaymentsMutationBody = EmployeePayment[]
-    export type UpdateEmployeePaymentsMutationError = AxiosError<ErrorResponse>
+    export type UpdateEmployeePaymentsMutationError = ErrorResponse
 
-    export const useUpdateEmployeePayments = <TData = Awaited<ReturnType<typeof updateEmployeePayments>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: EmployeePayment[]}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateEmployeePayments = <TData = Awaited<ReturnType<typeof updateEmployeePayments>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: EmployeePayment[]}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -5923,27 +6035,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  */
 export const addEmployeePayment = (
     id: number,
-    employeePayment: EmployeePayment[], options?: AxiosRequestConfig
- ): Promise<AxiosResponse<EmployeePayment[]>> => {
-    
-    
-    return axios.default.post(
-      `/api/hr/employee/${id}/payment`,
-      employeePayment,options
-    );
-  }
+    employeePayment: EmployeePayment[],
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<EmployeePayment[]>(
+      {url: `/api/hr/employee/${id}/payment`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: employeePayment, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddEmployeePaymentMutationOptions = <TData = Awaited<ReturnType<typeof addEmployeePayment>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: EmployeePayment[]}, TContext>, axios?: AxiosRequestConfig}
+export const getAddEmployeePaymentMutationOptions = <TData = Awaited<ReturnType<typeof addEmployeePayment>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: EmployeePayment[]}, TContext>, }
 ) => {
 const mutationKey = ['addEmployeePayment'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -5951,7 +6066,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addEmployeePayment>>, {id: number;data: EmployeePayment[]}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  addEmployeePayment(id,data,axiosOptions)
+          return  addEmployeePayment(id,data,)
         }
 
         
@@ -5961,10 +6076,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddEmployeePaymentMutationResult = NonNullable<Awaited<ReturnType<typeof addEmployeePayment>>>
     export type AddEmployeePaymentMutationBody = EmployeePayment[]
-    export type AddEmployeePaymentMutationError = AxiosError<ErrorResponse>
+    export type AddEmployeePaymentMutationError = ErrorResponse
 
-    export const useAddEmployeePayment = <TData = Awaited<ReturnType<typeof addEmployeePayment>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: EmployeePayment[]}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddEmployeePayment = <TData = Awaited<ReturnType<typeof addEmployeePayment>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: EmployeePayment[]}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -5982,27 +6097,29 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  */
 export const updateEmployeeOvertimes = (
     id: number,
-    employeeOvertime: EmployeeOvertime[], options?: AxiosRequestConfig
- ): Promise<AxiosResponse<EmployeeOvertime[]>> => {
-    
-    
-    return axios.default.put(
-      `/api/hr/employee/${id}/overtime`,
-      employeeOvertime,options
-    );
-  }
+    employeeOvertime: EmployeeOvertime[],
+ ) => {
+      
+      
+      return customMutator<EmployeeOvertime[]>(
+      {url: `/api/hr/employee/${id}/overtime`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: employeeOvertime
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateEmployeeOvertimesMutationOptions = <TData = Awaited<ReturnType<typeof updateEmployeeOvertimes>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: EmployeeOvertime[]}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateEmployeeOvertimesMutationOptions = <TData = Awaited<ReturnType<typeof updateEmployeeOvertimes>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: EmployeeOvertime[]}, TContext>, }
 ) => {
 const mutationKey = ['updateEmployeeOvertimes'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -6010,7 +6127,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateEmployeeOvertimes>>, {id: number;data: EmployeeOvertime[]}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateEmployeeOvertimes(id,data,axiosOptions)
+          return  updateEmployeeOvertimes(id,data,)
         }
 
         
@@ -6020,10 +6137,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateEmployeeOvertimesMutationResult = NonNullable<Awaited<ReturnType<typeof updateEmployeeOvertimes>>>
     export type UpdateEmployeeOvertimesMutationBody = EmployeeOvertime[]
-    export type UpdateEmployeeOvertimesMutationError = AxiosError<ErrorResponse>
+    export type UpdateEmployeeOvertimesMutationError = ErrorResponse
 
-    export const useUpdateEmployeeOvertimes = <TData = Awaited<ReturnType<typeof updateEmployeeOvertimes>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: EmployeeOvertime[]}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateEmployeeOvertimes = <TData = Awaited<ReturnType<typeof updateEmployeeOvertimes>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: EmployeeOvertime[]}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -6041,27 +6158,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  */
 export const addEmployeeOvertimes = (
     id: number,
-    employeeOvertime: EmployeeOvertime[], options?: AxiosRequestConfig
- ): Promise<AxiosResponse<EmployeeOvertime[]>> => {
-    
-    
-    return axios.default.post(
-      `/api/hr/employee/${id}/overtime`,
-      employeeOvertime,options
-    );
-  }
+    employeeOvertime: EmployeeOvertime[],
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<EmployeeOvertime[]>(
+      {url: `/api/hr/employee/${id}/overtime`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: employeeOvertime, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddEmployeeOvertimesMutationOptions = <TData = Awaited<ReturnType<typeof addEmployeeOvertimes>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: EmployeeOvertime[]}, TContext>, axios?: AxiosRequestConfig}
+export const getAddEmployeeOvertimesMutationOptions = <TData = Awaited<ReturnType<typeof addEmployeeOvertimes>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: EmployeeOvertime[]}, TContext>, }
 ) => {
 const mutationKey = ['addEmployeeOvertimes'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -6069,7 +6189,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addEmployeeOvertimes>>, {id: number;data: EmployeeOvertime[]}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  addEmployeeOvertimes(id,data,axiosOptions)
+          return  addEmployeeOvertimes(id,data,)
         }
 
         
@@ -6079,10 +6199,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddEmployeeOvertimesMutationResult = NonNullable<Awaited<ReturnType<typeof addEmployeeOvertimes>>>
     export type AddEmployeeOvertimesMutationBody = EmployeeOvertime[]
-    export type AddEmployeeOvertimesMutationError = AxiosError<ErrorResponse>
+    export type AddEmployeeOvertimesMutationError = ErrorResponse
 
-    export const useAddEmployeeOvertimes = <TData = Awaited<ReturnType<typeof addEmployeeOvertimes>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: EmployeeOvertime[]}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddEmployeeOvertimes = <TData = Awaited<ReturnType<typeof addEmployeeOvertimes>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: EmployeeOvertime[]}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -6099,31 +6219,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get Bank Branch
  */
 export const getBankBranch = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<BankBranch>> => {
-    
-    
-    return axios.default.get(
-      `/api/finance/bankBranch/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<BankBranch>(
+      {url: `/api/finance/bankBranch/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetBankBranchQueryKey = (id: number,) => {
     return [`/api/finance/bankBranch/${id}`] as const;
     }
 
     
-export const getGetBankBranchQueryOptions = <TData = Awaited<ReturnType<typeof getBankBranch>>, TError = AxiosError<unknown>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBankBranch>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetBankBranchQueryOptions = <TData = Awaited<ReturnType<typeof getBankBranch>>, TError = unknown>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBankBranch>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetBankBranchQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getBankBranch>>> = ({ signal }) => getBankBranch(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getBankBranch>>> = ({ signal }) => getBankBranch(id, signal);
 
       
 
@@ -6133,36 +6255,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetBankBranchQueryResult = NonNullable<Awaited<ReturnType<typeof getBankBranch>>>
-export type GetBankBranchQueryError = AxiosError<unknown>
+export type GetBankBranchQueryError = unknown
 
 
-export function useGetBankBranch<TData = Awaited<ReturnType<typeof getBankBranch>>, TError = AxiosError<unknown>>(
+export function useGetBankBranch<TData = Awaited<ReturnType<typeof getBankBranch>>, TError = unknown>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBankBranch>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getBankBranch>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetBankBranch<TData = Awaited<ReturnType<typeof getBankBranch>>, TError = AxiosError<unknown>>(
+export function useGetBankBranch<TData = Awaited<ReturnType<typeof getBankBranch>>, TError = unknown>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBankBranch>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getBankBranch>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetBankBranch<TData = Awaited<ReturnType<typeof getBankBranch>>, TError = AxiosError<unknown>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBankBranch>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetBankBranch<TData = Awaited<ReturnType<typeof getBankBranch>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBankBranch>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetBankBranch<TData = Awaited<ReturnType<typeof getBankBranch>>, TError = AxiosError<unknown>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBankBranch>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetBankBranch<TData = Awaited<ReturnType<typeof getBankBranch>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBankBranch>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -6177,16 +6299,16 @@ export function useGetBankBranch<TData = Awaited<ReturnType<typeof getBankBranch
 
 
 
-export const getGetBankBranchSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getBankBranch>>, TError = AxiosError<unknown>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBankBranch>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetBankBranchSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getBankBranch>>, TError = unknown>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBankBranch>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetBankBranchQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getBankBranch>>> = ({ signal }) => getBankBranch(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getBankBranch>>> = ({ signal }) => getBankBranch(id, signal);
 
       
 
@@ -6196,24 +6318,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetBankBranchSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getBankBranch>>>
-export type GetBankBranchSuspenseQueryError = AxiosError<unknown>
+export type GetBankBranchSuspenseQueryError = unknown
 
 
-export function useGetBankBranchSuspense<TData = Awaited<ReturnType<typeof getBankBranch>>, TError = AxiosError<unknown>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBankBranch>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetBankBranchSuspense<TData = Awaited<ReturnType<typeof getBankBranch>>, TError = AxiosError<unknown>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBankBranch>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetBankBranchSuspense<TData = Awaited<ReturnType<typeof getBankBranch>>, TError = unknown>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBankBranch>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetBankBranchSuspense<TData = Awaited<ReturnType<typeof getBankBranch>>, TError = AxiosError<unknown>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBankBranch>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetBankBranchSuspense<TData = Awaited<ReturnType<typeof getBankBranch>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBankBranch>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetBankBranchSuspense<TData = Awaited<ReturnType<typeof getBankBranch>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBankBranch>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetBankBranchSuspense<TData = Awaited<ReturnType<typeof getBankBranch>>, TError = AxiosError<unknown>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBankBranch>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetBankBranchSuspense<TData = Awaited<ReturnType<typeof getBankBranch>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBankBranch>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -6234,27 +6356,29 @@ export function useGetBankBranchSuspense<TData = Awaited<ReturnType<typeof getBa
  */
 export const updateBankbranch = (
     id: number,
-    bankBranch: BankBranch, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<BankBranch>> => {
-    
-    
-    return axios.default.put(
-      `/api/finance/bankBranch/${id}`,
-      bankBranch,options
-    );
-  }
+    bankBranch: BankBranch,
+ ) => {
+      
+      
+      return customMutator<BankBranch>(
+      {url: `/api/finance/bankBranch/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: bankBranch
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateBankbranchMutationOptions = <TData = Awaited<ReturnType<typeof updateBankbranch>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: BankBranch}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateBankbranchMutationOptions = <TData = Awaited<ReturnType<typeof updateBankbranch>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: BankBranch}, TContext>, }
 ) => {
 const mutationKey = ['updateBankbranch'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -6262,7 +6386,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateBankbranch>>, {id: number;data: BankBranch}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateBankbranch(id,data,axiosOptions)
+          return  updateBankbranch(id,data,)
         }
 
         
@@ -6272,10 +6396,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateBankbranchMutationResult = NonNullable<Awaited<ReturnType<typeof updateBankbranch>>>
     export type UpdateBankbranchMutationBody = BankBranch
-    export type UpdateBankbranchMutationError = AxiosError<ErrorResponse>
+    export type UpdateBankbranchMutationError = ErrorResponse
 
-    export const useUpdateBankbranch = <TData = Awaited<ReturnType<typeof updateBankbranch>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: BankBranch}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateBankbranch = <TData = Awaited<ReturnType<typeof updateBankbranch>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: BankBranch}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -6292,26 +6416,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete Bank Branch
  */
 export const deleteBankBranch = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<BankBranch>> => {
-    
-    
-    return axios.default.delete(
-      `/api/finance/bankBranch/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<BankBranch>(
+      {url: `/api/finance/bankBranch/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteBankBranchMutationOptions = <TData = Awaited<ReturnType<typeof deleteBankBranch>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteBankBranchMutationOptions = <TData = Awaited<ReturnType<typeof deleteBankBranch>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteBankBranch'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -6319,7 +6444,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteBankBranch>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteBankBranch(id,axiosOptions)
+          return  deleteBankBranch(id,)
         }
 
         
@@ -6329,10 +6454,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteBankBranchMutationResult = NonNullable<Awaited<ReturnType<typeof deleteBankBranch>>>
     
-    export type DeleteBankBranchMutationError = AxiosError<ResponseBase>
+    export type DeleteBankBranchMutationError = ResponseBase
 
-    export const useDeleteBankBranch = <TData = Awaited<ReturnType<typeof deleteBankBranch>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteBankBranch = <TData = Awaited<ReturnType<typeof deleteBankBranch>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -6349,31 +6474,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get Bank Account
  */
 export const getBankAccount = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<BankAccount>> => {
-    
-    
-    return axios.default.get(
-      `/api/finance/bankAccount/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<BankAccount>(
+      {url: `/api/finance/bankAccount/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetBankAccountQueryKey = (id: number,) => {
     return [`/api/finance/bankAccount/${id}`] as const;
     }
 
     
-export const getGetBankAccountQueryOptions = <TData = Awaited<ReturnType<typeof getBankAccount>>, TError = AxiosError<unknown>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBankAccount>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetBankAccountQueryOptions = <TData = Awaited<ReturnType<typeof getBankAccount>>, TError = unknown>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBankAccount>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetBankAccountQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getBankAccount>>> = ({ signal }) => getBankAccount(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getBankAccount>>> = ({ signal }) => getBankAccount(id, signal);
 
       
 
@@ -6383,36 +6510,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetBankAccountQueryResult = NonNullable<Awaited<ReturnType<typeof getBankAccount>>>
-export type GetBankAccountQueryError = AxiosError<unknown>
+export type GetBankAccountQueryError = unknown
 
 
-export function useGetBankAccount<TData = Awaited<ReturnType<typeof getBankAccount>>, TError = AxiosError<unknown>>(
+export function useGetBankAccount<TData = Awaited<ReturnType<typeof getBankAccount>>, TError = unknown>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBankAccount>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getBankAccount>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetBankAccount<TData = Awaited<ReturnType<typeof getBankAccount>>, TError = AxiosError<unknown>>(
+export function useGetBankAccount<TData = Awaited<ReturnType<typeof getBankAccount>>, TError = unknown>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBankAccount>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getBankAccount>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetBankAccount<TData = Awaited<ReturnType<typeof getBankAccount>>, TError = AxiosError<unknown>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBankAccount>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetBankAccount<TData = Awaited<ReturnType<typeof getBankAccount>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBankAccount>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetBankAccount<TData = Awaited<ReturnType<typeof getBankAccount>>, TError = AxiosError<unknown>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBankAccount>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetBankAccount<TData = Awaited<ReturnType<typeof getBankAccount>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBankAccount>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -6427,16 +6554,16 @@ export function useGetBankAccount<TData = Awaited<ReturnType<typeof getBankAccou
 
 
 
-export const getGetBankAccountSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getBankAccount>>, TError = AxiosError<unknown>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBankAccount>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetBankAccountSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getBankAccount>>, TError = unknown>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBankAccount>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetBankAccountQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getBankAccount>>> = ({ signal }) => getBankAccount(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getBankAccount>>> = ({ signal }) => getBankAccount(id, signal);
 
       
 
@@ -6446,24 +6573,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetBankAccountSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getBankAccount>>>
-export type GetBankAccountSuspenseQueryError = AxiosError<unknown>
+export type GetBankAccountSuspenseQueryError = unknown
 
 
-export function useGetBankAccountSuspense<TData = Awaited<ReturnType<typeof getBankAccount>>, TError = AxiosError<unknown>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBankAccount>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetBankAccountSuspense<TData = Awaited<ReturnType<typeof getBankAccount>>, TError = AxiosError<unknown>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBankAccount>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetBankAccountSuspense<TData = Awaited<ReturnType<typeof getBankAccount>>, TError = unknown>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBankAccount>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetBankAccountSuspense<TData = Awaited<ReturnType<typeof getBankAccount>>, TError = AxiosError<unknown>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBankAccount>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetBankAccountSuspense<TData = Awaited<ReturnType<typeof getBankAccount>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBankAccount>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetBankAccountSuspense<TData = Awaited<ReturnType<typeof getBankAccount>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBankAccount>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetBankAccountSuspense<TData = Awaited<ReturnType<typeof getBankAccount>>, TError = AxiosError<unknown>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBankAccount>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetBankAccountSuspense<TData = Awaited<ReturnType<typeof getBankAccount>>, TError = unknown>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBankAccount>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -6484,27 +6611,29 @@ export function useGetBankAccountSuspense<TData = Awaited<ReturnType<typeof getB
  */
 export const updateBankAccount = (
     id: number,
-    bankAccount: BankAccount, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<BankAccount>> => {
-    
-    
-    return axios.default.put(
-      `/api/finance/bankAccount/${id}`,
-      bankAccount,options
-    );
-  }
+    bankAccount: BankAccount,
+ ) => {
+      
+      
+      return customMutator<BankAccount>(
+      {url: `/api/finance/bankAccount/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: bankAccount
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateBankAccountMutationOptions = <TData = Awaited<ReturnType<typeof updateBankAccount>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: BankAccount}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateBankAccountMutationOptions = <TData = Awaited<ReturnType<typeof updateBankAccount>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: BankAccount}, TContext>, }
 ) => {
 const mutationKey = ['updateBankAccount'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -6512,7 +6641,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateBankAccount>>, {id: number;data: BankAccount}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateBankAccount(id,data,axiosOptions)
+          return  updateBankAccount(id,data,)
         }
 
         
@@ -6522,10 +6651,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateBankAccountMutationResult = NonNullable<Awaited<ReturnType<typeof updateBankAccount>>>
     export type UpdateBankAccountMutationBody = BankAccount
-    export type UpdateBankAccountMutationError = AxiosError<ErrorResponse>
+    export type UpdateBankAccountMutationError = ErrorResponse
 
-    export const useUpdateBankAccount = <TData = Awaited<ReturnType<typeof updateBankAccount>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: BankAccount}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateBankAccount = <TData = Awaited<ReturnType<typeof updateBankAccount>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: BankAccount}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -6542,26 +6671,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete Bank Account
  */
 export const deleteBankAccount = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<BankAccount>> => {
-    
-    
-    return axios.default.delete(
-      `/api/finance/bankAccount/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<BankAccount>(
+      {url: `/api/finance/bankAccount/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteBankAccountMutationOptions = <TData = Awaited<ReturnType<typeof deleteBankAccount>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteBankAccountMutationOptions = <TData = Awaited<ReturnType<typeof deleteBankAccount>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteBankAccount'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -6569,7 +6699,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteBankAccount>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteBankAccount(id,axiosOptions)
+          return  deleteBankAccount(id,)
         }
 
         
@@ -6579,10 +6709,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteBankAccountMutationResult = NonNullable<Awaited<ReturnType<typeof deleteBankAccount>>>
     
-    export type DeleteBankAccountMutationError = AxiosError<ResponseBase>
+    export type DeleteBankAccountMutationError = ResponseBase
 
-    export const useDeleteBankAccount = <TData = Awaited<ReturnType<typeof deleteBankAccount>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteBankAccount = <TData = Awaited<ReturnType<typeof deleteBankAccount>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -6599,31 +6729,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get Bank
  */
 export const getDepartment = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Bank>> => {
-    
-    
-    return axios.default.get(
-      `/api/finance/bank/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Bank>(
+      {url: `/api/finance/bank/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetDepartmentQueryKey = (id: number,) => {
     return [`/api/finance/bank/${id}`] as const;
     }
 
     
-export const getGetDepartmentQueryOptions = <TData = Awaited<ReturnType<typeof getDepartment>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDepartment>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetDepartmentQueryOptions = <TData = Awaited<ReturnType<typeof getDepartment>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDepartment>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetDepartmentQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDepartment>>> = ({ signal }) => getDepartment(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDepartment>>> = ({ signal }) => getDepartment(id, signal);
 
       
 
@@ -6633,36 +6765,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetDepartmentQueryResult = NonNullable<Awaited<ReturnType<typeof getDepartment>>>
-export type GetDepartmentQueryError = AxiosError<ErrorResponse>
+export type GetDepartmentQueryError = ErrorResponse
 
 
-export function useGetDepartment<TData = Awaited<ReturnType<typeof getDepartment>>, TError = AxiosError<ErrorResponse>>(
+export function useGetDepartment<TData = Awaited<ReturnType<typeof getDepartment>>, TError = ErrorResponse>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDepartment>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getDepartment>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetDepartment<TData = Awaited<ReturnType<typeof getDepartment>>, TError = AxiosError<ErrorResponse>>(
+export function useGetDepartment<TData = Awaited<ReturnType<typeof getDepartment>>, TError = ErrorResponse>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDepartment>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getDepartment>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetDepartment<TData = Awaited<ReturnType<typeof getDepartment>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDepartment>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetDepartment<TData = Awaited<ReturnType<typeof getDepartment>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDepartment>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetDepartment<TData = Awaited<ReturnType<typeof getDepartment>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDepartment>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetDepartment<TData = Awaited<ReturnType<typeof getDepartment>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDepartment>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -6677,16 +6809,16 @@ export function useGetDepartment<TData = Awaited<ReturnType<typeof getDepartment
 
 
 
-export const getGetDepartmentSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getDepartment>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepartment>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetDepartmentSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getDepartment>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepartment>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetDepartmentQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDepartment>>> = ({ signal }) => getDepartment(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDepartment>>> = ({ signal }) => getDepartment(id, signal);
 
       
 
@@ -6696,24 +6828,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetDepartmentSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getDepartment>>>
-export type GetDepartmentSuspenseQueryError = AxiosError<ErrorResponse>
+export type GetDepartmentSuspenseQueryError = ErrorResponse
 
 
-export function useGetDepartmentSuspense<TData = Awaited<ReturnType<typeof getDepartment>>, TError = AxiosError<ErrorResponse>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepartment>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetDepartmentSuspense<TData = Awaited<ReturnType<typeof getDepartment>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepartment>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetDepartmentSuspense<TData = Awaited<ReturnType<typeof getDepartment>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepartment>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetDepartmentSuspense<TData = Awaited<ReturnType<typeof getDepartment>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepartment>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetDepartmentSuspense<TData = Awaited<ReturnType<typeof getDepartment>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepartment>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetDepartmentSuspense<TData = Awaited<ReturnType<typeof getDepartment>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepartment>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetDepartmentSuspense<TData = Awaited<ReturnType<typeof getDepartment>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepartment>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetDepartmentSuspense<TData = Awaited<ReturnType<typeof getDepartment>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepartment>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -6734,27 +6866,29 @@ export function useGetDepartmentSuspense<TData = Awaited<ReturnType<typeof getDe
  */
 export const updateBank = (
     id: number,
-    bank: Bank, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Bank>> => {
-    
-    
-    return axios.default.put(
-      `/api/finance/bank/${id}`,
-      bank,options
-    );
-  }
+    bank: Bank,
+ ) => {
+      
+      
+      return customMutator<Bank>(
+      {url: `/api/finance/bank/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: bank
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateBankMutationOptions = <TData = Awaited<ReturnType<typeof updateBank>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Bank}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateBankMutationOptions = <TData = Awaited<ReturnType<typeof updateBank>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Bank}, TContext>, }
 ) => {
 const mutationKey = ['updateBank'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -6762,7 +6896,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateBank>>, {id: number;data: Bank}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateBank(id,data,axiosOptions)
+          return  updateBank(id,data,)
         }
 
         
@@ -6772,10 +6906,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateBankMutationResult = NonNullable<Awaited<ReturnType<typeof updateBank>>>
     export type UpdateBankMutationBody = Bank
-    export type UpdateBankMutationError = AxiosError<ErrorResponse>
+    export type UpdateBankMutationError = ErrorResponse
 
-    export const useUpdateBank = <TData = Awaited<ReturnType<typeof updateBank>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Bank}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateBank = <TData = Awaited<ReturnType<typeof updateBank>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Bank}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -6792,26 +6926,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete bank
  */
 export const deleteBank = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Bank>> => {
-    
-    
-    return axios.default.delete(
-      `/api/finance/bank/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<Bank>(
+      {url: `/api/finance/bank/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteBankMutationOptions = <TData = Awaited<ReturnType<typeof deleteBank>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteBankMutationOptions = <TData = Awaited<ReturnType<typeof deleteBank>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteBank'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -6819,7 +6954,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteBank>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteBank(id,axiosOptions)
+          return  deleteBank(id,)
         }
 
         
@@ -6829,10 +6964,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteBankMutationResult = NonNullable<Awaited<ReturnType<typeof deleteBank>>>
     
-    export type DeleteBankMutationError = AxiosError<ResponseBase>
+    export type DeleteBankMutationError = ResponseBase
 
-    export const useDeleteBank = <TData = Awaited<ReturnType<typeof deleteBank>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteBank = <TData = Awaited<ReturnType<typeof deleteBank>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -6849,31 +6984,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get Department
  */
 export const getDepartment1 = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Department>> => {
-    
-    
-    return axios.default.get(
-      `/api/company/department/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Department>(
+      {url: `/api/company/department/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetDepartment1QueryKey = (id: number,) => {
     return [`/api/company/department/${id}`] as const;
     }
 
     
-export const getGetDepartment1QueryOptions = <TData = Awaited<ReturnType<typeof getDepartment1>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDepartment1>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetDepartment1QueryOptions = <TData = Awaited<ReturnType<typeof getDepartment1>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDepartment1>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetDepartment1QueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDepartment1>>> = ({ signal }) => getDepartment1(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDepartment1>>> = ({ signal }) => getDepartment1(id, signal);
 
       
 
@@ -6883,36 +7020,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetDepartment1QueryResult = NonNullable<Awaited<ReturnType<typeof getDepartment1>>>
-export type GetDepartment1QueryError = AxiosError<ErrorResponse>
+export type GetDepartment1QueryError = ErrorResponse
 
 
-export function useGetDepartment1<TData = Awaited<ReturnType<typeof getDepartment1>>, TError = AxiosError<ErrorResponse>>(
+export function useGetDepartment1<TData = Awaited<ReturnType<typeof getDepartment1>>, TError = ErrorResponse>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDepartment1>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getDepartment1>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetDepartment1<TData = Awaited<ReturnType<typeof getDepartment1>>, TError = AxiosError<ErrorResponse>>(
+export function useGetDepartment1<TData = Awaited<ReturnType<typeof getDepartment1>>, TError = ErrorResponse>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDepartment1>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getDepartment1>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetDepartment1<TData = Awaited<ReturnType<typeof getDepartment1>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDepartment1>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetDepartment1<TData = Awaited<ReturnType<typeof getDepartment1>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDepartment1>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetDepartment1<TData = Awaited<ReturnType<typeof getDepartment1>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDepartment1>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetDepartment1<TData = Awaited<ReturnType<typeof getDepartment1>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDepartment1>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -6927,16 +7064,16 @@ export function useGetDepartment1<TData = Awaited<ReturnType<typeof getDepartmen
 
 
 
-export const getGetDepartment1SuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getDepartment1>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepartment1>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetDepartment1SuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getDepartment1>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepartment1>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetDepartment1QueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDepartment1>>> = ({ signal }) => getDepartment1(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDepartment1>>> = ({ signal }) => getDepartment1(id, signal);
 
       
 
@@ -6946,24 +7083,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetDepartment1SuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getDepartment1>>>
-export type GetDepartment1SuspenseQueryError = AxiosError<ErrorResponse>
+export type GetDepartment1SuspenseQueryError = ErrorResponse
 
 
-export function useGetDepartment1Suspense<TData = Awaited<ReturnType<typeof getDepartment1>>, TError = AxiosError<ErrorResponse>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepartment1>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetDepartment1Suspense<TData = Awaited<ReturnType<typeof getDepartment1>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepartment1>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetDepartment1Suspense<TData = Awaited<ReturnType<typeof getDepartment1>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepartment1>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetDepartment1Suspense<TData = Awaited<ReturnType<typeof getDepartment1>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepartment1>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetDepartment1Suspense<TData = Awaited<ReturnType<typeof getDepartment1>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepartment1>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetDepartment1Suspense<TData = Awaited<ReturnType<typeof getDepartment1>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepartment1>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetDepartment1Suspense<TData = Awaited<ReturnType<typeof getDepartment1>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepartment1>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetDepartment1Suspense<TData = Awaited<ReturnType<typeof getDepartment1>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepartment1>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -6984,27 +7121,29 @@ export function useGetDepartment1Suspense<TData = Awaited<ReturnType<typeof getD
  */
 export const updateDepartment = (
     id: number,
-    department: Department, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Department>> => {
-    
-    
-    return axios.default.put(
-      `/api/company/department/${id}`,
-      department,options
-    );
-  }
+    department: Department,
+ ) => {
+      
+      
+      return customMutator<Department>(
+      {url: `/api/company/department/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: department
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateDepartmentMutationOptions = <TData = Awaited<ReturnType<typeof updateDepartment>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Department}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateDepartmentMutationOptions = <TData = Awaited<ReturnType<typeof updateDepartment>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Department}, TContext>, }
 ) => {
 const mutationKey = ['updateDepartment'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -7012,7 +7151,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateDepartment>>, {id: number;data: Department}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateDepartment(id,data,axiosOptions)
+          return  updateDepartment(id,data,)
         }
 
         
@@ -7022,10 +7161,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateDepartmentMutationResult = NonNullable<Awaited<ReturnType<typeof updateDepartment>>>
     export type UpdateDepartmentMutationBody = Department
-    export type UpdateDepartmentMutationError = AxiosError<ErrorResponse>
+    export type UpdateDepartmentMutationError = ErrorResponse
 
-    export const useUpdateDepartment = <TData = Awaited<ReturnType<typeof updateDepartment>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Department}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateDepartment = <TData = Awaited<ReturnType<typeof updateDepartment>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Department}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -7042,26 +7181,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete Department
  */
 export const deleteDepartment = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Department>> => {
-    
-    
-    return axios.default.delete(
-      `/api/company/department/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<Department>(
+      {url: `/api/company/department/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteDepartmentMutationOptions = <TData = Awaited<ReturnType<typeof deleteDepartment>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteDepartmentMutationOptions = <TData = Awaited<ReturnType<typeof deleteDepartment>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteDepartment'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -7069,7 +7209,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteDepartment>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteDepartment(id,axiosOptions)
+          return  deleteDepartment(id,)
         }
 
         
@@ -7079,10 +7219,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteDepartmentMutationResult = NonNullable<Awaited<ReturnType<typeof deleteDepartment>>>
     
-    export type DeleteDepartmentMutationError = AxiosError<ResponseBase>
+    export type DeleteDepartmentMutationError = ResponseBase
 
-    export const useDeleteDepartment = <TData = Awaited<ReturnType<typeof deleteDepartment>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteDepartment = <TData = Awaited<ReturnType<typeof deleteDepartment>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -7099,31 +7239,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get Branch
  */
 export const getBranch = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Branch>> => {
-    
-    
-    return axios.default.get(
-      `/api/company/branch/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Branch>(
+      {url: `/api/company/branch/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetBranchQueryKey = (id: number,) => {
     return [`/api/company/branch/${id}`] as const;
     }
 
     
-export const getGetBranchQueryOptions = <TData = Awaited<ReturnType<typeof getBranch>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBranch>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetBranchQueryOptions = <TData = Awaited<ReturnType<typeof getBranch>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBranch>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetBranchQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getBranch>>> = ({ signal }) => getBranch(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getBranch>>> = ({ signal }) => getBranch(id, signal);
 
       
 
@@ -7133,36 +7275,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetBranchQueryResult = NonNullable<Awaited<ReturnType<typeof getBranch>>>
-export type GetBranchQueryError = AxiosError<ErrorResponse>
+export type GetBranchQueryError = ErrorResponse
 
 
-export function useGetBranch<TData = Awaited<ReturnType<typeof getBranch>>, TError = AxiosError<ErrorResponse>>(
+export function useGetBranch<TData = Awaited<ReturnType<typeof getBranch>>, TError = ErrorResponse>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBranch>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getBranch>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetBranch<TData = Awaited<ReturnType<typeof getBranch>>, TError = AxiosError<ErrorResponse>>(
+export function useGetBranch<TData = Awaited<ReturnType<typeof getBranch>>, TError = ErrorResponse>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBranch>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getBranch>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetBranch<TData = Awaited<ReturnType<typeof getBranch>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBranch>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetBranch<TData = Awaited<ReturnType<typeof getBranch>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBranch>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetBranch<TData = Awaited<ReturnType<typeof getBranch>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBranch>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetBranch<TData = Awaited<ReturnType<typeof getBranch>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getBranch>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -7177,16 +7319,16 @@ export function useGetBranch<TData = Awaited<ReturnType<typeof getBranch>>, TErr
 
 
 
-export const getGetBranchSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getBranch>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBranch>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetBranchSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getBranch>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBranch>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetBranchQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getBranch>>> = ({ signal }) => getBranch(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getBranch>>> = ({ signal }) => getBranch(id, signal);
 
       
 
@@ -7196,24 +7338,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetBranchSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getBranch>>>
-export type GetBranchSuspenseQueryError = AxiosError<ErrorResponse>
+export type GetBranchSuspenseQueryError = ErrorResponse
 
 
-export function useGetBranchSuspense<TData = Awaited<ReturnType<typeof getBranch>>, TError = AxiosError<ErrorResponse>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBranch>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetBranchSuspense<TData = Awaited<ReturnType<typeof getBranch>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBranch>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetBranchSuspense<TData = Awaited<ReturnType<typeof getBranch>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBranch>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetBranchSuspense<TData = Awaited<ReturnType<typeof getBranch>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBranch>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetBranchSuspense<TData = Awaited<ReturnType<typeof getBranch>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBranch>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetBranchSuspense<TData = Awaited<ReturnType<typeof getBranch>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBranch>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetBranchSuspense<TData = Awaited<ReturnType<typeof getBranch>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBranch>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetBranchSuspense<TData = Awaited<ReturnType<typeof getBranch>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getBranch>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -7234,27 +7376,29 @@ export function useGetBranchSuspense<TData = Awaited<ReturnType<typeof getBranch
  */
 export const updateBranch = (
     id: number,
-    branch: Branch, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Branch>> => {
-    
-    
-    return axios.default.put(
-      `/api/company/branch/${id}`,
-      branch,options
-    );
-  }
+    branch: Branch,
+ ) => {
+      
+      
+      return customMutator<Branch>(
+      {url: `/api/company/branch/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: branch
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateBranchMutationOptions = <TData = Awaited<ReturnType<typeof updateBranch>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Branch}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateBranchMutationOptions = <TData = Awaited<ReturnType<typeof updateBranch>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Branch}, TContext>, }
 ) => {
 const mutationKey = ['updateBranch'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -7262,7 +7406,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateBranch>>, {id: number;data: Branch}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateBranch(id,data,axiosOptions)
+          return  updateBranch(id,data,)
         }
 
         
@@ -7272,10 +7416,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateBranchMutationResult = NonNullable<Awaited<ReturnType<typeof updateBranch>>>
     export type UpdateBranchMutationBody = Branch
-    export type UpdateBranchMutationError = AxiosError<ErrorResponse>
+    export type UpdateBranchMutationError = ErrorResponse
 
-    export const useUpdateBranch = <TData = Awaited<ReturnType<typeof updateBranch>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Branch}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateBranch = <TData = Awaited<ReturnType<typeof updateBranch>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Branch}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -7292,26 +7436,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete Branch
  */
 export const deleteBranch = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Branch>> => {
-    
-    
-    return axios.default.delete(
-      `/api/company/branch/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<Branch>(
+      {url: `/api/company/branch/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteBranchMutationOptions = <TData = Awaited<ReturnType<typeof deleteBranch>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteBranchMutationOptions = <TData = Awaited<ReturnType<typeof deleteBranch>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteBranch'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -7319,7 +7464,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteBranch>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteBranch(id,axiosOptions)
+          return  deleteBranch(id,)
         }
 
         
@@ -7329,10 +7474,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteBranchMutationResult = NonNullable<Awaited<ReturnType<typeof deleteBranch>>>
     
-    export type DeleteBranchMutationError = AxiosError<ResponseBase>
+    export type DeleteBranchMutationError = ResponseBase
 
-    export const useDeleteBranch = <TData = Awaited<ReturnType<typeof deleteBranch>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteBranch = <TData = Awaited<ReturnType<typeof deleteBranch>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -7349,31 +7494,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get Section
  */
 export const getSection = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Section>> => {
-    
-    
-    return axios.default.get(
-      `/api/admin/section/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Section>(
+      {url: `/api/admin/section/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetSectionQueryKey = (id: number,) => {
     return [`/api/admin/section/${id}`] as const;
     }
 
     
-export const getGetSectionQueryOptions = <TData = Awaited<ReturnType<typeof getSection>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSection>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetSectionQueryOptions = <TData = Awaited<ReturnType<typeof getSection>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSection>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetSectionQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSection>>> = ({ signal }) => getSection(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSection>>> = ({ signal }) => getSection(id, signal);
 
       
 
@@ -7383,36 +7530,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetSectionQueryResult = NonNullable<Awaited<ReturnType<typeof getSection>>>
-export type GetSectionQueryError = AxiosError<ErrorResponse>
+export type GetSectionQueryError = ErrorResponse
 
 
-export function useGetSection<TData = Awaited<ReturnType<typeof getSection>>, TError = AxiosError<ErrorResponse>>(
+export function useGetSection<TData = Awaited<ReturnType<typeof getSection>>, TError = ErrorResponse>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSection>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getSection>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetSection<TData = Awaited<ReturnType<typeof getSection>>, TError = AxiosError<ErrorResponse>>(
+export function useGetSection<TData = Awaited<ReturnType<typeof getSection>>, TError = ErrorResponse>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSection>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getSection>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetSection<TData = Awaited<ReturnType<typeof getSection>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSection>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetSection<TData = Awaited<ReturnType<typeof getSection>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSection>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetSection<TData = Awaited<ReturnType<typeof getSection>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSection>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetSection<TData = Awaited<ReturnType<typeof getSection>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getSection>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -7427,16 +7574,16 @@ export function useGetSection<TData = Awaited<ReturnType<typeof getSection>>, TE
 
 
 
-export const getGetSectionSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getSection>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getSection>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetSectionSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getSection>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getSection>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetSectionQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSection>>> = ({ signal }) => getSection(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSection>>> = ({ signal }) => getSection(id, signal);
 
       
 
@@ -7446,24 +7593,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetSectionSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getSection>>>
-export type GetSectionSuspenseQueryError = AxiosError<ErrorResponse>
+export type GetSectionSuspenseQueryError = ErrorResponse
 
 
-export function useGetSectionSuspense<TData = Awaited<ReturnType<typeof getSection>>, TError = AxiosError<ErrorResponse>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getSection>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetSectionSuspense<TData = Awaited<ReturnType<typeof getSection>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getSection>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetSectionSuspense<TData = Awaited<ReturnType<typeof getSection>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getSection>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetSectionSuspense<TData = Awaited<ReturnType<typeof getSection>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getSection>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetSectionSuspense<TData = Awaited<ReturnType<typeof getSection>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getSection>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetSectionSuspense<TData = Awaited<ReturnType<typeof getSection>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getSection>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetSectionSuspense<TData = Awaited<ReturnType<typeof getSection>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getSection>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetSectionSuspense<TData = Awaited<ReturnType<typeof getSection>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getSection>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -7484,27 +7631,29 @@ export function useGetSectionSuspense<TData = Awaited<ReturnType<typeof getSecti
  */
 export const updateSection = (
     id: number,
-    section: Section, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Section>> => {
-    
-    
-    return axios.default.put(
-      `/api/admin/section/${id}`,
-      section,options
-    );
-  }
+    section: Section,
+ ) => {
+      
+      
+      return customMutator<Section>(
+      {url: `/api/admin/section/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: section
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateSectionMutationOptions = <TData = Awaited<ReturnType<typeof updateSection>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Section}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateSectionMutationOptions = <TData = Awaited<ReturnType<typeof updateSection>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Section}, TContext>, }
 ) => {
 const mutationKey = ['updateSection'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -7512,7 +7661,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateSection>>, {id: number;data: Section}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateSection(id,data,axiosOptions)
+          return  updateSection(id,data,)
         }
 
         
@@ -7522,10 +7671,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateSectionMutationResult = NonNullable<Awaited<ReturnType<typeof updateSection>>>
     export type UpdateSectionMutationBody = Section
-    export type UpdateSectionMutationError = AxiosError<ErrorResponse>
+    export type UpdateSectionMutationError = ErrorResponse
 
-    export const useUpdateSection = <TData = Awaited<ReturnType<typeof updateSection>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Section}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateSection = <TData = Awaited<ReturnType<typeof updateSection>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Section}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -7542,26 +7691,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete Section
  */
 export const deleteSection = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Section>> => {
-    
-    
-    return axios.default.delete(
-      `/api/admin/section/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<Section>(
+      {url: `/api/admin/section/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteSectionMutationOptions = <TData = Awaited<ReturnType<typeof deleteSection>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteSectionMutationOptions = <TData = Awaited<ReturnType<typeof deleteSection>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteSection'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -7569,7 +7719,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteSection>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteSection(id,axiosOptions)
+          return  deleteSection(id,)
         }
 
         
@@ -7579,10 +7729,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteSectionMutationResult = NonNullable<Awaited<ReturnType<typeof deleteSection>>>
     
-    export type DeleteSectionMutationError = AxiosError<ResponseBase>
+    export type DeleteSectionMutationError = ResponseBase
 
-    export const useDeleteSection = <TData = Awaited<ReturnType<typeof deleteSection>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteSection = <TData = Awaited<ReturnType<typeof deleteSection>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -7599,31 +7749,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get Role
  */
 export const getRole = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Role>> => {
-    
-    
-    return axios.default.get(
-      `/api/admin/role/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Role>(
+      {url: `/api/admin/role/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetRoleQueryKey = (id: number,) => {
     return [`/api/admin/role/${id}`] as const;
     }
 
     
-export const getGetRoleQueryOptions = <TData = Awaited<ReturnType<typeof getRole>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRole>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetRoleQueryOptions = <TData = Awaited<ReturnType<typeof getRole>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRole>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetRoleQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRole>>> = ({ signal }) => getRole(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRole>>> = ({ signal }) => getRole(id, signal);
 
       
 
@@ -7633,36 +7785,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetRoleQueryResult = NonNullable<Awaited<ReturnType<typeof getRole>>>
-export type GetRoleQueryError = AxiosError<ErrorResponse>
+export type GetRoleQueryError = ErrorResponse
 
 
-export function useGetRole<TData = Awaited<ReturnType<typeof getRole>>, TError = AxiosError<ErrorResponse>>(
+export function useGetRole<TData = Awaited<ReturnType<typeof getRole>>, TError = ErrorResponse>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRole>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getRole>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetRole<TData = Awaited<ReturnType<typeof getRole>>, TError = AxiosError<ErrorResponse>>(
+export function useGetRole<TData = Awaited<ReturnType<typeof getRole>>, TError = ErrorResponse>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRole>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getRole>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetRole<TData = Awaited<ReturnType<typeof getRole>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRole>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetRole<TData = Awaited<ReturnType<typeof getRole>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRole>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetRole<TData = Awaited<ReturnType<typeof getRole>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRole>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetRole<TData = Awaited<ReturnType<typeof getRole>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRole>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -7677,16 +7829,16 @@ export function useGetRole<TData = Awaited<ReturnType<typeof getRole>>, TError =
 
 
 
-export const getGetRoleSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getRole>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getRole>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetRoleSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getRole>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getRole>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetRoleQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRole>>> = ({ signal }) => getRole(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRole>>> = ({ signal }) => getRole(id, signal);
 
       
 
@@ -7696,24 +7848,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetRoleSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getRole>>>
-export type GetRoleSuspenseQueryError = AxiosError<ErrorResponse>
+export type GetRoleSuspenseQueryError = ErrorResponse
 
 
-export function useGetRoleSuspense<TData = Awaited<ReturnType<typeof getRole>>, TError = AxiosError<ErrorResponse>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getRole>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetRoleSuspense<TData = Awaited<ReturnType<typeof getRole>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getRole>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetRoleSuspense<TData = Awaited<ReturnType<typeof getRole>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getRole>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetRoleSuspense<TData = Awaited<ReturnType<typeof getRole>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getRole>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetRoleSuspense<TData = Awaited<ReturnType<typeof getRole>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getRole>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetRoleSuspense<TData = Awaited<ReturnType<typeof getRole>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getRole>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetRoleSuspense<TData = Awaited<ReturnType<typeof getRole>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getRole>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetRoleSuspense<TData = Awaited<ReturnType<typeof getRole>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getRole>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -7734,27 +7886,29 @@ export function useGetRoleSuspense<TData = Awaited<ReturnType<typeof getRole>>, 
  */
 export const updateRole = (
     id: number,
-    role: Role, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Role>> => {
-    
-    
-    return axios.default.put(
-      `/api/admin/role/${id}`,
-      role,options
-    );
-  }
+    role: Role,
+ ) => {
+      
+      
+      return customMutator<Role>(
+      {url: `/api/admin/role/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: role
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateRoleMutationOptions = <TData = Awaited<ReturnType<typeof updateRole>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Role}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateRoleMutationOptions = <TData = Awaited<ReturnType<typeof updateRole>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Role}, TContext>, }
 ) => {
 const mutationKey = ['updateRole'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -7762,7 +7916,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateRole>>, {id: number;data: Role}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateRole(id,data,axiosOptions)
+          return  updateRole(id,data,)
         }
 
         
@@ -7772,10 +7926,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateRoleMutationResult = NonNullable<Awaited<ReturnType<typeof updateRole>>>
     export type UpdateRoleMutationBody = Role
-    export type UpdateRoleMutationError = AxiosError<ErrorResponse>
+    export type UpdateRoleMutationError = ErrorResponse
 
-    export const useUpdateRole = <TData = Awaited<ReturnType<typeof updateRole>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Role}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateRole = <TData = Awaited<ReturnType<typeof updateRole>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Role}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -7792,26 +7946,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete Role
  */
 export const deleteRole = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Role>> => {
-    
-    
-    return axios.default.delete(
-      `/api/admin/role/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<Role>(
+      {url: `/api/admin/role/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteRoleMutationOptions = <TData = Awaited<ReturnType<typeof deleteRole>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteRoleMutationOptions = <TData = Awaited<ReturnType<typeof deleteRole>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteRole'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -7819,7 +7974,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteRole>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteRole(id,axiosOptions)
+          return  deleteRole(id,)
         }
 
         
@@ -7829,10 +7984,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteRoleMutationResult = NonNullable<Awaited<ReturnType<typeof deleteRole>>>
     
-    export type DeleteRoleMutationError = AxiosError<ResponseBase>
+    export type DeleteRoleMutationError = ResponseBase
 
-    export const useDeleteRole = <TData = Awaited<ReturnType<typeof deleteRole>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteRole = <TData = Awaited<ReturnType<typeof deleteRole>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -7849,31 +8004,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get Public Holiday
  */
 export const getPublicHoliday = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<PublicHoliday>> => {
-    
-    
-    return axios.default.get(
-      `/api/admin/publicHoliday/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<PublicHoliday>(
+      {url: `/api/admin/publicHoliday/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetPublicHolidayQueryKey = (id: number,) => {
     return [`/api/admin/publicHoliday/${id}`] as const;
     }
 
     
-export const getGetPublicHolidayQueryOptions = <TData = Awaited<ReturnType<typeof getPublicHoliday>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPublicHoliday>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetPublicHolidayQueryOptions = <TData = Awaited<ReturnType<typeof getPublicHoliday>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPublicHoliday>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetPublicHolidayQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPublicHoliday>>> = ({ signal }) => getPublicHoliday(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPublicHoliday>>> = ({ signal }) => getPublicHoliday(id, signal);
 
       
 
@@ -7883,36 +8040,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetPublicHolidayQueryResult = NonNullable<Awaited<ReturnType<typeof getPublicHoliday>>>
-export type GetPublicHolidayQueryError = AxiosError<ErrorResponse>
+export type GetPublicHolidayQueryError = ErrorResponse
 
 
-export function useGetPublicHoliday<TData = Awaited<ReturnType<typeof getPublicHoliday>>, TError = AxiosError<ErrorResponse>>(
+export function useGetPublicHoliday<TData = Awaited<ReturnType<typeof getPublicHoliday>>, TError = ErrorResponse>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPublicHoliday>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getPublicHoliday>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetPublicHoliday<TData = Awaited<ReturnType<typeof getPublicHoliday>>, TError = AxiosError<ErrorResponse>>(
+export function useGetPublicHoliday<TData = Awaited<ReturnType<typeof getPublicHoliday>>, TError = ErrorResponse>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPublicHoliday>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getPublicHoliday>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetPublicHoliday<TData = Awaited<ReturnType<typeof getPublicHoliday>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPublicHoliday>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetPublicHoliday<TData = Awaited<ReturnType<typeof getPublicHoliday>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPublicHoliday>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetPublicHoliday<TData = Awaited<ReturnType<typeof getPublicHoliday>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPublicHoliday>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetPublicHoliday<TData = Awaited<ReturnType<typeof getPublicHoliday>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPublicHoliday>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -7927,16 +8084,16 @@ export function useGetPublicHoliday<TData = Awaited<ReturnType<typeof getPublicH
 
 
 
-export const getGetPublicHolidaySuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getPublicHoliday>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPublicHoliday>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetPublicHolidaySuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getPublicHoliday>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPublicHoliday>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetPublicHolidayQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPublicHoliday>>> = ({ signal }) => getPublicHoliday(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPublicHoliday>>> = ({ signal }) => getPublicHoliday(id, signal);
 
       
 
@@ -7946,24 +8103,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetPublicHolidaySuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getPublicHoliday>>>
-export type GetPublicHolidaySuspenseQueryError = AxiosError<ErrorResponse>
+export type GetPublicHolidaySuspenseQueryError = ErrorResponse
 
 
-export function useGetPublicHolidaySuspense<TData = Awaited<ReturnType<typeof getPublicHoliday>>, TError = AxiosError<ErrorResponse>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPublicHoliday>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetPublicHolidaySuspense<TData = Awaited<ReturnType<typeof getPublicHoliday>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPublicHoliday>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetPublicHolidaySuspense<TData = Awaited<ReturnType<typeof getPublicHoliday>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPublicHoliday>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetPublicHolidaySuspense<TData = Awaited<ReturnType<typeof getPublicHoliday>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPublicHoliday>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetPublicHolidaySuspense<TData = Awaited<ReturnType<typeof getPublicHoliday>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPublicHoliday>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetPublicHolidaySuspense<TData = Awaited<ReturnType<typeof getPublicHoliday>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPublicHoliday>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetPublicHolidaySuspense<TData = Awaited<ReturnType<typeof getPublicHoliday>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPublicHoliday>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetPublicHolidaySuspense<TData = Awaited<ReturnType<typeof getPublicHoliday>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPublicHoliday>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -7984,27 +8141,29 @@ export function useGetPublicHolidaySuspense<TData = Awaited<ReturnType<typeof ge
  */
 export const updatePublicHoliday = (
     id: number,
-    publicHoliday: PublicHoliday, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<PublicHoliday>> => {
-    
-    
-    return axios.default.put(
-      `/api/admin/publicHoliday/${id}`,
-      publicHoliday,options
-    );
-  }
+    publicHoliday: PublicHoliday,
+ ) => {
+      
+      
+      return customMutator<PublicHoliday>(
+      {url: `/api/admin/publicHoliday/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: publicHoliday
+    },
+      );
+    }
+  
 
 
-
-export const getUpdatePublicHolidayMutationOptions = <TData = Awaited<ReturnType<typeof updatePublicHoliday>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: PublicHoliday}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdatePublicHolidayMutationOptions = <TData = Awaited<ReturnType<typeof updatePublicHoliday>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: PublicHoliday}, TContext>, }
 ) => {
 const mutationKey = ['updatePublicHoliday'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -8012,7 +8171,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updatePublicHoliday>>, {id: number;data: PublicHoliday}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updatePublicHoliday(id,data,axiosOptions)
+          return  updatePublicHoliday(id,data,)
         }
 
         
@@ -8022,10 +8181,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdatePublicHolidayMutationResult = NonNullable<Awaited<ReturnType<typeof updatePublicHoliday>>>
     export type UpdatePublicHolidayMutationBody = PublicHoliday
-    export type UpdatePublicHolidayMutationError = AxiosError<ErrorResponse>
+    export type UpdatePublicHolidayMutationError = ErrorResponse
 
-    export const useUpdatePublicHoliday = <TData = Awaited<ReturnType<typeof updatePublicHoliday>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: PublicHoliday}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdatePublicHoliday = <TData = Awaited<ReturnType<typeof updatePublicHoliday>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: PublicHoliday}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -8042,26 +8201,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete PublicHoliday
  */
 export const deletePublicHoliday = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<PublicHoliday>> => {
-    
-    
-    return axios.default.delete(
-      `/api/admin/publicHoliday/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<PublicHoliday>(
+      {url: `/api/admin/publicHoliday/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeletePublicHolidayMutationOptions = <TData = Awaited<ReturnType<typeof deletePublicHoliday>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeletePublicHolidayMutationOptions = <TData = Awaited<ReturnType<typeof deletePublicHoliday>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deletePublicHoliday'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -8069,7 +8229,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deletePublicHoliday>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deletePublicHoliday(id,axiosOptions)
+          return  deletePublicHoliday(id,)
         }
 
         
@@ -8079,10 +8239,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeletePublicHolidayMutationResult = NonNullable<Awaited<ReturnType<typeof deletePublicHoliday>>>
     
-    export type DeletePublicHolidayMutationError = AxiosError<ResponseBase>
+    export type DeletePublicHolidayMutationError = ResponseBase
 
-    export const useDeletePublicHoliday = <TData = Awaited<ReturnType<typeof deletePublicHoliday>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeletePublicHoliday = <TData = Awaited<ReturnType<typeof deletePublicHoliday>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -8099,31 +8259,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get PaymentMethod
  */
 export const getPaymentMethod = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<PaymentMethod>> => {
-    
-    
-    return axios.default.get(
-      `/api/admin/paymentMethod/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<PaymentMethod>(
+      {url: `/api/admin/paymentMethod/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetPaymentMethodQueryKey = (id: number,) => {
     return [`/api/admin/paymentMethod/${id}`] as const;
     }
 
     
-export const getGetPaymentMethodQueryOptions = <TData = Awaited<ReturnType<typeof getPaymentMethod>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPaymentMethod>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetPaymentMethodQueryOptions = <TData = Awaited<ReturnType<typeof getPaymentMethod>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPaymentMethod>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetPaymentMethodQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPaymentMethod>>> = ({ signal }) => getPaymentMethod(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPaymentMethod>>> = ({ signal }) => getPaymentMethod(id, signal);
 
       
 
@@ -8133,36 +8295,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetPaymentMethodQueryResult = NonNullable<Awaited<ReturnType<typeof getPaymentMethod>>>
-export type GetPaymentMethodQueryError = AxiosError<ErrorResponse>
+export type GetPaymentMethodQueryError = ErrorResponse
 
 
-export function useGetPaymentMethod<TData = Awaited<ReturnType<typeof getPaymentMethod>>, TError = AxiosError<ErrorResponse>>(
+export function useGetPaymentMethod<TData = Awaited<ReturnType<typeof getPaymentMethod>>, TError = ErrorResponse>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPaymentMethod>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getPaymentMethod>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetPaymentMethod<TData = Awaited<ReturnType<typeof getPaymentMethod>>, TError = AxiosError<ErrorResponse>>(
+export function useGetPaymentMethod<TData = Awaited<ReturnType<typeof getPaymentMethod>>, TError = ErrorResponse>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPaymentMethod>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getPaymentMethod>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetPaymentMethod<TData = Awaited<ReturnType<typeof getPaymentMethod>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPaymentMethod>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetPaymentMethod<TData = Awaited<ReturnType<typeof getPaymentMethod>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPaymentMethod>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetPaymentMethod<TData = Awaited<ReturnType<typeof getPaymentMethod>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPaymentMethod>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetPaymentMethod<TData = Awaited<ReturnType<typeof getPaymentMethod>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPaymentMethod>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -8177,16 +8339,16 @@ export function useGetPaymentMethod<TData = Awaited<ReturnType<typeof getPayment
 
 
 
-export const getGetPaymentMethodSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getPaymentMethod>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPaymentMethod>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetPaymentMethodSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getPaymentMethod>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPaymentMethod>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetPaymentMethodQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPaymentMethod>>> = ({ signal }) => getPaymentMethod(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPaymentMethod>>> = ({ signal }) => getPaymentMethod(id, signal);
 
       
 
@@ -8196,24 +8358,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetPaymentMethodSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getPaymentMethod>>>
-export type GetPaymentMethodSuspenseQueryError = AxiosError<ErrorResponse>
+export type GetPaymentMethodSuspenseQueryError = ErrorResponse
 
 
-export function useGetPaymentMethodSuspense<TData = Awaited<ReturnType<typeof getPaymentMethod>>, TError = AxiosError<ErrorResponse>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPaymentMethod>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetPaymentMethodSuspense<TData = Awaited<ReturnType<typeof getPaymentMethod>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPaymentMethod>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetPaymentMethodSuspense<TData = Awaited<ReturnType<typeof getPaymentMethod>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPaymentMethod>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetPaymentMethodSuspense<TData = Awaited<ReturnType<typeof getPaymentMethod>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPaymentMethod>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetPaymentMethodSuspense<TData = Awaited<ReturnType<typeof getPaymentMethod>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPaymentMethod>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetPaymentMethodSuspense<TData = Awaited<ReturnType<typeof getPaymentMethod>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPaymentMethod>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetPaymentMethodSuspense<TData = Awaited<ReturnType<typeof getPaymentMethod>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPaymentMethod>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetPaymentMethodSuspense<TData = Awaited<ReturnType<typeof getPaymentMethod>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getPaymentMethod>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -8234,27 +8396,29 @@ export function useGetPaymentMethodSuspense<TData = Awaited<ReturnType<typeof ge
  */
 export const updatePaymentMethod = (
     id: number,
-    paymentMethod: PaymentMethod, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<PaymentMethod>> => {
-    
-    
-    return axios.default.put(
-      `/api/admin/paymentMethod/${id}`,
-      paymentMethod,options
-    );
-  }
+    paymentMethod: PaymentMethod,
+ ) => {
+      
+      
+      return customMutator<PaymentMethod>(
+      {url: `/api/admin/paymentMethod/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: paymentMethod
+    },
+      );
+    }
+  
 
 
-
-export const getUpdatePaymentMethodMutationOptions = <TData = Awaited<ReturnType<typeof updatePaymentMethod>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: PaymentMethod}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdatePaymentMethodMutationOptions = <TData = Awaited<ReturnType<typeof updatePaymentMethod>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: PaymentMethod}, TContext>, }
 ) => {
 const mutationKey = ['updatePaymentMethod'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -8262,7 +8426,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updatePaymentMethod>>, {id: number;data: PaymentMethod}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updatePaymentMethod(id,data,axiosOptions)
+          return  updatePaymentMethod(id,data,)
         }
 
         
@@ -8272,10 +8436,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdatePaymentMethodMutationResult = NonNullable<Awaited<ReturnType<typeof updatePaymentMethod>>>
     export type UpdatePaymentMethodMutationBody = PaymentMethod
-    export type UpdatePaymentMethodMutationError = AxiosError<ErrorResponse>
+    export type UpdatePaymentMethodMutationError = ErrorResponse
 
-    export const useUpdatePaymentMethod = <TData = Awaited<ReturnType<typeof updatePaymentMethod>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: PaymentMethod}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdatePaymentMethod = <TData = Awaited<ReturnType<typeof updatePaymentMethod>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: PaymentMethod}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -8292,26 +8456,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete PaymentMethod
  */
 export const deletePaymentMethod = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<PaymentMethod>> => {
-    
-    
-    return axios.default.delete(
-      `/api/admin/paymentMethod/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<PaymentMethod>(
+      {url: `/api/admin/paymentMethod/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeletePaymentMethodMutationOptions = <TData = Awaited<ReturnType<typeof deletePaymentMethod>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeletePaymentMethodMutationOptions = <TData = Awaited<ReturnType<typeof deletePaymentMethod>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deletePaymentMethod'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -8319,7 +8484,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deletePaymentMethod>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deletePaymentMethod(id,axiosOptions)
+          return  deletePaymentMethod(id,)
         }
 
         
@@ -8329,10 +8494,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeletePaymentMethodMutationResult = NonNullable<Awaited<ReturnType<typeof deletePaymentMethod>>>
     
-    export type DeletePaymentMethodMutationError = AxiosError<ResponseBase>
+    export type DeletePaymentMethodMutationError = ResponseBase
 
-    export const useDeletePaymentMethod = <TData = Awaited<ReturnType<typeof deletePaymentMethod>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeletePaymentMethod = <TData = Awaited<ReturnType<typeof deletePaymentMethod>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -8349,31 +8514,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get Machine
  */
 export const getMachine = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Machine>> => {
-    
-    
-    return axios.default.get(
-      `/api/admin/machine/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Machine>(
+      {url: `/api/admin/machine/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetMachineQueryKey = (id: number,) => {
     return [`/api/admin/machine/${id}`] as const;
     }
 
     
-export const getGetMachineQueryOptions = <TData = Awaited<ReturnType<typeof getMachine>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMachine>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetMachineQueryOptions = <TData = Awaited<ReturnType<typeof getMachine>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMachine>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetMachineQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMachine>>> = ({ signal }) => getMachine(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMachine>>> = ({ signal }) => getMachine(id, signal);
 
       
 
@@ -8383,36 +8550,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetMachineQueryResult = NonNullable<Awaited<ReturnType<typeof getMachine>>>
-export type GetMachineQueryError = AxiosError<ErrorResponse>
+export type GetMachineQueryError = ErrorResponse
 
 
-export function useGetMachine<TData = Awaited<ReturnType<typeof getMachine>>, TError = AxiosError<ErrorResponse>>(
+export function useGetMachine<TData = Awaited<ReturnType<typeof getMachine>>, TError = ErrorResponse>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMachine>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getMachine>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetMachine<TData = Awaited<ReturnType<typeof getMachine>>, TError = AxiosError<ErrorResponse>>(
+export function useGetMachine<TData = Awaited<ReturnType<typeof getMachine>>, TError = ErrorResponse>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMachine>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getMachine>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetMachine<TData = Awaited<ReturnType<typeof getMachine>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMachine>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetMachine<TData = Awaited<ReturnType<typeof getMachine>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMachine>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetMachine<TData = Awaited<ReturnType<typeof getMachine>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMachine>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetMachine<TData = Awaited<ReturnType<typeof getMachine>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMachine>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -8427,16 +8594,16 @@ export function useGetMachine<TData = Awaited<ReturnType<typeof getMachine>>, TE
 
 
 
-export const getGetMachineSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getMachine>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMachine>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetMachineSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getMachine>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMachine>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetMachineQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMachine>>> = ({ signal }) => getMachine(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMachine>>> = ({ signal }) => getMachine(id, signal);
 
       
 
@@ -8446,24 +8613,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetMachineSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getMachine>>>
-export type GetMachineSuspenseQueryError = AxiosError<ErrorResponse>
+export type GetMachineSuspenseQueryError = ErrorResponse
 
 
-export function useGetMachineSuspense<TData = Awaited<ReturnType<typeof getMachine>>, TError = AxiosError<ErrorResponse>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMachine>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetMachineSuspense<TData = Awaited<ReturnType<typeof getMachine>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMachine>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetMachineSuspense<TData = Awaited<ReturnType<typeof getMachine>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMachine>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetMachineSuspense<TData = Awaited<ReturnType<typeof getMachine>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMachine>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetMachineSuspense<TData = Awaited<ReturnType<typeof getMachine>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMachine>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetMachineSuspense<TData = Awaited<ReturnType<typeof getMachine>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMachine>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetMachineSuspense<TData = Awaited<ReturnType<typeof getMachine>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMachine>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetMachineSuspense<TData = Awaited<ReturnType<typeof getMachine>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMachine>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -8484,27 +8651,29 @@ export function useGetMachineSuspense<TData = Awaited<ReturnType<typeof getMachi
  */
 export const updateMachine = (
     id: number,
-    machine: Machine, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Machine>> => {
-    
-    
-    return axios.default.put(
-      `/api/admin/machine/${id}`,
-      machine,options
-    );
-  }
+    machine: Machine,
+ ) => {
+      
+      
+      return customMutator<Machine>(
+      {url: `/api/admin/machine/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: machine
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateMachineMutationOptions = <TData = Awaited<ReturnType<typeof updateMachine>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Machine}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateMachineMutationOptions = <TData = Awaited<ReturnType<typeof updateMachine>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Machine}, TContext>, }
 ) => {
 const mutationKey = ['updateMachine'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -8512,7 +8681,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateMachine>>, {id: number;data: Machine}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateMachine(id,data,axiosOptions)
+          return  updateMachine(id,data,)
         }
 
         
@@ -8522,10 +8691,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateMachineMutationResult = NonNullable<Awaited<ReturnType<typeof updateMachine>>>
     export type UpdateMachineMutationBody = Machine
-    export type UpdateMachineMutationError = AxiosError<ErrorResponse>
+    export type UpdateMachineMutationError = ErrorResponse
 
-    export const useUpdateMachine = <TData = Awaited<ReturnType<typeof updateMachine>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Machine}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateMachine = <TData = Awaited<ReturnType<typeof updateMachine>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Machine}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -8542,26 +8711,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete Machine
  */
 export const deleteMachine = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Machine>> => {
-    
-    
-    return axios.default.delete(
-      `/api/admin/machine/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<Machine>(
+      {url: `/api/admin/machine/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteMachineMutationOptions = <TData = Awaited<ReturnType<typeof deleteMachine>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteMachineMutationOptions = <TData = Awaited<ReturnType<typeof deleteMachine>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteMachine'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -8569,7 +8739,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteMachine>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteMachine(id,axiosOptions)
+          return  deleteMachine(id,)
         }
 
         
@@ -8579,10 +8749,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteMachineMutationResult = NonNullable<Awaited<ReturnType<typeof deleteMachine>>>
     
-    export type DeleteMachineMutationError = AxiosError<ResponseBase>
+    export type DeleteMachineMutationError = ResponseBase
 
-    export const useDeleteMachine = <TData = Awaited<ReturnType<typeof deleteMachine>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteMachine = <TData = Awaited<ReturnType<typeof deleteMachine>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -8599,31 +8769,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get Depot
  */
 export const getDepot = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Depot>> => {
-    
-    
-    return axios.default.get(
-      `/api/admin/depot/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Depot>(
+      {url: `/api/admin/depot/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetDepotQueryKey = (id: number,) => {
     return [`/api/admin/depot/${id}`] as const;
     }
 
     
-export const getGetDepotQueryOptions = <TData = Awaited<ReturnType<typeof getDepot>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDepot>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetDepotQueryOptions = <TData = Awaited<ReturnType<typeof getDepot>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDepot>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetDepotQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDepot>>> = ({ signal }) => getDepot(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDepot>>> = ({ signal }) => getDepot(id, signal);
 
       
 
@@ -8633,36 +8805,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetDepotQueryResult = NonNullable<Awaited<ReturnType<typeof getDepot>>>
-export type GetDepotQueryError = AxiosError<ErrorResponse>
+export type GetDepotQueryError = ErrorResponse
 
 
-export function useGetDepot<TData = Awaited<ReturnType<typeof getDepot>>, TError = AxiosError<ErrorResponse>>(
+export function useGetDepot<TData = Awaited<ReturnType<typeof getDepot>>, TError = ErrorResponse>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDepot>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getDepot>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetDepot<TData = Awaited<ReturnType<typeof getDepot>>, TError = AxiosError<ErrorResponse>>(
+export function useGetDepot<TData = Awaited<ReturnType<typeof getDepot>>, TError = ErrorResponse>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDepot>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getDepot>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetDepot<TData = Awaited<ReturnType<typeof getDepot>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDepot>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetDepot<TData = Awaited<ReturnType<typeof getDepot>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDepot>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetDepot<TData = Awaited<ReturnType<typeof getDepot>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDepot>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetDepot<TData = Awaited<ReturnType<typeof getDepot>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDepot>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -8677,16 +8849,16 @@ export function useGetDepot<TData = Awaited<ReturnType<typeof getDepot>>, TError
 
 
 
-export const getGetDepotSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getDepot>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepot>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetDepotSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getDepot>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepot>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetDepotQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDepot>>> = ({ signal }) => getDepot(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDepot>>> = ({ signal }) => getDepot(id, signal);
 
       
 
@@ -8696,24 +8868,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetDepotSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getDepot>>>
-export type GetDepotSuspenseQueryError = AxiosError<ErrorResponse>
+export type GetDepotSuspenseQueryError = ErrorResponse
 
 
-export function useGetDepotSuspense<TData = Awaited<ReturnType<typeof getDepot>>, TError = AxiosError<ErrorResponse>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepot>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetDepotSuspense<TData = Awaited<ReturnType<typeof getDepot>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepot>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetDepotSuspense<TData = Awaited<ReturnType<typeof getDepot>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepot>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetDepotSuspense<TData = Awaited<ReturnType<typeof getDepot>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepot>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetDepotSuspense<TData = Awaited<ReturnType<typeof getDepot>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepot>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetDepotSuspense<TData = Awaited<ReturnType<typeof getDepot>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepot>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetDepotSuspense<TData = Awaited<ReturnType<typeof getDepot>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepot>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetDepotSuspense<TData = Awaited<ReturnType<typeof getDepot>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getDepot>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -8734,27 +8906,29 @@ export function useGetDepotSuspense<TData = Awaited<ReturnType<typeof getDepot>>
  */
 export const updateDepot = (
     id: number,
-    depot: Depot, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Depot>> => {
-    
-    
-    return axios.default.put(
-      `/api/admin/depot/${id}`,
-      depot,options
-    );
-  }
+    depot: Depot,
+ ) => {
+      
+      
+      return customMutator<Depot>(
+      {url: `/api/admin/depot/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: depot
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateDepotMutationOptions = <TData = Awaited<ReturnType<typeof updateDepot>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Depot}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateDepotMutationOptions = <TData = Awaited<ReturnType<typeof updateDepot>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Depot}, TContext>, }
 ) => {
 const mutationKey = ['updateDepot'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -8762,7 +8936,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateDepot>>, {id: number;data: Depot}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateDepot(id,data,axiosOptions)
+          return  updateDepot(id,data,)
         }
 
         
@@ -8772,10 +8946,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateDepotMutationResult = NonNullable<Awaited<ReturnType<typeof updateDepot>>>
     export type UpdateDepotMutationBody = Depot
-    export type UpdateDepotMutationError = AxiosError<ErrorResponse>
+    export type UpdateDepotMutationError = ErrorResponse
 
-    export const useUpdateDepot = <TData = Awaited<ReturnType<typeof updateDepot>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Depot}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateDepot = <TData = Awaited<ReturnType<typeof updateDepot>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Depot}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -8792,26 +8966,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete Depot
  */
 export const deleteDepot = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Depot>> => {
-    
-    
-    return axios.default.delete(
-      `/api/admin/depot/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<Depot>(
+      {url: `/api/admin/depot/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteDepotMutationOptions = <TData = Awaited<ReturnType<typeof deleteDepot>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteDepotMutationOptions = <TData = Awaited<ReturnType<typeof deleteDepot>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteDepot'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -8819,7 +8994,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteDepot>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteDepot(id,axiosOptions)
+          return  deleteDepot(id,)
         }
 
         
@@ -8829,10 +9004,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteDepotMutationResult = NonNullable<Awaited<ReturnType<typeof deleteDepot>>>
     
-    export type DeleteDepotMutationError = AxiosError<ResponseBase>
+    export type DeleteDepotMutationError = ResponseBase
 
-    export const useDeleteDepot = <TData = Awaited<ReturnType<typeof deleteDepot>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteDepot = <TData = Awaited<ReturnType<typeof deleteDepot>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -8849,31 +9024,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get Company
  */
 export const getCompany = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Company>> => {
-    
-    
-    return axios.default.get(
-      `/api/admin/company/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Company>(
+      {url: `/api/admin/company/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetCompanyQueryKey = (id: number,) => {
     return [`/api/admin/company/${id}`] as const;
     }
 
     
-export const getGetCompanyQueryOptions = <TData = Awaited<ReturnType<typeof getCompany>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCompany>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetCompanyQueryOptions = <TData = Awaited<ReturnType<typeof getCompany>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCompany>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetCompanyQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCompany>>> = ({ signal }) => getCompany(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCompany>>> = ({ signal }) => getCompany(id, signal);
 
       
 
@@ -8883,36 +9060,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetCompanyQueryResult = NonNullable<Awaited<ReturnType<typeof getCompany>>>
-export type GetCompanyQueryError = AxiosError<ErrorResponse>
+export type GetCompanyQueryError = ErrorResponse
 
 
-export function useGetCompany<TData = Awaited<ReturnType<typeof getCompany>>, TError = AxiosError<ErrorResponse>>(
+export function useGetCompany<TData = Awaited<ReturnType<typeof getCompany>>, TError = ErrorResponse>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCompany>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getCompany>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetCompany<TData = Awaited<ReturnType<typeof getCompany>>, TError = AxiosError<ErrorResponse>>(
+export function useGetCompany<TData = Awaited<ReturnType<typeof getCompany>>, TError = ErrorResponse>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCompany>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getCompany>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetCompany<TData = Awaited<ReturnType<typeof getCompany>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCompany>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetCompany<TData = Awaited<ReturnType<typeof getCompany>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCompany>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetCompany<TData = Awaited<ReturnType<typeof getCompany>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCompany>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetCompany<TData = Awaited<ReturnType<typeof getCompany>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCompany>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -8927,16 +9104,16 @@ export function useGetCompany<TData = Awaited<ReturnType<typeof getCompany>>, TE
 
 
 
-export const getGetCompanySuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getCompany>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCompany>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetCompanySuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getCompany>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCompany>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetCompanyQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCompany>>> = ({ signal }) => getCompany(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCompany>>> = ({ signal }) => getCompany(id, signal);
 
       
 
@@ -8946,24 +9123,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetCompanySuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getCompany>>>
-export type GetCompanySuspenseQueryError = AxiosError<ErrorResponse>
+export type GetCompanySuspenseQueryError = ErrorResponse
 
 
-export function useGetCompanySuspense<TData = Awaited<ReturnType<typeof getCompany>>, TError = AxiosError<ErrorResponse>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCompany>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetCompanySuspense<TData = Awaited<ReturnType<typeof getCompany>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCompany>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetCompanySuspense<TData = Awaited<ReturnType<typeof getCompany>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCompany>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetCompanySuspense<TData = Awaited<ReturnType<typeof getCompany>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCompany>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetCompanySuspense<TData = Awaited<ReturnType<typeof getCompany>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCompany>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetCompanySuspense<TData = Awaited<ReturnType<typeof getCompany>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCompany>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetCompanySuspense<TData = Awaited<ReturnType<typeof getCompany>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCompany>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetCompanySuspense<TData = Awaited<ReturnType<typeof getCompany>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCompany>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -8984,27 +9161,29 @@ export function useGetCompanySuspense<TData = Awaited<ReturnType<typeof getCompa
  */
 export const updateCompany = (
     id: number,
-    company: Company, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Company>> => {
-    
-    
-    return axios.default.put(
-      `/api/admin/company/${id}`,
-      company,options
-    );
-  }
+    company: Company,
+ ) => {
+      
+      
+      return customMutator<Company>(
+      {url: `/api/admin/company/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: company
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateCompanyMutationOptions = <TData = Awaited<ReturnType<typeof updateCompany>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Company}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateCompanyMutationOptions = <TData = Awaited<ReturnType<typeof updateCompany>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Company}, TContext>, }
 ) => {
 const mutationKey = ['updateCompany'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -9012,7 +9191,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateCompany>>, {id: number;data: Company}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateCompany(id,data,axiosOptions)
+          return  updateCompany(id,data,)
         }
 
         
@@ -9022,10 +9201,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateCompanyMutationResult = NonNullable<Awaited<ReturnType<typeof updateCompany>>>
     export type UpdateCompanyMutationBody = Company
-    export type UpdateCompanyMutationError = AxiosError<ErrorResponse>
+    export type UpdateCompanyMutationError = ErrorResponse
 
-    export const useUpdateCompany = <TData = Awaited<ReturnType<typeof updateCompany>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Company}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateCompany = <TData = Awaited<ReturnType<typeof updateCompany>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: Company}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -9042,26 +9221,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete Company
  */
 export const deleteCompany = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Company>> => {
-    
-    
-    return axios.default.delete(
-      `/api/admin/company/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<Company>(
+      {url: `/api/admin/company/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteCompanyMutationOptions = <TData = Awaited<ReturnType<typeof deleteCompany>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteCompanyMutationOptions = <TData = Awaited<ReturnType<typeof deleteCompany>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteCompany'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -9069,7 +9249,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteCompany>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteCompany(id,axiosOptions)
+          return  deleteCompany(id,)
         }
 
         
@@ -9079,10 +9259,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteCompanyMutationResult = NonNullable<Awaited<ReturnType<typeof deleteCompany>>>
     
-    export type DeleteCompanyMutationError = AxiosError<ResponseBase>
+    export type DeleteCompanyMutationError = ResponseBase
 
-    export const useDeleteCompany = <TData = Awaited<ReturnType<typeof deleteCompany>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteCompany = <TData = Awaited<ReturnType<typeof deleteCompany>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -9099,31 +9279,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get ExpenseInvoice
  */
 export const getExpenseInvoice = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ExpenseInvoice>> => {
-    
-    
-    return axios.default.get(
-      `/api/accounting/expenseInvoice/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<ExpenseInvoice>(
+      {url: `/api/accounting/expenseInvoice/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetExpenseInvoiceQueryKey = (id: number,) => {
     return [`/api/accounting/expenseInvoice/${id}`] as const;
     }
 
     
-export const getGetExpenseInvoiceQueryOptions = <TData = Awaited<ReturnType<typeof getExpenseInvoice>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExpenseInvoice>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetExpenseInvoiceQueryOptions = <TData = Awaited<ReturnType<typeof getExpenseInvoice>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExpenseInvoice>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetExpenseInvoiceQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getExpenseInvoice>>> = ({ signal }) => getExpenseInvoice(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getExpenseInvoice>>> = ({ signal }) => getExpenseInvoice(id, signal);
 
       
 
@@ -9133,36 +9315,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetExpenseInvoiceQueryResult = NonNullable<Awaited<ReturnType<typeof getExpenseInvoice>>>
-export type GetExpenseInvoiceQueryError = AxiosError<ErrorResponse>
+export type GetExpenseInvoiceQueryError = ErrorResponse
 
 
-export function useGetExpenseInvoice<TData = Awaited<ReturnType<typeof getExpenseInvoice>>, TError = AxiosError<ErrorResponse>>(
+export function useGetExpenseInvoice<TData = Awaited<ReturnType<typeof getExpenseInvoice>>, TError = ErrorResponse>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExpenseInvoice>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getExpenseInvoice>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetExpenseInvoice<TData = Awaited<ReturnType<typeof getExpenseInvoice>>, TError = AxiosError<ErrorResponse>>(
+export function useGetExpenseInvoice<TData = Awaited<ReturnType<typeof getExpenseInvoice>>, TError = ErrorResponse>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExpenseInvoice>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getExpenseInvoice>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetExpenseInvoice<TData = Awaited<ReturnType<typeof getExpenseInvoice>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExpenseInvoice>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetExpenseInvoice<TData = Awaited<ReturnType<typeof getExpenseInvoice>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExpenseInvoice>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetExpenseInvoice<TData = Awaited<ReturnType<typeof getExpenseInvoice>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExpenseInvoice>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetExpenseInvoice<TData = Awaited<ReturnType<typeof getExpenseInvoice>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExpenseInvoice>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -9177,16 +9359,16 @@ export function useGetExpenseInvoice<TData = Awaited<ReturnType<typeof getExpens
 
 
 
-export const getGetExpenseInvoiceSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getExpenseInvoice>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getExpenseInvoice>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetExpenseInvoiceSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getExpenseInvoice>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getExpenseInvoice>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetExpenseInvoiceQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getExpenseInvoice>>> = ({ signal }) => getExpenseInvoice(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getExpenseInvoice>>> = ({ signal }) => getExpenseInvoice(id, signal);
 
       
 
@@ -9196,24 +9378,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetExpenseInvoiceSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getExpenseInvoice>>>
-export type GetExpenseInvoiceSuspenseQueryError = AxiosError<ErrorResponse>
+export type GetExpenseInvoiceSuspenseQueryError = ErrorResponse
 
 
-export function useGetExpenseInvoiceSuspense<TData = Awaited<ReturnType<typeof getExpenseInvoice>>, TError = AxiosError<ErrorResponse>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getExpenseInvoice>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetExpenseInvoiceSuspense<TData = Awaited<ReturnType<typeof getExpenseInvoice>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getExpenseInvoice>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetExpenseInvoiceSuspense<TData = Awaited<ReturnType<typeof getExpenseInvoice>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getExpenseInvoice>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetExpenseInvoiceSuspense<TData = Awaited<ReturnType<typeof getExpenseInvoice>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getExpenseInvoice>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetExpenseInvoiceSuspense<TData = Awaited<ReturnType<typeof getExpenseInvoice>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getExpenseInvoice>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetExpenseInvoiceSuspense<TData = Awaited<ReturnType<typeof getExpenseInvoice>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getExpenseInvoice>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetExpenseInvoiceSuspense<TData = Awaited<ReturnType<typeof getExpenseInvoice>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getExpenseInvoice>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetExpenseInvoiceSuspense<TData = Awaited<ReturnType<typeof getExpenseInvoice>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getExpenseInvoice>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -9234,27 +9416,29 @@ export function useGetExpenseInvoiceSuspense<TData = Awaited<ReturnType<typeof g
  */
 export const updateExpenseInvoice = (
     id: number,
-    expenseInvoice: ExpenseInvoice, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ExpenseInvoice>> => {
-    
-    
-    return axios.default.put(
-      `/api/accounting/expenseInvoice/${id}`,
-      expenseInvoice,options
-    );
-  }
+    expenseInvoice: ExpenseInvoice,
+ ) => {
+      
+      
+      return customMutator<ExpenseInvoice>(
+      {url: `/api/accounting/expenseInvoice/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: expenseInvoice
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateExpenseInvoiceMutationOptions = <TData = Awaited<ReturnType<typeof updateExpenseInvoice>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: ExpenseInvoice}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateExpenseInvoiceMutationOptions = <TData = Awaited<ReturnType<typeof updateExpenseInvoice>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: ExpenseInvoice}, TContext>, }
 ) => {
 const mutationKey = ['updateExpenseInvoice'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -9262,7 +9446,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateExpenseInvoice>>, {id: number;data: ExpenseInvoice}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateExpenseInvoice(id,data,axiosOptions)
+          return  updateExpenseInvoice(id,data,)
         }
 
         
@@ -9272,10 +9456,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateExpenseInvoiceMutationResult = NonNullable<Awaited<ReturnType<typeof updateExpenseInvoice>>>
     export type UpdateExpenseInvoiceMutationBody = ExpenseInvoice
-    export type UpdateExpenseInvoiceMutationError = AxiosError<ErrorResponse>
+    export type UpdateExpenseInvoiceMutationError = ErrorResponse
 
-    export const useUpdateExpenseInvoice = <TData = Awaited<ReturnType<typeof updateExpenseInvoice>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: ExpenseInvoice}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateExpenseInvoice = <TData = Awaited<ReturnType<typeof updateExpenseInvoice>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: ExpenseInvoice}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -9292,26 +9476,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete ExpenseInvoice
  */
 export const deleteExpenseInvoice = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ExpenseInvoice>> => {
-    
-    
-    return axios.default.delete(
-      `/api/accounting/expenseInvoice/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<ExpenseInvoice>(
+      {url: `/api/accounting/expenseInvoice/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteExpenseInvoiceMutationOptions = <TData = Awaited<ReturnType<typeof deleteExpenseInvoice>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteExpenseInvoiceMutationOptions = <TData = Awaited<ReturnType<typeof deleteExpenseInvoice>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteExpenseInvoice'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -9319,7 +9504,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteExpenseInvoice>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteExpenseInvoice(id,axiosOptions)
+          return  deleteExpenseInvoice(id,)
         }
 
         
@@ -9329,10 +9514,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteExpenseInvoiceMutationResult = NonNullable<Awaited<ReturnType<typeof deleteExpenseInvoice>>>
     
-    export type DeleteExpenseInvoiceMutationError = AxiosError<ResponseBase>
+    export type DeleteExpenseInvoiceMutationError = ResponseBase
 
-    export const useDeleteExpenseInvoice = <TData = Awaited<ReturnType<typeof deleteExpenseInvoice>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteExpenseInvoice = <TData = Awaited<ReturnType<typeof deleteExpenseInvoice>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -9349,31 +9534,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get ExpenseCard
  */
 export const getExpenseCard = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ExpenseCard>> => {
-    
-    
-    return axios.default.get(
-      `/api/accounting/expenseCard/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<ExpenseCard>(
+      {url: `/api/accounting/expenseCard/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetExpenseCardQueryKey = (id: number,) => {
     return [`/api/accounting/expenseCard/${id}`] as const;
     }
 
     
-export const getGetExpenseCardQueryOptions = <TData = Awaited<ReturnType<typeof getExpenseCard>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExpenseCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetExpenseCardQueryOptions = <TData = Awaited<ReturnType<typeof getExpenseCard>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExpenseCard>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetExpenseCardQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getExpenseCard>>> = ({ signal }) => getExpenseCard(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getExpenseCard>>> = ({ signal }) => getExpenseCard(id, signal);
 
       
 
@@ -9383,36 +9570,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetExpenseCardQueryResult = NonNullable<Awaited<ReturnType<typeof getExpenseCard>>>
-export type GetExpenseCardQueryError = AxiosError<ErrorResponse>
+export type GetExpenseCardQueryError = ErrorResponse
 
 
-export function useGetExpenseCard<TData = Awaited<ReturnType<typeof getExpenseCard>>, TError = AxiosError<ErrorResponse>>(
+export function useGetExpenseCard<TData = Awaited<ReturnType<typeof getExpenseCard>>, TError = ErrorResponse>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExpenseCard>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getExpenseCard>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetExpenseCard<TData = Awaited<ReturnType<typeof getExpenseCard>>, TError = AxiosError<ErrorResponse>>(
+export function useGetExpenseCard<TData = Awaited<ReturnType<typeof getExpenseCard>>, TError = ErrorResponse>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExpenseCard>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getExpenseCard>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetExpenseCard<TData = Awaited<ReturnType<typeof getExpenseCard>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExpenseCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetExpenseCard<TData = Awaited<ReturnType<typeof getExpenseCard>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExpenseCard>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetExpenseCard<TData = Awaited<ReturnType<typeof getExpenseCard>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExpenseCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetExpenseCard<TData = Awaited<ReturnType<typeof getExpenseCard>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getExpenseCard>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -9427,16 +9614,16 @@ export function useGetExpenseCard<TData = Awaited<ReturnType<typeof getExpenseCa
 
 
 
-export const getGetExpenseCardSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getExpenseCard>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getExpenseCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetExpenseCardSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getExpenseCard>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getExpenseCard>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetExpenseCardQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getExpenseCard>>> = ({ signal }) => getExpenseCard(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getExpenseCard>>> = ({ signal }) => getExpenseCard(id, signal);
 
       
 
@@ -9446,24 +9633,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetExpenseCardSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getExpenseCard>>>
-export type GetExpenseCardSuspenseQueryError = AxiosError<ErrorResponse>
+export type GetExpenseCardSuspenseQueryError = ErrorResponse
 
 
-export function useGetExpenseCardSuspense<TData = Awaited<ReturnType<typeof getExpenseCard>>, TError = AxiosError<ErrorResponse>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getExpenseCard>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetExpenseCardSuspense<TData = Awaited<ReturnType<typeof getExpenseCard>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getExpenseCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetExpenseCardSuspense<TData = Awaited<ReturnType<typeof getExpenseCard>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getExpenseCard>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetExpenseCardSuspense<TData = Awaited<ReturnType<typeof getExpenseCard>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getExpenseCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetExpenseCardSuspense<TData = Awaited<ReturnType<typeof getExpenseCard>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getExpenseCard>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetExpenseCardSuspense<TData = Awaited<ReturnType<typeof getExpenseCard>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getExpenseCard>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetExpenseCardSuspense<TData = Awaited<ReturnType<typeof getExpenseCard>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getExpenseCard>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetExpenseCardSuspense<TData = Awaited<ReturnType<typeof getExpenseCard>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getExpenseCard>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -9484,27 +9671,29 @@ export function useGetExpenseCardSuspense<TData = Awaited<ReturnType<typeof getE
  */
 export const updateExpenseCard = (
     id: number,
-    expenseCard: ExpenseCard, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ExpenseCard>> => {
-    
-    
-    return axios.default.put(
-      `/api/accounting/expenseCard/${id}`,
-      expenseCard,options
-    );
-  }
+    expenseCard: ExpenseCard,
+ ) => {
+      
+      
+      return customMutator<ExpenseCard>(
+      {url: `/api/accounting/expenseCard/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: expenseCard
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateExpenseCardMutationOptions = <TData = Awaited<ReturnType<typeof updateExpenseCard>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: ExpenseCard}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateExpenseCardMutationOptions = <TData = Awaited<ReturnType<typeof updateExpenseCard>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: ExpenseCard}, TContext>, }
 ) => {
 const mutationKey = ['updateExpenseCard'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -9512,7 +9701,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateExpenseCard>>, {id: number;data: ExpenseCard}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateExpenseCard(id,data,axiosOptions)
+          return  updateExpenseCard(id,data,)
         }
 
         
@@ -9522,10 +9711,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateExpenseCardMutationResult = NonNullable<Awaited<ReturnType<typeof updateExpenseCard>>>
     export type UpdateExpenseCardMutationBody = ExpenseCard
-    export type UpdateExpenseCardMutationError = AxiosError<ErrorResponse>
+    export type UpdateExpenseCardMutationError = ErrorResponse
 
-    export const useUpdateExpenseCard = <TData = Awaited<ReturnType<typeof updateExpenseCard>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: ExpenseCard}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateExpenseCard = <TData = Awaited<ReturnType<typeof updateExpenseCard>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: ExpenseCard}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -9542,26 +9731,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete ExpenseCard
  */
 export const deleteExpenseCard = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ExpenseCard>> => {
-    
-    
-    return axios.default.delete(
-      `/api/accounting/expenseCard/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<ExpenseCard>(
+      {url: `/api/accounting/expenseCard/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteExpenseCardMutationOptions = <TData = Awaited<ReturnType<typeof deleteExpenseCard>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteExpenseCardMutationOptions = <TData = Awaited<ReturnType<typeof deleteExpenseCard>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteExpenseCard'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -9569,7 +9759,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteExpenseCard>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteExpenseCard(id,axiosOptions)
+          return  deleteExpenseCard(id,)
         }
 
         
@@ -9579,10 +9769,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteExpenseCardMutationResult = NonNullable<Awaited<ReturnType<typeof deleteExpenseCard>>>
     
-    export type DeleteExpenseCardMutationError = AxiosError<ResponseBase>
+    export type DeleteExpenseCardMutationError = ResponseBase
 
-    export const useDeleteExpenseCard = <TData = Awaited<ReturnType<typeof deleteExpenseCard>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteExpenseCard = <TData = Awaited<ReturnType<typeof deleteExpenseCard>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -9599,31 +9789,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get CashAccountTransaction
  */
 export const getCashAccountTransaction = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<CashAccountTransaction>> => {
-    
-    
-    return axios.default.get(
-      `/api/accounting/cashAccountTransaction/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<CashAccountTransaction>(
+      {url: `/api/accounting/cashAccountTransaction/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetCashAccountTransactionQueryKey = (id: number,) => {
     return [`/api/accounting/cashAccountTransaction/${id}`] as const;
     }
 
     
-export const getGetCashAccountTransactionQueryOptions = <TData = Awaited<ReturnType<typeof getCashAccountTransaction>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCashAccountTransaction>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetCashAccountTransactionQueryOptions = <TData = Awaited<ReturnType<typeof getCashAccountTransaction>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCashAccountTransaction>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetCashAccountTransactionQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCashAccountTransaction>>> = ({ signal }) => getCashAccountTransaction(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCashAccountTransaction>>> = ({ signal }) => getCashAccountTransaction(id, signal);
 
       
 
@@ -9633,36 +9825,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetCashAccountTransactionQueryResult = NonNullable<Awaited<ReturnType<typeof getCashAccountTransaction>>>
-export type GetCashAccountTransactionQueryError = AxiosError<ErrorResponse>
+export type GetCashAccountTransactionQueryError = ErrorResponse
 
 
-export function useGetCashAccountTransaction<TData = Awaited<ReturnType<typeof getCashAccountTransaction>>, TError = AxiosError<ErrorResponse>>(
+export function useGetCashAccountTransaction<TData = Awaited<ReturnType<typeof getCashAccountTransaction>>, TError = ErrorResponse>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCashAccountTransaction>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getCashAccountTransaction>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetCashAccountTransaction<TData = Awaited<ReturnType<typeof getCashAccountTransaction>>, TError = AxiosError<ErrorResponse>>(
+export function useGetCashAccountTransaction<TData = Awaited<ReturnType<typeof getCashAccountTransaction>>, TError = ErrorResponse>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCashAccountTransaction>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getCashAccountTransaction>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetCashAccountTransaction<TData = Awaited<ReturnType<typeof getCashAccountTransaction>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCashAccountTransaction>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetCashAccountTransaction<TData = Awaited<ReturnType<typeof getCashAccountTransaction>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCashAccountTransaction>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetCashAccountTransaction<TData = Awaited<ReturnType<typeof getCashAccountTransaction>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCashAccountTransaction>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetCashAccountTransaction<TData = Awaited<ReturnType<typeof getCashAccountTransaction>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCashAccountTransaction>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -9677,16 +9869,16 @@ export function useGetCashAccountTransaction<TData = Awaited<ReturnType<typeof g
 
 
 
-export const getGetCashAccountTransactionSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getCashAccountTransaction>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCashAccountTransaction>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetCashAccountTransactionSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getCashAccountTransaction>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCashAccountTransaction>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetCashAccountTransactionQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCashAccountTransaction>>> = ({ signal }) => getCashAccountTransaction(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCashAccountTransaction>>> = ({ signal }) => getCashAccountTransaction(id, signal);
 
       
 
@@ -9696,24 +9888,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetCashAccountTransactionSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getCashAccountTransaction>>>
-export type GetCashAccountTransactionSuspenseQueryError = AxiosError<ErrorResponse>
+export type GetCashAccountTransactionSuspenseQueryError = ErrorResponse
 
 
-export function useGetCashAccountTransactionSuspense<TData = Awaited<ReturnType<typeof getCashAccountTransaction>>, TError = AxiosError<ErrorResponse>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCashAccountTransaction>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetCashAccountTransactionSuspense<TData = Awaited<ReturnType<typeof getCashAccountTransaction>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCashAccountTransaction>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetCashAccountTransactionSuspense<TData = Awaited<ReturnType<typeof getCashAccountTransaction>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCashAccountTransaction>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetCashAccountTransactionSuspense<TData = Awaited<ReturnType<typeof getCashAccountTransaction>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCashAccountTransaction>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetCashAccountTransactionSuspense<TData = Awaited<ReturnType<typeof getCashAccountTransaction>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCashAccountTransaction>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetCashAccountTransactionSuspense<TData = Awaited<ReturnType<typeof getCashAccountTransaction>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCashAccountTransaction>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetCashAccountTransactionSuspense<TData = Awaited<ReturnType<typeof getCashAccountTransaction>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCashAccountTransaction>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetCashAccountTransactionSuspense<TData = Awaited<ReturnType<typeof getCashAccountTransaction>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCashAccountTransaction>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -9734,27 +9926,29 @@ export function useGetCashAccountTransactionSuspense<TData = Awaited<ReturnType<
  */
 export const updateCashAccountTransaction = (
     id: number,
-    cashAccountTransaction: CashAccountTransaction, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<CashAccountTransaction>> => {
-    
-    
-    return axios.default.put(
-      `/api/accounting/cashAccountTransaction/${id}`,
-      cashAccountTransaction,options
-    );
-  }
+    cashAccountTransaction: CashAccountTransaction,
+ ) => {
+      
+      
+      return customMutator<CashAccountTransaction>(
+      {url: `/api/accounting/cashAccountTransaction/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: cashAccountTransaction
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateCashAccountTransactionMutationOptions = <TData = Awaited<ReturnType<typeof updateCashAccountTransaction>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: CashAccountTransaction}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateCashAccountTransactionMutationOptions = <TData = Awaited<ReturnType<typeof updateCashAccountTransaction>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: CashAccountTransaction}, TContext>, }
 ) => {
 const mutationKey = ['updateCashAccountTransaction'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -9762,7 +9956,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateCashAccountTransaction>>, {id: number;data: CashAccountTransaction}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateCashAccountTransaction(id,data,axiosOptions)
+          return  updateCashAccountTransaction(id,data,)
         }
 
         
@@ -9772,10 +9966,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateCashAccountTransactionMutationResult = NonNullable<Awaited<ReturnType<typeof updateCashAccountTransaction>>>
     export type UpdateCashAccountTransactionMutationBody = CashAccountTransaction
-    export type UpdateCashAccountTransactionMutationError = AxiosError<ErrorResponse>
+    export type UpdateCashAccountTransactionMutationError = ErrorResponse
 
-    export const useUpdateCashAccountTransaction = <TData = Awaited<ReturnType<typeof updateCashAccountTransaction>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: CashAccountTransaction}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateCashAccountTransaction = <TData = Awaited<ReturnType<typeof updateCashAccountTransaction>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: CashAccountTransaction}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -9792,26 +9986,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete CashAccountTransaction
  */
 export const deleteCashAccountTransaction = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<CashAccountTransaction>> => {
-    
-    
-    return axios.default.delete(
-      `/api/accounting/cashAccountTransaction/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<CashAccountTransaction>(
+      {url: `/api/accounting/cashAccountTransaction/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteCashAccountTransactionMutationOptions = <TData = Awaited<ReturnType<typeof deleteCashAccountTransaction>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteCashAccountTransactionMutationOptions = <TData = Awaited<ReturnType<typeof deleteCashAccountTransaction>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteCashAccountTransaction'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -9819,7 +10014,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteCashAccountTransaction>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteCashAccountTransaction(id,axiosOptions)
+          return  deleteCashAccountTransaction(id,)
         }
 
         
@@ -9829,10 +10024,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteCashAccountTransactionMutationResult = NonNullable<Awaited<ReturnType<typeof deleteCashAccountTransaction>>>
     
-    export type DeleteCashAccountTransactionMutationError = AxiosError<ResponseBase>
+    export type DeleteCashAccountTransactionMutationError = ResponseBase
 
-    export const useDeleteCashAccountTransaction = <TData = Awaited<ReturnType<typeof deleteCashAccountTransaction>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteCashAccountTransaction = <TData = Awaited<ReturnType<typeof deleteCashAccountTransaction>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -9849,31 +10044,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get CashAccount
  */
 export const getCashAccount = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<CashAccount>> => {
-    
-    
-    return axios.default.get(
-      `/api/accounting/cashAccount/${id}`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<CashAccount>(
+      {url: `/api/accounting/cashAccount/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetCashAccountQueryKey = (id: number,) => {
     return [`/api/accounting/cashAccount/${id}`] as const;
     }
 
     
-export const getGetCashAccountQueryOptions = <TData = Awaited<ReturnType<typeof getCashAccount>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCashAccount>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetCashAccountQueryOptions = <TData = Awaited<ReturnType<typeof getCashAccount>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCashAccount>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetCashAccountQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCashAccount>>> = ({ signal }) => getCashAccount(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCashAccount>>> = ({ signal }) => getCashAccount(id, signal);
 
       
 
@@ -9883,36 +10080,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetCashAccountQueryResult = NonNullable<Awaited<ReturnType<typeof getCashAccount>>>
-export type GetCashAccountQueryError = AxiosError<ErrorResponse>
+export type GetCashAccountQueryError = ErrorResponse
 
 
-export function useGetCashAccount<TData = Awaited<ReturnType<typeof getCashAccount>>, TError = AxiosError<ErrorResponse>>(
+export function useGetCashAccount<TData = Awaited<ReturnType<typeof getCashAccount>>, TError = ErrorResponse>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCashAccount>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getCashAccount>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetCashAccount<TData = Awaited<ReturnType<typeof getCashAccount>>, TError = AxiosError<ErrorResponse>>(
+export function useGetCashAccount<TData = Awaited<ReturnType<typeof getCashAccount>>, TError = ErrorResponse>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCashAccount>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getCashAccount>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetCashAccount<TData = Awaited<ReturnType<typeof getCashAccount>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCashAccount>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetCashAccount<TData = Awaited<ReturnType<typeof getCashAccount>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCashAccount>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetCashAccount<TData = Awaited<ReturnType<typeof getCashAccount>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCashAccount>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetCashAccount<TData = Awaited<ReturnType<typeof getCashAccount>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCashAccount>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -9927,16 +10124,16 @@ export function useGetCashAccount<TData = Awaited<ReturnType<typeof getCashAccou
 
 
 
-export const getGetCashAccountSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getCashAccount>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCashAccount>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetCashAccountSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getCashAccount>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCashAccount>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetCashAccountQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCashAccount>>> = ({ signal }) => getCashAccount(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCashAccount>>> = ({ signal }) => getCashAccount(id, signal);
 
       
 
@@ -9946,24 +10143,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetCashAccountSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getCashAccount>>>
-export type GetCashAccountSuspenseQueryError = AxiosError<ErrorResponse>
+export type GetCashAccountSuspenseQueryError = ErrorResponse
 
 
-export function useGetCashAccountSuspense<TData = Awaited<ReturnType<typeof getCashAccount>>, TError = AxiosError<ErrorResponse>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCashAccount>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetCashAccountSuspense<TData = Awaited<ReturnType<typeof getCashAccount>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCashAccount>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetCashAccountSuspense<TData = Awaited<ReturnType<typeof getCashAccount>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCashAccount>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetCashAccountSuspense<TData = Awaited<ReturnType<typeof getCashAccount>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCashAccount>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetCashAccountSuspense<TData = Awaited<ReturnType<typeof getCashAccount>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCashAccount>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetCashAccountSuspense<TData = Awaited<ReturnType<typeof getCashAccount>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCashAccount>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetCashAccountSuspense<TData = Awaited<ReturnType<typeof getCashAccount>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCashAccount>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetCashAccountSuspense<TData = Awaited<ReturnType<typeof getCashAccount>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getCashAccount>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -9984,27 +10181,29 @@ export function useGetCashAccountSuspense<TData = Awaited<ReturnType<typeof getC
  */
 export const updateCashAccount = (
     id: number,
-    cashAccount: CashAccount, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<CashAccount>> => {
-    
-    
-    return axios.default.put(
-      `/api/accounting/cashAccount/${id}`,
-      cashAccount,options
-    );
-  }
+    cashAccount: CashAccount,
+ ) => {
+      
+      
+      return customMutator<CashAccount>(
+      {url: `/api/accounting/cashAccount/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: cashAccount
+    },
+      );
+    }
+  
 
 
-
-export const getUpdateCashAccountMutationOptions = <TData = Awaited<ReturnType<typeof updateCashAccount>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: CashAccount}, TContext>, axios?: AxiosRequestConfig}
+export const getUpdateCashAccountMutationOptions = <TData = Awaited<ReturnType<typeof updateCashAccount>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: CashAccount}, TContext>, }
 ) => {
 const mutationKey = ['updateCashAccount'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -10012,7 +10211,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateCashAccount>>, {id: number;data: CashAccount}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  updateCashAccount(id,data,axiosOptions)
+          return  updateCashAccount(id,data,)
         }
 
         
@@ -10022,10 +10221,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type UpdateCashAccountMutationResult = NonNullable<Awaited<ReturnType<typeof updateCashAccount>>>
     export type UpdateCashAccountMutationBody = CashAccount
-    export type UpdateCashAccountMutationError = AxiosError<ErrorResponse>
+    export type UpdateCashAccountMutationError = ErrorResponse
 
-    export const useUpdateCashAccount = <TData = Awaited<ReturnType<typeof updateCashAccount>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: CashAccount}, TContext>, axios?: AxiosRequestConfig}
+    export const useUpdateCashAccount = <TData = Awaited<ReturnType<typeof updateCashAccount>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: CashAccount}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -10042,26 +10241,27 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Delete CashAccount
  */
 export const deleteCashAccount = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<CashAccount>> => {
-    
-    
-    return axios.default.delete(
-      `/api/accounting/cashAccount/${id}`,options
-    );
-  }
+    id: number,
+ ) => {
+      
+      
+      return customMutator<CashAccount>(
+      {url: `/api/accounting/cashAccount/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteCashAccountMutationOptions = <TData = Awaited<ReturnType<typeof deleteCashAccount>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteCashAccountMutationOptions = <TData = Awaited<ReturnType<typeof deleteCashAccount>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteCashAccount'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -10069,7 +10269,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteCashAccount>>, {id: number}> = (props) => {
           const {id} = props ?? {};
 
-          return  deleteCashAccount(id,axiosOptions)
+          return  deleteCashAccount(id,)
         }
 
         
@@ -10079,10 +10279,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteCashAccountMutationResult = NonNullable<Awaited<ReturnType<typeof deleteCashAccount>>>
     
-    export type DeleteCashAccountMutationError = AxiosError<ResponseBase>
+    export type DeleteCashAccountMutationError = ResponseBase
 
-    export const useDeleteCashAccount = <TData = Awaited<ReturnType<typeof deleteCashAccount>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteCashAccount = <TData = Awaited<ReturnType<typeof deleteCashAccount>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -10096,26 +10296,28 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
     }
     
 export const refresh = (
-     options?: AxiosRequestConfig
- ): Promise<AxiosResponse<RefreshResponse>> => {
     
-    
-    return axios.default.post(
-      `/api/user/refresh`,undefined,options
-    );
-  }
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<RefreshResponse>(
+      {url: `/api/user/refresh`, method: 'POST', signal
+    },
+      );
+    }
+  
 
 
-
-export const getRefreshMutationOptions = <TData = Awaited<ReturnType<typeof refresh>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,void, TContext>, axios?: AxiosRequestConfig}
+export const getRefreshMutationOptions = <TData = Awaited<ReturnType<typeof refresh>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,void, TContext>, }
 ) => {
 const mutationKey = ['refresh'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -10123,7 +10325,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof refresh>>, void> = () => {
           
 
-          return  refresh(axiosOptions)
+          return  refresh()
         }
 
         
@@ -10133,10 +10335,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type RefreshMutationResult = NonNullable<Awaited<ReturnType<typeof refresh>>>
     
-    export type RefreshMutationError = AxiosError<ResponseBase>
+    export type RefreshMutationError = ResponseBase
 
-    export const useRefresh = <TData = Awaited<ReturnType<typeof refresh>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,void, TContext>, axios?: AxiosRequestConfig}
+    export const useRefresh = <TData = Awaited<ReturnType<typeof refresh>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,void, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -10150,26 +10352,28 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
     }
     
 export const logout = (
-     options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Logout200>> => {
     
-    
-    return axios.default.post(
-      `/api/user/logout`,undefined,options
-    );
-  }
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Logout200>(
+      {url: `/api/user/logout`, method: 'POST', signal
+    },
+      );
+    }
+  
 
 
-
-export const getLogoutMutationOptions = <TData = Awaited<ReturnType<typeof logout>>, TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,void, TContext>, axios?: AxiosRequestConfig}
+export const getLogoutMutationOptions = <TData = Awaited<ReturnType<typeof logout>>, TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,void, TContext>, }
 ) => {
 const mutationKey = ['logout'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -10177,7 +10381,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof logout>>, void> = () => {
           
 
-          return  logout(axiosOptions)
+          return  logout()
         }
 
         
@@ -10187,10 +10391,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type LogoutMutationResult = NonNullable<Awaited<ReturnType<typeof logout>>>
     
-    export type LogoutMutationError = AxiosError<unknown>
+    export type LogoutMutationError = unknown
 
-    export const useLogout = <TData = Awaited<ReturnType<typeof logout>>, TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,void, TContext>, axios?: AxiosRequestConfig}
+    export const useLogout = <TData = Awaited<ReturnType<typeof logout>>, TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,void, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -10207,27 +10411,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Login erp user
  */
 export const login = (
-    loginRequest: LoginRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<LoginResponse>> => {
-    
-    
-    return axios.default.post(
-      `/api/user/login`,
-      loginRequest,options
-    );
-  }
+    loginRequest: LoginRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<LoginResponse>(
+      {url: `/api/user/login`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: loginRequest, signal
+    },
+      );
+    }
+  
 
 
-
-export const getLoginMutationOptions = <TData = Awaited<ReturnType<typeof login>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: LoginRequest}, TContext>, axios?: AxiosRequestConfig}
+export const getLoginMutationOptions = <TData = Awaited<ReturnType<typeof login>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: LoginRequest}, TContext>, }
 ) => {
 const mutationKey = ['login'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -10235,7 +10442,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof login>>, {data: LoginRequest}> = (props) => {
           const {data} = props ?? {};
 
-          return  login(data,axiosOptions)
+          return  login(data,)
         }
 
         
@@ -10245,10 +10452,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type LoginMutationResult = NonNullable<Awaited<ReturnType<typeof login>>>
     export type LoginMutationBody = LoginRequest
-    export type LoginMutationError = AxiosError<ResponseBase>
+    export type LoginMutationError = ResponseBase
 
-    export const useLogin = <TData = Awaited<ReturnType<typeof login>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: LoginRequest}, TContext>, axios?: AxiosRequestConfig}
+    export const useLogin = <TData = Awaited<ReturnType<typeof login>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: LoginRequest}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -10265,27 +10472,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new Unit
  */
 export const addUnit = (
-    unit: Unit, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Unit>> => {
-    
-    
-    return axios.default.post(
-      `/api/storage/unit`,
-      unit,options
-    );
-  }
+    unit: Unit,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Unit>(
+      {url: `/api/storage/unit`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: unit, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddUnitMutationOptions = <TData = Awaited<ReturnType<typeof addUnit>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Unit}, TContext>, axios?: AxiosRequestConfig}
+export const getAddUnitMutationOptions = <TData = Awaited<ReturnType<typeof addUnit>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Unit}, TContext>, }
 ) => {
 const mutationKey = ['addUnit'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -10293,7 +10503,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addUnit>>, {data: Unit}> = (props) => {
           const {data} = props ?? {};
 
-          return  addUnit(data,axiosOptions)
+          return  addUnit(data,)
         }
 
         
@@ -10303,10 +10513,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddUnitMutationResult = NonNullable<Awaited<ReturnType<typeof addUnit>>>
     export type AddUnitMutationBody = Unit
-    export type AddUnitMutationError = AxiosError<ErrorResponse>
+    export type AddUnitMutationError = ErrorResponse
 
-    export const useAddUnit = <TData = Awaited<ReturnType<typeof addUnit>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Unit}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddUnit = <TData = Awaited<ReturnType<typeof addUnit>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Unit}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -10323,27 +10533,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new Shelf
  */
 export const addShelf = (
-    shelf: Shelf, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Shelf>> => {
-    
-    
-    return axios.default.post(
-      `/api/storage/shelf`,
-      shelf,options
-    );
-  }
+    shelf: Shelf,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Shelf>(
+      {url: `/api/storage/shelf`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: shelf, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddShelfMutationOptions = <TData = Awaited<ReturnType<typeof addShelf>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Shelf}, TContext>, axios?: AxiosRequestConfig}
+export const getAddShelfMutationOptions = <TData = Awaited<ReturnType<typeof addShelf>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Shelf}, TContext>, }
 ) => {
 const mutationKey = ['addShelf'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -10351,7 +10564,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addShelf>>, {data: Shelf}> = (props) => {
           const {data} = props ?? {};
 
-          return  addShelf(data,axiosOptions)
+          return  addShelf(data,)
         }
 
         
@@ -10361,10 +10574,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddShelfMutationResult = NonNullable<Awaited<ReturnType<typeof addShelf>>>
     export type AddShelfMutationBody = Shelf
-    export type AddShelfMutationError = AxiosError<ErrorResponse>
+    export type AddShelfMutationError = ErrorResponse
 
-    export const useAddShelf = <TData = Awaited<ReturnType<typeof addShelf>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Shelf}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddShelf = <TData = Awaited<ReturnType<typeof addShelf>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Shelf}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -10381,27 +10594,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new ServiceGroup
  */
 export const addServiceGroup = (
-    serviceGroup: ServiceGroup, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ServiceGroup>> => {
-    
-    
-    return axios.default.post(
-      `/api/storage/serviceGroup`,
-      serviceGroup,options
-    );
-  }
+    serviceGroup: ServiceGroup,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<ServiceGroup>(
+      {url: `/api/storage/serviceGroup`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: serviceGroup, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddServiceGroupMutationOptions = <TData = Awaited<ReturnType<typeof addServiceGroup>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: ServiceGroup}, TContext>, axios?: AxiosRequestConfig}
+export const getAddServiceGroupMutationOptions = <TData = Awaited<ReturnType<typeof addServiceGroup>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: ServiceGroup}, TContext>, }
 ) => {
 const mutationKey = ['addServiceGroup'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -10409,7 +10625,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addServiceGroup>>, {data: ServiceGroup}> = (props) => {
           const {data} = props ?? {};
 
-          return  addServiceGroup(data,axiosOptions)
+          return  addServiceGroup(data,)
         }
 
         
@@ -10419,10 +10635,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddServiceGroupMutationResult = NonNullable<Awaited<ReturnType<typeof addServiceGroup>>>
     export type AddServiceGroupMutationBody = ServiceGroup
-    export type AddServiceGroupMutationError = AxiosError<ErrorResponse>
+    export type AddServiceGroupMutationError = ErrorResponse
 
-    export const useAddServiceGroup = <TData = Awaited<ReturnType<typeof addServiceGroup>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: ServiceGroup}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddServiceGroup = <TData = Awaited<ReturnType<typeof addServiceGroup>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: ServiceGroup}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -10439,27 +10655,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new ServiceCard
  */
 export const addServiceCard = (
-    serviceCard: ServiceCard, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ServiceCard>> => {
-    
-    
-    return axios.default.post(
-      `/api/storage/serviceCard`,
-      serviceCard,options
-    );
-  }
+    serviceCard: ServiceCard,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<ServiceCard>(
+      {url: `/api/storage/serviceCard`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: serviceCard, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddServiceCardMutationOptions = <TData = Awaited<ReturnType<typeof addServiceCard>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: ServiceCard}, TContext>, axios?: AxiosRequestConfig}
+export const getAddServiceCardMutationOptions = <TData = Awaited<ReturnType<typeof addServiceCard>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: ServiceCard}, TContext>, }
 ) => {
 const mutationKey = ['addServiceCard'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -10467,7 +10686,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addServiceCard>>, {data: ServiceCard}> = (props) => {
           const {data} = props ?? {};
 
-          return  addServiceCard(data,axiosOptions)
+          return  addServiceCard(data,)
         }
 
         
@@ -10477,10 +10696,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddServiceCardMutationResult = NonNullable<Awaited<ReturnType<typeof addServiceCard>>>
     export type AddServiceCardMutationBody = ServiceCard
-    export type AddServiceCardMutationError = AxiosError<ErrorResponse>
+    export type AddServiceCardMutationError = ErrorResponse
 
-    export const useAddServiceCard = <TData = Awaited<ReturnType<typeof addServiceCard>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: ServiceCard}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddServiceCard = <TData = Awaited<ReturnType<typeof addServiceCard>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: ServiceCard}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -10497,27 +10716,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new ProductGroup
  */
 export const addProductGroup = (
-    productGroup: ProductGroup, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ProductGroup>> => {
-    
-    
-    return axios.default.post(
-      `/api/storage/productGroup`,
-      productGroup,options
-    );
-  }
+    productGroup: ProductGroup,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<ProductGroup>(
+      {url: `/api/storage/productGroup`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: productGroup, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddProductGroupMutationOptions = <TData = Awaited<ReturnType<typeof addProductGroup>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: ProductGroup}, TContext>, axios?: AxiosRequestConfig}
+export const getAddProductGroupMutationOptions = <TData = Awaited<ReturnType<typeof addProductGroup>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: ProductGroup}, TContext>, }
 ) => {
 const mutationKey = ['addProductGroup'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -10525,7 +10747,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addProductGroup>>, {data: ProductGroup}> = (props) => {
           const {data} = props ?? {};
 
-          return  addProductGroup(data,axiosOptions)
+          return  addProductGroup(data,)
         }
 
         
@@ -10535,10 +10757,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddProductGroupMutationResult = NonNullable<Awaited<ReturnType<typeof addProductGroup>>>
     export type AddProductGroupMutationBody = ProductGroup
-    export type AddProductGroupMutationError = AxiosError<ErrorResponse>
+    export type AddProductGroupMutationError = ErrorResponse
 
-    export const useAddProductGroup = <TData = Awaited<ReturnType<typeof addProductGroup>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: ProductGroup}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddProductGroup = <TData = Awaited<ReturnType<typeof addProductGroup>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: ProductGroup}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -10555,27 +10777,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new ProductCard
  */
 export const addProductCard = (
-    productCard: ProductCard, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ProductCard>> => {
-    
-    
-    return axios.default.post(
-      `/api/storage/productCard`,
-      productCard,options
-    );
-  }
+    productCard: ProductCard,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<ProductCard>(
+      {url: `/api/storage/productCard`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: productCard, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddProductCardMutationOptions = <TData = Awaited<ReturnType<typeof addProductCard>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: ProductCard}, TContext>, axios?: AxiosRequestConfig}
+export const getAddProductCardMutationOptions = <TData = Awaited<ReturnType<typeof addProductCard>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: ProductCard}, TContext>, }
 ) => {
 const mutationKey = ['addProductCard'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -10583,7 +10808,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addProductCard>>, {data: ProductCard}> = (props) => {
           const {data} = props ?? {};
 
-          return  addProductCard(data,axiosOptions)
+          return  addProductCard(data,)
         }
 
         
@@ -10593,10 +10818,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddProductCardMutationResult = NonNullable<Awaited<ReturnType<typeof addProductCard>>>
     export type AddProductCardMutationBody = ProductCard
-    export type AddProductCardMutationError = AxiosError<ErrorResponse>
+    export type AddProductCardMutationError = ErrorResponse
 
-    export const useAddProductCard = <TData = Awaited<ReturnType<typeof addProductCard>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: ProductCard}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddProductCard = <TData = Awaited<ReturnType<typeof addProductCard>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: ProductCard}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -10613,27 +10838,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new MaterialGroup
  */
 export const addMaterialGroup = (
-    materialGroup: MaterialGroup, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<MaterialGroup>> => {
-    
-    
-    return axios.default.post(
-      `/api/storage/materialGroup`,
-      materialGroup,options
-    );
-  }
+    materialGroup: MaterialGroup,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<MaterialGroup>(
+      {url: `/api/storage/materialGroup`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: materialGroup, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddMaterialGroupMutationOptions = <TData = Awaited<ReturnType<typeof addMaterialGroup>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: MaterialGroup}, TContext>, axios?: AxiosRequestConfig}
+export const getAddMaterialGroupMutationOptions = <TData = Awaited<ReturnType<typeof addMaterialGroup>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: MaterialGroup}, TContext>, }
 ) => {
 const mutationKey = ['addMaterialGroup'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -10641,7 +10869,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addMaterialGroup>>, {data: MaterialGroup}> = (props) => {
           const {data} = props ?? {};
 
-          return  addMaterialGroup(data,axiosOptions)
+          return  addMaterialGroup(data,)
         }
 
         
@@ -10651,10 +10879,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddMaterialGroupMutationResult = NonNullable<Awaited<ReturnType<typeof addMaterialGroup>>>
     export type AddMaterialGroupMutationBody = MaterialGroup
-    export type AddMaterialGroupMutationError = AxiosError<ErrorResponse>
+    export type AddMaterialGroupMutationError = ErrorResponse
 
-    export const useAddMaterialGroup = <TData = Awaited<ReturnType<typeof addMaterialGroup>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: MaterialGroup}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddMaterialGroup = <TData = Awaited<ReturnType<typeof addMaterialGroup>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: MaterialGroup}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -10671,27 +10899,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new MaterialCard
  */
 export const addMaterialCard = (
-    materialCard: MaterialCard, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<MaterialCard>> => {
-    
-    
-    return axios.default.post(
-      `/api/storage/materialCard`,
-      materialCard,options
-    );
-  }
+    materialCard: MaterialCard,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<MaterialCard>(
+      {url: `/api/storage/materialCard`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: materialCard, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddMaterialCardMutationOptions = <TData = Awaited<ReturnType<typeof addMaterialCard>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: MaterialCard}, TContext>, axios?: AxiosRequestConfig}
+export const getAddMaterialCardMutationOptions = <TData = Awaited<ReturnType<typeof addMaterialCard>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: MaterialCard}, TContext>, }
 ) => {
 const mutationKey = ['addMaterialCard'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -10699,7 +10930,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addMaterialCard>>, {data: MaterialCard}> = (props) => {
           const {data} = props ?? {};
 
-          return  addMaterialCard(data,axiosOptions)
+          return  addMaterialCard(data,)
         }
 
         
@@ -10709,10 +10940,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddMaterialCardMutationResult = NonNullable<Awaited<ReturnType<typeof addMaterialCard>>>
     export type AddMaterialCardMutationBody = MaterialCard
-    export type AddMaterialCardMutationError = AxiosError<ErrorResponse>
+    export type AddMaterialCardMutationError = ErrorResponse
 
-    export const useAddMaterialCard = <TData = Awaited<ReturnType<typeof addMaterialCard>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: MaterialCard}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddMaterialCard = <TData = Awaited<ReturnType<typeof addMaterialCard>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: MaterialCard}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -10729,27 +10960,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new FixtureGroup
  */
 export const addFixtureGroup = (
-    fixtureGroup: FixtureGroup, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<FixtureGroup>> => {
-    
-    
-    return axios.default.post(
-      `/api/storage/fixtureGroup`,
-      fixtureGroup,options
-    );
-  }
+    fixtureGroup: FixtureGroup,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<FixtureGroup>(
+      {url: `/api/storage/fixtureGroup`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: fixtureGroup, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddFixtureGroupMutationOptions = <TData = Awaited<ReturnType<typeof addFixtureGroup>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: FixtureGroup}, TContext>, axios?: AxiosRequestConfig}
+export const getAddFixtureGroupMutationOptions = <TData = Awaited<ReturnType<typeof addFixtureGroup>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: FixtureGroup}, TContext>, }
 ) => {
 const mutationKey = ['addFixtureGroup'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -10757,7 +10991,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addFixtureGroup>>, {data: FixtureGroup}> = (props) => {
           const {data} = props ?? {};
 
-          return  addFixtureGroup(data,axiosOptions)
+          return  addFixtureGroup(data,)
         }
 
         
@@ -10767,10 +11001,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddFixtureGroupMutationResult = NonNullable<Awaited<ReturnType<typeof addFixtureGroup>>>
     export type AddFixtureGroupMutationBody = FixtureGroup
-    export type AddFixtureGroupMutationError = AxiosError<ErrorResponse>
+    export type AddFixtureGroupMutationError = ErrorResponse
 
-    export const useAddFixtureGroup = <TData = Awaited<ReturnType<typeof addFixtureGroup>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: FixtureGroup}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddFixtureGroup = <TData = Awaited<ReturnType<typeof addFixtureGroup>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: FixtureGroup}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -10787,27 +11021,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new FixtureCard
  */
 export const addFixtureCard = (
-    fixtureCard: FixtureCard, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<FixtureCard>> => {
-    
-    
-    return axios.default.post(
-      `/api/storage/fixtureCard`,
-      fixtureCard,options
-    );
-  }
+    fixtureCard: FixtureCard,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<FixtureCard>(
+      {url: `/api/storage/fixtureCard`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: fixtureCard, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddFixtureCardMutationOptions = <TData = Awaited<ReturnType<typeof addFixtureCard>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: FixtureCard}, TContext>, axios?: AxiosRequestConfig}
+export const getAddFixtureCardMutationOptions = <TData = Awaited<ReturnType<typeof addFixtureCard>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: FixtureCard}, TContext>, }
 ) => {
 const mutationKey = ['addFixtureCard'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -10815,7 +11052,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addFixtureCard>>, {data: FixtureCard}> = (props) => {
           const {data} = props ?? {};
 
-          return  addFixtureCard(data,axiosOptions)
+          return  addFixtureCard(data,)
         }
 
         
@@ -10825,10 +11062,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddFixtureCardMutationResult = NonNullable<Awaited<ReturnType<typeof addFixtureCard>>>
     export type AddFixtureCardMutationBody = FixtureCard
-    export type AddFixtureCardMutationError = AxiosError<ErrorResponse>
+    export type AddFixtureCardMutationError = ErrorResponse
 
-    export const useAddFixtureCard = <TData = Awaited<ReturnType<typeof addFixtureCard>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: FixtureCard}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddFixtureCard = <TData = Awaited<ReturnType<typeof addFixtureCard>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: FixtureCard}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -10845,27 +11082,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new AssignmentTransaction
  */
 export const addAssignmentTransaction = (
-    assignmentTransaction: AssignmentTransaction, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<AssignmentTransaction>> => {
-    
-    
-    return axios.default.post(
-      `/api/storage/assignmentTransaction`,
-      assignmentTransaction,options
-    );
-  }
+    assignmentTransaction: AssignmentTransaction,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<AssignmentTransaction>(
+      {url: `/api/storage/assignmentTransaction`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: assignmentTransaction, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddAssignmentTransactionMutationOptions = <TData = Awaited<ReturnType<typeof addAssignmentTransaction>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: AssignmentTransaction}, TContext>, axios?: AxiosRequestConfig}
+export const getAddAssignmentTransactionMutationOptions = <TData = Awaited<ReturnType<typeof addAssignmentTransaction>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: AssignmentTransaction}, TContext>, }
 ) => {
 const mutationKey = ['addAssignmentTransaction'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -10873,7 +11113,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addAssignmentTransaction>>, {data: AssignmentTransaction}> = (props) => {
           const {data} = props ?? {};
 
-          return  addAssignmentTransaction(data,axiosOptions)
+          return  addAssignmentTransaction(data,)
         }
 
         
@@ -10883,10 +11123,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddAssignmentTransactionMutationResult = NonNullable<Awaited<ReturnType<typeof addAssignmentTransaction>>>
     export type AddAssignmentTransactionMutationBody = AssignmentTransaction
-    export type AddAssignmentTransactionMutationError = AxiosError<ErrorResponse>
+    export type AddAssignmentTransactionMutationError = ErrorResponse
 
-    export const useAddAssignmentTransaction = <TData = Awaited<ReturnType<typeof addAssignmentTransaction>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: AssignmentTransaction}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddAssignmentTransaction = <TData = Awaited<ReturnType<typeof addAssignmentTransaction>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: AssignmentTransaction}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -10903,27 +11143,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new AssignmentCard
  */
 export const addAssignmentCard = (
-    assignmentCard: AssignmentCard, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<AssignmentCard>> => {
-    
-    
-    return axios.default.post(
-      `/api/storage/assignmentCard`,
-      assignmentCard,options
-    );
-  }
+    assignmentCard: AssignmentCard,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<AssignmentCard>(
+      {url: `/api/storage/assignmentCard`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: assignmentCard, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddAssignmentCardMutationOptions = <TData = Awaited<ReturnType<typeof addAssignmentCard>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: AssignmentCard}, TContext>, axios?: AxiosRequestConfig}
+export const getAddAssignmentCardMutationOptions = <TData = Awaited<ReturnType<typeof addAssignmentCard>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: AssignmentCard}, TContext>, }
 ) => {
 const mutationKey = ['addAssignmentCard'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -10931,7 +11174,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addAssignmentCard>>, {data: AssignmentCard}> = (props) => {
           const {data} = props ?? {};
 
-          return  addAssignmentCard(data,axiosOptions)
+          return  addAssignmentCard(data,)
         }
 
         
@@ -10941,10 +11184,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddAssignmentCardMutationResult = NonNullable<Awaited<ReturnType<typeof addAssignmentCard>>>
     export type AddAssignmentCardMutationBody = AssignmentCard
-    export type AddAssignmentCardMutationError = AxiosError<ErrorResponse>
+    export type AddAssignmentCardMutationError = ErrorResponse
 
-    export const useAddAssignmentCard = <TData = Awaited<ReturnType<typeof addAssignmentCard>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: AssignmentCard}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddAssignmentCard = <TData = Awaited<ReturnType<typeof addAssignmentCard>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: AssignmentCard}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -10961,27 +11204,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new Proposal
  */
 export const addProposal = (
-    proposal: Proposal, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Proposal>> => {
-    
-    
-    return axios.default.post(
-      `/api/sales/proposal`,
-      proposal,options
-    );
-  }
+    proposal: Proposal,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Proposal>(
+      {url: `/api/sales/proposal`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: proposal, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddProposalMutationOptions = <TData = Awaited<ReturnType<typeof addProposal>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Proposal}, TContext>, axios?: AxiosRequestConfig}
+export const getAddProposalMutationOptions = <TData = Awaited<ReturnType<typeof addProposal>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Proposal}, TContext>, }
 ) => {
 const mutationKey = ['addProposal'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -10989,7 +11235,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addProposal>>, {data: Proposal}> = (props) => {
           const {data} = props ?? {};
 
-          return  addProposal(data,axiosOptions)
+          return  addProposal(data,)
         }
 
         
@@ -10999,10 +11245,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddProposalMutationResult = NonNullable<Awaited<ReturnType<typeof addProposal>>>
     export type AddProposalMutationBody = Proposal
-    export type AddProposalMutationError = AxiosError<ErrorResponse>
+    export type AddProposalMutationError = ErrorResponse
 
-    export const useAddProposal = <TData = Awaited<ReturnType<typeof addProposal>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Proposal}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddProposal = <TData = Awaited<ReturnType<typeof addProposal>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Proposal}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -11019,27 +11265,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new PurchaseOrder
  */
 export const addPurchaseOrder = (
-    purchaseOrder: PurchaseOrder, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<PurchaseOrder>> => {
-    
-    
-    return axios.default.post(
-      `/api/purchasing/purchaseOrder`,
-      purchaseOrder,options
-    );
-  }
+    purchaseOrder: PurchaseOrder,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<PurchaseOrder>(
+      {url: `/api/purchasing/purchaseOrder`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: purchaseOrder, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddPurchaseOrderMutationOptions = <TData = Awaited<ReturnType<typeof addPurchaseOrder>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: PurchaseOrder}, TContext>, axios?: AxiosRequestConfig}
+export const getAddPurchaseOrderMutationOptions = <TData = Awaited<ReturnType<typeof addPurchaseOrder>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: PurchaseOrder}, TContext>, }
 ) => {
 const mutationKey = ['addPurchaseOrder'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -11047,7 +11296,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addPurchaseOrder>>, {data: PurchaseOrder}> = (props) => {
           const {data} = props ?? {};
 
-          return  addPurchaseOrder(data,axiosOptions)
+          return  addPurchaseOrder(data,)
         }
 
         
@@ -11057,10 +11306,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddPurchaseOrderMutationResult = NonNullable<Awaited<ReturnType<typeof addPurchaseOrder>>>
     export type AddPurchaseOrderMutationBody = PurchaseOrder
-    export type AddPurchaseOrderMutationError = AxiosError<ErrorResponse>
+    export type AddPurchaseOrderMutationError = ErrorResponse
 
-    export const useAddPurchaseOrder = <TData = Awaited<ReturnType<typeof addPurchaseOrder>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: PurchaseOrder}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddPurchaseOrder = <TData = Awaited<ReturnType<typeof addPurchaseOrder>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: PurchaseOrder}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -11077,27 +11326,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new Invoice
  */
 export const addInvoice = (
-    invoice: Invoice, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Invoice>> => {
-    
-    
-    return axios.default.post(
-      `/api/purchasing/invoice`,
-      invoice,options
-    );
-  }
+    invoice: Invoice,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Invoice>(
+      {url: `/api/purchasing/invoice`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: invoice, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddInvoiceMutationOptions = <TData = Awaited<ReturnType<typeof addInvoice>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Invoice}, TContext>, axios?: AxiosRequestConfig}
+export const getAddInvoiceMutationOptions = <TData = Awaited<ReturnType<typeof addInvoice>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Invoice}, TContext>, }
 ) => {
 const mutationKey = ['addInvoice'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -11105,7 +11357,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addInvoice>>, {data: Invoice}> = (props) => {
           const {data} = props ?? {};
 
-          return  addInvoice(data,axiosOptions)
+          return  addInvoice(data,)
         }
 
         
@@ -11115,10 +11367,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddInvoiceMutationResult = NonNullable<Awaited<ReturnType<typeof addInvoice>>>
     export type AddInvoiceMutationBody = Invoice
-    export type AddInvoiceMutationError = AxiosError<ErrorResponse>
+    export type AddInvoiceMutationError = ErrorResponse
 
-    export const useAddInvoice = <TData = Awaited<ReturnType<typeof addInvoice>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Invoice}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddInvoice = <TData = Awaited<ReturnType<typeof addInvoice>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Invoice}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -11135,27 +11387,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Calculate Invoice Total
  */
 export const calculateInvoiceTotal = (
-    invoice: Invoice, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<InvoiceCalculationResult>> => {
-    
-    
-    return axios.default.post(
-      `/api/purchasing/invoice/calculateTotal`,
-      invoice,options
-    );
-  }
+    invoice: Invoice,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<InvoiceCalculationResult>(
+      {url: `/api/purchasing/invoice/calculateTotal`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: invoice, signal
+    },
+      );
+    }
+  
 
 
-
-export const getCalculateInvoiceTotalMutationOptions = <TData = Awaited<ReturnType<typeof calculateInvoiceTotal>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Invoice}, TContext>, axios?: AxiosRequestConfig}
+export const getCalculateInvoiceTotalMutationOptions = <TData = Awaited<ReturnType<typeof calculateInvoiceTotal>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Invoice}, TContext>, }
 ) => {
 const mutationKey = ['calculateInvoiceTotal'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -11163,7 +11418,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof calculateInvoiceTotal>>, {data: Invoice}> = (props) => {
           const {data} = props ?? {};
 
-          return  calculateInvoiceTotal(data,axiosOptions)
+          return  calculateInvoiceTotal(data,)
         }
 
         
@@ -11173,10 +11428,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type CalculateInvoiceTotalMutationResult = NonNullable<Awaited<ReturnType<typeof calculateInvoiceTotal>>>
     export type CalculateInvoiceTotalMutationBody = Invoice
-    export type CalculateInvoiceTotalMutationError = AxiosError<ErrorResponse>
+    export type CalculateInvoiceTotalMutationError = ErrorResponse
 
-    export const useCalculateInvoiceTotal = <TData = Awaited<ReturnType<typeof calculateInvoiceTotal>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Invoice}, TContext>, axios?: AxiosRequestConfig}
+    export const useCalculateInvoiceTotal = <TData = Awaited<ReturnType<typeof calculateInvoiceTotal>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Invoice}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -11193,27 +11448,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new Current Account
  */
 export const addCurrentAccount = (
-    currentAccount: CurrentAccount, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<CurrentAccount>> => {
-    
-    
-    return axios.default.post(
-      `/api/purchasing/currentAccount`,
-      currentAccount,options
-    );
-  }
+    currentAccount: CurrentAccount,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<CurrentAccount>(
+      {url: `/api/purchasing/currentAccount`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: currentAccount, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddCurrentAccountMutationOptions = <TData = Awaited<ReturnType<typeof addCurrentAccount>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: CurrentAccount}, TContext>, axios?: AxiosRequestConfig}
+export const getAddCurrentAccountMutationOptions = <TData = Awaited<ReturnType<typeof addCurrentAccount>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: CurrentAccount}, TContext>, }
 ) => {
 const mutationKey = ['addCurrentAccount'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -11221,7 +11479,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addCurrentAccount>>, {data: CurrentAccount}> = (props) => {
           const {data} = props ?? {};
 
-          return  addCurrentAccount(data,axiosOptions)
+          return  addCurrentAccount(data,)
         }
 
         
@@ -11231,10 +11489,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddCurrentAccountMutationResult = NonNullable<Awaited<ReturnType<typeof addCurrentAccount>>>
     export type AddCurrentAccountMutationBody = CurrentAccount
-    export type AddCurrentAccountMutationError = AxiosError<ErrorResponse>
+    export type AddCurrentAccountMutationError = ErrorResponse
 
-    export const useAddCurrentAccount = <TData = Awaited<ReturnType<typeof addCurrentAccount>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: CurrentAccount}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddCurrentAccount = <TData = Awaited<ReturnType<typeof addCurrentAccount>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: CurrentAccount}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -11251,27 +11509,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new Current Account Transaction
  */
 export const addCurrentAccountTransaction = (
-    currentAccountTransaction: CurrentAccountTransaction, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<CurrentAccountTransaction>> => {
-    
-    
-    return axios.default.post(
-      `/api/purchasing/currentAccountTransaction`,
-      currentAccountTransaction,options
-    );
-  }
+    currentAccountTransaction: CurrentAccountTransaction,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<CurrentAccountTransaction>(
+      {url: `/api/purchasing/currentAccountTransaction`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: currentAccountTransaction, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddCurrentAccountTransactionMutationOptions = <TData = Awaited<ReturnType<typeof addCurrentAccountTransaction>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: CurrentAccountTransaction}, TContext>, axios?: AxiosRequestConfig}
+export const getAddCurrentAccountTransactionMutationOptions = <TData = Awaited<ReturnType<typeof addCurrentAccountTransaction>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: CurrentAccountTransaction}, TContext>, }
 ) => {
 const mutationKey = ['addCurrentAccountTransaction'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -11279,7 +11540,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addCurrentAccountTransaction>>, {data: CurrentAccountTransaction}> = (props) => {
           const {data} = props ?? {};
 
-          return  addCurrentAccountTransaction(data,axiosOptions)
+          return  addCurrentAccountTransaction(data,)
         }
 
         
@@ -11289,10 +11550,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddCurrentAccountTransactionMutationResult = NonNullable<Awaited<ReturnType<typeof addCurrentAccountTransaction>>>
     export type AddCurrentAccountTransactionMutationBody = CurrentAccountTransaction
-    export type AddCurrentAccountTransactionMutationError = AxiosError<ErrorResponse>
+    export type AddCurrentAccountTransactionMutationError = ErrorResponse
 
-    export const useAddCurrentAccountTransaction = <TData = Awaited<ReturnType<typeof addCurrentAccountTransaction>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: CurrentAccountTransaction}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddCurrentAccountTransaction = <TData = Awaited<ReturnType<typeof addCurrentAccountTransaction>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: CurrentAccountTransaction}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -11309,27 +11570,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new CurrentAccountBankAccount
  */
 export const addCurrentAccountBankAccount = (
-    currentAccountBankAccount: CurrentAccountBankAccount, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<CurrentAccountBankAccount>> => {
-    
-    
-    return axios.default.post(
-      `/api/purchasing/currentAccountBankAccount`,
-      currentAccountBankAccount,options
-    );
-  }
+    currentAccountBankAccount: CurrentAccountBankAccount,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<CurrentAccountBankAccount>(
+      {url: `/api/purchasing/currentAccountBankAccount`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: currentAccountBankAccount, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddCurrentAccountBankAccountMutationOptions = <TData = Awaited<ReturnType<typeof addCurrentAccountBankAccount>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: CurrentAccountBankAccount}, TContext>, axios?: AxiosRequestConfig}
+export const getAddCurrentAccountBankAccountMutationOptions = <TData = Awaited<ReturnType<typeof addCurrentAccountBankAccount>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: CurrentAccountBankAccount}, TContext>, }
 ) => {
 const mutationKey = ['addCurrentAccountBankAccount'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -11337,7 +11601,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addCurrentAccountBankAccount>>, {data: CurrentAccountBankAccount}> = (props) => {
           const {data} = props ?? {};
 
-          return  addCurrentAccountBankAccount(data,axiosOptions)
+          return  addCurrentAccountBankAccount(data,)
         }
 
         
@@ -11347,10 +11611,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddCurrentAccountBankAccountMutationResult = NonNullable<Awaited<ReturnType<typeof addCurrentAccountBankAccount>>>
     export type AddCurrentAccountBankAccountMutationBody = CurrentAccountBankAccount
-    export type AddCurrentAccountBankAccountMutationError = AxiosError<ErrorResponse>
+    export type AddCurrentAccountBankAccountMutationError = ErrorResponse
 
-    export const useAddCurrentAccountBankAccount = <TData = Awaited<ReturnType<typeof addCurrentAccountBankAccount>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: CurrentAccountBankAccount}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddCurrentAccountBankAccount = <TData = Awaited<ReturnType<typeof addCurrentAccountBankAccount>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: CurrentAccountBankAccount}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -11367,27 +11631,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new AdditionalCost
  */
 export const addAdditionalCost = (
-    additionalCost: AdditionalCost, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<AdditionalCost>> => {
-    
-    
-    return axios.default.post(
-      `/api/purchasing/additionalCost`,
-      additionalCost,options
-    );
-  }
+    additionalCost: AdditionalCost,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<AdditionalCost>(
+      {url: `/api/purchasing/additionalCost`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: additionalCost, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddAdditionalCostMutationOptions = <TData = Awaited<ReturnType<typeof addAdditionalCost>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: AdditionalCost}, TContext>, axios?: AxiosRequestConfig}
+export const getAddAdditionalCostMutationOptions = <TData = Awaited<ReturnType<typeof addAdditionalCost>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: AdditionalCost}, TContext>, }
 ) => {
 const mutationKey = ['addAdditionalCost'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -11395,7 +11662,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addAdditionalCost>>, {data: AdditionalCost}> = (props) => {
           const {data} = props ?? {};
 
-          return  addAdditionalCost(data,axiosOptions)
+          return  addAdditionalCost(data,)
         }
 
         
@@ -11405,10 +11672,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddAdditionalCostMutationResult = NonNullable<Awaited<ReturnType<typeof addAdditionalCost>>>
     export type AddAdditionalCostMutationBody = AdditionalCost
-    export type AddAdditionalCostMutationError = AxiosError<ErrorResponse>
+    export type AddAdditionalCostMutationError = ErrorResponse
 
-    export const useAddAdditionalCost = <TData = Awaited<ReturnType<typeof addAdditionalCost>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: AdditionalCost}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddAdditionalCost = <TData = Awaited<ReturnType<typeof addAdditionalCost>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: AdditionalCost}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -11425,27 +11692,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new Project
  */
 export const addProject = (
-    project: Project, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Project>> => {
-    
-    
-    return axios.default.post(
-      `/api/production/project`,
-      project,options
-    );
-  }
+    project: Project,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Project>(
+      {url: `/api/production/project`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: project, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddProjectMutationOptions = <TData = Awaited<ReturnType<typeof addProject>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Project}, TContext>, axios?: AxiosRequestConfig}
+export const getAddProjectMutationOptions = <TData = Awaited<ReturnType<typeof addProject>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Project}, TContext>, }
 ) => {
 const mutationKey = ['addProject'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -11453,7 +11723,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addProject>>, {data: Project}> = (props) => {
           const {data} = props ?? {};
 
-          return  addProject(data,axiosOptions)
+          return  addProject(data,)
         }
 
         
@@ -11463,10 +11733,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddProjectMutationResult = NonNullable<Awaited<ReturnType<typeof addProject>>>
     export type AddProjectMutationBody = Project
-    export type AddProjectMutationError = AxiosError<ErrorResponse>
+    export type AddProjectMutationError = ErrorResponse
 
-    export const useAddProject = <TData = Awaited<ReturnType<typeof addProject>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Project}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddProject = <TData = Awaited<ReturnType<typeof addProject>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Project}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -11483,27 +11753,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Create new Time Keeping
  */
 export const createTimeKeeping = (
-    timeKeeping: TimeKeeping, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<TimeKeeping>> => {
-    
-    
-    return axios.default.post(
-      `/api/hr/timekeeping`,
-      timeKeeping,options
-    );
-  }
+    timeKeeping: TimeKeeping,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<TimeKeeping>(
+      {url: `/api/hr/timekeeping`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: timeKeeping, signal
+    },
+      );
+    }
+  
 
 
-
-export const getCreateTimeKeepingMutationOptions = <TData = Awaited<ReturnType<typeof createTimeKeeping>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: TimeKeeping}, TContext>, axios?: AxiosRequestConfig}
+export const getCreateTimeKeepingMutationOptions = <TData = Awaited<ReturnType<typeof createTimeKeeping>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: TimeKeeping}, TContext>, }
 ) => {
 const mutationKey = ['createTimeKeeping'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -11511,7 +11784,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof createTimeKeeping>>, {data: TimeKeeping}> = (props) => {
           const {data} = props ?? {};
 
-          return  createTimeKeeping(data,axiosOptions)
+          return  createTimeKeeping(data,)
         }
 
         
@@ -11521,10 +11794,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type CreateTimeKeepingMutationResult = NonNullable<Awaited<ReturnType<typeof createTimeKeeping>>>
     export type CreateTimeKeepingMutationBody = TimeKeeping
-    export type CreateTimeKeepingMutationError = AxiosError<ErrorResponse>
+    export type CreateTimeKeepingMutationError = ErrorResponse
 
-    export const useCreateTimeKeeping = <TData = Awaited<ReturnType<typeof createTimeKeeping>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: TimeKeeping}, TContext>, axios?: AxiosRequestConfig}
+    export const useCreateTimeKeeping = <TData = Awaited<ReturnType<typeof createTimeKeeping>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: TimeKeeping}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -11541,27 +11814,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Calculate Time Keeping Total
  */
 export const calculateTimeKeepingTotal = (
-    timeKeeping: TimeKeeping, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<TimeKeepingCalculationResult>> => {
-    
-    
-    return axios.default.post(
-      `/api/hr/timekeeping/calculateTotal`,
-      timeKeeping,options
-    );
-  }
+    timeKeeping: TimeKeeping,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<TimeKeepingCalculationResult>(
+      {url: `/api/hr/timekeeping/calculateTotal`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: timeKeeping, signal
+    },
+      );
+    }
+  
 
 
-
-export const getCalculateTimeKeepingTotalMutationOptions = <TData = Awaited<ReturnType<typeof calculateTimeKeepingTotal>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: TimeKeeping}, TContext>, axios?: AxiosRequestConfig}
+export const getCalculateTimeKeepingTotalMutationOptions = <TData = Awaited<ReturnType<typeof calculateTimeKeepingTotal>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: TimeKeeping}, TContext>, }
 ) => {
 const mutationKey = ['calculateTimeKeepingTotal'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -11569,7 +11845,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof calculateTimeKeepingTotal>>, {data: TimeKeeping}> = (props) => {
           const {data} = props ?? {};
 
-          return  calculateTimeKeepingTotal(data,axiosOptions)
+          return  calculateTimeKeepingTotal(data,)
         }
 
         
@@ -11579,10 +11855,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type CalculateTimeKeepingTotalMutationResult = NonNullable<Awaited<ReturnType<typeof calculateTimeKeepingTotal>>>
     export type CalculateTimeKeepingTotalMutationBody = TimeKeeping
-    export type CalculateTimeKeepingTotalMutationError = AxiosError<ErrorResponse>
+    export type CalculateTimeKeepingTotalMutationError = ErrorResponse
 
-    export const useCalculateTimeKeepingTotal = <TData = Awaited<ReturnType<typeof calculateTimeKeepingTotal>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: TimeKeeping}, TContext>, axios?: AxiosRequestConfig}
+    export const useCalculateTimeKeepingTotal = <TData = Awaited<ReturnType<typeof calculateTimeKeepingTotal>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: TimeKeeping}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -11599,27 +11875,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new Employee
  */
 export const addEmployee = (
-    employee: Employee, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Employee>> => {
-    
-    
-    return axios.default.post(
-      `/api/hr/employee`,
-      employee,options
-    );
-  }
+    employee: Employee,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Employee>(
+      {url: `/api/hr/employee`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: employee, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddEmployeeMutationOptions = <TData = Awaited<ReturnType<typeof addEmployee>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Employee}, TContext>, axios?: AxiosRequestConfig}
+export const getAddEmployeeMutationOptions = <TData = Awaited<ReturnType<typeof addEmployee>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Employee}, TContext>, }
 ) => {
 const mutationKey = ['addEmployee'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -11627,7 +11906,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addEmployee>>, {data: Employee}> = (props) => {
           const {data} = props ?? {};
 
-          return  addEmployee(data,axiosOptions)
+          return  addEmployee(data,)
         }
 
         
@@ -11637,10 +11916,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddEmployeeMutationResult = NonNullable<Awaited<ReturnType<typeof addEmployee>>>
     export type AddEmployeeMutationBody = Employee
-    export type AddEmployeeMutationError = AxiosError<ErrorResponse>
+    export type AddEmployeeMutationError = ErrorResponse
 
-    export const useAddEmployee = <TData = Awaited<ReturnType<typeof addEmployee>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Employee}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddEmployee = <TData = Awaited<ReturnType<typeof addEmployee>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Employee}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -11658,27 +11937,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  */
 export const addTimeOff = (
     id: number,
-    timeOff: TimeOff, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<TimeOff>> => {
-    
-    
-    return axios.default.post(
-      `/api/hr/employee/${id}/timeoff`,
-      timeOff,options
-    );
-  }
+    timeOff: TimeOff,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<TimeOff>(
+      {url: `/api/hr/employee/${id}/timeoff`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: timeOff, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddTimeOffMutationOptions = <TData = Awaited<ReturnType<typeof addTimeOff>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: TimeOff}, TContext>, axios?: AxiosRequestConfig}
+export const getAddTimeOffMutationOptions = <TData = Awaited<ReturnType<typeof addTimeOff>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: TimeOff}, TContext>, }
 ) => {
 const mutationKey = ['addTimeOff'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -11686,7 +11968,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addTimeOff>>, {id: number;data: TimeOff}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  addTimeOff(id,data,axiosOptions)
+          return  addTimeOff(id,data,)
         }
 
         
@@ -11696,10 +11978,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddTimeOffMutationResult = NonNullable<Awaited<ReturnType<typeof addTimeOff>>>
     export type AddTimeOffMutationBody = TimeOff
-    export type AddTimeOffMutationError = AxiosError<ErrorResponse>
+    export type AddTimeOffMutationError = ErrorResponse
 
-    export const useAddTimeOff = <TData = Awaited<ReturnType<typeof addTimeOff>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: TimeOff}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddTimeOff = <TData = Awaited<ReturnType<typeof addTimeOff>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;data: TimeOff}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -11716,27 +11998,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * EmployeePayments view. Supports filtering via rsql using Employee.
  */
 export const employeePaymentsStatusView = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<EmployeePayments>> => {
-    
-    
-    return axios.default.post(
-      `/api/hr/employee/payments`,
-      filteringRequest,options
-    );
-  }
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<EmployeePayments>(
+      {url: `/api/hr/employee/payments`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
-
-export const getEmployeePaymentsStatusViewMutationOptions = <TData = Awaited<ReturnType<typeof employeePaymentsStatusView>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: FilteringRequest}, TContext>, axios?: AxiosRequestConfig}
+export const getEmployeePaymentsStatusViewMutationOptions = <TData = Awaited<ReturnType<typeof employeePaymentsStatusView>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: FilteringRequest}, TContext>, }
 ) => {
 const mutationKey = ['employeePaymentsStatusView'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -11744,7 +12029,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof employeePaymentsStatusView>>, {data: FilteringRequest}> = (props) => {
           const {data} = props ?? {};
 
-          return  employeePaymentsStatusView(data,axiosOptions)
+          return  employeePaymentsStatusView(data,)
         }
 
         
@@ -11754,10 +12039,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type EmployeePaymentsStatusViewMutationResult = NonNullable<Awaited<ReturnType<typeof employeePaymentsStatusView>>>
     export type EmployeePaymentsStatusViewMutationBody = FilteringRequest
-    export type EmployeePaymentsStatusViewMutationError = AxiosError<ErrorResponse>
+    export type EmployeePaymentsStatusViewMutationError = ErrorResponse
 
-    export const useEmployeePaymentsStatusView = <TData = Awaited<ReturnType<typeof employeePaymentsStatusView>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: FilteringRequest}, TContext>, axios?: AxiosRequestConfig}
+    export const useEmployeePaymentsStatusView = <TData = Awaited<ReturnType<typeof employeePaymentsStatusView>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: FilteringRequest}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -11774,27 +12059,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * EmployeeOvertimes view. Supports filtering via rsql using Employee.
  */
 export const employeeOvertimesStatusView = (
-    filteringRequest: FilteringRequest, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<EmployeeOvertimes>> => {
-    
-    
-    return axios.default.post(
-      `/api/hr/employee/overtimes`,
-      filteringRequest,options
-    );
-  }
+    filteringRequest: FilteringRequest,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<EmployeeOvertimes>(
+      {url: `/api/hr/employee/overtimes`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filteringRequest, signal
+    },
+      );
+    }
+  
 
 
-
-export const getEmployeeOvertimesStatusViewMutationOptions = <TData = Awaited<ReturnType<typeof employeeOvertimesStatusView>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: FilteringRequest}, TContext>, axios?: AxiosRequestConfig}
+export const getEmployeeOvertimesStatusViewMutationOptions = <TData = Awaited<ReturnType<typeof employeeOvertimesStatusView>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: FilteringRequest}, TContext>, }
 ) => {
 const mutationKey = ['employeeOvertimesStatusView'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -11802,7 +12090,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof employeeOvertimesStatusView>>, {data: FilteringRequest}> = (props) => {
           const {data} = props ?? {};
 
-          return  employeeOvertimesStatusView(data,axiosOptions)
+          return  employeeOvertimesStatusView(data,)
         }
 
         
@@ -11812,10 +12100,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type EmployeeOvertimesStatusViewMutationResult = NonNullable<Awaited<ReturnType<typeof employeeOvertimesStatusView>>>
     export type EmployeeOvertimesStatusViewMutationBody = FilteringRequest
-    export type EmployeeOvertimesStatusViewMutationError = AxiosError<ErrorResponse>
+    export type EmployeeOvertimesStatusViewMutationError = ErrorResponse
 
-    export const useEmployeeOvertimesStatusView = <TData = Awaited<ReturnType<typeof employeeOvertimesStatusView>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: FilteringRequest}, TContext>, axios?: AxiosRequestConfig}
+    export const useEmployeeOvertimesStatusView = <TData = Awaited<ReturnType<typeof employeeOvertimesStatusView>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: FilteringRequest}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -11832,27 +12120,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new Bank
  */
 export const addBank = (
-    bank: Bank, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Bank>> => {
-    
-    
-    return axios.default.post(
-      `/api/finance/bank`,
-      bank,options
-    );
-  }
+    bank: Bank,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Bank>(
+      {url: `/api/finance/bank`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: bank, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddBankMutationOptions = <TData = Awaited<ReturnType<typeof addBank>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Bank}, TContext>, axios?: AxiosRequestConfig}
+export const getAddBankMutationOptions = <TData = Awaited<ReturnType<typeof addBank>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Bank}, TContext>, }
 ) => {
 const mutationKey = ['addBank'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -11860,7 +12151,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addBank>>, {data: Bank}> = (props) => {
           const {data} = props ?? {};
 
-          return  addBank(data,axiosOptions)
+          return  addBank(data,)
         }
 
         
@@ -11870,10 +12161,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddBankMutationResult = NonNullable<Awaited<ReturnType<typeof addBank>>>
     export type AddBankMutationBody = Bank
-    export type AddBankMutationError = AxiosError<ErrorResponse>
+    export type AddBankMutationError = ErrorResponse
 
-    export const useAddBank = <TData = Awaited<ReturnType<typeof addBank>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Bank}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddBank = <TData = Awaited<ReturnType<typeof addBank>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Bank}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -11890,27 +12181,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new Bank Branch
  */
 export const addBankBranch = (
-    bankBranch: BankBranch, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<BankBranch>> => {
-    
-    
-    return axios.default.post(
-      `/api/finance/bankBranch`,
-      bankBranch,options
-    );
-  }
+    bankBranch: BankBranch,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<BankBranch>(
+      {url: `/api/finance/bankBranch`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: bankBranch, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddBankBranchMutationOptions = <TData = Awaited<ReturnType<typeof addBankBranch>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: BankBranch}, TContext>, axios?: AxiosRequestConfig}
+export const getAddBankBranchMutationOptions = <TData = Awaited<ReturnType<typeof addBankBranch>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: BankBranch}, TContext>, }
 ) => {
 const mutationKey = ['addBankBranch'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -11918,7 +12212,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addBankBranch>>, {data: BankBranch}> = (props) => {
           const {data} = props ?? {};
 
-          return  addBankBranch(data,axiosOptions)
+          return  addBankBranch(data,)
         }
 
         
@@ -11928,10 +12222,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddBankBranchMutationResult = NonNullable<Awaited<ReturnType<typeof addBankBranch>>>
     export type AddBankBranchMutationBody = BankBranch
-    export type AddBankBranchMutationError = AxiosError<ErrorResponse>
+    export type AddBankBranchMutationError = ErrorResponse
 
-    export const useAddBankBranch = <TData = Awaited<ReturnType<typeof addBankBranch>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: BankBranch}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddBankBranch = <TData = Awaited<ReturnType<typeof addBankBranch>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: BankBranch}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -11948,27 +12242,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new Bank Account
  */
 export const addBankBranch1 = (
-    bankAccount: BankAccount, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<BankAccount>> => {
-    
-    
-    return axios.default.post(
-      `/api/finance/bankAccount`,
-      bankAccount,options
-    );
-  }
+    bankAccount: BankAccount,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<BankAccount>(
+      {url: `/api/finance/bankAccount`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: bankAccount, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddBankBranch1MutationOptions = <TData = Awaited<ReturnType<typeof addBankBranch1>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: BankAccount}, TContext>, axios?: AxiosRequestConfig}
+export const getAddBankBranch1MutationOptions = <TData = Awaited<ReturnType<typeof addBankBranch1>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: BankAccount}, TContext>, }
 ) => {
 const mutationKey = ['addBankBranch1'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -11976,7 +12273,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addBankBranch1>>, {data: BankAccount}> = (props) => {
           const {data} = props ?? {};
 
-          return  addBankBranch1(data,axiosOptions)
+          return  addBankBranch1(data,)
         }
 
         
@@ -11986,10 +12283,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddBankBranch1MutationResult = NonNullable<Awaited<ReturnType<typeof addBankBranch1>>>
     export type AddBankBranch1MutationBody = BankAccount
-    export type AddBankBranch1MutationError = AxiosError<ErrorResponse>
+    export type AddBankBranch1MutationError = ErrorResponse
 
-    export const useAddBankBranch1 = <TData = Awaited<ReturnType<typeof addBankBranch1>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: BankAccount}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddBankBranch1 = <TData = Awaited<ReturnType<typeof addBankBranch1>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: BankAccount}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -12006,27 +12303,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new Department
  */
 export const addDepartment = (
-    department: Department, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Department>> => {
-    
-    
-    return axios.default.post(
-      `/api/company/department`,
-      department,options
-    );
-  }
+    department: Department,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Department>(
+      {url: `/api/company/department`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: department, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddDepartmentMutationOptions = <TData = Awaited<ReturnType<typeof addDepartment>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Department}, TContext>, axios?: AxiosRequestConfig}
+export const getAddDepartmentMutationOptions = <TData = Awaited<ReturnType<typeof addDepartment>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Department}, TContext>, }
 ) => {
 const mutationKey = ['addDepartment'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -12034,7 +12334,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addDepartment>>, {data: Department}> = (props) => {
           const {data} = props ?? {};
 
-          return  addDepartment(data,axiosOptions)
+          return  addDepartment(data,)
         }
 
         
@@ -12044,10 +12344,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddDepartmentMutationResult = NonNullable<Awaited<ReturnType<typeof addDepartment>>>
     export type AddDepartmentMutationBody = Department
-    export type AddDepartmentMutationError = AxiosError<ErrorResponse>
+    export type AddDepartmentMutationError = ErrorResponse
 
-    export const useAddDepartment = <TData = Awaited<ReturnType<typeof addDepartment>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Department}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddDepartment = <TData = Awaited<ReturnType<typeof addDepartment>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Department}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -12064,27 +12364,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new Branch
  */
 export const addBranch = (
-    branch: Branch, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Branch>> => {
-    
-    
-    return axios.default.post(
-      `/api/company/branch`,
-      branch,options
-    );
-  }
+    branch: Branch,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Branch>(
+      {url: `/api/company/branch`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: branch, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddBranchMutationOptions = <TData = Awaited<ReturnType<typeof addBranch>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Branch}, TContext>, axios?: AxiosRequestConfig}
+export const getAddBranchMutationOptions = <TData = Awaited<ReturnType<typeof addBranch>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Branch}, TContext>, }
 ) => {
 const mutationKey = ['addBranch'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -12092,7 +12395,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addBranch>>, {data: Branch}> = (props) => {
           const {data} = props ?? {};
 
-          return  addBranch(data,axiosOptions)
+          return  addBranch(data,)
         }
 
         
@@ -12102,10 +12405,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddBranchMutationResult = NonNullable<Awaited<ReturnType<typeof addBranch>>>
     export type AddBranchMutationBody = Branch
-    export type AddBranchMutationError = AxiosError<ErrorResponse>
+    export type AddBranchMutationError = ErrorResponse
 
-    export const useAddBranch = <TData = Awaited<ReturnType<typeof addBranch>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Branch}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddBranch = <TData = Awaited<ReturnType<typeof addBranch>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Branch}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -12122,27 +12425,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new Section
  */
 export const addSection = (
-    section: Section, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Section>> => {
-    
-    
-    return axios.default.post(
-      `/api/admin/section`,
-      section,options
-    );
-  }
+    section: Section,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Section>(
+      {url: `/api/admin/section`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: section, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddSectionMutationOptions = <TData = Awaited<ReturnType<typeof addSection>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Section}, TContext>, axios?: AxiosRequestConfig}
+export const getAddSectionMutationOptions = <TData = Awaited<ReturnType<typeof addSection>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Section}, TContext>, }
 ) => {
 const mutationKey = ['addSection'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -12150,7 +12456,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addSection>>, {data: Section}> = (props) => {
           const {data} = props ?? {};
 
-          return  addSection(data,axiosOptions)
+          return  addSection(data,)
         }
 
         
@@ -12160,10 +12466,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddSectionMutationResult = NonNullable<Awaited<ReturnType<typeof addSection>>>
     export type AddSectionMutationBody = Section
-    export type AddSectionMutationError = AxiosError<ErrorResponse>
+    export type AddSectionMutationError = ErrorResponse
 
-    export const useAddSection = <TData = Awaited<ReturnType<typeof addSection>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Section}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddSection = <TData = Awaited<ReturnType<typeof addSection>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Section}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -12180,27 +12486,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new Role
  */
 export const addRole = (
-    role: Role, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Role>> => {
-    
-    
-    return axios.default.post(
-      `/api/admin/role`,
-      role,options
-    );
-  }
+    role: Role,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Role>(
+      {url: `/api/admin/role`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: role, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddRoleMutationOptions = <TData = Awaited<ReturnType<typeof addRole>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Role}, TContext>, axios?: AxiosRequestConfig}
+export const getAddRoleMutationOptions = <TData = Awaited<ReturnType<typeof addRole>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Role}, TContext>, }
 ) => {
 const mutationKey = ['addRole'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -12208,7 +12517,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addRole>>, {data: Role}> = (props) => {
           const {data} = props ?? {};
 
-          return  addRole(data,axiosOptions)
+          return  addRole(data,)
         }
 
         
@@ -12218,10 +12527,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddRoleMutationResult = NonNullable<Awaited<ReturnType<typeof addRole>>>
     export type AddRoleMutationBody = Role
-    export type AddRoleMutationError = AxiosError<ErrorResponse>
+    export type AddRoleMutationError = ErrorResponse
 
-    export const useAddRole = <TData = Awaited<ReturnType<typeof addRole>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Role}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddRole = <TData = Awaited<ReturnType<typeof addRole>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Role}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -12238,27 +12547,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new Public Holiday
  */
 export const addPublicHoliday = (
-    publicHoliday: PublicHoliday, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<PublicHoliday>> => {
-    
-    
-    return axios.default.post(
-      `/api/admin/publicHoliday`,
-      publicHoliday,options
-    );
-  }
+    publicHoliday: PublicHoliday,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<PublicHoliday>(
+      {url: `/api/admin/publicHoliday`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: publicHoliday, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddPublicHolidayMutationOptions = <TData = Awaited<ReturnType<typeof addPublicHoliday>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: PublicHoliday}, TContext>, axios?: AxiosRequestConfig}
+export const getAddPublicHolidayMutationOptions = <TData = Awaited<ReturnType<typeof addPublicHoliday>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: PublicHoliday}, TContext>, }
 ) => {
 const mutationKey = ['addPublicHoliday'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -12266,7 +12578,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addPublicHoliday>>, {data: PublicHoliday}> = (props) => {
           const {data} = props ?? {};
 
-          return  addPublicHoliday(data,axiosOptions)
+          return  addPublicHoliday(data,)
         }
 
         
@@ -12276,10 +12588,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddPublicHolidayMutationResult = NonNullable<Awaited<ReturnType<typeof addPublicHoliday>>>
     export type AddPublicHolidayMutationBody = PublicHoliday
-    export type AddPublicHolidayMutationError = AxiosError<ErrorResponse>
+    export type AddPublicHolidayMutationError = ErrorResponse
 
-    export const useAddPublicHoliday = <TData = Awaited<ReturnType<typeof addPublicHoliday>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: PublicHoliday}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddPublicHoliday = <TData = Awaited<ReturnType<typeof addPublicHoliday>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: PublicHoliday}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -12296,27 +12608,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new PaymentMethod
  */
 export const addPaymentMethod = (
-    paymentMethod: PaymentMethod, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<PaymentMethod>> => {
-    
-    
-    return axios.default.post(
-      `/api/admin/paymentMethod`,
-      paymentMethod,options
-    );
-  }
+    paymentMethod: PaymentMethod,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<PaymentMethod>(
+      {url: `/api/admin/paymentMethod`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: paymentMethod, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddPaymentMethodMutationOptions = <TData = Awaited<ReturnType<typeof addPaymentMethod>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: PaymentMethod}, TContext>, axios?: AxiosRequestConfig}
+export const getAddPaymentMethodMutationOptions = <TData = Awaited<ReturnType<typeof addPaymentMethod>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: PaymentMethod}, TContext>, }
 ) => {
 const mutationKey = ['addPaymentMethod'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -12324,7 +12639,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addPaymentMethod>>, {data: PaymentMethod}> = (props) => {
           const {data} = props ?? {};
 
-          return  addPaymentMethod(data,axiosOptions)
+          return  addPaymentMethod(data,)
         }
 
         
@@ -12334,10 +12649,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddPaymentMethodMutationResult = NonNullable<Awaited<ReturnType<typeof addPaymentMethod>>>
     export type AddPaymentMethodMutationBody = PaymentMethod
-    export type AddPaymentMethodMutationError = AxiosError<ErrorResponse>
+    export type AddPaymentMethodMutationError = ErrorResponse
 
-    export const useAddPaymentMethod = <TData = Awaited<ReturnType<typeof addPaymentMethod>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: PaymentMethod}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddPaymentMethod = <TData = Awaited<ReturnType<typeof addPaymentMethod>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: PaymentMethod}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -12354,27 +12669,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new Machine
  */
 export const addMachine = (
-    machine: Machine, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Machine>> => {
-    
-    
-    return axios.default.post(
-      `/api/admin/machine`,
-      machine,options
-    );
-  }
+    machine: Machine,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Machine>(
+      {url: `/api/admin/machine`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: machine, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddMachineMutationOptions = <TData = Awaited<ReturnType<typeof addMachine>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Machine}, TContext>, axios?: AxiosRequestConfig}
+export const getAddMachineMutationOptions = <TData = Awaited<ReturnType<typeof addMachine>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Machine}, TContext>, }
 ) => {
 const mutationKey = ['addMachine'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -12382,7 +12700,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addMachine>>, {data: Machine}> = (props) => {
           const {data} = props ?? {};
 
-          return  addMachine(data,axiosOptions)
+          return  addMachine(data,)
         }
 
         
@@ -12392,10 +12710,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddMachineMutationResult = NonNullable<Awaited<ReturnType<typeof addMachine>>>
     export type AddMachineMutationBody = Machine
-    export type AddMachineMutationError = AxiosError<ErrorResponse>
+    export type AddMachineMutationError = ErrorResponse
 
-    export const useAddMachine = <TData = Awaited<ReturnType<typeof addMachine>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Machine}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddMachine = <TData = Awaited<ReturnType<typeof addMachine>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Machine}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -12412,27 +12730,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new Depot
  */
 export const addDepot = (
-    depot: Depot, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Depot>> => {
-    
-    
-    return axios.default.post(
-      `/api/admin/depot`,
-      depot,options
-    );
-  }
+    depot: Depot,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Depot>(
+      {url: `/api/admin/depot`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: depot, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddDepotMutationOptions = <TData = Awaited<ReturnType<typeof addDepot>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Depot}, TContext>, axios?: AxiosRequestConfig}
+export const getAddDepotMutationOptions = <TData = Awaited<ReturnType<typeof addDepot>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Depot}, TContext>, }
 ) => {
 const mutationKey = ['addDepot'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -12440,7 +12761,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addDepot>>, {data: Depot}> = (props) => {
           const {data} = props ?? {};
 
-          return  addDepot(data,axiosOptions)
+          return  addDepot(data,)
         }
 
         
@@ -12450,10 +12771,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddDepotMutationResult = NonNullable<Awaited<ReturnType<typeof addDepot>>>
     export type AddDepotMutationBody = Depot
-    export type AddDepotMutationError = AxiosError<ErrorResponse>
+    export type AddDepotMutationError = ErrorResponse
 
-    export const useAddDepot = <TData = Awaited<ReturnType<typeof addDepot>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Depot}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddDepot = <TData = Awaited<ReturnType<typeof addDepot>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Depot}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -12470,27 +12791,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new Company
  */
 export const addCompany = (
-    company: Company, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<Company>> => {
-    
-    
-    return axios.default.post(
-      `/api/admin/company`,
-      company,options
-    );
-  }
+    company: Company,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<Company>(
+      {url: `/api/admin/company`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: company, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddCompanyMutationOptions = <TData = Awaited<ReturnType<typeof addCompany>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Company}, TContext>, axios?: AxiosRequestConfig}
+export const getAddCompanyMutationOptions = <TData = Awaited<ReturnType<typeof addCompany>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Company}, TContext>, }
 ) => {
 const mutationKey = ['addCompany'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -12498,7 +12822,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addCompany>>, {data: Company}> = (props) => {
           const {data} = props ?? {};
 
-          return  addCompany(data,axiosOptions)
+          return  addCompany(data,)
         }
 
         
@@ -12508,10 +12832,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddCompanyMutationResult = NonNullable<Awaited<ReturnType<typeof addCompany>>>
     export type AddCompanyMutationBody = Company
-    export type AddCompanyMutationError = AxiosError<ErrorResponse>
+    export type AddCompanyMutationError = ErrorResponse
 
-    export const useAddCompany = <TData = Awaited<ReturnType<typeof addCompany>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Company}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddCompany = <TData = Awaited<ReturnType<typeof addCompany>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: Company}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -12528,27 +12852,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new ExpenseInvoice
  */
 export const addExpenseInvoice = (
-    expenseInvoice: ExpenseInvoice, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ExpenseInvoice>> => {
-    
-    
-    return axios.default.post(
-      `/api/accounting/expenseInvoice`,
-      expenseInvoice,options
-    );
-  }
+    expenseInvoice: ExpenseInvoice,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<ExpenseInvoice>(
+      {url: `/api/accounting/expenseInvoice`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: expenseInvoice, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddExpenseInvoiceMutationOptions = <TData = Awaited<ReturnType<typeof addExpenseInvoice>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: ExpenseInvoice}, TContext>, axios?: AxiosRequestConfig}
+export const getAddExpenseInvoiceMutationOptions = <TData = Awaited<ReturnType<typeof addExpenseInvoice>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: ExpenseInvoice}, TContext>, }
 ) => {
 const mutationKey = ['addExpenseInvoice'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -12556,7 +12883,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addExpenseInvoice>>, {data: ExpenseInvoice}> = (props) => {
           const {data} = props ?? {};
 
-          return  addExpenseInvoice(data,axiosOptions)
+          return  addExpenseInvoice(data,)
         }
 
         
@@ -12566,10 +12893,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddExpenseInvoiceMutationResult = NonNullable<Awaited<ReturnType<typeof addExpenseInvoice>>>
     export type AddExpenseInvoiceMutationBody = ExpenseInvoice
-    export type AddExpenseInvoiceMutationError = AxiosError<ErrorResponse>
+    export type AddExpenseInvoiceMutationError = ErrorResponse
 
-    export const useAddExpenseInvoice = <TData = Awaited<ReturnType<typeof addExpenseInvoice>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: ExpenseInvoice}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddExpenseInvoice = <TData = Awaited<ReturnType<typeof addExpenseInvoice>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: ExpenseInvoice}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -12586,27 +12913,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Calculate Invoice Total
  */
 export const calculateInvoiceTotal1 = (
-    expenseInvoice: ExpenseInvoice, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ExpenseInvoiceCalculationResult>> => {
-    
-    
-    return axios.default.post(
-      `/api/accounting/expenseInvoice/calculateTotal`,
-      expenseInvoice,options
-    );
-  }
+    expenseInvoice: ExpenseInvoice,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<ExpenseInvoiceCalculationResult>(
+      {url: `/api/accounting/expenseInvoice/calculateTotal`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: expenseInvoice, signal
+    },
+      );
+    }
+  
 
 
-
-export const getCalculateInvoiceTotal1MutationOptions = <TData = Awaited<ReturnType<typeof calculateInvoiceTotal1>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: ExpenseInvoice}, TContext>, axios?: AxiosRequestConfig}
+export const getCalculateInvoiceTotal1MutationOptions = <TData = Awaited<ReturnType<typeof calculateInvoiceTotal1>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: ExpenseInvoice}, TContext>, }
 ) => {
 const mutationKey = ['calculateInvoiceTotal1'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -12614,7 +12944,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof calculateInvoiceTotal1>>, {data: ExpenseInvoice}> = (props) => {
           const {data} = props ?? {};
 
-          return  calculateInvoiceTotal1(data,axiosOptions)
+          return  calculateInvoiceTotal1(data,)
         }
 
         
@@ -12624,10 +12954,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type CalculateInvoiceTotal1MutationResult = NonNullable<Awaited<ReturnType<typeof calculateInvoiceTotal1>>>
     export type CalculateInvoiceTotal1MutationBody = ExpenseInvoice
-    export type CalculateInvoiceTotal1MutationError = AxiosError<ErrorResponse>
+    export type CalculateInvoiceTotal1MutationError = ErrorResponse
 
-    export const useCalculateInvoiceTotal1 = <TData = Awaited<ReturnType<typeof calculateInvoiceTotal1>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: ExpenseInvoice}, TContext>, axios?: AxiosRequestConfig}
+    export const useCalculateInvoiceTotal1 = <TData = Awaited<ReturnType<typeof calculateInvoiceTotal1>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: ExpenseInvoice}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -12644,27 +12974,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new ExpenseCard
  */
 export const addExpenseCard = (
-    expenseCard: ExpenseCard, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ExpenseCard>> => {
-    
-    
-    return axios.default.post(
-      `/api/accounting/expenseCard`,
-      expenseCard,options
-    );
-  }
+    expenseCard: ExpenseCard,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<ExpenseCard>(
+      {url: `/api/accounting/expenseCard`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: expenseCard, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddExpenseCardMutationOptions = <TData = Awaited<ReturnType<typeof addExpenseCard>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: ExpenseCard}, TContext>, axios?: AxiosRequestConfig}
+export const getAddExpenseCardMutationOptions = <TData = Awaited<ReturnType<typeof addExpenseCard>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: ExpenseCard}, TContext>, }
 ) => {
 const mutationKey = ['addExpenseCard'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -12672,7 +13005,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addExpenseCard>>, {data: ExpenseCard}> = (props) => {
           const {data} = props ?? {};
 
-          return  addExpenseCard(data,axiosOptions)
+          return  addExpenseCard(data,)
         }
 
         
@@ -12682,10 +13015,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddExpenseCardMutationResult = NonNullable<Awaited<ReturnType<typeof addExpenseCard>>>
     export type AddExpenseCardMutationBody = ExpenseCard
-    export type AddExpenseCardMutationError = AxiosError<ErrorResponse>
+    export type AddExpenseCardMutationError = ErrorResponse
 
-    export const useAddExpenseCard = <TData = Awaited<ReturnType<typeof addExpenseCard>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: ExpenseCard}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddExpenseCard = <TData = Awaited<ReturnType<typeof addExpenseCard>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: ExpenseCard}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -12702,27 +13035,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new CashAccount
  */
 export const addCashAccount = (
-    cashAccount: CashAccount, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<CashAccount>> => {
-    
-    
-    return axios.default.post(
-      `/api/accounting/cashAccount`,
-      cashAccount,options
-    );
-  }
+    cashAccount: CashAccount,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<CashAccount>(
+      {url: `/api/accounting/cashAccount`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: cashAccount, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddCashAccountMutationOptions = <TData = Awaited<ReturnType<typeof addCashAccount>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: CashAccount}, TContext>, axios?: AxiosRequestConfig}
+export const getAddCashAccountMutationOptions = <TData = Awaited<ReturnType<typeof addCashAccount>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: CashAccount}, TContext>, }
 ) => {
 const mutationKey = ['addCashAccount'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -12730,7 +13066,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addCashAccount>>, {data: CashAccount}> = (props) => {
           const {data} = props ?? {};
 
-          return  addCashAccount(data,axiosOptions)
+          return  addCashAccount(data,)
         }
 
         
@@ -12740,10 +13076,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddCashAccountMutationResult = NonNullable<Awaited<ReturnType<typeof addCashAccount>>>
     export type AddCashAccountMutationBody = CashAccount
-    export type AddCashAccountMutationError = AxiosError<ErrorResponse>
+    export type AddCashAccountMutationError = ErrorResponse
 
-    export const useAddCashAccount = <TData = Awaited<ReturnType<typeof addCashAccount>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: CashAccount}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddCashAccount = <TData = Awaited<ReturnType<typeof addCashAccount>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: CashAccount}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -12760,27 +13096,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Add new CashAccountTransaction
  */
 export const addCashAccountTransaction = (
-    cashAccountTransaction: CashAccountTransaction, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<CashAccountTransaction>> => {
-    
-    
-    return axios.default.post(
-      `/api/accounting/cashAccountTransaction`,
-      cashAccountTransaction,options
-    );
-  }
+    cashAccountTransaction: CashAccountTransaction,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<CashAccountTransaction>(
+      {url: `/api/accounting/cashAccountTransaction`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: cashAccountTransaction, signal
+    },
+      );
+    }
+  
 
 
-
-export const getAddCashAccountTransactionMutationOptions = <TData = Awaited<ReturnType<typeof addCashAccountTransaction>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: CashAccountTransaction}, TContext>, axios?: AxiosRequestConfig}
+export const getAddCashAccountTransactionMutationOptions = <TData = Awaited<ReturnType<typeof addCashAccountTransaction>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: CashAccountTransaction}, TContext>, }
 ) => {
 const mutationKey = ['addCashAccountTransaction'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -12788,7 +13127,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof addCashAccountTransaction>>, {data: CashAccountTransaction}> = (props) => {
           const {data} = props ?? {};
 
-          return  addCashAccountTransaction(data,axiosOptions)
+          return  addCashAccountTransaction(data,)
         }
 
         
@@ -12798,10 +13137,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type AddCashAccountTransactionMutationResult = NonNullable<Awaited<ReturnType<typeof addCashAccountTransaction>>>
     export type AddCashAccountTransactionMutationBody = CashAccountTransaction
-    export type AddCashAccountTransactionMutationError = AxiosError<ErrorResponse>
+    export type AddCashAccountTransactionMutationError = ErrorResponse
 
-    export const useAddCashAccountTransaction = <TData = Awaited<ReturnType<typeof addCashAccountTransaction>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: CashAccountTransaction}, TContext>, axios?: AxiosRequestConfig}
+    export const useAddCashAccountTransaction = <TData = Awaited<ReturnType<typeof addCashAccountTransaction>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: CashAccountTransaction}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -12818,27 +13157,30 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Calculate Balance
  */
 export const calculateBalance = (
-    cashAccountTransactionEntity: CashAccountTransactionEntity[], options?: AxiosRequestConfig
- ): Promise<AxiosResponse<CashAccountBalanceResult>> => {
-    
-    
-    return axios.default.post(
-      `/api/accounting/accounting/calculateBalance`,
-      cashAccountTransactionEntity,options
-    );
-  }
+    cashAccountTransactionEntity: CashAccountTransactionEntity[],
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<CashAccountBalanceResult>(
+      {url: `/api/accounting/accounting/calculateBalance`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: cashAccountTransactionEntity, signal
+    },
+      );
+    }
+  
 
 
-
-export const getCalculateBalanceMutationOptions = <TData = Awaited<ReturnType<typeof calculateBalance>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: CashAccountTransactionEntity[]}, TContext>, axios?: AxiosRequestConfig}
+export const getCalculateBalanceMutationOptions = <TData = Awaited<ReturnType<typeof calculateBalance>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: CashAccountTransactionEntity[]}, TContext>, }
 ) => {
 const mutationKey = ['calculateBalance'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -12846,7 +13188,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof calculateBalance>>, {data: CashAccountTransactionEntity[]}> = (props) => {
           const {data} = props ?? {};
 
-          return  calculateBalance(data,axiosOptions)
+          return  calculateBalance(data,)
         }
 
         
@@ -12856,10 +13198,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type CalculateBalanceMutationResult = NonNullable<Awaited<ReturnType<typeof calculateBalance>>>
     export type CalculateBalanceMutationBody = CashAccountTransactionEntity[]
-    export type CalculateBalanceMutationError = AxiosError<ErrorResponse>
+    export type CalculateBalanceMutationError = ErrorResponse
 
-    export const useCalculateBalance = <TData = Awaited<ReturnType<typeof calculateBalance>>, TError = AxiosError<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: CashAccountTransactionEntity[]}, TContext>, axios?: AxiosRequestConfig}
+    export const useCalculateBalance = <TData = Awaited<ReturnType<typeof calculateBalance>>, TError = ErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: CashAccountTransactionEntity[]}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -12876,31 +13218,33 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  * Get ServiceGroup Tree
  */
 export const getServiceGroupTree = (
-     options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ServiceGroupTreeDataResponse>> => {
     
-    
-    return axios.default.get(
-      `/api/storage/serviceGroup/tree`,options
-    );
-  }
-
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<ServiceGroupTreeDataResponse>(
+      {url: `/api/storage/serviceGroup/tree`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetServiceGroupTreeQueryKey = () => {
     return [`/api/storage/serviceGroup/tree`] as const;
     }
 
     
-export const getGetServiceGroupTreeQueryOptions = <TData = Awaited<ReturnType<typeof getServiceGroupTree>>, TError = AxiosError<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getServiceGroupTree>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetServiceGroupTreeQueryOptions = <TData = Awaited<ReturnType<typeof getServiceGroupTree>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getServiceGroupTree>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetServiceGroupTreeQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getServiceGroupTree>>> = ({ signal }) => getServiceGroupTree({ signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getServiceGroupTree>>> = ({ signal }) => getServiceGroupTree(signal);
 
       
 
@@ -12910,36 +13254,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetServiceGroupTreeQueryResult = NonNullable<Awaited<ReturnType<typeof getServiceGroupTree>>>
-export type GetServiceGroupTreeQueryError = AxiosError<unknown>
+export type GetServiceGroupTreeQueryError = unknown
 
 
-export function useGetServiceGroupTree<TData = Awaited<ReturnType<typeof getServiceGroupTree>>, TError = AxiosError<unknown>>(
+export function useGetServiceGroupTree<TData = Awaited<ReturnType<typeof getServiceGroupTree>>, TError = unknown>(
   options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getServiceGroupTree>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getServiceGroupTree>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetServiceGroupTree<TData = Awaited<ReturnType<typeof getServiceGroupTree>>, TError = AxiosError<unknown>>(
+export function useGetServiceGroupTree<TData = Awaited<ReturnType<typeof getServiceGroupTree>>, TError = unknown>(
   options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getServiceGroupTree>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getServiceGroupTree>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetServiceGroupTree<TData = Awaited<ReturnType<typeof getServiceGroupTree>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getServiceGroupTree>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetServiceGroupTree<TData = Awaited<ReturnType<typeof getServiceGroupTree>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getServiceGroupTree>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetServiceGroupTree<TData = Awaited<ReturnType<typeof getServiceGroupTree>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getServiceGroupTree>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetServiceGroupTree<TData = Awaited<ReturnType<typeof getServiceGroupTree>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getServiceGroupTree>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -12954,16 +13298,16 @@ export function useGetServiceGroupTree<TData = Awaited<ReturnType<typeof getServ
 
 
 
-export const getGetServiceGroupTreeSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getServiceGroupTree>>, TError = AxiosError<unknown>>( options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroupTree>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetServiceGroupTreeSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getServiceGroupTree>>, TError = unknown>( options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroupTree>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetServiceGroupTreeQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getServiceGroupTree>>> = ({ signal }) => getServiceGroupTree({ signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getServiceGroupTree>>> = ({ signal }) => getServiceGroupTree(signal);
 
       
 
@@ -12973,24 +13317,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetServiceGroupTreeSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getServiceGroupTree>>>
-export type GetServiceGroupTreeSuspenseQueryError = AxiosError<unknown>
+export type GetServiceGroupTreeSuspenseQueryError = unknown
 
 
-export function useGetServiceGroupTreeSuspense<TData = Awaited<ReturnType<typeof getServiceGroupTree>>, TError = AxiosError<unknown>>(
-  options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroupTree>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetServiceGroupTreeSuspense<TData = Awaited<ReturnType<typeof getServiceGroupTree>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroupTree>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetServiceGroupTreeSuspense<TData = Awaited<ReturnType<typeof getServiceGroupTree>>, TError = unknown>(
+  options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroupTree>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetServiceGroupTreeSuspense<TData = Awaited<ReturnType<typeof getServiceGroupTree>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroupTree>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetServiceGroupTreeSuspense<TData = Awaited<ReturnType<typeof getServiceGroupTree>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroupTree>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetServiceGroupTreeSuspense<TData = Awaited<ReturnType<typeof getServiceGroupTree>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroupTree>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetServiceGroupTreeSuspense<TData = Awaited<ReturnType<typeof getServiceGroupTree>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroupTree>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetServiceGroupTreeSuspense<TData = Awaited<ReturnType<typeof getServiceGroupTree>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroupTree>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -13010,31 +13354,33 @@ export function useGetServiceGroupTreeSuspense<TData = Awaited<ReturnType<typeof
  * Get Service Group Flat List
  */
 export const getServiceGroupFlatList = (
-     options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ServiceGroupTreeDataResponse>> => {
     
-    
-    return axios.default.get(
-      `/api/storage/serviceGroup/flatList`,options
-    );
-  }
-
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<ServiceGroupTreeDataResponse>(
+      {url: `/api/storage/serviceGroup/flatList`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetServiceGroupFlatListQueryKey = () => {
     return [`/api/storage/serviceGroup/flatList`] as const;
     }
 
     
-export const getGetServiceGroupFlatListQueryOptions = <TData = Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError = AxiosError<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetServiceGroupFlatListQueryOptions = <TData = Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetServiceGroupFlatListQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getServiceGroupFlatList>>> = ({ signal }) => getServiceGroupFlatList({ signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getServiceGroupFlatList>>> = ({ signal }) => getServiceGroupFlatList(signal);
 
       
 
@@ -13044,36 +13390,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetServiceGroupFlatListQueryResult = NonNullable<Awaited<ReturnType<typeof getServiceGroupFlatList>>>
-export type GetServiceGroupFlatListQueryError = AxiosError<unknown>
+export type GetServiceGroupFlatListQueryError = unknown
 
 
-export function useGetServiceGroupFlatList<TData = Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError = AxiosError<unknown>>(
+export function useGetServiceGroupFlatList<TData = Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError = unknown>(
   options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getServiceGroupFlatList>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetServiceGroupFlatList<TData = Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError = AxiosError<unknown>>(
+export function useGetServiceGroupFlatList<TData = Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError = unknown>(
   options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getServiceGroupFlatList>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetServiceGroupFlatList<TData = Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetServiceGroupFlatList<TData = Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetServiceGroupFlatList<TData = Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetServiceGroupFlatList<TData = Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -13088,16 +13434,16 @@ export function useGetServiceGroupFlatList<TData = Awaited<ReturnType<typeof get
 
 
 
-export const getGetServiceGroupFlatListSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError = AxiosError<unknown>>( options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetServiceGroupFlatListSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError = unknown>( options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetServiceGroupFlatListQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getServiceGroupFlatList>>> = ({ signal }) => getServiceGroupFlatList({ signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getServiceGroupFlatList>>> = ({ signal }) => getServiceGroupFlatList(signal);
 
       
 
@@ -13107,24 +13453,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetServiceGroupFlatListSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getServiceGroupFlatList>>>
-export type GetServiceGroupFlatListSuspenseQueryError = AxiosError<unknown>
+export type GetServiceGroupFlatListSuspenseQueryError = unknown
 
 
-export function useGetServiceGroupFlatListSuspense<TData = Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError = AxiosError<unknown>>(
-  options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetServiceGroupFlatListSuspense<TData = Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetServiceGroupFlatListSuspense<TData = Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError = unknown>(
+  options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetServiceGroupFlatListSuspense<TData = Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetServiceGroupFlatListSuspense<TData = Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetServiceGroupFlatListSuspense<TData = Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetServiceGroupFlatListSuspense<TData = Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetServiceGroupFlatListSuspense<TData = Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getServiceGroupFlatList>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -13144,31 +13490,33 @@ export function useGetServiceGroupFlatListSuspense<TData = Awaited<ReturnType<ty
  * Get ProductGroup Tree
  */
 export const getProductGroupTree = (
-     options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ProductGroupTreeDataResponse>> => {
     
-    
-    return axios.default.get(
-      `/api/storage/productGroup/tree`,options
-    );
-  }
-
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<ProductGroupTreeDataResponse>(
+      {url: `/api/storage/productGroup/tree`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetProductGroupTreeQueryKey = () => {
     return [`/api/storage/productGroup/tree`] as const;
     }
 
     
-export const getGetProductGroupTreeQueryOptions = <TData = Awaited<ReturnType<typeof getProductGroupTree>>, TError = AxiosError<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductGroupTree>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetProductGroupTreeQueryOptions = <TData = Awaited<ReturnType<typeof getProductGroupTree>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductGroupTree>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetProductGroupTreeQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProductGroupTree>>> = ({ signal }) => getProductGroupTree({ signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProductGroupTree>>> = ({ signal }) => getProductGroupTree(signal);
 
       
 
@@ -13178,36 +13526,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetProductGroupTreeQueryResult = NonNullable<Awaited<ReturnType<typeof getProductGroupTree>>>
-export type GetProductGroupTreeQueryError = AxiosError<unknown>
+export type GetProductGroupTreeQueryError = unknown
 
 
-export function useGetProductGroupTree<TData = Awaited<ReturnType<typeof getProductGroupTree>>, TError = AxiosError<unknown>>(
+export function useGetProductGroupTree<TData = Awaited<ReturnType<typeof getProductGroupTree>>, TError = unknown>(
   options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductGroupTree>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getProductGroupTree>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetProductGroupTree<TData = Awaited<ReturnType<typeof getProductGroupTree>>, TError = AxiosError<unknown>>(
+export function useGetProductGroupTree<TData = Awaited<ReturnType<typeof getProductGroupTree>>, TError = unknown>(
   options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductGroupTree>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getProductGroupTree>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetProductGroupTree<TData = Awaited<ReturnType<typeof getProductGroupTree>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductGroupTree>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProductGroupTree<TData = Awaited<ReturnType<typeof getProductGroupTree>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductGroupTree>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetProductGroupTree<TData = Awaited<ReturnType<typeof getProductGroupTree>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductGroupTree>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProductGroupTree<TData = Awaited<ReturnType<typeof getProductGroupTree>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductGroupTree>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -13222,16 +13570,16 @@ export function useGetProductGroupTree<TData = Awaited<ReturnType<typeof getProd
 
 
 
-export const getGetProductGroupTreeSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getProductGroupTree>>, TError = AxiosError<unknown>>( options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroupTree>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetProductGroupTreeSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getProductGroupTree>>, TError = unknown>( options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroupTree>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetProductGroupTreeQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProductGroupTree>>> = ({ signal }) => getProductGroupTree({ signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProductGroupTree>>> = ({ signal }) => getProductGroupTree(signal);
 
       
 
@@ -13241,24 +13589,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetProductGroupTreeSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getProductGroupTree>>>
-export type GetProductGroupTreeSuspenseQueryError = AxiosError<unknown>
+export type GetProductGroupTreeSuspenseQueryError = unknown
 
 
-export function useGetProductGroupTreeSuspense<TData = Awaited<ReturnType<typeof getProductGroupTree>>, TError = AxiosError<unknown>>(
-  options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroupTree>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetProductGroupTreeSuspense<TData = Awaited<ReturnType<typeof getProductGroupTree>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroupTree>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProductGroupTreeSuspense<TData = Awaited<ReturnType<typeof getProductGroupTree>>, TError = unknown>(
+  options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroupTree>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetProductGroupTreeSuspense<TData = Awaited<ReturnType<typeof getProductGroupTree>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroupTree>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProductGroupTreeSuspense<TData = Awaited<ReturnType<typeof getProductGroupTree>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroupTree>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetProductGroupTreeSuspense<TData = Awaited<ReturnType<typeof getProductGroupTree>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroupTree>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetProductGroupTreeSuspense<TData = Awaited<ReturnType<typeof getProductGroupTree>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroupTree>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProductGroupTreeSuspense<TData = Awaited<ReturnType<typeof getProductGroupTree>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroupTree>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -13278,31 +13626,33 @@ export function useGetProductGroupTreeSuspense<TData = Awaited<ReturnType<typeof
  * Get ProductGroup Flat List
  */
 export const getProductGroupFlatList = (
-     options?: AxiosRequestConfig
- ): Promise<AxiosResponse<ProductGroupTreeDataResponse>> => {
     
-    
-    return axios.default.get(
-      `/api/storage/productGroup/flatList`,options
-    );
-  }
-
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<ProductGroupTreeDataResponse>(
+      {url: `/api/storage/productGroup/flatList`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetProductGroupFlatListQueryKey = () => {
     return [`/api/storage/productGroup/flatList`] as const;
     }
 
     
-export const getGetProductGroupFlatListQueryOptions = <TData = Awaited<ReturnType<typeof getProductGroupFlatList>>, TError = AxiosError<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductGroupFlatList>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetProductGroupFlatListQueryOptions = <TData = Awaited<ReturnType<typeof getProductGroupFlatList>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductGroupFlatList>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetProductGroupFlatListQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProductGroupFlatList>>> = ({ signal }) => getProductGroupFlatList({ signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProductGroupFlatList>>> = ({ signal }) => getProductGroupFlatList(signal);
 
       
 
@@ -13312,36 +13662,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetProductGroupFlatListQueryResult = NonNullable<Awaited<ReturnType<typeof getProductGroupFlatList>>>
-export type GetProductGroupFlatListQueryError = AxiosError<unknown>
+export type GetProductGroupFlatListQueryError = unknown
 
 
-export function useGetProductGroupFlatList<TData = Awaited<ReturnType<typeof getProductGroupFlatList>>, TError = AxiosError<unknown>>(
+export function useGetProductGroupFlatList<TData = Awaited<ReturnType<typeof getProductGroupFlatList>>, TError = unknown>(
   options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductGroupFlatList>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getProductGroupFlatList>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetProductGroupFlatList<TData = Awaited<ReturnType<typeof getProductGroupFlatList>>, TError = AxiosError<unknown>>(
+export function useGetProductGroupFlatList<TData = Awaited<ReturnType<typeof getProductGroupFlatList>>, TError = unknown>(
   options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductGroupFlatList>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getProductGroupFlatList>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetProductGroupFlatList<TData = Awaited<ReturnType<typeof getProductGroupFlatList>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductGroupFlatList>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProductGroupFlatList<TData = Awaited<ReturnType<typeof getProductGroupFlatList>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductGroupFlatList>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetProductGroupFlatList<TData = Awaited<ReturnType<typeof getProductGroupFlatList>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductGroupFlatList>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProductGroupFlatList<TData = Awaited<ReturnType<typeof getProductGroupFlatList>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductGroupFlatList>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -13356,16 +13706,16 @@ export function useGetProductGroupFlatList<TData = Awaited<ReturnType<typeof get
 
 
 
-export const getGetProductGroupFlatListSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getProductGroupFlatList>>, TError = AxiosError<unknown>>( options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroupFlatList>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetProductGroupFlatListSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getProductGroupFlatList>>, TError = unknown>( options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroupFlatList>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetProductGroupFlatListQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProductGroupFlatList>>> = ({ signal }) => getProductGroupFlatList({ signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProductGroupFlatList>>> = ({ signal }) => getProductGroupFlatList(signal);
 
       
 
@@ -13375,24 +13725,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetProductGroupFlatListSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getProductGroupFlatList>>>
-export type GetProductGroupFlatListSuspenseQueryError = AxiosError<unknown>
+export type GetProductGroupFlatListSuspenseQueryError = unknown
 
 
-export function useGetProductGroupFlatListSuspense<TData = Awaited<ReturnType<typeof getProductGroupFlatList>>, TError = AxiosError<unknown>>(
-  options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroupFlatList>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetProductGroupFlatListSuspense<TData = Awaited<ReturnType<typeof getProductGroupFlatList>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroupFlatList>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProductGroupFlatListSuspense<TData = Awaited<ReturnType<typeof getProductGroupFlatList>>, TError = unknown>(
+  options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroupFlatList>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetProductGroupFlatListSuspense<TData = Awaited<ReturnType<typeof getProductGroupFlatList>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroupFlatList>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProductGroupFlatListSuspense<TData = Awaited<ReturnType<typeof getProductGroupFlatList>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroupFlatList>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetProductGroupFlatListSuspense<TData = Awaited<ReturnType<typeof getProductGroupFlatList>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroupFlatList>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetProductGroupFlatListSuspense<TData = Awaited<ReturnType<typeof getProductGroupFlatList>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroupFlatList>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetProductGroupFlatListSuspense<TData = Awaited<ReturnType<typeof getProductGroupFlatList>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getProductGroupFlatList>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -13412,31 +13762,33 @@ export function useGetProductGroupFlatListSuspense<TData = Awaited<ReturnType<ty
  * Get MaterialGroup Tree
  */
 export const getMaterialGroupTree = (
-     options?: AxiosRequestConfig
- ): Promise<AxiosResponse<MaterialGroupTreeDataResponse>> => {
     
-    
-    return axios.default.get(
-      `/api/storage/materialGroup/tree`,options
-    );
-  }
-
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<MaterialGroupTreeDataResponse>(
+      {url: `/api/storage/materialGroup/tree`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetMaterialGroupTreeQueryKey = () => {
     return [`/api/storage/materialGroup/tree`] as const;
     }
 
     
-export const getGetMaterialGroupTreeQueryOptions = <TData = Awaited<ReturnType<typeof getMaterialGroupTree>>, TError = AxiosError<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupTree>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetMaterialGroupTreeQueryOptions = <TData = Awaited<ReturnType<typeof getMaterialGroupTree>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupTree>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetMaterialGroupTreeQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMaterialGroupTree>>> = ({ signal }) => getMaterialGroupTree({ signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMaterialGroupTree>>> = ({ signal }) => getMaterialGroupTree(signal);
 
       
 
@@ -13446,36 +13798,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetMaterialGroupTreeQueryResult = NonNullable<Awaited<ReturnType<typeof getMaterialGroupTree>>>
-export type GetMaterialGroupTreeQueryError = AxiosError<unknown>
+export type GetMaterialGroupTreeQueryError = unknown
 
 
-export function useGetMaterialGroupTree<TData = Awaited<ReturnType<typeof getMaterialGroupTree>>, TError = AxiosError<unknown>>(
+export function useGetMaterialGroupTree<TData = Awaited<ReturnType<typeof getMaterialGroupTree>>, TError = unknown>(
   options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupTree>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getMaterialGroupTree>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetMaterialGroupTree<TData = Awaited<ReturnType<typeof getMaterialGroupTree>>, TError = AxiosError<unknown>>(
+export function useGetMaterialGroupTree<TData = Awaited<ReturnType<typeof getMaterialGroupTree>>, TError = unknown>(
   options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupTree>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getMaterialGroupTree>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetMaterialGroupTree<TData = Awaited<ReturnType<typeof getMaterialGroupTree>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupTree>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetMaterialGroupTree<TData = Awaited<ReturnType<typeof getMaterialGroupTree>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupTree>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetMaterialGroupTree<TData = Awaited<ReturnType<typeof getMaterialGroupTree>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupTree>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetMaterialGroupTree<TData = Awaited<ReturnType<typeof getMaterialGroupTree>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupTree>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -13490,16 +13842,16 @@ export function useGetMaterialGroupTree<TData = Awaited<ReturnType<typeof getMat
 
 
 
-export const getGetMaterialGroupTreeSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getMaterialGroupTree>>, TError = AxiosError<unknown>>( options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupTree>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetMaterialGroupTreeSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getMaterialGroupTree>>, TError = unknown>( options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupTree>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetMaterialGroupTreeQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMaterialGroupTree>>> = ({ signal }) => getMaterialGroupTree({ signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMaterialGroupTree>>> = ({ signal }) => getMaterialGroupTree(signal);
 
       
 
@@ -13509,24 +13861,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetMaterialGroupTreeSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getMaterialGroupTree>>>
-export type GetMaterialGroupTreeSuspenseQueryError = AxiosError<unknown>
+export type GetMaterialGroupTreeSuspenseQueryError = unknown
 
 
-export function useGetMaterialGroupTreeSuspense<TData = Awaited<ReturnType<typeof getMaterialGroupTree>>, TError = AxiosError<unknown>>(
-  options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupTree>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetMaterialGroupTreeSuspense<TData = Awaited<ReturnType<typeof getMaterialGroupTree>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupTree>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetMaterialGroupTreeSuspense<TData = Awaited<ReturnType<typeof getMaterialGroupTree>>, TError = unknown>(
+  options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupTree>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetMaterialGroupTreeSuspense<TData = Awaited<ReturnType<typeof getMaterialGroupTree>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupTree>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetMaterialGroupTreeSuspense<TData = Awaited<ReturnType<typeof getMaterialGroupTree>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupTree>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetMaterialGroupTreeSuspense<TData = Awaited<ReturnType<typeof getMaterialGroupTree>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupTree>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetMaterialGroupTreeSuspense<TData = Awaited<ReturnType<typeof getMaterialGroupTree>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupTree>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetMaterialGroupTreeSuspense<TData = Awaited<ReturnType<typeof getMaterialGroupTree>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupTree>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -13546,31 +13898,33 @@ export function useGetMaterialGroupTreeSuspense<TData = Awaited<ReturnType<typeo
  * Get MaterialGroup Flat List
  */
 export const getMaterialGroupFlatList = (
-     options?: AxiosRequestConfig
- ): Promise<AxiosResponse<MaterialGroupTreeDataResponse>> => {
     
-    
-    return axios.default.get(
-      `/api/storage/materialGroup/flatList`,options
-    );
-  }
-
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<MaterialGroupTreeDataResponse>(
+      {url: `/api/storage/materialGroup/flatList`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetMaterialGroupFlatListQueryKey = () => {
     return [`/api/storage/materialGroup/flatList`] as const;
     }
 
     
-export const getGetMaterialGroupFlatListQueryOptions = <TData = Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError = AxiosError<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetMaterialGroupFlatListQueryOptions = <TData = Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetMaterialGroupFlatListQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMaterialGroupFlatList>>> = ({ signal }) => getMaterialGroupFlatList({ signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMaterialGroupFlatList>>> = ({ signal }) => getMaterialGroupFlatList(signal);
 
       
 
@@ -13580,36 +13934,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetMaterialGroupFlatListQueryResult = NonNullable<Awaited<ReturnType<typeof getMaterialGroupFlatList>>>
-export type GetMaterialGroupFlatListQueryError = AxiosError<unknown>
+export type GetMaterialGroupFlatListQueryError = unknown
 
 
-export function useGetMaterialGroupFlatList<TData = Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError = AxiosError<unknown>>(
+export function useGetMaterialGroupFlatList<TData = Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError = unknown>(
   options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getMaterialGroupFlatList>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetMaterialGroupFlatList<TData = Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError = AxiosError<unknown>>(
+export function useGetMaterialGroupFlatList<TData = Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError = unknown>(
   options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getMaterialGroupFlatList>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetMaterialGroupFlatList<TData = Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetMaterialGroupFlatList<TData = Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetMaterialGroupFlatList<TData = Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetMaterialGroupFlatList<TData = Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -13624,16 +13978,16 @@ export function useGetMaterialGroupFlatList<TData = Awaited<ReturnType<typeof ge
 
 
 
-export const getGetMaterialGroupFlatListSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError = AxiosError<unknown>>( options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetMaterialGroupFlatListSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError = unknown>( options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetMaterialGroupFlatListQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMaterialGroupFlatList>>> = ({ signal }) => getMaterialGroupFlatList({ signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMaterialGroupFlatList>>> = ({ signal }) => getMaterialGroupFlatList(signal);
 
       
 
@@ -13643,24 +13997,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetMaterialGroupFlatListSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getMaterialGroupFlatList>>>
-export type GetMaterialGroupFlatListSuspenseQueryError = AxiosError<unknown>
+export type GetMaterialGroupFlatListSuspenseQueryError = unknown
 
 
-export function useGetMaterialGroupFlatListSuspense<TData = Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError = AxiosError<unknown>>(
-  options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetMaterialGroupFlatListSuspense<TData = Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetMaterialGroupFlatListSuspense<TData = Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError = unknown>(
+  options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetMaterialGroupFlatListSuspense<TData = Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetMaterialGroupFlatListSuspense<TData = Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetMaterialGroupFlatListSuspense<TData = Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetMaterialGroupFlatListSuspense<TData = Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetMaterialGroupFlatListSuspense<TData = Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getMaterialGroupFlatList>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -13680,31 +14034,33 @@ export function useGetMaterialGroupFlatListSuspense<TData = Awaited<ReturnType<t
  * Get FixtureGroup Tree
  */
 export const getFixtureGroupTree = (
-     options?: AxiosRequestConfig
- ): Promise<AxiosResponse<FixtureGroupTreeDataResponse>> => {
     
-    
-    return axios.default.get(
-      `/api/storage/fixtureGroup/tree`,options
-    );
-  }
-
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<FixtureGroupTreeDataResponse>(
+      {url: `/api/storage/fixtureGroup/tree`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetFixtureGroupTreeQueryKey = () => {
     return [`/api/storage/fixtureGroup/tree`] as const;
     }
 
     
-export const getGetFixtureGroupTreeQueryOptions = <TData = Awaited<ReturnType<typeof getFixtureGroupTree>>, TError = AxiosError<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupTree>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetFixtureGroupTreeQueryOptions = <TData = Awaited<ReturnType<typeof getFixtureGroupTree>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupTree>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetFixtureGroupTreeQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFixtureGroupTree>>> = ({ signal }) => getFixtureGroupTree({ signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFixtureGroupTree>>> = ({ signal }) => getFixtureGroupTree(signal);
 
       
 
@@ -13714,36 +14070,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetFixtureGroupTreeQueryResult = NonNullable<Awaited<ReturnType<typeof getFixtureGroupTree>>>
-export type GetFixtureGroupTreeQueryError = AxiosError<unknown>
+export type GetFixtureGroupTreeQueryError = unknown
 
 
-export function useGetFixtureGroupTree<TData = Awaited<ReturnType<typeof getFixtureGroupTree>>, TError = AxiosError<unknown>>(
+export function useGetFixtureGroupTree<TData = Awaited<ReturnType<typeof getFixtureGroupTree>>, TError = unknown>(
   options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupTree>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getFixtureGroupTree>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetFixtureGroupTree<TData = Awaited<ReturnType<typeof getFixtureGroupTree>>, TError = AxiosError<unknown>>(
+export function useGetFixtureGroupTree<TData = Awaited<ReturnType<typeof getFixtureGroupTree>>, TError = unknown>(
   options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupTree>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getFixtureGroupTree>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetFixtureGroupTree<TData = Awaited<ReturnType<typeof getFixtureGroupTree>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupTree>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetFixtureGroupTree<TData = Awaited<ReturnType<typeof getFixtureGroupTree>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupTree>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetFixtureGroupTree<TData = Awaited<ReturnType<typeof getFixtureGroupTree>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupTree>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetFixtureGroupTree<TData = Awaited<ReturnType<typeof getFixtureGroupTree>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupTree>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -13758,16 +14114,16 @@ export function useGetFixtureGroupTree<TData = Awaited<ReturnType<typeof getFixt
 
 
 
-export const getGetFixtureGroupTreeSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getFixtureGroupTree>>, TError = AxiosError<unknown>>( options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupTree>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetFixtureGroupTreeSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getFixtureGroupTree>>, TError = unknown>( options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupTree>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetFixtureGroupTreeQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFixtureGroupTree>>> = ({ signal }) => getFixtureGroupTree({ signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFixtureGroupTree>>> = ({ signal }) => getFixtureGroupTree(signal);
 
       
 
@@ -13777,24 +14133,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetFixtureGroupTreeSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getFixtureGroupTree>>>
-export type GetFixtureGroupTreeSuspenseQueryError = AxiosError<unknown>
+export type GetFixtureGroupTreeSuspenseQueryError = unknown
 
 
-export function useGetFixtureGroupTreeSuspense<TData = Awaited<ReturnType<typeof getFixtureGroupTree>>, TError = AxiosError<unknown>>(
-  options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupTree>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetFixtureGroupTreeSuspense<TData = Awaited<ReturnType<typeof getFixtureGroupTree>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupTree>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetFixtureGroupTreeSuspense<TData = Awaited<ReturnType<typeof getFixtureGroupTree>>, TError = unknown>(
+  options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupTree>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetFixtureGroupTreeSuspense<TData = Awaited<ReturnType<typeof getFixtureGroupTree>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupTree>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetFixtureGroupTreeSuspense<TData = Awaited<ReturnType<typeof getFixtureGroupTree>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupTree>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetFixtureGroupTreeSuspense<TData = Awaited<ReturnType<typeof getFixtureGroupTree>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupTree>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetFixtureGroupTreeSuspense<TData = Awaited<ReturnType<typeof getFixtureGroupTree>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupTree>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetFixtureGroupTreeSuspense<TData = Awaited<ReturnType<typeof getFixtureGroupTree>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupTree>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -13814,31 +14170,33 @@ export function useGetFixtureGroupTreeSuspense<TData = Awaited<ReturnType<typeof
  * Get FixtureGroup Flat List
  */
 export const getFixtureGroupFlatList = (
-     options?: AxiosRequestConfig
- ): Promise<AxiosResponse<FixtureGroupTreeDataResponse>> => {
     
-    
-    return axios.default.get(
-      `/api/storage/fixtureGroup/flatList`,options
-    );
-  }
-
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<FixtureGroupTreeDataResponse>(
+      {url: `/api/storage/fixtureGroup/flatList`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetFixtureGroupFlatListQueryKey = () => {
     return [`/api/storage/fixtureGroup/flatList`] as const;
     }
 
     
-export const getGetFixtureGroupFlatListQueryOptions = <TData = Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError = AxiosError<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetFixtureGroupFlatListQueryOptions = <TData = Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetFixtureGroupFlatListQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFixtureGroupFlatList>>> = ({ signal }) => getFixtureGroupFlatList({ signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFixtureGroupFlatList>>> = ({ signal }) => getFixtureGroupFlatList(signal);
 
       
 
@@ -13848,36 +14206,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetFixtureGroupFlatListQueryResult = NonNullable<Awaited<ReturnType<typeof getFixtureGroupFlatList>>>
-export type GetFixtureGroupFlatListQueryError = AxiosError<unknown>
+export type GetFixtureGroupFlatListQueryError = unknown
 
 
-export function useGetFixtureGroupFlatList<TData = Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError = AxiosError<unknown>>(
+export function useGetFixtureGroupFlatList<TData = Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError = unknown>(
   options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getFixtureGroupFlatList>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetFixtureGroupFlatList<TData = Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError = AxiosError<unknown>>(
+export function useGetFixtureGroupFlatList<TData = Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError = unknown>(
   options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getFixtureGroupFlatList>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetFixtureGroupFlatList<TData = Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetFixtureGroupFlatList<TData = Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetFixtureGroupFlatList<TData = Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetFixtureGroupFlatList<TData = Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -13892,16 +14250,16 @@ export function useGetFixtureGroupFlatList<TData = Awaited<ReturnType<typeof get
 
 
 
-export const getGetFixtureGroupFlatListSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError = AxiosError<unknown>>( options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetFixtureGroupFlatListSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError = unknown>( options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetFixtureGroupFlatListQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFixtureGroupFlatList>>> = ({ signal }) => getFixtureGroupFlatList({ signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFixtureGroupFlatList>>> = ({ signal }) => getFixtureGroupFlatList(signal);
 
       
 
@@ -13911,24 +14269,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetFixtureGroupFlatListSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getFixtureGroupFlatList>>>
-export type GetFixtureGroupFlatListSuspenseQueryError = AxiosError<unknown>
+export type GetFixtureGroupFlatListSuspenseQueryError = unknown
 
 
-export function useGetFixtureGroupFlatListSuspense<TData = Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError = AxiosError<unknown>>(
-  options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetFixtureGroupFlatListSuspense<TData = Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetFixtureGroupFlatListSuspense<TData = Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError = unknown>(
+  options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetFixtureGroupFlatListSuspense<TData = Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetFixtureGroupFlatListSuspense<TData = Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetFixtureGroupFlatListSuspense<TData = Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetFixtureGroupFlatListSuspense<TData = Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetFixtureGroupFlatListSuspense<TData = Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError = unknown>(
+  options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getFixtureGroupFlatList>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -13950,15 +14308,17 @@ export function useGetFixtureGroupFlatListSuspense<TData = Awaited<ReturnType<ty
 export const getTimeKeepingDraft = (
     id: number,
     year: number,
-    month: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<TimeKeeping>> => {
-    
-    
-    return axios.default.get(
-      `/api/hr/timekeeping/draft/employee/${id}/year/${year}/month/${month}`,options
-    );
-  }
-
+    month: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<TimeKeeping>(
+      {url: `/api/hr/timekeeping/draft/employee/${id}/year/${year}/month/${month}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetTimeKeepingDraftQueryKey = (id: number,
     year: number,
@@ -13967,18 +14327,18 @@ export const getGetTimeKeepingDraftQueryKey = (id: number,
     }
 
     
-export const getGetTimeKeepingDraftQueryOptions = <TData = Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError = AxiosError<ErrorResponse>>(id: number,
+export const getGetTimeKeepingDraftQueryOptions = <TData = Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError = ErrorResponse>(id: number,
     year: number,
-    month: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError, TData>>, axios?: AxiosRequestConfig}
+    month: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetTimeKeepingDraftQueryKey(id,year,month);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTimeKeepingDraft>>> = ({ signal }) => getTimeKeepingDraft(id,year,month, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTimeKeepingDraft>>> = ({ signal }) => getTimeKeepingDraft(id,year,month, signal);
 
       
 
@@ -13988,10 +14348,10 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetTimeKeepingDraftQueryResult = NonNullable<Awaited<ReturnType<typeof getTimeKeepingDraft>>>
-export type GetTimeKeepingDraftQueryError = AxiosError<ErrorResponse>
+export type GetTimeKeepingDraftQueryError = ErrorResponse
 
 
-export function useGetTimeKeepingDraft<TData = Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError = AxiosError<ErrorResponse>>(
+export function useGetTimeKeepingDraft<TData = Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError = ErrorResponse>(
  id: number,
     year: number,
     month: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError, TData>> & Pick<
@@ -14000,10 +14360,10 @@ export function useGetTimeKeepingDraft<TData = Awaited<ReturnType<typeof getTime
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetTimeKeepingDraft<TData = Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError = AxiosError<ErrorResponse>>(
+export function useGetTimeKeepingDraft<TData = Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError = ErrorResponse>(
  id: number,
     year: number,
     month: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError, TData>> & Pick<
@@ -14012,20 +14372,20 @@ export function useGetTimeKeepingDraft<TData = Awaited<ReturnType<typeof getTime
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetTimeKeepingDraft<TData = Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError = AxiosError<ErrorResponse>>(
+export function useGetTimeKeepingDraft<TData = Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError = ErrorResponse>(
  id: number,
     year: number,
-    month: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError, TData>>, axios?: AxiosRequestConfig}
+    month: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetTimeKeepingDraft<TData = Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError = AxiosError<ErrorResponse>>(
+export function useGetTimeKeepingDraft<TData = Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError = ErrorResponse>(
  id: number,
     year: number,
-    month: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError, TData>>, axios?: AxiosRequestConfig}
+    month: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -14040,18 +14400,18 @@ export function useGetTimeKeepingDraft<TData = Awaited<ReturnType<typeof getTime
 
 
 
-export const getGetTimeKeepingDraftSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError = AxiosError<ErrorResponse>>(id: number,
+export const getGetTimeKeepingDraftSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError = ErrorResponse>(id: number,
     year: number,
-    month: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError, TData>>, axios?: AxiosRequestConfig}
+    month: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetTimeKeepingDraftQueryKey(id,year,month);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTimeKeepingDraft>>> = ({ signal }) => getTimeKeepingDraft(id,year,month, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTimeKeepingDraft>>> = ({ signal }) => getTimeKeepingDraft(id,year,month, signal);
 
       
 
@@ -14061,32 +14421,32 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetTimeKeepingDraftSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getTimeKeepingDraft>>>
-export type GetTimeKeepingDraftSuspenseQueryError = AxiosError<ErrorResponse>
+export type GetTimeKeepingDraftSuspenseQueryError = ErrorResponse
 
 
-export function useGetTimeKeepingDraftSuspense<TData = Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError = AxiosError<ErrorResponse>>(
+export function useGetTimeKeepingDraftSuspense<TData = Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError = ErrorResponse>(
  id: number,
     year: number,
-    month: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError, TData>>, axios?: AxiosRequestConfig}
+    month: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetTimeKeepingDraftSuspense<TData = Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError = AxiosError<ErrorResponse>>(
+export function useGetTimeKeepingDraftSuspense<TData = Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError = ErrorResponse>(
  id: number,
     year: number,
-    month: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError, TData>>, axios?: AxiosRequestConfig}
+    month: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetTimeKeepingDraftSuspense<TData = Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError = AxiosError<ErrorResponse>>(
+export function useGetTimeKeepingDraftSuspense<TData = Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError = ErrorResponse>(
  id: number,
     year: number,
-    month: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError, TData>>, axios?: AxiosRequestConfig}
+    month: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetTimeKeepingDraftSuspense<TData = Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError = AxiosError<ErrorResponse>>(
+export function useGetTimeKeepingDraftSuspense<TData = Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError = ErrorResponse>(
  id: number,
     year: number,
-    month: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError, TData>>, axios?: AxiosRequestConfig}
+    month: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeKeepingDraft>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -14106,31 +14466,33 @@ export function useGetTimeKeepingDraftSuspense<TData = Awaited<ReturnType<typeof
  * Get TimeOff Status
  */
 export const getTimeOffStatus = (
-    id: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<TimeOffStatus>> => {
-    
-    
-    return axios.default.get(
-      `/api/hr/employee/${id}/timeoffstatus`,options
-    );
-  }
-
+    id: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<TimeOffStatus>(
+      {url: `/api/hr/employee/${id}/timeoffstatus`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetTimeOffStatusQueryKey = (id: number,) => {
     return [`/api/hr/employee/${id}/timeoffstatus`] as const;
     }
 
     
-export const getGetTimeOffStatusQueryOptions = <TData = Awaited<ReturnType<typeof getTimeOffStatus>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeOffStatus>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetTimeOffStatusQueryOptions = <TData = Awaited<ReturnType<typeof getTimeOffStatus>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeOffStatus>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetTimeOffStatusQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTimeOffStatus>>> = ({ signal }) => getTimeOffStatus(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTimeOffStatus>>> = ({ signal }) => getTimeOffStatus(id, signal);
 
       
 
@@ -14140,36 +14502,36 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetTimeOffStatusQueryResult = NonNullable<Awaited<ReturnType<typeof getTimeOffStatus>>>
-export type GetTimeOffStatusQueryError = AxiosError<ErrorResponse>
+export type GetTimeOffStatusQueryError = ErrorResponse
 
 
-export function useGetTimeOffStatus<TData = Awaited<ReturnType<typeof getTimeOffStatus>>, TError = AxiosError<ErrorResponse>>(
+export function useGetTimeOffStatus<TData = Awaited<ReturnType<typeof getTimeOffStatus>>, TError = ErrorResponse>(
  id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeOffStatus>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getTimeOffStatus>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetTimeOffStatus<TData = Awaited<ReturnType<typeof getTimeOffStatus>>, TError = AxiosError<ErrorResponse>>(
+export function useGetTimeOffStatus<TData = Awaited<ReturnType<typeof getTimeOffStatus>>, TError = ErrorResponse>(
  id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeOffStatus>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getTimeOffStatus>>,
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetTimeOffStatus<TData = Awaited<ReturnType<typeof getTimeOffStatus>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeOffStatus>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetTimeOffStatus<TData = Awaited<ReturnType<typeof getTimeOffStatus>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeOffStatus>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetTimeOffStatus<TData = Awaited<ReturnType<typeof getTimeOffStatus>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeOffStatus>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetTimeOffStatus<TData = Awaited<ReturnType<typeof getTimeOffStatus>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeOffStatus>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -14184,16 +14546,16 @@ export function useGetTimeOffStatus<TData = Awaited<ReturnType<typeof getTimeOff
 
 
 
-export const getGetTimeOffStatusSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getTimeOffStatus>>, TError = AxiosError<ErrorResponse>>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeOffStatus>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetTimeOffStatusSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getTimeOffStatus>>, TError = ErrorResponse>(id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeOffStatus>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetTimeOffStatusQueryKey(id);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTimeOffStatus>>> = ({ signal }) => getTimeOffStatus(id, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTimeOffStatus>>> = ({ signal }) => getTimeOffStatus(id, signal);
 
       
 
@@ -14203,24 +14565,24 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetTimeOffStatusSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getTimeOffStatus>>>
-export type GetTimeOffStatusSuspenseQueryError = AxiosError<ErrorResponse>
+export type GetTimeOffStatusSuspenseQueryError = ErrorResponse
 
 
-export function useGetTimeOffStatusSuspense<TData = Awaited<ReturnType<typeof getTimeOffStatus>>, TError = AxiosError<ErrorResponse>>(
- id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeOffStatus>>, TError, TData>>, axios?: AxiosRequestConfig}
-
-  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetTimeOffStatusSuspense<TData = Awaited<ReturnType<typeof getTimeOffStatus>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeOffStatus>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetTimeOffStatusSuspense<TData = Awaited<ReturnType<typeof getTimeOffStatus>>, TError = ErrorResponse>(
+ id: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeOffStatus>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetTimeOffStatusSuspense<TData = Awaited<ReturnType<typeof getTimeOffStatus>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeOffStatus>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetTimeOffStatusSuspense<TData = Awaited<ReturnType<typeof getTimeOffStatus>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeOffStatus>>, TError, TData>>, }
+
+  ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetTimeOffStatusSuspense<TData = Awaited<ReturnType<typeof getTimeOffStatus>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeOffStatus>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetTimeOffStatusSuspense<TData = Awaited<ReturnType<typeof getTimeOffStatus>>, TError = AxiosError<ErrorResponse>>(
- id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeOffStatus>>, TError, TData>>, axios?: AxiosRequestConfig}
+export function useGetTimeOffStatusSuspense<TData = Awaited<ReturnType<typeof getTimeOffStatus>>, TError = ErrorResponse>(
+ id: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getTimeOffStatus>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -14241,15 +14603,17 @@ export function useGetTimeOffStatusSuspense<TData = Awaited<ReturnType<typeof ge
  */
 export const getEmployeePayment = (
     id: number,
-    employeePaymentId: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<EmployeePayment>> => {
-    
-    
-    return axios.default.get(
-      `/api/hr/employee/${id}/payment/${employeePaymentId}`,options
-    );
-  }
-
+    employeePaymentId: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<EmployeePayment>(
+      {url: `/api/hr/employee/${id}/payment/${employeePaymentId}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetEmployeePaymentQueryKey = (id: number,
     employeePaymentId: number,) => {
@@ -14257,17 +14621,17 @@ export const getGetEmployeePaymentQueryKey = (id: number,
     }
 
     
-export const getGetEmployeePaymentQueryOptions = <TData = Awaited<ReturnType<typeof getEmployeePayment>>, TError = AxiosError<unknown>>(id: number,
-    employeePaymentId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEmployeePayment>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetEmployeePaymentQueryOptions = <TData = Awaited<ReturnType<typeof getEmployeePayment>>, TError = unknown>(id: number,
+    employeePaymentId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEmployeePayment>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetEmployeePaymentQueryKey(id,employeePaymentId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEmployeePayment>>> = ({ signal }) => getEmployeePayment(id,employeePaymentId, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEmployeePayment>>> = ({ signal }) => getEmployeePayment(id,employeePaymentId, signal);
 
       
 
@@ -14277,10 +14641,10 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetEmployeePaymentQueryResult = NonNullable<Awaited<ReturnType<typeof getEmployeePayment>>>
-export type GetEmployeePaymentQueryError = AxiosError<unknown>
+export type GetEmployeePaymentQueryError = unknown
 
 
-export function useGetEmployeePayment<TData = Awaited<ReturnType<typeof getEmployeePayment>>, TError = AxiosError<unknown>>(
+export function useGetEmployeePayment<TData = Awaited<ReturnType<typeof getEmployeePayment>>, TError = unknown>(
  id: number,
     employeePaymentId: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEmployeePayment>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
@@ -14288,10 +14652,10 @@ export function useGetEmployeePayment<TData = Awaited<ReturnType<typeof getEmplo
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetEmployeePayment<TData = Awaited<ReturnType<typeof getEmployeePayment>>, TError = AxiosError<unknown>>(
+export function useGetEmployeePayment<TData = Awaited<ReturnType<typeof getEmployeePayment>>, TError = unknown>(
  id: number,
     employeePaymentId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEmployeePayment>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
@@ -14299,18 +14663,18 @@ export function useGetEmployeePayment<TData = Awaited<ReturnType<typeof getEmplo
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetEmployeePayment<TData = Awaited<ReturnType<typeof getEmployeePayment>>, TError = AxiosError<unknown>>(
+export function useGetEmployeePayment<TData = Awaited<ReturnType<typeof getEmployeePayment>>, TError = unknown>(
  id: number,
-    employeePaymentId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEmployeePayment>>, TError, TData>>, axios?: AxiosRequestConfig}
+    employeePaymentId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEmployeePayment>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetEmployeePayment<TData = Awaited<ReturnType<typeof getEmployeePayment>>, TError = AxiosError<unknown>>(
+export function useGetEmployeePayment<TData = Awaited<ReturnType<typeof getEmployeePayment>>, TError = unknown>(
  id: number,
-    employeePaymentId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEmployeePayment>>, TError, TData>>, axios?: AxiosRequestConfig}
+    employeePaymentId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEmployeePayment>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -14325,17 +14689,17 @@ export function useGetEmployeePayment<TData = Awaited<ReturnType<typeof getEmplo
 
 
 
-export const getGetEmployeePaymentSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getEmployeePayment>>, TError = AxiosError<unknown>>(id: number,
-    employeePaymentId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployeePayment>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetEmployeePaymentSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getEmployeePayment>>, TError = unknown>(id: number,
+    employeePaymentId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployeePayment>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetEmployeePaymentQueryKey(id,employeePaymentId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEmployeePayment>>> = ({ signal }) => getEmployeePayment(id,employeePaymentId, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEmployeePayment>>> = ({ signal }) => getEmployeePayment(id,employeePaymentId, signal);
 
       
 
@@ -14345,28 +14709,28 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetEmployeePaymentSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getEmployeePayment>>>
-export type GetEmployeePaymentSuspenseQueryError = AxiosError<unknown>
+export type GetEmployeePaymentSuspenseQueryError = unknown
 
 
-export function useGetEmployeePaymentSuspense<TData = Awaited<ReturnType<typeof getEmployeePayment>>, TError = AxiosError<unknown>>(
+export function useGetEmployeePaymentSuspense<TData = Awaited<ReturnType<typeof getEmployeePayment>>, TError = unknown>(
  id: number,
-    employeePaymentId: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployeePayment>>, TError, TData>>, axios?: AxiosRequestConfig}
+    employeePaymentId: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployeePayment>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetEmployeePaymentSuspense<TData = Awaited<ReturnType<typeof getEmployeePayment>>, TError = AxiosError<unknown>>(
+export function useGetEmployeePaymentSuspense<TData = Awaited<ReturnType<typeof getEmployeePayment>>, TError = unknown>(
  id: number,
-    employeePaymentId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployeePayment>>, TError, TData>>, axios?: AxiosRequestConfig}
+    employeePaymentId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployeePayment>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetEmployeePaymentSuspense<TData = Awaited<ReturnType<typeof getEmployeePayment>>, TError = AxiosError<unknown>>(
+export function useGetEmployeePaymentSuspense<TData = Awaited<ReturnType<typeof getEmployeePayment>>, TError = unknown>(
  id: number,
-    employeePaymentId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployeePayment>>, TError, TData>>, axios?: AxiosRequestConfig}
+    employeePaymentId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployeePayment>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetEmployeePaymentSuspense<TData = Awaited<ReturnType<typeof getEmployeePayment>>, TError = AxiosError<unknown>>(
+export function useGetEmployeePaymentSuspense<TData = Awaited<ReturnType<typeof getEmployeePayment>>, TError = unknown>(
  id: number,
-    employeePaymentId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployeePayment>>, TError, TData>>, axios?: AxiosRequestConfig}
+    employeePaymentId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployeePayment>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -14387,26 +14751,27 @@ export function useGetEmployeePaymentSuspense<TData = Awaited<ReturnType<typeof 
  */
 export const deleteEmployeePayment = (
     id: number,
-    employeePaymentId: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<EmployeePayment>> => {
-    
-    
-    return axios.default.delete(
-      `/api/hr/employee/${id}/payment/${employeePaymentId}`,options
-    );
-  }
+    employeePaymentId: number,
+ ) => {
+      
+      
+      return customMutator<EmployeePayment>(
+      {url: `/api/hr/employee/${id}/payment/${employeePaymentId}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteEmployeePaymentMutationOptions = <TData = Awaited<ReturnType<typeof deleteEmployeePayment>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;employeePaymentId: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteEmployeePaymentMutationOptions = <TData = Awaited<ReturnType<typeof deleteEmployeePayment>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;employeePaymentId: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteEmployeePayment'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -14414,7 +14779,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteEmployeePayment>>, {id: number;employeePaymentId: number}> = (props) => {
           const {id,employeePaymentId} = props ?? {};
 
-          return  deleteEmployeePayment(id,employeePaymentId,axiosOptions)
+          return  deleteEmployeePayment(id,employeePaymentId,)
         }
 
         
@@ -14424,10 +14789,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteEmployeePaymentMutationResult = NonNullable<Awaited<ReturnType<typeof deleteEmployeePayment>>>
     
-    export type DeleteEmployeePaymentMutationError = AxiosError<ResponseBase>
+    export type DeleteEmployeePaymentMutationError = ResponseBase
 
-    export const useDeleteEmployeePayment = <TData = Awaited<ReturnType<typeof deleteEmployeePayment>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;employeePaymentId: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteEmployeePayment = <TData = Awaited<ReturnType<typeof deleteEmployeePayment>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;employeePaymentId: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
@@ -14445,15 +14810,17 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
  */
 export const getEmployeeOvertime = (
     id: number,
-    overtimeId: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<EmployeeOvertime>> => {
-    
-    
-    return axios.default.get(
-      `/api/hr/employee/${id}/overtime/${overtimeId}`,options
-    );
-  }
-
+    overtimeId: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customMutator<EmployeeOvertime>(
+      {url: `/api/hr/employee/${id}/overtime/${overtimeId}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetEmployeeOvertimeQueryKey = (id: number,
     overtimeId: number,) => {
@@ -14461,17 +14828,17 @@ export const getGetEmployeeOvertimeQueryKey = (id: number,
     }
 
     
-export const getGetEmployeeOvertimeQueryOptions = <TData = Awaited<ReturnType<typeof getEmployeeOvertime>>, TError = AxiosError<unknown>>(id: number,
-    overtimeId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEmployeeOvertime>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetEmployeeOvertimeQueryOptions = <TData = Awaited<ReturnType<typeof getEmployeeOvertime>>, TError = unknown>(id: number,
+    overtimeId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEmployeeOvertime>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetEmployeeOvertimeQueryKey(id,overtimeId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEmployeeOvertime>>> = ({ signal }) => getEmployeeOvertime(id,overtimeId, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEmployeeOvertime>>> = ({ signal }) => getEmployeeOvertime(id,overtimeId, signal);
 
       
 
@@ -14481,10 +14848,10 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetEmployeeOvertimeQueryResult = NonNullable<Awaited<ReturnType<typeof getEmployeeOvertime>>>
-export type GetEmployeeOvertimeQueryError = AxiosError<unknown>
+export type GetEmployeeOvertimeQueryError = unknown
 
 
-export function useGetEmployeeOvertime<TData = Awaited<ReturnType<typeof getEmployeeOvertime>>, TError = AxiosError<unknown>>(
+export function useGetEmployeeOvertime<TData = Awaited<ReturnType<typeof getEmployeeOvertime>>, TError = unknown>(
  id: number,
     overtimeId: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEmployeeOvertime>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
@@ -14492,10 +14859,10 @@ export function useGetEmployeeOvertime<TData = Awaited<ReturnType<typeof getEmpl
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetEmployeeOvertime<TData = Awaited<ReturnType<typeof getEmployeeOvertime>>, TError = AxiosError<unknown>>(
+export function useGetEmployeeOvertime<TData = Awaited<ReturnType<typeof getEmployeeOvertime>>, TError = unknown>(
  id: number,
     overtimeId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEmployeeOvertime>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
@@ -14503,18 +14870,18 @@ export function useGetEmployeeOvertime<TData = Awaited<ReturnType<typeof getEmpl
           TError,
           TData
         > , 'initialData'
-      >, axios?: AxiosRequestConfig}
+      >, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetEmployeeOvertime<TData = Awaited<ReturnType<typeof getEmployeeOvertime>>, TError = AxiosError<unknown>>(
+export function useGetEmployeeOvertime<TData = Awaited<ReturnType<typeof getEmployeeOvertime>>, TError = unknown>(
  id: number,
-    overtimeId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEmployeeOvertime>>, TError, TData>>, axios?: AxiosRequestConfig}
+    overtimeId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEmployeeOvertime>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetEmployeeOvertime<TData = Awaited<ReturnType<typeof getEmployeeOvertime>>, TError = AxiosError<unknown>>(
+export function useGetEmployeeOvertime<TData = Awaited<ReturnType<typeof getEmployeeOvertime>>, TError = unknown>(
  id: number,
-    overtimeId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEmployeeOvertime>>, TError, TData>>, axios?: AxiosRequestConfig}
+    overtimeId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEmployeeOvertime>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -14529,17 +14896,17 @@ export function useGetEmployeeOvertime<TData = Awaited<ReturnType<typeof getEmpl
 
 
 
-export const getGetEmployeeOvertimeSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getEmployeeOvertime>>, TError = AxiosError<unknown>>(id: number,
-    overtimeId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployeeOvertime>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetEmployeeOvertimeSuspenseQueryOptions = <TData = Awaited<ReturnType<typeof getEmployeeOvertime>>, TError = unknown>(id: number,
+    overtimeId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployeeOvertime>>, TError, TData>>, }
 ) => {
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+const {query: queryOptions} = options ?? {};
 
   const queryKey =  queryOptions?.queryKey ?? getGetEmployeeOvertimeQueryKey(id,overtimeId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEmployeeOvertime>>> = ({ signal }) => getEmployeeOvertime(id,overtimeId, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEmployeeOvertime>>> = ({ signal }) => getEmployeeOvertime(id,overtimeId, signal);
 
       
 
@@ -14549,28 +14916,28 @@ const {query: queryOptions, axios: axiosOptions} = options ?? {};
 }
 
 export type GetEmployeeOvertimeSuspenseQueryResult = NonNullable<Awaited<ReturnType<typeof getEmployeeOvertime>>>
-export type GetEmployeeOvertimeSuspenseQueryError = AxiosError<unknown>
+export type GetEmployeeOvertimeSuspenseQueryError = unknown
 
 
-export function useGetEmployeeOvertimeSuspense<TData = Awaited<ReturnType<typeof getEmployeeOvertime>>, TError = AxiosError<unknown>>(
+export function useGetEmployeeOvertimeSuspense<TData = Awaited<ReturnType<typeof getEmployeeOvertime>>, TError = unknown>(
  id: number,
-    overtimeId: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployeeOvertime>>, TError, TData>>, axios?: AxiosRequestConfig}
+    overtimeId: number, options: { query:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployeeOvertime>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetEmployeeOvertimeSuspense<TData = Awaited<ReturnType<typeof getEmployeeOvertime>>, TError = AxiosError<unknown>>(
+export function useGetEmployeeOvertimeSuspense<TData = Awaited<ReturnType<typeof getEmployeeOvertime>>, TError = unknown>(
  id: number,
-    overtimeId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployeeOvertime>>, TError, TData>>, axios?: AxiosRequestConfig}
+    overtimeId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployeeOvertime>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetEmployeeOvertimeSuspense<TData = Awaited<ReturnType<typeof getEmployeeOvertime>>, TError = AxiosError<unknown>>(
+export function useGetEmployeeOvertimeSuspense<TData = Awaited<ReturnType<typeof getEmployeeOvertime>>, TError = unknown>(
  id: number,
-    overtimeId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployeeOvertime>>, TError, TData>>, axios?: AxiosRequestConfig}
+    overtimeId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployeeOvertime>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetEmployeeOvertimeSuspense<TData = Awaited<ReturnType<typeof getEmployeeOvertime>>, TError = AxiosError<unknown>>(
+export function useGetEmployeeOvertimeSuspense<TData = Awaited<ReturnType<typeof getEmployeeOvertime>>, TError = unknown>(
  id: number,
-    overtimeId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployeeOvertime>>, TError, TData>>, axios?: AxiosRequestConfig}
+    overtimeId: number, options?: { query?:Partial<UseSuspenseQueryOptions<Awaited<ReturnType<typeof getEmployeeOvertime>>, TError, TData>>, }
 
   ):  UseSuspenseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
@@ -14591,26 +14958,27 @@ export function useGetEmployeeOvertimeSuspense<TData = Awaited<ReturnType<typeof
  */
 export const deleteEmployeeOvertime = (
     id: number,
-    overtimeId: number, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<EmployeeOvertime>> => {
-    
-    
-    return axios.default.delete(
-      `/api/hr/employee/${id}/overtime/${overtimeId}`,options
-    );
-  }
+    overtimeId: number,
+ ) => {
+      
+      
+      return customMutator<EmployeeOvertime>(
+      {url: `/api/hr/employee/${id}/overtime/${overtimeId}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
 
-
-export const getDeleteEmployeeOvertimeMutationOptions = <TData = Awaited<ReturnType<typeof deleteEmployeeOvertime>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;overtimeId: number}, TContext>, axios?: AxiosRequestConfig}
+export const getDeleteEmployeeOvertimeMutationOptions = <TData = Awaited<ReturnType<typeof deleteEmployeeOvertime>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;overtimeId: number}, TContext>, }
 ) => {
 const mutationKey = ['deleteEmployeeOvertime'];
-const {mutation: mutationOptions, axios: axiosOptions} = options ?
+const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, axios: undefined};
+      : {mutation: { mutationKey, }};
 
       
 
@@ -14618,7 +14986,7 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
       const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteEmployeeOvertime>>, {id: number;overtimeId: number}> = (props) => {
           const {id,overtimeId} = props ?? {};
 
-          return  deleteEmployeeOvertime(id,overtimeId,axiosOptions)
+          return  deleteEmployeeOvertime(id,overtimeId,)
         }
 
         
@@ -14628,10 +14996,10 @@ const {mutation: mutationOptions, axios: axiosOptions} = options ?
 
     export type DeleteEmployeeOvertimeMutationResult = NonNullable<Awaited<ReturnType<typeof deleteEmployeeOvertime>>>
     
-    export type DeleteEmployeeOvertimeMutationError = AxiosError<ResponseBase>
+    export type DeleteEmployeeOvertimeMutationError = ResponseBase
 
-    export const useDeleteEmployeeOvertime = <TData = Awaited<ReturnType<typeof deleteEmployeeOvertime>>, TError = AxiosError<ResponseBase>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;overtimeId: number}, TContext>, axios?: AxiosRequestConfig}
+    export const useDeleteEmployeeOvertime = <TData = Awaited<ReturnType<typeof deleteEmployeeOvertime>>, TError = ResponseBase,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{id: number;overtimeId: number}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
