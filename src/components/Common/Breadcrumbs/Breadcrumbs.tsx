@@ -56,11 +56,11 @@ export const Breadcrumbs = () => {
         direction={'row'}
       >
         <Skeleton
-          animation='wave'
+          animation="wave"
           width={20}
         />
         <Skeleton
-          animation='wave'
+          animation="wave"
           width={140}
         />
       </Stack>

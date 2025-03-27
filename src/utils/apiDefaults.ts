@@ -107,7 +107,11 @@ export const refreshAuth = async (failedRequest: AxiosError) => {
 
     return Promise.resolve(newAccessToken)
   } catch (error) {
-    console.error('Failed to refresh token', error)
+    if (axios.isAxiosError(error) && error.response?.status === 401) {
+      setAuthToken(undefined)
+      window.location.href = '/login'
+    }
+
     return Promise.reject(error)
   }
 }
