@@ -106,7 +106,6 @@ import { Route as AuthenticatedAdminRolesNewImport } from './routes/_authenticat
 import { Route as AuthenticatedAdminPublicHolidaysNewImport } from './routes/_authenticated/admin/publicHolidays/new'
 import { Route as AuthenticatedAdminPaymentMethodsNewImport } from './routes/_authenticated/admin/paymentMethods/new'
 import { Route as AuthenticatedAdminMachinesNewImport } from './routes/_authenticated/admin/machines/new'
-import { Route as AuthenticatedAdminCompaniesNewImport } from './routes/_authenticated/admin/companies/new'
 import { Route as AuthenticatedAccountingExpenseInvoicesNewImport } from './routes/_authenticated/accounting/expenseInvoices/new'
 import { Route as AuthenticatedAccountingExpenseCardsNewImport } from './routes/_authenticated/accounting/expenseCards/new'
 import { Route as AuthenticatedAccountingCashAccountsNewImport } from './routes/_authenticated/accounting/cashAccounts/new'
@@ -139,7 +138,6 @@ import { Route as AuthenticatedAdminRolesIdIndexImport } from './routes/_authent
 import { Route as AuthenticatedAdminPublicHolidaysIdIndexImport } from './routes/_authenticated/admin/publicHolidays/$id/index'
 import { Route as AuthenticatedAdminPaymentMethodsIdIndexImport } from './routes/_authenticated/admin/paymentMethods/$id/index'
 import { Route as AuthenticatedAdminMachinesIdIndexImport } from './routes/_authenticated/admin/machines/$id/index'
-import { Route as AuthenticatedAdminCompaniesIdIndexImport } from './routes/_authenticated/admin/companies/$id/index'
 import { Route as AuthenticatedAccountingExpenseInvoicesIdIndexImport } from './routes/_authenticated/accounting/expenseInvoices/$id/index'
 import { Route as AuthenticatedAccountingExpenseCardsIdIndexImport } from './routes/_authenticated/accounting/expenseCards/$id/index'
 import { Route as AuthenticatedAccountingCashAccountsIdIndexImport } from './routes/_authenticated/accounting/cashAccounts/$id/index'
@@ -702,12 +700,6 @@ const AuthenticatedAdminMachinesNewRoute =
     getParentRoute: () => AuthenticatedAdminMachinesRoute,
   } as any)
 
-const AuthenticatedAdminCompaniesNewRoute =
-  AuthenticatedAdminCompaniesNewImport.update({
-    path: '/new',
-    getParentRoute: () => AuthenticatedAdminCompaniesRoute,
-  } as any)
-
 const AuthenticatedAccountingExpenseInvoicesNewRoute =
   AuthenticatedAccountingExpenseInvoicesNewImport.update({
     path: '/accounting/expenseInvoices/new',
@@ -898,12 +890,6 @@ const AuthenticatedAdminMachinesIdIndexRoute =
   AuthenticatedAdminMachinesIdIndexImport.update({
     path: '/$id/',
     getParentRoute: () => AuthenticatedAdminMachinesRoute,
-  } as any)
-
-const AuthenticatedAdminCompaniesIdIndexRoute =
-  AuthenticatedAdminCompaniesIdIndexImport.update({
-    path: '/$id/',
-    getParentRoute: () => AuthenticatedAdminCompaniesRoute,
   } as any)
 
 const AuthenticatedAccountingExpenseInvoicesIdIndexRoute =
@@ -1177,13 +1163,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/accounting/expenseInvoices/new'
       preLoaderRoute: typeof AuthenticatedAccountingExpenseInvoicesNewImport
       parentRoute: typeof AuthenticatedImport
-    }
-    '/_authenticated/admin/companies/new': {
-      id: '/_authenticated/admin/companies/new'
-      path: '/new'
-      fullPath: '/admin/companies/new'
-      preLoaderRoute: typeof AuthenticatedAdminCompaniesNewImport
-      parentRoute: typeof AuthenticatedAdminCompaniesImport
     }
     '/_authenticated/admin/machines/new': {
       id: '/_authenticated/admin/machines/new'
@@ -1675,13 +1654,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAccountingExpenseInvoicesIdIndexImport
       parentRoute: typeof AuthenticatedImport
     }
-    '/_authenticated/admin/companies/$id/': {
-      id: '/_authenticated/admin/companies/$id/'
-      path: '/$id'
-      fullPath: '/admin/companies/$id'
-      preLoaderRoute: typeof AuthenticatedAdminCompaniesIdIndexImport
-      parentRoute: typeof AuthenticatedAdminCompaniesImport
-    }
     '/_authenticated/admin/machines/$id/': {
       id: '/_authenticated/admin/machines/$id/'
       path: '/$id'
@@ -1889,9 +1861,7 @@ export const routeTree = rootRoute.addChildren({
     AuthenticatedAdminRoute: AuthenticatedAdminRoute.addChildren({
       AuthenticatedAdminCompaniesRoute:
         AuthenticatedAdminCompaniesRoute.addChildren({
-          AuthenticatedAdminCompaniesNewRoute,
           AuthenticatedAdminCompaniesIndexRoute,
-          AuthenticatedAdminCompaniesIdIndexRoute,
         }),
       AuthenticatedAdminDepotsRoute: AuthenticatedAdminDepotsRoute.addChildren({
         AuthenticatedAdminDepotsIndexRoute,
@@ -2218,9 +2188,7 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_authenticated/admin/companies.tsx",
       "parent": "/_authenticated/admin",
       "children": [
-        "/_authenticated/admin/companies/new",
-        "/_authenticated/admin/companies/",
-        "/_authenticated/admin/companies/$id/"
+        "/_authenticated/admin/companies/"
       ]
     },
     "/_authenticated/admin/depots": {
@@ -2365,10 +2333,6 @@ export const routeTree = rootRoute.addChildren({
     "/_authenticated/accounting/expenseInvoices/new": {
       "filePath": "_authenticated/accounting/expenseInvoices/new.tsx",
       "parent": "/_authenticated"
-    },
-    "/_authenticated/admin/companies/new": {
-      "filePath": "_authenticated/admin/companies/new.tsx",
-      "parent": "/_authenticated/admin/companies"
     },
     "/_authenticated/admin/machines/new": {
       "filePath": "_authenticated/admin/machines/new.tsx",
@@ -2652,10 +2616,6 @@ export const routeTree = rootRoute.addChildren({
     "/_authenticated/accounting/expenseInvoices/$id/": {
       "filePath": "_authenticated/accounting/expenseInvoices/$id/index.tsx",
       "parent": "/_authenticated"
-    },
-    "/_authenticated/admin/companies/$id/": {
-      "filePath": "_authenticated/admin/companies/$id/index.tsx",
-      "parent": "/_authenticated/admin/companies"
     },
     "/_authenticated/admin/machines/$id/": {
       "filePath": "_authenticated/admin/machines/$id/index.tsx",
