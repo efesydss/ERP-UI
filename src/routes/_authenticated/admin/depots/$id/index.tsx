@@ -1,4 +1,4 @@
-import { DepotResponse } from "@/components/Admin/Depot/typesDepot";
+import { Depot } from "api/model/";
 import { apiRequest } from "@/utils/apiDefaults";
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 import { z } from 'zod'
@@ -13,7 +13,7 @@ export const Route = createFileRoute('/_authenticated/admin/depots/$id/')({
         const data = await context.queryClient.ensureQueryData({
             queryKey: ['depot', id],
             queryFn: () =>
-                apiRequest<DepotResponse>({
+                apiRequest<Depot>({
                     method: 'GET',
                     endpoint: 'depot',
                     id

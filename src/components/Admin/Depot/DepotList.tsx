@@ -1,6 +1,6 @@
 import { ColumnDef } from '@tanstack/react-table'
 import React, { useMemo } from 'react'
-import { DepotResponse } from '@/components/Admin/Depot/typesDepot'
+import { Depot } from 'api/model/'
 import { Button } from '@mui/material'
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
 import { Route } from '@/routes/_authenticated/admin/depots/new'
@@ -32,7 +32,7 @@ export const DepotList = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['depots'] })
-      toast.success('DepotResponse Deleted')
+      toast.success('Depot Deleted')
     }
   })
   const handleDeleteClick = useCallback(
@@ -51,7 +51,7 @@ export const DepotList = () => {
   )
 
 
-  const columns = useMemo<ColumnDef<DepotResponse>[]>(
+  const columns = useMemo<ColumnDef<Depot>[]>(
     () => [
       {
         header: t('name'),
@@ -65,7 +65,7 @@ export const DepotList = () => {
             variant="outlined"
             color="error"
             size="small"
-            onClick={handleDeleteClick(row.original.id)}
+            onClick={handleDeleteClick(row.original.id ?? 0)}
           >
             {t('delete')}
           </Button>
@@ -99,7 +99,7 @@ export const DepotList = () => {
         actions={<DepotListActions />}
       />
 
-      <BaseTable<DepotResponse> endpoint={endpoint} columns={columns}
+      <BaseTable<Depot> endpoint={endpoint} columns={columns}
 
       ></BaseTable>
 
