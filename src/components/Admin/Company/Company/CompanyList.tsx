@@ -4,7 +4,7 @@ import { deleteCompany, useAddCompany, useUpdateCompany } from "@/api/openAPIDef
 import { MaterialReactTable, MRT_ColumnDef, MRT_TableInstance, useMaterialReactTable } from "material-react-table";
 import { companies, branches } from "@/api/filtering";
 import { MRT_Row } from "material-react-table";
-import { Button, Stack, Box, IconButton, Tooltip, MenuItem, Select } from "@mui/material";
+import { Button, Stack, Box, IconButton, Tooltip, MenuItem, FormControl, InputLabel, Select } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { PageTitle } from "@/components/Common/PageTitle/PageTitle";
@@ -168,28 +168,43 @@ export const CompanyList = () => {
           const value = cell.getValue<Branch>();
           return value ? value.name : '';
         },
-        muiEditTextFieldProps: ({ row, cell }) => ({
-          select: true,
-          value: cell.getValue<Branch>()?.id ?? 0,
-          children: branchList.map((branch) => (
-            <MenuItem key={branch.id} value={branch.id ?? 0}>
-              {branch.name}
-            </MenuItem>
-          )),
-          onChange: (e) => {
-            const selectedBranch = branchList.find(branch => branch.id === parseInt(e.target.value));
-            if (selectedBranch) {
-              row._valuesCache.branch = selectedBranch;
-            }
-          },
-          error: !!validationErrors?.branch,
-          helperText: validationErrors?.branch,
-          onFocus: () =>
-            setValidationErrors({
-              ...validationErrors,
-              branch: undefined,
-            }),
-        }),
+        muiEditTextFieldProps: ({ row, cell }) => {
+          const currentBranch = cell.getValue<Branch>();
+          
+          return {
+            select: true,
+            value: currentBranch?.id ?? 0,
+            sx: { width: '100%' },
+            displayEmpty: true,
+            renderValue: (value: any) => {
+              if (value === 0) return 'Select Branch';
+              const selected = branchList.find(branch => branch.id === value);
+              return selected ? selected.name : '';
+            },
+            children: branchList.map((branch) => (
+              <MenuItem key={branch.id} value={branch.id ?? 0}>
+                {branch.name}
+              </MenuItem>
+            )),
+            onChange: (e) => {
+              const selectedBranchId = parseInt(e.target.value.toString());
+              const selectedBranch = branchList.find(branch => branch.id === selectedBranchId);
+              if (selectedBranch) {
+                row._valuesCache.branch = {
+                  id: selectedBranch.id,
+                  name: selectedBranch.name
+                };
+              }
+            },
+            error: !!validationErrors?.branch,
+            helperText: validationErrors?.branch,
+            onFocus: () =>
+              setValidationErrors({
+                ...validationErrors,
+                branch: undefined,
+              }),
+          };
+        },
       },
     ],
     [branchList, validationErrors]
@@ -198,6 +213,21 @@ export const CompanyList = () => {
   const handleCreateCompany = async (props: { exitCreatingMode: () => void; row: MRT_Row<Company>; table: MRT_TableInstance<Company>; values: Record<string, any>; }) => {
     try {
       const newCompany = props.values as Company;
+      
+      if (typeof newCompany.branch === 'number' || typeof newCompany.branch === 'string') {
+        const branchId = typeof newCompany.branch === 'string' 
+          ? parseInt(newCompany.branch) 
+          : newCompany.branch;
+          
+        const selectedBranch = branchList.find(branch => branch.id === branchId);
+        if (selectedBranch) {
+          newCompany.branch = {
+            id: selectedBranch.id,
+            name: selectedBranch.name
+          } as Branch;
+        }
+      }
+      
       addCompany({ data: newCompany }, {
         onSuccess: async () => {
           const updatedList = await fetchCompanies();
@@ -218,6 +248,21 @@ export const CompanyList = () => {
   const handleSaveCompany = async (props: { exitEditingMode: () => void; row: MRT_Row<Company>; table: MRT_TableInstance<Company>; values: Record<string, any>; }): Promise<void> => {
     try {
       const updatedCompany = props.values as Company;
+      
+      if (typeof updatedCompany.branch === 'number' || typeof updatedCompany.branch === 'string') {
+        const branchId = typeof updatedCompany.branch === 'string' 
+          ? parseInt(updatedCompany.branch) 
+          : updatedCompany.branch;
+          
+        const selectedBranch = branchList.find(branch => branch.id === branchId);
+        if (selectedBranch) {
+          updatedCompany.branch = {
+            id: selectedBranch.id,
+            name: selectedBranch.name
+          } as Branch;
+        }
+      }
+      
       const companyId = props.row.original.id;
       if (companyId !== undefined && companyId !== null) {
         editCompany({ id: companyId, data: updatedCompany }, {
