@@ -234,37 +234,12 @@ export const allMenuItems: MenuItemProps[] = [
               env: [AppEnvironment.DEVELOPMENT],
         },
         {
-            label: 'fixtureCards',
-            icon: TbUserStar,
-            env: [AppEnvironment.DEVELOPMENT],
-        },
-        {
             label: 'fixtureGroups',
             icon: TbUserStar,
             env: [AppEnvironment.DEVELOPMENT],
         },
         {
-                label: 'materialCards',
-                icon: TbUserStar,
-                env: [AppEnvironment.DEVELOPMENT],
-        },
-        {
-                label: 'materialGroups',
-                icon: TbUserStar,
-                env: [AppEnvironment.DEVELOPMENT],
-        },
-        {
-                label: 'productCards',
-                icon: TbUserStar,
-                env: [AppEnvironment.DEVELOPMENT],
-        },
-        {
                 label: 'productGroups',
-                icon: TbUserStar,
-                env: [AppEnvironment.DEVELOPMENT],
-        },
-        {
-                label: 'serviceCards',
                 icon: TbUserStar,
                 env: [AppEnvironment.DEVELOPMENT],
         },
