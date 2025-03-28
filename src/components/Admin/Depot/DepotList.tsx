@@ -8,7 +8,6 @@ import {
   MaterialReactTable,
   type MRT_ColumnDef,
   type MRT_Row,
-  type MRT_TableOptions,
   useMaterialReactTable,
   type MRT_TableInstance,
 } from 'material-react-table';
