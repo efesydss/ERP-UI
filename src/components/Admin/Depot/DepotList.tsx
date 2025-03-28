@@ -1,108 +1,188 @@
-import { ColumnDef } from '@tanstack/react-table'
-import React, { useMemo } from 'react'
+import React, { useMemo, useState, useEffect } from 'react'
 import { Depot } from 'api/model/'
-import { Button } from '@mui/material'
-import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
-import { Route } from '@/routes/_authenticated/admin/depots/new'
-import { useTranslation } from 'react-i18next'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useNavigate } from '@tanstack/react-router'
-import { GridRowId } from '@mui/x-data-grid'
-import { apiRequest } from '@/utils/apiDefaults'
-import { toast } from 'react-toastify'
+import { Stack } from '@mui/material'
+
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import {
+  MaterialReactTable,
+  type MRT_ColumnDef,
+  type MRT_Row,
+  type MRT_TableOptions,
+  useMaterialReactTable,
+  type MRT_TableInstance,
+} from 'material-react-table';
+import { Box, Button, IconButton, Tooltip } from '@mui/material';
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
-import { BaseTable } from '@/components/Common/Table/BaseTable'
-import { useConfirmDialog } from '@/utils/hooks/useConfirmDialogContext'
-import { useCallback } from 'react'
+import { depots } from '@/api/filtering'
+import { deleteDepot, useAddDepot, useUpdateDepot } from '@/api/openAPIDefinition';
+
 
 export const DepotList = () => {
-  const { t } = useTranslation('common')
-  const { openDialog } = useConfirmDialog()
-  const queryClient = useQueryClient()
+  const { mutate: addDepot } = useAddDepot();
+  const { mutate: editDepot } = useUpdateDepot();
 
-  const navigate = useNavigate()
 
-  const { mutate: deleteDepot } = useMutation({
-    mutationFn: async (depotId: string) => {
-      return await apiRequest({
-        endpoint: 'depotDelete',
-        method: 'DELETE',
-        params: { depotId: depotId?.toString() ?? '0' }
-      })
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['depots'] })
-      toast.success('Depot Deleted')
+
+  const fetchDepots = async () => {
+    const depotsData = await depots({
+      filter: "",
+      sort: "id,asc",
+      page: 0,
+      pageSize: 50,
+      namedFilters: ["show_passives"]
+    });
+    return depotsData.data;
+  };
+  const [validationErrors, setValidationErrors] = useState<
+    Record<string, string | undefined>
+  >({});
+
+  const [depotList, setDepotList] = useState<Depot[]>([]);
+  const [isLoadingDepotsError, setIsLoadingDepotsError] = useState(false);
+
+  useEffect(() => {
+    const loadDepots = async () => {
+      const list = await fetchDepots();
+      setDepotList(list ?? []);
+    };
+    loadDepots();
+  }, []);
+
+  const openDeleteConfirmModal = (row: MRT_Row<Depot>) => {
+    if (window.confirm('Are you sure you want to delete this depot?') && row.original.id !== undefined && row.original.id !== null) {
+      deleteDepot(row.original.id).then(async () => {
+        const updatedList = await fetchDepots();
+        setDepotList(updatedList ?? []);
+      }).catch((error) => {
+        setIsLoadingDepotsError(true);
+        console.error('Error deleting depot:', error);
+        window.alert('Error deleting depot');
+      });
     }
-  })
-  const handleDeleteClick = useCallback(
-    (id: GridRowId) => () =>
-      openDialog(
-        'Confirm Deletion',
-        'Are you sure you want to delete this item?',
-        () => {
-          deleteDepot(id.toString())
-        },
-        () => {
-          console.log('Deletion cancelled')
-        }
-      ),
-    [openDialog, deleteDepot]
-  )
-
-
-  const columns = useMemo<ColumnDef<Depot>[]>(
+  };
+  const columns = useMemo<MRT_ColumnDef<Depot>[]>(
     () => [
       {
-        header: t('name'),
-        accessorKey: 'name'
+        accessorKey: 'name',
+        header: 'Depot Name',
+        muiEditTextFieldProps: {
+          required: true,
+          error: !!validationErrors?.name,
+          helperText: validationErrors?.name,
+          onFocus: () =>
+            setValidationErrors({
+              ...validationErrors,
+              name: undefined,
+            }),
+        },
       },
-      {
-        header: t('actions'),
-        id: 'actions',
-        cell: ({ row }) => (
-          <Button
-            variant="outlined"
-            color="error"
-            size="small"
-            onClick={handleDeleteClick(row.original.id ?? 0)}
-          >
-            {t('delete')}
-          </Button>
-        )
-      }
     ],
-    [t, handleDeleteClick]
-  )
+    [validationErrors],
+  );
 
-  const DepotListActions = () => {
-    return (
-      <>
-        <Button
-          variant={'contained'}
-          size={'small'}
-          startIcon={<PersonAddAlt1Icon />}
-          onClick={() => navigate({ to: Route.fullPath })}
-        >
-          {t('newDepot')}
-        </Button>
-      </>
-    )
-  }
-  const endpoint = 'depots'
-  console.log(`Fetching data from endpoint: ${endpoint}`)
+  const handleCreateDepot = async (props: { exitCreatingMode: () => void; row: MRT_Row<Depot>; table: MRT_TableInstance<Depot>; values: Record<string, any>; }) => {
+    try {
+      const newDepot = props.values as Depot;
+      addDepot({ data: newDepot }, {
+        onSuccess: async () => {
+          const updatedList = await fetchDepots();
+          setDepotList(updatedList ?? []);
+          props.exitCreatingMode();
+
+        },
+        onError: (error) => {
+          setIsLoadingDepotsError(true);
+          console.error('Error creating depot:', error);
+          window.alert('Error creating depot');
+        },
+      });
+    } catch (error) {
+      setIsLoadingDepotsError(true);
+    }
+  };
+
+  const handleSaveDepot = async (props: { exitEditingMode: () => void; row: MRT_Row<Depot>; table: MRT_TableInstance<Depot>; values: Record<string, any>; }): Promise<void> => {
+    try {
+      const updatedDepot = props.values as Depot;
+      const depotId = props.row.original.id;
+      if (depotId !== undefined && depotId !== null) {
+        editDepot({ id: depotId, data: updatedDepot }, {
+          onSuccess: async () => {
+            const updatedList = await fetchDepots();
+            setDepotList(updatedList ?? []);
+            props.exitEditingMode();
+          },
+          onError: (error: unknown) => {
+            setIsLoadingDepotsError(true);
+            if (error instanceof Error) {
+              console.error('Error updating depot:', error.message);
+              window.alert('Error updating depot');
+            }
+          },
+        });
+      }
+    } catch (error) {
+      setIsLoadingDepotsError(true);
+    }
+  };
+
+  const table = useMaterialReactTable({
+    columns,
+    data: depotList,
+    createDisplayMode: 'row',
+    editDisplayMode: 'row',
+    enableEditing: true,
+    getRowId: (row) => row.id?.toString() ?? '',
+    muiToolbarAlertBannerProps: isLoadingDepotsError
+      ? {
+        color: 'error',
+        children: 'Error loading data',
+      }
+      : undefined,
+    muiTableContainerProps: {
+      sx: {
+        minHeight: '500px',
+      },
+    },
+    onCreatingRowCancel: () => setValidationErrors({}),
+    onCreatingRowSave: handleCreateDepot,
+    onEditingRowCancel: () => setValidationErrors({}),
+    onEditingRowSave: handleSaveDepot,
+    renderRowActions: ({ row, table }) => (
+      <Box sx={{ display: 'flex', gap: '1rem' }}>
+        <Tooltip title="Edit">
+          <IconButton onClick={() => table.setEditingRow(row)}>
+            <EditIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Delete">
+          <IconButton color="error" onClick={() => openDeleteConfirmModal(row)}>
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
+      </Box>
+    ),
+    renderTopToolbarCustomActions: ({ table }) => (
+      <Button
+        variant="contained"
+        onClick={() => {
+          table.setCreatingRow(true);
+        }}
+      >
+        Create New Depot
+      </Button>
+    ),
+  });
 
   return (
-    <>
-      <PageTitle
-        title={t('depotList')}
-        actions={<DepotListActions />}
-      />
-
-      <BaseTable<Depot> endpoint={endpoint} columns={columns}
-
-      ></BaseTable>
-
-    </>
+    <Stack direction="column" spacing={2} sx={{ p: 2 }}>
+      <PageTitle title="Depots" />
+      <Stack direction="row" spacing={2} sx={{ width: '100%' }}>
+        <div style={{ flex: 1 }}>
+          <MaterialReactTable table={table} />
+        </div>
+      </Stack>
+    </Stack>
   )
-}
+};
