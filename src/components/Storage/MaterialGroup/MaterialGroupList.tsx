@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { createRow, MaterialReactTable, MRT_ColumnDef, MRT_Row, MRT_TableInstance, useMaterialReactTable } from 'material-react-table'
-import { useAddMaterialGroup, useDeleteMaterialGroup } from '@/api/openAPIDefinition'
-import {  MaterialGroup, type MaterialCard, type MaterialGroupTreeItem } from '@/api/model'
-import { Box, IconButton, Stack, Tooltip } from '@mui/material'
+import { addMaterialCard, deleteMaterialCard, useAddMaterialCard, useAddMaterialGroup, useDeleteMaterialGroup, useUpdateMaterialCard } from '@/api/openAPIDefinition'
+import { Depot, MaterialGroup, type MaterialCard, type MaterialGroupTreeItem } from '@/api/model'
+import { Box, Button, IconButton, Stack, Tooltip } from '@mui/material'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import { useTranslation } from 'react-i18next'
 import { materialCards } from '@/api/filtering'
@@ -26,6 +26,222 @@ export const MaterialGroupList = () => {
   const [creatingRowParentId, setCreatingRowParentId] = useState<number | null>(null);
   const [preview, setPreview] = useState<string>('');
 
+
+
+  //MATERIAL CARD CONSTSANDS
+  const [isLoadingMaterialCardsError, setIsLoadingMaterialCardsError] = useState(false);
+  const { mutate: addMaterialCard } = useAddMaterialCard();
+  const { mutate: editMaterialCard } = useUpdateMaterialCard();
+
+  const fetchMaterialCards = async () => {
+    const response = await materialCards({
+      filter: `materialGroup.id==${selectedGroup ?? 0}`,
+      page: 0,
+      pageSize: 1000,
+    })
+    return response.data;
+  }
+
+
+  useEffect(() => {
+    const loadMaterialCards = async () => {
+      const cards = await fetchMaterialCards();
+      setMaterialCard(cards ?? []);
+    }
+    loadMaterialCards();
+  }, [selectedGroup])
+
+  const [validationErrors, setValidationErrors] = useState<
+    Record<string, string | undefined>
+  >({});
+
+
+  const columnsMaterialCard = useMemo<MRT_ColumnDef<MaterialCard>[]>(
+    () => [
+      {
+        header: t('Card Code'), accessorKey: 'materialCode',
+        muiEditTextFieldProps: {
+          required: true,
+          error: !!validationErrors?.materialCode,
+          helperText: validationErrors?.materialCode,
+          onFocus: () =>
+            setValidationErrors({
+              ...validationErrors,
+              materialCode: undefined,
+            }),
+        },
+      },
+      {
+        header: t('Card Name'), accessorKey: 'materialName',
+        muiEditTextFieldProps: {
+          required: true,
+          error: !!validationErrors?.materialName,
+          helperText: validationErrors?.materialName,
+          onFocus: () =>
+            setValidationErrors({
+              ...validationErrors,
+              materialName: undefined,
+            }),
+        },
+      }
+    ],
+    [t, validationErrors]
+  )
+
+  //HANDLE CREATE MATERIAL CARD
+  const handleCreateMaterialCard = async (props: { exitCreatingMode: () => void; row: MRT_Row<MaterialCard>; table: MRT_TableInstance<MaterialCard>; values: Record<string, any>; }) => {
+    try {
+      const newMaterialCard = props.values as MaterialCard;
+      
+      
+      if (selectedGroup) {
+        newMaterialCard.materialGroup = { id: selectedGroup } as any;
+      }
+      
+      addMaterialCard({ data: newMaterialCard }, {
+        onSuccess: async () => {
+          const updatedList = await fetchMaterialCards();
+          setMaterialCard(updatedList ?? []);
+          props.exitCreatingMode();
+
+        },
+        onError: (error: any) => {
+          setIsLoadingMaterialCardsError(true);
+          console.error('Error creating material card:', error);
+          window.alert('Error creating material card');
+        },
+      });
+    } catch (error) {
+      setIsLoadingMaterialCardsError(true);
+    }
+  };
+
+
+  /// HANDLE EDIT MATERIAL CARD
+  const handleSaveMaterialCard = async (props: { exitEditingMode: () => void; row: MRT_Row<MaterialCard>; table: MRT_TableInstance<MaterialCard>; values: Record<string, any>; }): Promise<void> => {
+    try {
+      const updatedMaterialCard = props.values as MaterialCard;
+      const materialCardId = props.row.original.id;
+      if (materialCardId !== undefined && materialCardId !== null) {
+        editMaterialCard({ id: materialCardId, data: updatedMaterialCard }, {
+          onSuccess: async () => {
+            const updatedList = await fetchMaterialCards();
+            setMaterialCard(updatedList ?? []);
+            props.exitEditingMode();
+          },
+          onError: (error: unknown) => {
+            setIsLoadingMaterialCardsError(true);
+            if (error instanceof Error) {
+              console.error('Error updating material card:', error.message);
+              window.alert('Error updating material card');
+            }
+          },
+        });
+      }
+    } catch (error) {
+      setIsLoadingMaterialCardsError(true);
+    }
+  };
+
+  ///handle delete material card
+    const openDeleteConfirmModal = (row: MRT_Row<MaterialCard>) => {
+    if (window.confirm('Are you sure you want to delete this material card?') && row.original.id !== undefined && row.original.id !== null) {
+      deleteMaterialCard(row.original.id).then(async () => {
+        const updatedList = await fetchMaterialCards();
+        setMaterialCard(updatedList ?? []);
+      }).catch((error) => {
+        setIsLoadingMaterialCardsError(true);
+        console.error('Error deleting material card:', error);
+        window.alert('Error deleting material card');
+      });
+    }
+  };
+
+
+
+  /// MATERIAL CARD TABLE
+  const materialCardTable = useMaterialReactTable({
+    columns: columnsMaterialCard,
+    data: materialCard,
+    enablePagination: false,
+    editDisplayMode: 'row',
+    enableEditing: true,
+    initialState: { density: 'compact' },
+    muiTableContainerProps: { sx: { maxHeight: '80vh' } },
+    onCreatingRowCancel: () => setValidationErrors({}),
+    onCreatingRowSave: handleCreateMaterialCard,
+    onEditingRowCancel: () => setValidationErrors({}),
+    onEditingRowSave: handleSaveMaterialCard,
+    getRowId: (row) => row.id?.toString() ?? '',
+    muiToolbarAlertBannerProps: isLoadingMaterialCardsError
+      ? {
+        color: 'error',
+        children: 'Error loading data',
+      }
+    : undefined,
+    renderEmptyRowsFallback: () => (
+      <div style={{ textAlign: 'center', padding: '16px' }}>{t('No data available')}</div>
+    ),
+    renderRowActions: ({ row, table }) => (
+      <Box sx={{ display: 'flex', gap: '1rem' }}>
+        <Tooltip title="Edit">
+          <IconButton onClick={() => table.setEditingRow(row)}>
+            <EditIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Delete">
+          <IconButton color="error" onClick={() => openDeleteConfirmModal(row)}>
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
+      </Box>
+    ),
+    renderTopToolbarCustomActions: ({ table }) => (
+      <Button
+        variant="contained"
+        onClick={() => {
+          table.setCreatingRow(true);
+        }}
+      >
+        Create New Material Card
+      </Button>
+    ),
+
+
+  });
+
+  useEffect(() => {
+  }, [selectedGroup, materialCard])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   const fetchMaterialGroups = async () => {
     try {
       const response = await getMaterialGroupTree();
@@ -44,6 +260,13 @@ export const MaterialGroupList = () => {
     loadMaterialGroups();
   }, []);
 
+  useEffect(() => {
+    if (Array.isArray(materialCard) && materialCard.length === 0) {
+      setCanDelete(true)
+    } else if (Array.isArray(materialCard) && materialCard.length > 0) {
+      setCanDelete(false)
+    }
+  }, [materialCard])
   const handleCreateGroup = async (props: { exitCreatingMode: () => void; row: MRT_Row<MaterialGroupTreeItem>; table: MRT_TableInstance<MaterialGroupTreeItem>; values: Record<string, any>; }) => {
     try {
       const parentCode = creatingRowParentId ? materialGroups.find(g => g.id === creatingRowParentId)?.code + '.' : '';
@@ -73,28 +296,11 @@ export const MaterialGroupList = () => {
       setCreatingRowParentId(null);
     }
   };
-  useEffect(() => {
-    const fetchMaterialCards = async () => {
-      const response = await materialCards({
-        filter: `materialGroup.id==${selectedGroup ?? 0}`,
-        page: 0,
-        pageSize: 1000,
-      })
-      setMaterialCard(response.data ?? [])
-    }
 
-    fetchMaterialCards()
-  }, [selectedGroup])
 
   const { mutateAsync: DeleteMaterialGroup } = useDeleteMaterialGroup()
 
-  useEffect(() => {
-    if (Array.isArray(materialCard) && materialCard.length === 0) {
-      setCanDelete(true)
-    } else if (Array.isArray(materialCard) && materialCard.length > 0) {
-      setCanDelete(false)
-    }
-  }, [materialCard])
+
 
   const handleDelete = async (id: number) => {
     try {
@@ -105,7 +311,7 @@ export const MaterialGroupList = () => {
         return
       }
 
-      if (!canDelete) {
+      if (!canDelete) {//todo ef bunu materialcard ile kontrol et
         alert(t('This group is linked to a Material Card and cannot be deleted.'))
         return
       }
@@ -114,9 +320,9 @@ export const MaterialGroupList = () => {
         alert(t('This group is linked to a Material Card and cannot be deleted.'))
         return
       }
-
       await DeleteMaterialGroup({ id })
-      alert(t('Group deleted successfully.'))
+      const groups = await fetchMaterialGroups();
+      setMaterialGroups(groups);
     } catch (error: any) {
       console.error('Error deleting group:', error)
       alert(t('Error deleting group.'))
@@ -132,7 +338,6 @@ export const MaterialGroupList = () => {
     try {
       const updatedGroup = props.values as MaterialGroupTreeItem;
       console.log(updatedGroup)
-      // Güncelleme işlemi burada yapılacak
       props.exitEditingMode();
       const groups = await fetchMaterialGroups();
       setMaterialGroups(groups);
@@ -192,27 +397,6 @@ export const MaterialGroupList = () => {
     [t, creatingRowParentId, materialGroups, preview]
   )
 
-  const columnsMaterialCard = useMemo<MRT_ColumnDef<MaterialCard>[]>(
-    () => [
-      { header: t('Card Code'), accessorKey: 'materialCode' },
-      { header: t('Card Name'), accessorKey: 'materialName' }
-    ],
-    [t]
-  )
-
-  const materialCardTable = useMaterialReactTable({
-    columns: columnsMaterialCard,
-    data: materialCard,
-    enablePagination: false,
-    initialState: { density: 'compact' },
-    muiTableContainerProps: { sx: { maxHeight: '80vh' } },
-    renderEmptyRowsFallback: () => (
-      <div style={{ textAlign: 'center', padding: '16px' }}>{t('No data available')}</div>
-    )
-  })
-
-  useEffect(() => {
-  }, [selectedGroup, materialCard])
 
   const groupListTable = useMaterialReactTable({
     columns: columnsTree,
