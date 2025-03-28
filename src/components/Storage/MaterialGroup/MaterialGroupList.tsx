@@ -1,39 +1,96 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { MaterialReactTable, MRT_ColumnDef, useMaterialReactTable } from 'material-react-table'
-import { useDeleteMaterialGroup, useGetMaterialGroupTreeSuspense } from '@/api/openAPIDefinition'
-import { type MaterialCard, type MaterialGroupTreeItem } from '@/api/model'
-import { Button, Stack, Tooltip } from '@mui/material'
+import { createRow, MaterialReactTable, MRT_ColumnDef, MRT_Row, MRT_TableInstance, MRT_TableOptions, useMaterialReactTable } from 'material-react-table'
+import { useAddMaterialGroup, useDeleteMaterialGroup, useGetMaterialGroupTreeSuspense } from '@/api/openAPIDefinition'
+import { Depot, MaterialGroup, type MaterialCard, type MaterialGroupTreeItem } from '@/api/model'
+import { Box, Button, IconButton, Stack, Tooltip } from '@mui/material'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
-import { Route as MaterialGroupRoute } from '@/routes/_authenticated/storage/materialGroups/new'
-import { Route as MaterialNewRoute } from '@/routes/_authenticated/storage/materialCards/new'
-import { useNavigate } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { materialCards } from '@/api/filtering'
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { getMaterialGroupTree } from '@/api/openAPIDefinition'
 
+
+//todo ef : inline create olmaz inline sub create olacak işte link https://www.material-react-table.com/docs/examples/editing-crud-tree
 export const MaterialGroupList = () => {
+  const { mutate: addMaterialGroup } = useAddMaterialGroup();
+  const [materialGroupList, setMaterialGroupList] = useState<MaterialGroup[]>([]);
+  const [isLoadingMaterialGroupError, setIsLoadingMaterialGroupError] = useState(false);
+
   const [selectedGroup, setSelectedGroup] = useState<number | null>(null)
-  const navigate = useNavigate()
+  const [creatingRowIndex, setCreatingRowIndex] = useState<
+    number | undefined
+  >();
+  const [validationErrors, setValidationErrors] = useState<
+    Record<string, string | undefined>
+  >({});
   const { t } = useTranslation('common')
   const [canDelete, setCanDelete] = useState<boolean>(true)
   const [materialCard, setMaterialCard] = useState<MaterialCard[]>([])
+  const [materialGroups, setMaterialGroups] = useState<MaterialGroupTreeItem[]>([])
+  const [creatingRowParentId, setCreatingRowParentId] = useState<number | null>(null);
 
-  const { data: materialGroup } = useGetMaterialGroupTreeSuspense({
-    query: {
-      select: (response) => response.data ?? []
+  const fetchMaterialGroups = async () => {
+    try {
+      const response = await getMaterialGroupTree();
+      return response.data ?? [];
+    } catch (error) {
+      console.error('Error fetching material groups:', error);
+      setIsLoadingMaterialGroupError(true);
+      return [];
     }
-  })
+  };
 
+  useEffect(() => {
+    const loadMaterialGroups = async () => {
+      const groups = await fetchMaterialGroups();
+      setMaterialGroups(groups);
+    };
+    loadMaterialGroups();
+  }, []);
+
+  const handleCreateGroup = async (props: { exitCreatingMode: () => void; row: MRT_Row<MaterialGroupTreeItem>; table: MRT_TableInstance<MaterialGroupTreeItem>; values: Record<string, any>; }) => {
+    try {
+      const parentCode = creatingRowParentId ? materialGroups.find(g => g.id === creatingRowParentId)?.code + '.' : '';
+      const newGroup: MaterialGroup = {
+        name: props.values.name,
+        code: parentCode + props.values.code,
+        parent: creatingRowParentId ? { id: creatingRowParentId, code: '', name: '' } : undefined
+      };
+
+      console.log('Creating new group with data:', newGroup);
+
+      addMaterialGroup({ data: newGroup }, {
+        onSuccess: async () => {
+          setCreatingRowParentId(null);
+          const groups = await fetchMaterialGroups();
+          setMaterialGroups(groups);
+          props.exitCreatingMode();
+        },
+        onError: (error) => {
+          setCreatingRowParentId(null);
+          setIsLoadingMaterialGroupError(true);
+          console.error('Error creating material group:', error);
+          window.alert('Error creating material group');
+        },
+      });
+    } catch (error) {
+      setCreatingRowParentId(null);
+      setIsLoadingMaterialGroupError(true);
+    }
+  };
   useEffect(() => {
     const fetchMaterialCards = async () => {
       const response = await materialCards({
-        filter: `materialGroup.id eq ${selectedGroup ?? 0}`,
+        filter: `materialGroup.id==${selectedGroup ?? 0}`,
+        page: 0,
+        pageSize: 1000,
       })
       setMaterialCard(response.data ?? [])
     }
 
-    if (selectedGroup !== null) {
-      fetchMaterialCards()
-    }
+    fetchMaterialCards()
   }, [selectedGroup])
 
   const { mutateAsync: DeleteMaterialGroup } = useDeleteMaterialGroup()
@@ -48,9 +105,8 @@ export const MaterialGroupList = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      const groupToDelete = materialGroup.find(group => group.id === id)
+      const groupToDelete = materialGroups.find(group => group.id === id)
 
-      // Eğer grup çocuk içeriyorsa engelle
       if (groupToDelete?.children && groupToDelete.children.length > 0) {
         alert(t('Cannot delete a group with child elements.'))
         return
@@ -61,10 +117,7 @@ export const MaterialGroupList = () => {
         return
       }
 
-      // setSelectedGroup(id)
-      // console.log("Material Group Data:", materialGroup);
-
-      if (materialGroup.some(group => group.id === id)) {
+      if (materialGroups.some(group => group.id === id)) {
         alert(t('This group is linked to a Material Card and cannot be deleted.'))
         return
       }
@@ -77,33 +130,74 @@ export const MaterialGroupList = () => {
     }
   }
 
+  const handleRowClick = (groupId: number) => {
+    console.log(`Selected Group ID: ${groupId}`);
+    setSelectedGroup(groupId);
+  };
+
+  const handleSaveGroup = async (props: { exitEditingMode: () => void; row: MRT_Row<MaterialGroupTreeItem>; table: MRT_TableInstance<MaterialGroupTreeItem>; values: Record<string, any>; }) => {
+    try {
+      const updatedGroup = props.values as MaterialGroupTreeItem;
+      // Güncelleme işlemi burada yapılacak
+      props.exitEditingMode();
+      const groups = await fetchMaterialGroups();
+      setMaterialGroups(groups);
+    } catch (error) {
+      setIsLoadingMaterialGroupError(true);
+      console.error('Error updating group:', error);
+    }
+  };
+
   const columnsTree = useMemo<MRT_ColumnDef<MaterialGroupTreeItem>[]>(
     () => [
-      { header: t('Code'), accessorKey: 'code' },
-      { header: t('Name'), accessorKey: 'name' },
       {
-        header: t('Actions'),
-        id: 'actions',
-        Cell: ({ row }) => {
-          return (
-            <Tooltip title="Development in progress">
-      <span>
-        <Button
-          variant="outlined"
-          color="error"
-          size="small"
-          disabled
-          onClick={() => row.original.id && handleDelete(row.original.id)}
-        >
-          {t('Delete')}
-        </Button>
-      </span>
-            </Tooltip>
-          )
+        header: t('Code'),
+        accessorKey: 'code',
+        muiEditTextFieldProps: ({ row }: { row: MRT_Row<MaterialGroupTreeItem> }) => {
+          const parentCode = creatingRowParentId ? materialGroups.find(g => g.id === creatingRowParentId)?.code + '.' : '';
+          const [preview, setPreview] = useState(parentCode);
+
+          return {
+            required: true,
+            sx: {
+              '& .MuiFormLabel-root': {
+                position: 'absolute',
+                top: '-20px',
+                left: '14px',
+                fontSize: '0.75rem',
+                color: 'rgba(0, 0, 0, 0.6)',
+              }
+            },
+
+            onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+              const value = e.target.value;
+              setPreview(`${parentCode}${value}`);
+            },
+            InputProps: {
+              startAdornment: (
+                <Box sx={{
+                  position: 'absolute',
+                  top: '-20px',
+                  right: '14px',
+                  fontSize: '0.75rem',
+                  color: 'rgba(0, 0, 0, 0.6)'
+                }}>
+                  Preview: {preview}
+                </Box>
+              )
+            }
+          };
         }
-      }
+      },
+      {
+        header: t('Name'),
+        accessorKey: 'name',
+        muiEditTextFieldProps: {
+          required: true,
+        },
+      },
     ],
-    [t, handleDelete]
+    [t, creatingRowParentId, materialGroups]
   )
 
   const columnsMaterialCard = useMemo<MRT_ColumnDef<MaterialCard>[]>(
@@ -131,8 +225,57 @@ export const MaterialGroupList = () => {
   const groupListTable = useMaterialReactTable({
     columns: columnsTree,
     enablePagination: false,
-    data: materialGroup,
+    data: materialGroups,
+    createDisplayMode: 'row',
+    editDisplayMode: 'row',
+    enableColumnPinning: true,
+    enableEditing: true,
     enableExpanding: true,
+    positionCreatingRow: creatingRowIndex,
+    onCreatingRowCancel: () => setValidationErrors({}),
+    onCreatingRowSave: handleCreateGroup,
+    onEditingRowCancel: () => setValidationErrors({}),
+    onEditingRowSave: handleSaveGroup,
+
+    getRowId: (row) => row.id?.toString() ?? '',
+    renderRowActions: ({ row, staticRowIndex, table }) => (
+      <Box sx={{ display: 'flex', gap: '1rem' }}>
+        <Tooltip title="Edit">
+          <IconButton onClick={() => table.setEditingRow(row)}>
+            <EditIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Delete">
+          <IconButton color="error" onClick={() => handleDelete(row.original.id ?? 0)}>
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Add Subordinate">
+          <IconButton
+            onClick={() => {
+              setCreatingRowIndex((staticRowIndex || 0) + 1);
+              setCreatingRowParentId(row.original.id ?? null);
+              const parentCode = row.original.code;
+              table.setCreatingRow(
+                createRow(
+                  table,
+                  {
+                    id: null!,
+                    code: '',
+                    name: '',
+                    children: []
+                  } as MaterialGroupTreeItem,
+                  -1,
+                  row.depth + 1,
+                ),
+              );
+            }}
+          >
+            <PersonAddAltIcon />
+          </IconButton>
+        </Tooltip>
+      </Box>
+    ),
     getSubRows: (row) => row.children || [],
     initialState: { expanded: {}, density: 'comfortable' },
     enableColumnOrdering: false,
@@ -141,7 +284,7 @@ export const MaterialGroupList = () => {
     enableRowSelection: false,
     muiTableBodyRowProps: ({ row }) => ({
       onClick: () => {
-        setSelectedGroup((prev) => (prev === row.original.id ? null : row.original.id ?? null))
+        handleRowClick(row.original.id ?? 0);
       },
       selected: selectedGroup === row.original.id,
       sx: {
@@ -151,20 +294,9 @@ export const MaterialGroupList = () => {
     })
   })
 
-  const MaterialGroupListActions = () => (
-    <>
-      <Button variant="contained" size="small" onClick={() => navigate({ to: MaterialGroupRoute.fullPath })}>
-        {t('Add New Material Group')}
-      </Button>
-      <Button variant="contained" size="small" onClick={() => navigate({ to: MaterialNewRoute.fullPath })}>
-        {t('Add New Material Card')}
-      </Button>
-    </>
-  )
-
   return (
     <Stack direction="column" spacing={2} sx={{ p: 2 }}>
-      <PageTitle title="Catalog" actions={<MaterialGroupListActions />} />
+      <PageTitle title="Catalog" />
       <Stack direction="row" spacing={2} sx={{ width: '100%' }}>
         <div style={{ flex: 1 }}>
           <MaterialReactTable table={groupListTable} />

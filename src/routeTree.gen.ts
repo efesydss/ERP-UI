@@ -108,7 +108,6 @@ import { Route as AuthenticatedAdminRolesNewImport } from './routes/_authenticat
 import { Route as AuthenticatedAdminPublicHolidaysNewImport } from './routes/_authenticated/admin/publicHolidays/new'
 import { Route as AuthenticatedAdminPaymentMethodsNewImport } from './routes/_authenticated/admin/paymentMethods/new'
 import { Route as AuthenticatedAdminMachinesNewImport } from './routes/_authenticated/admin/machines/new'
-import { Route as AuthenticatedAdminDepotsNewImport } from './routes/_authenticated/admin/depots/new'
 import { Route as AuthenticatedAdminCompaniesNewImport } from './routes/_authenticated/admin/companies/new'
 import { Route as AuthenticatedAccountingExpenseInvoicesNewImport } from './routes/_authenticated/accounting/expenseInvoices/new'
 import { Route as AuthenticatedAccountingExpenseCardsNewImport } from './routes/_authenticated/accounting/expenseCards/new'
@@ -143,7 +142,6 @@ import { Route as AuthenticatedAdminRolesIdIndexImport } from './routes/_authent
 import { Route as AuthenticatedAdminPublicHolidaysIdIndexImport } from './routes/_authenticated/admin/publicHolidays/$id/index'
 import { Route as AuthenticatedAdminPaymentMethodsIdIndexImport } from './routes/_authenticated/admin/paymentMethods/$id/index'
 import { Route as AuthenticatedAdminMachinesIdIndexImport } from './routes/_authenticated/admin/machines/$id/index'
-import { Route as AuthenticatedAdminDepotsIdIndexImport } from './routes/_authenticated/admin/depots/$id/index'
 import { Route as AuthenticatedAdminCompaniesIdIndexImport } from './routes/_authenticated/admin/companies/$id/index'
 import { Route as AuthenticatedAccountingExpenseInvoicesIdIndexImport } from './routes/_authenticated/accounting/expenseInvoices/$id/index'
 import { Route as AuthenticatedAccountingExpenseCardsIdIndexImport } from './routes/_authenticated/accounting/expenseCards/$id/index'
@@ -719,12 +717,6 @@ const AuthenticatedAdminMachinesNewRoute =
     getParentRoute: () => AuthenticatedAdminMachinesRoute,
   } as any)
 
-const AuthenticatedAdminDepotsNewRoute =
-  AuthenticatedAdminDepotsNewImport.update({
-    path: '/new',
-    getParentRoute: () => AuthenticatedAdminDepotsRoute,
-  } as any)
-
 const AuthenticatedAdminCompaniesNewRoute =
   AuthenticatedAdminCompaniesNewImport.update({
     path: '/new',
@@ -927,12 +919,6 @@ const AuthenticatedAdminMachinesIdIndexRoute =
   AuthenticatedAdminMachinesIdIndexImport.update({
     path: '/$id/',
     getParentRoute: () => AuthenticatedAdminMachinesRoute,
-  } as any)
-
-const AuthenticatedAdminDepotsIdIndexRoute =
-  AuthenticatedAdminDepotsIdIndexImport.update({
-    path: '/$id/',
-    getParentRoute: () => AuthenticatedAdminDepotsRoute,
   } as any)
 
 const AuthenticatedAdminCompaniesIdIndexRoute =
@@ -1219,13 +1205,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/companies/new'
       preLoaderRoute: typeof AuthenticatedAdminCompaniesNewImport
       parentRoute: typeof AuthenticatedAdminCompaniesImport
-    }
-    '/_authenticated/admin/depots/new': {
-      id: '/_authenticated/admin/depots/new'
-      path: '/new'
-      fullPath: '/admin/depots/new'
-      preLoaderRoute: typeof AuthenticatedAdminDepotsNewImport
-      parentRoute: typeof AuthenticatedAdminDepotsImport
     }
     '/_authenticated/admin/machines/new': {
       id: '/_authenticated/admin/machines/new'
@@ -1738,13 +1717,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminCompaniesIdIndexImport
       parentRoute: typeof AuthenticatedAdminCompaniesImport
     }
-    '/_authenticated/admin/depots/$id/': {
-      id: '/_authenticated/admin/depots/$id/'
-      path: '/$id'
-      fullPath: '/admin/depots/$id'
-      preLoaderRoute: typeof AuthenticatedAdminDepotsIdIndexImport
-      parentRoute: typeof AuthenticatedAdminDepotsImport
-    }
     '/_authenticated/admin/machines/$id/': {
       id: '/_authenticated/admin/machines/$id/'
       path: '/$id'
@@ -1964,9 +1936,7 @@ export const routeTree = rootRoute.addChildren({
           AuthenticatedAdminCompaniesIdIndexRoute,
         }),
       AuthenticatedAdminDepotsRoute: AuthenticatedAdminDepotsRoute.addChildren({
-        AuthenticatedAdminDepotsNewRoute,
         AuthenticatedAdminDepotsIndexRoute,
-        AuthenticatedAdminDepotsIdIndexRoute,
       }),
       AuthenticatedAdminMachinesRoute:
         AuthenticatedAdminMachinesRoute.addChildren({
@@ -2305,9 +2275,7 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_authenticated/admin/depots.tsx",
       "parent": "/_authenticated/admin",
       "children": [
-        "/_authenticated/admin/depots/new",
-        "/_authenticated/admin/depots/",
-        "/_authenticated/admin/depots/$id/"
+        "/_authenticated/admin/depots/"
       ]
     },
     "/_authenticated/admin/machines": {
@@ -2449,10 +2417,6 @@ export const routeTree = rootRoute.addChildren({
     "/_authenticated/admin/companies/new": {
       "filePath": "_authenticated/admin/companies/new.tsx",
       "parent": "/_authenticated/admin/companies"
-    },
-    "/_authenticated/admin/depots/new": {
-      "filePath": "_authenticated/admin/depots/new.tsx",
-      "parent": "/_authenticated/admin/depots"
     },
     "/_authenticated/admin/machines/new": {
       "filePath": "_authenticated/admin/machines/new.tsx",
@@ -2748,10 +2712,6 @@ export const routeTree = rootRoute.addChildren({
     "/_authenticated/admin/companies/$id/": {
       "filePath": "_authenticated/admin/companies/$id/index.tsx",
       "parent": "/_authenticated/admin/companies"
-    },
-    "/_authenticated/admin/depots/$id/": {
-      "filePath": "_authenticated/admin/depots/$id/index.tsx",
-      "parent": "/_authenticated/admin/depots"
     },
     "/_authenticated/admin/machines/$id/": {
       "filePath": "_authenticated/admin/machines/$id/index.tsx",
