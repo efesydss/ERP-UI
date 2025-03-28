@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { createRow, MaterialReactTable, MRT_ColumnDef, MRT_Row, MRT_TableInstance, MRT_TableOptions, useMaterialReactTable } from 'material-react-table'
-import { useAddMaterialGroup, useDeleteMaterialGroup, useGetMaterialGroupTreeSuspense } from '@/api/openAPIDefinition'
-import { Depot, MaterialGroup, type MaterialCard, type MaterialGroupTreeItem } from '@/api/model'
-import { Box, Button, IconButton, Stack, Tooltip } from '@mui/material'
+import { createRow, MaterialReactTable, MRT_ColumnDef, MRT_Row, MRT_TableInstance, useMaterialReactTable } from 'material-react-table'
+import { useAddMaterialGroup, useDeleteMaterialGroup } from '@/api/openAPIDefinition'
+import {  MaterialGroup, type MaterialCard, type MaterialGroupTreeItem } from '@/api/model'
+import { Box, IconButton, Stack, Tooltip } from '@mui/material'
 import { PageTitle } from '@/components/Common/PageTitle/PageTitle'
 import { useTranslation } from 'react-i18next'
 import { materialCards } from '@/api/filtering'
@@ -12,24 +12,19 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { getMaterialGroupTree } from '@/api/openAPIDefinition'
 
 
-//todo ef : inline create olmaz inline sub create olacak işte link https://www.material-react-table.com/docs/examples/editing-crud-tree
 export const MaterialGroupList = () => {
   const { mutate: addMaterialGroup } = useAddMaterialGroup();
-  const [materialGroupList, setMaterialGroupList] = useState<MaterialGroup[]>([]);
-  const [isLoadingMaterialGroupError, setIsLoadingMaterialGroupError] = useState(false);
 
   const [selectedGroup, setSelectedGroup] = useState<number | null>(null)
   const [creatingRowIndex, setCreatingRowIndex] = useState<
     number | undefined
   >();
-  const [validationErrors, setValidationErrors] = useState<
-    Record<string, string | undefined>
-  >({});
   const { t } = useTranslation('common')
   const [canDelete, setCanDelete] = useState<boolean>(true)
   const [materialCard, setMaterialCard] = useState<MaterialCard[]>([])
   const [materialGroups, setMaterialGroups] = useState<MaterialGroupTreeItem[]>([])
   const [creatingRowParentId, setCreatingRowParentId] = useState<number | null>(null);
+  const [preview, setPreview] = useState<string>('');
 
   const fetchMaterialGroups = async () => {
     try {
@@ -37,7 +32,6 @@ export const MaterialGroupList = () => {
       return response.data ?? [];
     } catch (error) {
       console.error('Error fetching material groups:', error);
-      setIsLoadingMaterialGroupError(true);
       return [];
     }
   };
@@ -64,20 +58,19 @@ export const MaterialGroupList = () => {
       addMaterialGroup({ data: newGroup }, {
         onSuccess: async () => {
           setCreatingRowParentId(null);
+          setPreview('');
           const groups = await fetchMaterialGroups();
           setMaterialGroups(groups);
           props.exitCreatingMode();
         },
         onError: (error) => {
           setCreatingRowParentId(null);
-          setIsLoadingMaterialGroupError(true);
           console.error('Error creating material group:', error);
           window.alert('Error creating material group');
         },
       });
     } catch (error) {
       setCreatingRowParentId(null);
-      setIsLoadingMaterialGroupError(true);
     }
   };
   useEffect(() => {
@@ -138,12 +131,12 @@ export const MaterialGroupList = () => {
   const handleSaveGroup = async (props: { exitEditingMode: () => void; row: MRT_Row<MaterialGroupTreeItem>; table: MRT_TableInstance<MaterialGroupTreeItem>; values: Record<string, any>; }) => {
     try {
       const updatedGroup = props.values as MaterialGroupTreeItem;
+      console.log(updatedGroup)
       // Güncelleme işlemi burada yapılacak
       props.exitEditingMode();
       const groups = await fetchMaterialGroups();
       setMaterialGroups(groups);
     } catch (error) {
-      setIsLoadingMaterialGroupError(true);
       console.error('Error updating group:', error);
     }
   };
@@ -154,9 +147,9 @@ export const MaterialGroupList = () => {
         header: t('Code'),
         accessorKey: 'code',
         muiEditTextFieldProps: ({ row }: { row: MRT_Row<MaterialGroupTreeItem> }) => {
-          const parentCode = creatingRowParentId ? materialGroups.find(g => g.id === creatingRowParentId)?.code + '.' : '';
-          const [preview, setPreview] = useState(parentCode);
+          const parentcode = creatingRowParentId ? materialGroups.find(g => g.id === creatingRowParentId)?.code + '.' : '';
 
+          console.log(row.original.code)
           return {
             required: true,
             sx: {
@@ -168,10 +161,9 @@ export const MaterialGroupList = () => {
                 color: 'rgba(0, 0, 0, 0.6)',
               }
             },
-
             onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
               const value = e.target.value;
-              setPreview(`${parentCode}${value}`);
+              setPreview(`${parentcode}${value}`);
             },
             InputProps: {
               startAdornment: (
@@ -197,7 +189,7 @@ export const MaterialGroupList = () => {
         },
       },
     ],
-    [t, creatingRowParentId, materialGroups]
+    [t, creatingRowParentId, materialGroups, preview]
   )
 
   const columnsMaterialCard = useMemo<MRT_ColumnDef<MaterialCard>[]>(
@@ -232,9 +224,7 @@ export const MaterialGroupList = () => {
     enableEditing: true,
     enableExpanding: true,
     positionCreatingRow: creatingRowIndex,
-    onCreatingRowCancel: () => setValidationErrors({}),
     onCreatingRowSave: handleCreateGroup,
-    onEditingRowCancel: () => setValidationErrors({}),
     onEditingRowSave: handleSaveGroup,
 
     getRowId: (row) => row.id?.toString() ?? '',
@@ -255,7 +245,6 @@ export const MaterialGroupList = () => {
             onClick={() => {
               setCreatingRowIndex((staticRowIndex || 0) + 1);
               setCreatingRowParentId(row.original.id ?? null);
-              const parentCode = row.original.code;
               table.setCreatingRow(
                 createRow(
                   table,
