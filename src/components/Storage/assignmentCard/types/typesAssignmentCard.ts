@@ -1,4 +1,4 @@
-import { FixtureCard } from '@/components/Storage/fixtureCard/types/typesFixtureCard';
+import { FixtureCard } from '@/api/model/';
 import { Invoice } from '@/components/Storage/typesInvoice';
 
 export enum AssignmentStatusEnum {
