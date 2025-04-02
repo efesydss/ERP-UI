@@ -44,6 +44,7 @@ import { Route as AuthenticatedAdminCompaniesImport } from './routes/_authentica
 import { Route as AuthenticatedStorageUnitIndexImport } from './routes/_authenticated/storage/unit/index'
 import { Route as AuthenticatedStorageShelfIndexImport } from './routes/_authenticated/storage/shelf/index'
 import { Route as AuthenticatedStorageServiceCardsIndexImport } from './routes/_authenticated/storage/serviceCards/index'
+import { Route as AuthenticatedStorageProductGroupsIndexImport } from './routes/_authenticated/storage/productGroups/index'
 import { Route as AuthenticatedStorageMaterialGroupsIndexImport } from './routes/_authenticated/storage/materialGroups/index'
 import { Route as AuthenticatedStorageMaterialCardsIndexImport } from './routes/_authenticated/storage/materialCards/index'
 import { Route as AuthenticatedStorageFixtureCardsIndexImport } from './routes/_authenticated/storage/fixtureCards/index'
@@ -324,6 +325,12 @@ const AuthenticatedStorageShelfIndexRoute =
 const AuthenticatedStorageServiceCardsIndexRoute =
   AuthenticatedStorageServiceCardsIndexImport.update({
     path: '/storage/serviceCards/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
+const AuthenticatedStorageProductGroupsIndexRoute =
+  AuthenticatedStorageProductGroupsIndexImport.update({
+    path: '/storage/productGroups/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
@@ -1598,6 +1605,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedStorageMaterialGroupsIndexImport
       parentRoute: typeof AuthenticatedImport
     }
+    '/_authenticated/storage/productGroups/': {
+      id: '/_authenticated/storage/productGroups/'
+      path: '/storage/productGroups'
+      fullPath: '/storage/productGroups'
+      preLoaderRoute: typeof AuthenticatedStorageProductGroupsIndexImport
+      parentRoute: typeof AuthenticatedImport
+    }
     '/_authenticated/storage/serviceCards/': {
       id: '/_authenticated/storage/serviceCards/'
       path: '/storage/serviceCards'
@@ -2002,6 +2016,7 @@ export const routeTree = rootRoute.addChildren({
     AuthenticatedStorageFixtureCardsIndexRoute,
     AuthenticatedStorageMaterialCardsIndexRoute,
     AuthenticatedStorageMaterialGroupsIndexRoute,
+    AuthenticatedStorageProductGroupsIndexRoute,
     AuthenticatedStorageServiceCardsIndexRoute,
     AuthenticatedStorageShelfIndexRoute,
     AuthenticatedStorageUnitIndexRoute,
@@ -2071,6 +2086,7 @@ export const routeTree = rootRoute.addChildren({
         "/_authenticated/storage/fixtureCards/",
         "/_authenticated/storage/materialCards/",
         "/_authenticated/storage/materialGroups/",
+        "/_authenticated/storage/productGroups/",
         "/_authenticated/storage/serviceCards/",
         "/_authenticated/storage/shelf/",
         "/_authenticated/storage/unit/",
@@ -2583,6 +2599,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_authenticated/storage/materialGroups/": {
       "filePath": "_authenticated/storage/materialGroups/index.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/storage/productGroups/": {
+      "filePath": "_authenticated/storage/productGroups/index.tsx",
       "parent": "/_authenticated"
     },
     "/_authenticated/storage/serviceCards/": {
