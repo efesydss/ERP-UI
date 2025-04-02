@@ -4,11 +4,12 @@
  * OpenAPI definition
  * OpenAPI spec version: v0
  */
+import type { ServiceCard } from './serviceCard';
 
 export interface ServiceCards {
   message?: string;
   error?: string;
-  data?: ServiceCards[];
+  data?: ServiceCard[];
   total?: number;
   page?: number;
   pageSize?: number;
