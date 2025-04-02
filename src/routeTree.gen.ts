@@ -43,6 +43,7 @@ import { Route as AuthenticatedAdminDepotsImport } from './routes/_authenticated
 import { Route as AuthenticatedAdminCompaniesImport } from './routes/_authenticated/admin/companies'
 import { Route as AuthenticatedStorageUnitIndexImport } from './routes/_authenticated/storage/unit/index'
 import { Route as AuthenticatedStorageShelfIndexImport } from './routes/_authenticated/storage/shelf/index'
+import { Route as AuthenticatedStorageServiceGroupsIndexImport } from './routes/_authenticated/storage/serviceGroups/index'
 import { Route as AuthenticatedStorageServiceCardsIndexImport } from './routes/_authenticated/storage/serviceCards/index'
 import { Route as AuthenticatedStorageProductGroupsIndexImport } from './routes/_authenticated/storage/productGroups/index'
 import { Route as AuthenticatedStorageMaterialGroupsIndexImport } from './routes/_authenticated/storage/materialGroups/index'
@@ -320,6 +321,12 @@ const AuthenticatedStorageUnitIndexRoute =
 const AuthenticatedStorageShelfIndexRoute =
   AuthenticatedStorageShelfIndexImport.update({
     path: '/storage/shelf/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
+const AuthenticatedStorageServiceGroupsIndexRoute =
+  AuthenticatedStorageServiceGroupsIndexImport.update({
+    path: '/storage/serviceGroups/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
@@ -1633,6 +1640,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedStorageServiceCardsIndexImport
       parentRoute: typeof AuthenticatedImport
     }
+    '/_authenticated/storage/serviceGroups/': {
+      id: '/_authenticated/storage/serviceGroups/'
+      path: '/storage/serviceGroups'
+      fullPath: '/storage/serviceGroups'
+      preLoaderRoute: typeof AuthenticatedStorageServiceGroupsIndexImport
+      parentRoute: typeof AuthenticatedImport
+    }
     '/_authenticated/storage/shelf/': {
       id: '/_authenticated/storage/shelf/'
       path: '/storage/shelf'
@@ -2033,6 +2047,7 @@ export const routeTree = rootRoute.addChildren({
     AuthenticatedStorageMaterialGroupsIndexRoute,
     AuthenticatedStorageProductGroupsIndexRoute,
     AuthenticatedStorageServiceCardsIndexRoute,
+    AuthenticatedStorageServiceGroupsIndexRoute,
     AuthenticatedStorageShelfIndexRoute,
     AuthenticatedStorageUnitIndexRoute,
     AuthenticatedAccountingCashAccountTransactionsIdIndexRoute,
@@ -2104,6 +2119,7 @@ export const routeTree = rootRoute.addChildren({
         "/_authenticated/storage/materialGroups/",
         "/_authenticated/storage/productGroups/",
         "/_authenticated/storage/serviceCards/",
+        "/_authenticated/storage/serviceGroups/",
         "/_authenticated/storage/shelf/",
         "/_authenticated/storage/unit/",
         "/_authenticated/accounting/cashAccountTransactions/$id/",
@@ -2627,6 +2643,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_authenticated/storage/serviceCards/": {
       "filePath": "_authenticated/storage/serviceCards/index.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/storage/serviceGroups/": {
+      "filePath": "_authenticated/storage/serviceGroups/index.tsx",
       "parent": "/_authenticated"
     },
     "/_authenticated/storage/shelf/": {
