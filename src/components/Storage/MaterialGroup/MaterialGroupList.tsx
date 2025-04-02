@@ -361,7 +361,7 @@ export const MaterialGroupList = () => {
           
           console.log(row.original.code);
           console.log('Is creating new row:', isCreating);
-          
+          console.log('Table state:', table.getState());
           return {
             required: true,
             disabled: !isCreating, 
