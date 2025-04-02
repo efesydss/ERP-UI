@@ -243,9 +243,12 @@ export const MaterialGroupList = () => {
 
   useEffect(() => {
     if (Array.isArray(materialCard) && materialCard.length === 0) {
-      setCanDelete(true)
+      console.log('Material card listesi boş, silme izni verildi');
+      setCanDelete(true);
     } else if (Array.isArray(materialCard) && materialCard.length > 0) {
-      setCanDelete(false)
+      console.log('Material card listesi dolu:', materialCard);
+      console.log('Silme izni kaldırıldı');
+      setCanDelete(false);
     }
   }, [materialCard])
   const handleCreateGroup = async (props: { exitCreatingMode: () => void; row: MRT_Row<MaterialGroupTreeItem>; table: MRT_TableInstance<MaterialGroupTreeItem>; values: Record<string, any>; }) => {
@@ -285,33 +288,51 @@ export const MaterialGroupList = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      const groupToDelete = materialGroups.find(group => group.id === id)
+      console.log('Delete işlemi başlatıldı - Group ID:', id);
+      
+      const groupToDelete = materialGroups.find(group => group.id === id);
+      console.log('Silinmeye çalışılan grup:', groupToDelete);
 
+      // Alt grupları kontrol et
       if (groupToDelete?.children && groupToDelete.children.length > 0) {
+        console.log('Grup silme engellendi - Alt gruplar mevcut:', groupToDelete.children);
         alert(t('Cannot delete a group with child elements.'))
-        return
+        return;
       }
 
-      if (!canDelete) {//todo ef bunu materialcard ile kontrol et
+      // Material card kontrolü
+      console.log('Mevcut material card listesi:', materialCard);
+      console.log('canDelete durumu:', canDelete);
+      
+      const hasLinkedCards = materialCard.some(card => card.materialGroup?.id === id);
+      console.log('Bu gruba bağlı kartlar var mı?:', hasLinkedCards);
+
+      if (hasLinkedCards) {
+        console.log('Grup silme engellendi - Bağlı material cardlar var');
         alert(t('This group is linked to a Material Card and cannot be deleted.'))
-        return
+        return;
       }
 
-      if (materialGroups.some(group => group.id === id)) {
-        alert(t('This group is linked to a Material Card and cannot be deleted.'))
-        return
-      }
-      await DeleteMaterialGroup({ id })
+      console.log('Tüm kontroller başarılı, grup siliniyor...');
+      await DeleteMaterialGroup({ id });
+      console.log('Grup başarıyla silindi');
+      
       const groups = await fetchMaterialGroups();
       setMaterialGroups(groups);
     } catch (error: any) {
-      console.error('Error deleting group:', error)
+      console.error('Grup silme hatası:', error);
+      console.error('Hata detayları:', {
+        message: error.message,
+        stack: error.stack,
+        response: error.response?.data
+      });
       alert(t('Error deleting group.'))
     }
   }
 
   const handleRowClick = (groupId: number) => {
-    console.log(`Selected Group ID: ${groupId}`);
+    console.log(`Seçilen Grup ID: ${groupId}`);
+    console.log('Seçim öncesi material card listesi:', materialCard);
     setSelectedGroup(groupId);
   };
 
@@ -332,12 +353,18 @@ export const MaterialGroupList = () => {
       {
         header: t('Code'),
         accessorKey: 'code',
-        muiEditTextFieldProps: ({ row }: { row: MRT_Row<MaterialGroupTreeItem> }) => {
+        muiEditTextFieldProps: ({ row, table }: { row: MRT_Row<MaterialGroupTreeItem>, table: MRT_TableInstance<MaterialGroupTreeItem> }) => {
           const parentcode = creatingRowParentId ? materialGroups.find(g => g.id === creatingRowParentId)?.code + '.' : '';
-
-          console.log(row.original.code)
+          
+          
+          const isCreating = !row.original.id; 
+          
+          console.log(row.original.code);
+          console.log('Is creating new row:', isCreating);
+          
           return {
             required: true,
+            disabled: !isCreating, 
             sx: {
               '& .MuiFormLabel-root': {
                 position: 'absolute',
