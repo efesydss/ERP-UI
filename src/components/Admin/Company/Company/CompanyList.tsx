@@ -168,42 +168,76 @@ export const CompanyList = () => {
           const value = cell.getValue<Branch>();
           return value ? value.name : '';
         },
-        muiEditTextFieldProps: ({ row, cell }) => {
+        Edit: ({ row, cell, table }) => {
           const currentBranch = cell.getValue<Branch>();
+          console.log('Current Branch Value:', currentBranch);
           
-          return {
-            select: true,
-            value: currentBranch?.id ?? 0,
-            sx: { width: '100%' },
-            displayEmpty: true,
-            renderValue: (value: any) => {
-              if (value === 0) return 'Select Branch';
-              const selected = branchList.find(branch => branch.id === value);
-              return selected ? selected.name : '';
-            },
-            children: branchList.map((branch) => (
-              <MenuItem key={branch.id} value={branch.id ?? 0}>
-                {branch.name}
-              </MenuItem>
-            )),
-            onChange: (e) => {
-              const selectedBranchId = parseInt(e.target.value.toString());
-              const selectedBranch = branchList.find(branch => branch.id === selectedBranchId);
-              if (selectedBranch) {
-                row._valuesCache.branch = {
-                  id: selectedBranch.id,
-                  name: selectedBranch.name
-                };
-              }
-            },
-            error: !!validationErrors?.branch,
-            helperText: validationErrors?.branch,
-            onFocus: () =>
-              setValidationErrors({
-                ...validationErrors,
-                branch: undefined,
-              }),
+          const [selectedBranchId, setSelectedBranchId] = useState<number>(currentBranch?.id ?? 0);
+          
+          useEffect(() => {
+            setSelectedBranchId(currentBranch?.id ?? 0);
+          }, [currentBranch]);
+          
+          const handleChange = (e: React.ChangeEvent<{ value: unknown }>) => {
+            const newBranchId = parseInt(e.target.value as string);
+            console.log('Selected Branch ID:', newBranchId);
+            
+            setSelectedBranchId(newBranchId);
+            
+            const selectedBranch = branchList.find(branch => branch.id === newBranchId);
+            console.log('Selected Branch Object:', selectedBranch);
+            
+            if (selectedBranch) {
+              row._valuesCache.branch = {
+                id: selectedBranch.id,
+                name: selectedBranch.name
+              };
+              
+              const updatedRow = {
+                ...row,
+                _valuesCache: {
+                  ...row._valuesCache,
+                  branch: {
+                    id: selectedBranch.id,
+                    name: selectedBranch.name
+                  }
+                }
+              };
+              
+              table.setEditingRow(updatedRow);
+              console.log('Updated Row:', updatedRow);
+            }
           };
+          
+          return (
+            <FormControl fullWidth>
+              <InputLabel id="branch-select-label">Branch</InputLabel>
+              <Select
+                labelId="branch-select-label"
+                value={selectedBranchId}
+                onChange={handleChange as any}
+                label="Branch"
+                error={!!validationErrors?.branch}
+              >
+                <MenuItem value={0}>
+                  <em>Select Branch</em>
+                </MenuItem>
+                {branchList.map((branch) => (
+                  <MenuItem key={branch.id} value={branch.id ?? 0}>
+                    {branch.name}
+                  </MenuItem>
+                ))}
+              </Select>
+              {validationErrors?.branch && (
+                <div style={{ color: 'red', fontSize: '0.75rem' }}>
+                  {validationErrors.branch}
+                </div>
+              )}
+            </FormControl>
+          );
+        },
+        muiEditTextFieldProps: {
+          select: true,
         },
       },
     ],
@@ -212,14 +246,18 @@ export const CompanyList = () => {
 
   const handleCreateCompany = async (props: { exitCreatingMode: () => void; row: MRT_Row<Company>; table: MRT_TableInstance<Company>; values: Record<string, any>; }) => {
     try {
-      const newCompany = props.values as Company;
+      const newCompany = {...props.values} as Company;
+      console.log('Create Mode - Before Processing:', newCompany);
       
       if (typeof newCompany.branch === 'number' || typeof newCompany.branch === 'string') {
         const branchId = typeof newCompany.branch === 'string' 
           ? parseInt(newCompany.branch) 
           : newCompany.branch;
           
+        console.log('Create Mode - Branch ID:', branchId);
         const selectedBranch = branchList.find(branch => branch.id === branchId);
+        console.log('Create Mode - Selected Branch:', selectedBranch);
+        
         if (selectedBranch) {
           newCompany.branch = {
             id: selectedBranch.id,
@@ -227,6 +265,13 @@ export const CompanyList = () => {
           } as Branch;
         }
       }
+      
+      if (!newCompany.branch && props.row._valuesCache?.branch) {
+        newCompany.branch = props.row._valuesCache.branch;
+        console.log('Create Mode - Using Cache Branch:', newCompany.branch);
+      }
+      
+      console.log('Create Mode - Final Payload:', newCompany);
       
       addCompany({ data: newCompany }, {
         onSuccess: async () => {
@@ -247,14 +292,18 @@ export const CompanyList = () => {
 
   const handleSaveCompany = async (props: { exitEditingMode: () => void; row: MRT_Row<Company>; table: MRT_TableInstance<Company>; values: Record<string, any>; }): Promise<void> => {
     try {
-      const updatedCompany = props.values as Company;
+      const updatedCompany = {...props.values} as Company;
+      console.log('Edit Mode - Before Processing:', updatedCompany);
       
       if (typeof updatedCompany.branch === 'number' || typeof updatedCompany.branch === 'string') {
         const branchId = typeof updatedCompany.branch === 'string' 
           ? parseInt(updatedCompany.branch) 
           : updatedCompany.branch;
           
+        console.log('Edit Mode - Branch ID:', branchId);
         const selectedBranch = branchList.find(branch => branch.id === branchId);
+        console.log('Edit Mode - Selected Branch:', selectedBranch);
+        
         if (selectedBranch) {
           updatedCompany.branch = {
             id: selectedBranch.id,
@@ -262,6 +311,13 @@ export const CompanyList = () => {
           } as Branch;
         }
       }
+      
+      if (!updatedCompany.branch && props.row._valuesCache?.branch) {
+        updatedCompany.branch = props.row._valuesCache.branch;
+        console.log('Edit Mode - Using Cache Branch:', updatedCompany.branch);
+      }
+      
+      console.log('Edit Mode - Final Payload:', updatedCompany);
       
       const companyId = props.row.original.id;
       if (companyId !== undefined && companyId !== null) {
