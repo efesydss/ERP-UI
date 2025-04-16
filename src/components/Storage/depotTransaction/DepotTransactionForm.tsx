@@ -22,7 +22,7 @@ import {
 } from '@mui/material';
 import { Add as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import { DepotTransaction, DepotTransactionDocumentType, DepotRowItem, MaterialCard, PlanStatusEnum, ProductPlan, EmployeeExtendedRef, Depot } from '@/api/model';
-import { depotTransactions, productPlans, addDepotTransaction } from '@/api/openAPIDefinition';
+import { productPlans, addDepotTransaction } from '@/api/openAPIDefinition';
 import { employees, depots, materialCards } from '@/api/filtering';
 
 interface DepotTransactionFormProps {

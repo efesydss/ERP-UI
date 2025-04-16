@@ -8,7 +8,6 @@
 export type MaintenancePeriodEnum = typeof MaintenancePeriodEnum[keyof typeof MaintenancePeriodEnum];
 
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MaintenancePeriodEnum = {
   DAY: 'DAY',
   WEEK: 'WEEK',

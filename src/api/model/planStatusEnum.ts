@@ -8,7 +8,6 @@
 export type PlanStatusEnum = typeof PlanStatusEnum[keyof typeof PlanStatusEnum];
 
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PlanStatusEnum = {
   PLANNED: 'PLANNED',
   STARTED: 'STARTED',

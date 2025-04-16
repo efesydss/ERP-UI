@@ -11,7 +11,6 @@
 export type MaterialRequestRowItemUnit = typeof MaterialRequestRowItemUnit[keyof typeof MaterialRequestRowItemUnit];
 
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MaterialRequestRowItemUnit = {
   KG: 'KG',
   GR: 'GR',

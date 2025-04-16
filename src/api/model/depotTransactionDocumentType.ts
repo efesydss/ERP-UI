@@ -11,7 +11,6 @@
 export type DepotTransactionDocumentType = typeof DepotTransactionDocumentType[keyof typeof DepotTransactionDocumentType];
 
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DepotTransactionDocumentType = {
   TRANSFER_INITIALIZATION: 'TRANSFER_INITIALIZATION',
   PROJECT_OUT: 'PROJECT_OUT',

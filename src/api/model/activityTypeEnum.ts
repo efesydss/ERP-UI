@@ -8,7 +8,6 @@
 export type ActivityTypeEnum = typeof ActivityTypeEnum[keyof typeof ActivityTypeEnum];
 
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ActivityTypeEnum = {
   FinishToStart: 'FinishToStart',
   StartToStart: 'StartToStart',

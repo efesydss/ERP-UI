@@ -5,10 +5,9 @@ import {
   useMaterialReactTable,
   type MRT_ColumnDef,
 } from 'material-react-table';
-import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
+import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
 import { DepotTransaction } from '@/api/model';
 import { depotTransactions } from '@/api/openAPIDefinition';
-import type { FilteringRequest } from '@/api/model';
 import DepotTransactionForm from './DepotTransactionForm';
 
 const DepotTransactionList = () => {
@@ -30,7 +29,10 @@ const DepotTransactionList = () => {
     } catch (err) {
       setError("Depo hareketleri yüklenirken bir hata oluştu");
       console.error(err);
+      console.error(error);
+
     } finally {
+      console.log(isLoading)
       setIsLoading(false);
     }
   };

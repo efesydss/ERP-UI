@@ -11,7 +11,6 @@
 export type MaterialRequestRowItemSectionApprovalEnum = typeof MaterialRequestRowItemSectionApprovalEnum[keyof typeof MaterialRequestRowItemSectionApprovalEnum];
 
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MaterialRequestRowItemSectionApprovalEnum = {
   PENDING_APPROVAL: 'PENDING_APPROVAL',
   APPROVED: 'APPROVED',

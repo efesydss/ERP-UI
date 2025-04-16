@@ -8,7 +8,6 @@
 export type PurchaseOrderItemUnit = typeof PurchaseOrderItemUnit[keyof typeof PurchaseOrderItemUnit];
 
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PurchaseOrderItemUnit = {
   KG: 'KG',
   GR: 'GR',

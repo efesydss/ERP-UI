@@ -8,7 +8,6 @@
 export type DebtTypeEnum = typeof DebtTypeEnum[keyof typeof DebtTypeEnum];
 
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DebtTypeEnum = {
   DEBIT: 'DEBIT',
   CREDIT: 'CREDIT',

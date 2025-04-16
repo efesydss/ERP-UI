@@ -11,7 +11,6 @@
 export type MaterialRequestFulfillmentRoutingType = typeof MaterialRequestFulfillmentRoutingType[keyof typeof MaterialRequestFulfillmentRoutingType];
 
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MaterialRequestFulfillmentRoutingType = {
   PROCUREMENT: 'PROCUREMENT',
   WAREHOUSE: 'WAREHOUSE',

@@ -8,7 +8,6 @@
 export type UnitEnum = typeof UnitEnum[keyof typeof UnitEnum];
 
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UnitEnum = {
   KG: 'KG',
   GR: 'GR',

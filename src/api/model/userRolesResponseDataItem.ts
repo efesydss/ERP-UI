@@ -8,7 +8,6 @@
 export type UserRolesResponseDataItem = typeof UserRolesResponseDataItem[keyof typeof UserRolesResponseDataItem];
 
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UserRolesResponseDataItem = {
   ROLE_ACCOUNTING_ADMIN: 'ROLE_ACCOUNTING_ADMIN',
   ROLE_COMPANY_ADMIN: 'ROLE_COMPANY_ADMIN',
