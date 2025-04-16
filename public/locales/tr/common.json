@@ -262,7 +262,6 @@
   "taxNumber": "Vergi Numarası",
   "AdditionalCostList": "Ek Maliyetler",
   "newAdditionalCost": "Yeni Ek Maliyet Ekle",
-  "specialCode": "Özel Kod",
   "AdditionalCostAdd": "Ek Maliyet Ekle",
   "additionalCostAdd": "Ek Maliyet Ekle",
   "additionalCost": "Ek Maliyet",
@@ -319,5 +318,10 @@
   "UnitAdd": "Birim Ekle",
   "placeholders": {
     "employeeSelect": "Çalışan Seçiniz"
-  }
+  },
+  "TransactionDate": "İşlem Tarihi",
+  "DocumentNo": "Belge No",
+  "ProductPlanCode": "Üretim Planı Kodu",
+  "ProductPlanDescription": "Üretim Planı Açıklaması",
+  "Employee": "Sorumlu"
 }

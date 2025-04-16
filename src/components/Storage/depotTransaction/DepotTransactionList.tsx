@@ -1,4 +1,5 @@
 import { useMemo, useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next'
 import {
   MaterialReactTable,
   useMaterialReactTable,
@@ -15,7 +16,7 @@ const DepotTransactionList = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
-
+  const { t } = useTranslation()
   const fetchDepotTransactions = async () => {
     setIsLoading(true);
     try {
@@ -39,28 +40,28 @@ const DepotTransactionList = () => {
   }, []);
 
   const columns = useMemo<MRT_ColumnDef<DepotTransaction>[]>(
-  
+
     () => [
-      
+
       {
         accessorKey: 'transactionDate',
-        header: 'TransactionDate',
+        header: t('common:TransactionDate'),
       },
       {
         accessorKey: 'documentNo',
-        header: 'Document No',
+        header: t('common:DocumentNo'),
       },
       {
         accessorKey: 'productPlan.code',
-        header: 'Product Plan Code',
+        header: t('common:ProductPlanCode'),
       },
       {
         accessorKey: 'productPlan.description',
-        header: 'Product Plan Description',
+        header: t('common:ProductPlanDescription'),
       },
       {
         accessorKey: 'employee.name',
-        header: 'Employee',
+        header: t('common:Employee'),
       },
     ],
     [],
@@ -79,7 +80,7 @@ const DepotTransactionList = () => {
             : 'rgba(0,0,0,0.1)',
       }),
     }),
-    
+
     muiExpandButtonProps: ({ row, table }) => ({
       onClick: () => table.setExpanded({ [row.id]: !row.getIsExpanded() }), //only 1 detail panel open at a time
       sx: {
@@ -87,7 +88,7 @@ const DepotTransactionList = () => {
         transition: 'transform 0.2s',
       },
     }),
-    
+
     renderDetailPanel: ({ row }) =>
       row.original.rowItems ? (
         <Box sx={{ p: 2 }}>
