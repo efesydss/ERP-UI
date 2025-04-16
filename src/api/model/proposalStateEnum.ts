@@ -11,6 +11,7 @@
 export type ProposalStateEnum = typeof ProposalStateEnum[keyof typeof ProposalStateEnum];
 
 
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ProposalStateEnum = {
   CREATED: 'CREATED',
   FORWARDED_TO_CUSTOMER: 'FORWARDED_TO_CUSTOMER',

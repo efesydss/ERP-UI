@@ -8,6 +8,7 @@
 export type WarehouseBranchEnum = typeof WarehouseBranchEnum[keyof typeof WarehouseBranchEnum];
 
 
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const WarehouseBranchEnum = {
   DUZCE: 'DUZCE',
   TUZLA: 'TUZLA',

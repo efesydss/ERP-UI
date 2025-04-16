@@ -8,6 +8,7 @@
 export type TransactionTypeEnum = typeof TransactionTypeEnum[keyof typeof TransactionTypeEnum];
 
 
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TransactionTypeEnum = {
   ORDER: 'ORDER',
   INVOICE: 'INVOICE',

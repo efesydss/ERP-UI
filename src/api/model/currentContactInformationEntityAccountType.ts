@@ -8,7 +8,7 @@
 export type CurrentContactInformationEntityAccountType = typeof CurrentContactInformationEntityAccountType[keyof typeof CurrentContactInformationEntityAccountType];
 
 
-
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CurrentContactInformationEntityAccountType = {
   CUSTOMER: 'CUSTOMER',
   SELLER: 'SELLER',

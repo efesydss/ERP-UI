@@ -8,6 +8,7 @@
 export type ProductTypeEnum = typeof ProductTypeEnum[keyof typeof ProductTypeEnum];
 
 
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ProductTypeEnum = {
   PRODUCT: 'PRODUCT',
   SEMI_PRODUCT: 'SEMI_PRODUCT',

@@ -8,7 +8,7 @@
 export type InvoiceItemTypeEnum = typeof InvoiceItemTypeEnum[keyof typeof InvoiceItemTypeEnum];
 
 
-
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const InvoiceItemTypeEnum = {
   ADDITIONAL_COST: 'ADDITIONAL_COST',
   SERVICE: 'SERVICE',

@@ -8,6 +8,7 @@
 export type SectionTypeEnum = typeof SectionTypeEnum[keyof typeof SectionTypeEnum];
 
 
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SectionTypeEnum = {
   MANAGEMENT: 'MANAGEMENT',
   IT: 'IT',

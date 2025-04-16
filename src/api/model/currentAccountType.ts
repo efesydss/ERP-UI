@@ -8,6 +8,7 @@
 export type CurrentAccountType = typeof CurrentAccountType[keyof typeof CurrentAccountType];
 
 
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CurrentAccountType = {
   CUSTOMER: 'CUSTOMER',
   SELLER: 'SELLER',

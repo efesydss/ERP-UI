@@ -8,6 +8,7 @@
 export type WarrantyPeriodEnum = typeof WarrantyPeriodEnum[keyof typeof WarrantyPeriodEnum];
 
 
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const WarrantyPeriodEnum = {
   DAY: 'DAY',
   WEEK: 'WEEK',

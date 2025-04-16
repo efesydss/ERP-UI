@@ -5,10 +5,14 @@
  * OpenAPI spec version: v0
  */
 import type { UserRole } from './userRole';
+import type { UserUserRolesItem } from './userUserRolesItem';
 
 export interface User {
   /** @nullable */
   id?: number | null;
   email: string;
-  role: UserRole;
+  active?: boolean;
+  /** @deprecated */
+  role?: UserRole;
+  userRoles?: UserUserRolesItem[];
 }

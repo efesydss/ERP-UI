@@ -8,7 +8,7 @@
 export type EmployeePaymentType = typeof EmployeePaymentType[keyof typeof EmployeePaymentType];
 
 
-
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const EmployeePaymentType = {
   SALARY: 'SALARY',
   SALARY_PAYMENT: 'SALARY_PAYMENT',

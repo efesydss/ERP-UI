@@ -8,6 +8,7 @@
 export type ServiceTypeEnum = typeof ServiceTypeEnum[keyof typeof ServiceTypeEnum];
 
 
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ServiceTypeEnum = {
   MAIN_SERVICE: 'MAIN_SERVICE',
   CONSUMPTION_SERVICE: 'CONSUMPTION_SERVICE',

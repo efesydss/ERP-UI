@@ -8,6 +8,7 @@
 export type TimeOffType = typeof TimeOffType[keyof typeof TimeOffType];
 
 
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TimeOffType = {
   SICK_LEAVE: 'SICK_LEAVE',
   VACATION: 'VACATION',

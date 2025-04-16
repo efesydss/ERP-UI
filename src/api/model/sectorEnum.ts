@@ -8,6 +8,7 @@
 export type SectorEnum = typeof SectorEnum[keyof typeof SectorEnum];
 
 
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SectorEnum = {
   METAL: 'METAL',
   YACHTING: 'YACHTING',

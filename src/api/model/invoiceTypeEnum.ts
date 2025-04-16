@@ -8,6 +8,7 @@
 export type InvoiceTypeEnum = typeof InvoiceTypeEnum[keyof typeof InvoiceTypeEnum];
 
 
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const InvoiceTypeEnum = {
   RECEIPT_INVOICE: 'RECEIPT_INVOICE',
   RETURN_INVOICE: 'RETURN_INVOICE',

@@ -8,7 +8,7 @@
 export type CurrentContactInformationEntityCurrency = typeof CurrentContactInformationEntityCurrency[keyof typeof CurrentContactInformationEntityCurrency];
 
 
-
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CurrentContactInformationEntityCurrency = {
   TRY: 'TRY',
   USD: 'USD',

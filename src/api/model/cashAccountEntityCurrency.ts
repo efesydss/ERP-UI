@@ -8,6 +8,7 @@
 export type CashAccountEntityCurrency = typeof CashAccountEntityCurrency[keyof typeof CashAccountEntityCurrency];
 
 
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CashAccountEntityCurrency = {
   TRY: 'TRY',
   USD: 'USD',

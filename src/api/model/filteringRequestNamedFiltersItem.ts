@@ -8,7 +8,7 @@
 export type FilteringRequestNamedFiltersItem = typeof FilteringRequestNamedFiltersItem[keyof typeof FilteringRequestNamedFiltersItem];
 
 
-
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FilteringRequestNamedFiltersItem = {
   show_passives: 'show_passives',
 } as const;
