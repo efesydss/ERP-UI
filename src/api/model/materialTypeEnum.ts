@@ -8,7 +8,6 @@
 export type MaterialTypeEnum = typeof MaterialTypeEnum[keyof typeof MaterialTypeEnum];
 
 
-
 export const MaterialTypeEnum = {
   MAIN_MATERIAL: 'MAIN_MATERIAL',
   CONSUMPTION_MATERIAL: 'CONSUMPTION_MATERIAL',

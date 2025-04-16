@@ -8,7 +8,6 @@
 export type MaintenancePeriodEnum = typeof MaintenancePeriodEnum[keyof typeof MaintenancePeriodEnum];
 
 
-
 export const MaintenancePeriodEnum = {
   DAY: 'DAY',
   WEEK: 'WEEK',

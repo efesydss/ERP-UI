@@ -8,7 +8,6 @@
 export type FixtureTypeEnum = typeof FixtureTypeEnum[keyof typeof FixtureTypeEnum];
 
 
-
 export const FixtureTypeEnum = {
   MAIN_MATERIAL: 'MAIN_MATERIAL',
   CONSUMPTION_MATERIAL: 'CONSUMPTION_MATERIAL',

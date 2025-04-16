@@ -54,7 +54,8 @@
   "roles": "Roller",
   "new": "Yeni",
   "new-leave": "İzin Ekle",
-  "accounting": "Muhasebe"
+  "accounting": "Muhasebe",
+  "depotTransactions":"Depo hareketleri"
 }
 
 

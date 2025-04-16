@@ -8,7 +8,6 @@
 export type EmployeePaymentType = typeof EmployeePaymentType[keyof typeof EmployeePaymentType];
 
 
-
 export const EmployeePaymentType = {
   SALARY: 'SALARY',
   SALARY_PAYMENT: 'SALARY_PAYMENT',

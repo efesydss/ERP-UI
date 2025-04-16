@@ -47,6 +47,7 @@ import { Route as AuthenticatedStorageServiceGroupsIndexImport } from './routes/
 import { Route as AuthenticatedStorageProductGroupsIndexImport } from './routes/_authenticated/storage/productGroups/index'
 import { Route as AuthenticatedStorageMaterialGroupsIndexImport } from './routes/_authenticated/storage/materialGroups/index'
 import { Route as AuthenticatedStorageFixtureGroupsIndexImport } from './routes/_authenticated/storage/fixtureGroups/index'
+import { Route as AuthenticatedStorageDepotTransactionsIndexImport } from './routes/_authenticated/storage/depotTransactions/index'
 import { Route as AuthenticatedStorageCatalogIndexImport } from './routes/_authenticated/storage/catalog/index'
 import { Route as AuthenticatedStorageAssignmentTransactionsIndexImport } from './routes/_authenticated/storage/assignmentTransactions/index'
 import { Route as AuthenticatedStorageAssignmentCardsIndexImport } from './routes/_authenticated/storage/assignmentCards/index'
@@ -336,6 +337,12 @@ const AuthenticatedStorageMaterialGroupsIndexRoute =
 const AuthenticatedStorageFixtureGroupsIndexRoute =
   AuthenticatedStorageFixtureGroupsIndexImport.update({
     path: '/storage/fixtureGroups/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
+const AuthenticatedStorageDepotTransactionsIndexRoute =
+  AuthenticatedStorageDepotTransactionsIndexImport.update({
+    path: '/storage/depotTransactions/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
@@ -1514,6 +1521,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedStorageCatalogIndexImport
       parentRoute: typeof AuthenticatedImport
     }
+    '/_authenticated/storage/depotTransactions/': {
+      id: '/_authenticated/storage/depotTransactions/'
+      path: '/storage/depotTransactions'
+      fullPath: '/storage/depotTransactions'
+      preLoaderRoute: typeof AuthenticatedStorageDepotTransactionsIndexImport
+      parentRoute: typeof AuthenticatedImport
+    }
     '/_authenticated/storage/fixtureGroups/': {
       id: '/_authenticated/storage/fixtureGroups/'
       path: '/storage/fixtureGroups'
@@ -1912,6 +1926,7 @@ export const routeTree = rootRoute.addChildren({
     AuthenticatedAccountingExpenseCardsIndexRoute,
     AuthenticatedAccountingExpenseInvoicesIndexRoute,
     AuthenticatedStorageCatalogIndexRoute,
+    AuthenticatedStorageDepotTransactionsIndexRoute,
     AuthenticatedStorageFixtureGroupsIndexRoute,
     AuthenticatedStorageMaterialGroupsIndexRoute,
     AuthenticatedStorageProductGroupsIndexRoute,
@@ -1975,6 +1990,7 @@ export const routeTree = rootRoute.addChildren({
         "/_authenticated/accounting/expenseCards/",
         "/_authenticated/accounting/expenseInvoices/",
         "/_authenticated/storage/catalog/",
+        "/_authenticated/storage/depotTransactions/",
         "/_authenticated/storage/fixtureGroups/",
         "/_authenticated/storage/materialGroups/",
         "/_authenticated/storage/productGroups/",
@@ -2463,6 +2479,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_authenticated/storage/catalog/": {
       "filePath": "_authenticated/storage/catalog/index.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/storage/depotTransactions/": {
+      "filePath": "_authenticated/storage/depotTransactions/index.tsx",
       "parent": "/_authenticated"
     },
     "/_authenticated/storage/fixtureGroups/": {

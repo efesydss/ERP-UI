@@ -5,6 +5,7 @@
  * OpenAPI spec version: v0
  */
 import type { UserEntityRole } from './userEntityRole';
+import type { UserEntityUserRolesItem } from './userEntityUserRolesItem';
 
 export interface UserEntity {
   id?: number;
@@ -16,4 +17,6 @@ export interface UserEntity {
   email?: string;
   password?: string;
   role?: UserEntityRole;
+  userRoles?: UserEntityUserRolesItem[];
+  active?: boolean;
 }

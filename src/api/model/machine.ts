@@ -4,12 +4,12 @@
  * OpenAPI definition
  * OpenAPI spec version: v0
  */
-import type { Employee } from './employee';
+import type { EmployeeExtendedRef } from './employeeExtendedRef';
 
 export interface Machine {
   /** @nullable */
   id?: number | null;
   code: string;
   description: string;
-  employee: Employee;
+  employee: EmployeeExtendedRef;
 }

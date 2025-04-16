@@ -224,6 +224,11 @@ export const allMenuItems: MenuItemProps[] = [
       env: [AppEnvironment.DEVELOPMENT],
       sub: [
         {
+          label: 'depotTransactions',
+          icon: TbUserStar,
+          env: [AppEnvironment.DEVELOPMENT],
+        },
+        {
           label: 'assignmentCards',
           icon: TbUserStar,
           env: [AppEnvironment.DEVELOPMENT],

@@ -9,6 +9,9 @@ import type { UnitEnum } from './unitEnum';
 import type { MaterialTypeEnum } from './materialTypeEnum';
 import type { MaterialCardUnit } from './materialCardUnit';
 
+/**
+ * Malzeme kartÄ± bilgisi
+ */
 export interface MaterialCard {
   /** @nullable */
   id?: number | null;

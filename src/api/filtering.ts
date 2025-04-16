@@ -64,7 +64,7 @@ export const users = (
       
       
       return customMutator<Users>(
-      {url: `/api/user/users`, method: 'POST',
+      {url: `/api/users/list`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: filteringRequest, signal
     },

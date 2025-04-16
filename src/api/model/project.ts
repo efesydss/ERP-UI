@@ -7,6 +7,9 @@
 import type { CurrentAccount } from './currentAccount';
 import type { Employee } from './employee';
 
+/**
+ * Malzeme talebinin iliÅŸkili olduÄŸu proje
+ */
 export interface Project {
   /** @nullable */
   id?: number | null;

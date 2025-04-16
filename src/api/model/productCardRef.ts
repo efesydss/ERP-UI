@@ -5,9 +5,6 @@
  * OpenAPI spec version: v0
  */
 
-/**
- * Product Card
- */
 export interface ProductCardRef {
   /** @nullable */
   id?: number | null;

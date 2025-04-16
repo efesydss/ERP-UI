@@ -5,6 +5,9 @@
  * OpenAPI spec version: v0
  */
 
+/**
+ * @deprecated
+ */
 export type UserRole = typeof UserRole[keyof typeof UserRole];
 
 
