@@ -8,7 +8,7 @@
 export type PlanStatusEnum = typeof PlanStatusEnum[keyof typeof PlanStatusEnum];
 
 
-export const PlanStatusEnum = {
+ export const PlanStatusEnum = {
   PLANNED: 'PLANNED',
   STARTED: 'STARTED',
   COMPLETED: 'COMPLETED',

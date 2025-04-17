@@ -8,7 +8,7 @@
 export type CurrentAccountEntitySector = typeof CurrentAccountEntitySector[keyof typeof CurrentAccountEntitySector];
 
 
-export const CurrentAccountEntitySector = {
+ export const CurrentAccountEntitySector = {
   METAL: 'METAL',
   YACHTING: 'YACHTING',
   ALUMINIUM: 'ALUMINIUM',

@@ -8,7 +8,7 @@
 export type OverTimePercentage = typeof OverTimePercentage[keyof typeof OverTimePercentage];
 
 
-export const OverTimePercentage = {
+ export const OverTimePercentage = {
   P50: 'P50',
   P100: 'P100',
   P150: 'P150',

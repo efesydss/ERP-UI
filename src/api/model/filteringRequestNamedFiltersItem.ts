@@ -8,6 +8,6 @@
 export type FilteringRequestNamedFiltersItem = typeof FilteringRequestNamedFiltersItem[keyof typeof FilteringRequestNamedFiltersItem];
 
 
-export const FilteringRequestNamedFiltersItem = {
+ export const FilteringRequestNamedFiltersItem = {
   show_passives: 'show_passives',
 } as const;

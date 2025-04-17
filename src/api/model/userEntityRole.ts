@@ -8,7 +8,7 @@
 export type UserEntityRole = typeof UserEntityRole[keyof typeof UserEntityRole];
 
 
-export const UserEntityRole = {
+ export const UserEntityRole = {
   USER: 'USER',
   ADMIN: 'ADMIN',
 } as const;

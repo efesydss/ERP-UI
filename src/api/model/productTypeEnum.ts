@@ -8,7 +8,7 @@
 export type ProductTypeEnum = typeof ProductTypeEnum[keyof typeof ProductTypeEnum];
 
 
-export const ProductTypeEnum = {
+ export const ProductTypeEnum = {
   PRODUCT: 'PRODUCT',
   SEMI_PRODUCT: 'SEMI_PRODUCT',
 } as const;

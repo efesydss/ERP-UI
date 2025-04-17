@@ -11,7 +11,7 @@
 export type MaterialRequestRowItemSectionApprovalEnum = typeof MaterialRequestRowItemSectionApprovalEnum[keyof typeof MaterialRequestRowItemSectionApprovalEnum];
 
 
-export const MaterialRequestRowItemSectionApprovalEnum = {
+ export const MaterialRequestRowItemSectionApprovalEnum = {
   PENDING_APPROVAL: 'PENDING_APPROVAL',
   APPROVED: 'APPROVED',
   PARTIALLY_APPROVED: 'PARTIALLY_APPROVED',

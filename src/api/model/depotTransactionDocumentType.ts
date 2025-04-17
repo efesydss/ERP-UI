@@ -11,7 +11,7 @@
 export type DepotTransactionDocumentType = typeof DepotTransactionDocumentType[keyof typeof DepotTransactionDocumentType];
 
 
-export const DepotTransactionDocumentType = {
+ export const DepotTransactionDocumentType = {
   TRANSFER_INITIALIZATION: 'TRANSFER_INITIALIZATION',
   PROJECT_OUT: 'PROJECT_OUT',
   PROJECT_IN: 'PROJECT_IN',

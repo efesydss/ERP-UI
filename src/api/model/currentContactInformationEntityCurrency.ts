@@ -8,7 +8,7 @@
 export type CurrentContactInformationEntityCurrency = typeof CurrentContactInformationEntityCurrency[keyof typeof CurrentContactInformationEntityCurrency];
 
 
-export const CurrentContactInformationEntityCurrency = {
+ export const CurrentContactInformationEntityCurrency = {
   TRY: 'TRY',
   USD: 'USD',
   EUR: 'EUR',

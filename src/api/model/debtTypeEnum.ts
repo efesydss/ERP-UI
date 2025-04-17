@@ -8,7 +8,7 @@
 export type DebtTypeEnum = typeof DebtTypeEnum[keyof typeof DebtTypeEnum];
 
 
-export const DebtTypeEnum = {
+ export const DebtTypeEnum = {
   DEBIT: 'DEBIT',
   CREDIT: 'CREDIT',
 } as const;

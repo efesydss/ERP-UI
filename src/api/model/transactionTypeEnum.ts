@@ -8,7 +8,7 @@
 export type TransactionTypeEnum = typeof TransactionTypeEnum[keyof typeof TransactionTypeEnum];
 
 
-export const TransactionTypeEnum = {
+ export const TransactionTypeEnum = {
   ORDER: 'ORDER',
   INVOICE: 'INVOICE',
   PAYMENT: 'PAYMENT',

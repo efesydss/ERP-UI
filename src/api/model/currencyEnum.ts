@@ -8,7 +8,7 @@
 export type CurrencyEnum = typeof CurrencyEnum[keyof typeof CurrencyEnum];
 
 
-export const CurrencyEnum = {
+ export const CurrencyEnum = {
   TRY: 'TRY',
   USD: 'USD',
   EUR: 'EUR',

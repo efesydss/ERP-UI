@@ -8,7 +8,7 @@
 export type SectorEnum = typeof SectorEnum[keyof typeof SectorEnum];
 
 
-export const SectorEnum = {
+ export const SectorEnum = {
   METAL: 'METAL',
   YACHTING: 'YACHTING',
   ALUMINIUM: 'ALUMINIUM',

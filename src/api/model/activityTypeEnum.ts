@@ -8,7 +8,7 @@
 export type ActivityTypeEnum = typeof ActivityTypeEnum[keyof typeof ActivityTypeEnum];
 
 
-export const ActivityTypeEnum = {
+ export const ActivityTypeEnum = {
   FinishToStart: 'FinishToStart',
   StartToStart: 'StartToStart',
   FinishToFinish: 'FinishToFinish',

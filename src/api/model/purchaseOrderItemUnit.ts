@@ -8,7 +8,7 @@
 export type PurchaseOrderItemUnit = typeof PurchaseOrderItemUnit[keyof typeof PurchaseOrderItemUnit];
 
 
-export const PurchaseOrderItemUnit = {
+ export const PurchaseOrderItemUnit = {
   KG: 'KG',
   GR: 'GR',
   METER: 'METER',
