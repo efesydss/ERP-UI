@@ -51,6 +51,7 @@ import { Route as AuthenticatedStorageDepotTransactionsIndexImport } from './rou
 import { Route as AuthenticatedStorageCatalogIndexImport } from './routes/_authenticated/storage/catalog/index'
 import { Route as AuthenticatedStorageAssignmentTransactionsIndexImport } from './routes/_authenticated/storage/assignmentTransactions/index'
 import { Route as AuthenticatedStorageAssignmentCardsIndexImport } from './routes/_authenticated/storage/assignmentCards/index'
+import { Route as AuthenticatedPurchasingProposalRequestsIndexImport } from './routes/_authenticated/purchasing/proposalRequests/index'
 import { Route as AuthenticatedPurchasingInvoicesIndexImport } from './routes/_authenticated/purchasing/invoices/index'
 import { Route as AuthenticatedPurchasingCurrentAccountsIndexImport } from './routes/_authenticated/purchasing/currentAccounts/index'
 import { Route as AuthenticatedPurchasingCurrentAccountTransactionsIndexImport } from './routes/_authenticated/purchasing/currentAccountTransactions/index'
@@ -362,6 +363,12 @@ const AuthenticatedStorageAssignmentCardsIndexRoute =
   AuthenticatedStorageAssignmentCardsIndexImport.update({
     path: '/',
     getParentRoute: () => AuthenticatedStorageAssignmentCardsRoute,
+  } as any)
+
+const AuthenticatedPurchasingProposalRequestsIndexRoute =
+  AuthenticatedPurchasingProposalRequestsIndexImport.update({
+    path: '/proposalRequests/',
+    getParentRoute: () => AuthenticatedPurchasingRoute,
   } as any)
 
 const AuthenticatedPurchasingInvoicesIndexRoute =
@@ -1500,6 +1507,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPurchasingInvoicesIndexImport
       parentRoute: typeof AuthenticatedPurchasingImport
     }
+    '/_authenticated/purchasing/proposalRequests/': {
+      id: '/_authenticated/purchasing/proposalRequests/'
+      path: '/proposalRequests'
+      fullPath: '/purchasing/proposalRequests'
+      preLoaderRoute: typeof AuthenticatedPurchasingProposalRequestsIndexImport
+      parentRoute: typeof AuthenticatedPurchasingImport
+    }
     '/_authenticated/storage/assignmentCards/': {
       id: '/_authenticated/storage/assignmentCards/'
       path: '/'
@@ -1891,6 +1905,7 @@ export const routeTree = rootRoute.addChildren({
       AuthenticatedPurchasingCurrentAccountTransactionsIndexRoute,
       AuthenticatedPurchasingCurrentAccountsIndexRoute,
       AuthenticatedPurchasingInvoicesIndexRoute,
+      AuthenticatedPurchasingProposalRequestsIndexRoute,
       AuthenticatedPurchasingAdditionalCostsIdIndexRoute,
       AuthenticatedPurchasingCurrentAccountBankAccountsIdIndexRoute,
       AuthenticatedPurchasingCurrentAccountTransactionsIdIndexRoute,
@@ -2093,6 +2108,7 @@ export const routeTree = rootRoute.addChildren({
         "/_authenticated/purchasing/currentAccountTransactions/",
         "/_authenticated/purchasing/currentAccounts/",
         "/_authenticated/purchasing/invoices/",
+        "/_authenticated/purchasing/proposalRequests/",
         "/_authenticated/purchasing/additionalCosts/$id/",
         "/_authenticated/purchasing/currentAccountBankAccounts/$id/",
         "/_authenticated/purchasing/currentAccountTransactions/$id/",
@@ -2467,6 +2483,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_authenticated/purchasing/invoices/": {
       "filePath": "_authenticated/purchasing/invoices/index.tsx",
+      "parent": "/_authenticated/purchasing"
+    },
+    "/_authenticated/purchasing/proposalRequests/": {
+      "filePath": "_authenticated/purchasing/proposalRequests/index.tsx",
       "parent": "/_authenticated/purchasing"
     },
     "/_authenticated/storage/assignmentCards/": {
