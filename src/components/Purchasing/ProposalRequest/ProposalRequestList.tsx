@@ -1,11 +1,12 @@
 import { ProposalRequest } from "@/api/model";
 import { MRT_ColumnDef } from "material-react-table";
-import { useMemo, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { proposalRequests } from "@/api/openAPIDefinition";
 import { MaterialReactTable, useMaterialReactTable } from "material-react-table";
-import { Box, Tab, Tabs, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
+import { Box, Tab, Tabs, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, IconButton, Menu, MenuItem } from '@mui/material';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ProposalRequestForm from '@/components/Purchasing/ProposalRequest/ProposalRequestForm';
+import { useEffect, useMemo, useState } from "react";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -34,9 +35,9 @@ export const ProposaRequestList = () => {
     const { t } = useTranslation();
     const [proposalRequestList, setProposalRequestList] = useState<ProposalRequest[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
     const [tabValue, setTabValue] = useState(0);
     const [isFormOpen, setIsFormOpen] = useState(false);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
     const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
         setTabValue(newValue);
@@ -55,6 +56,29 @@ export const ProposaRequestList = () => {
         handleFormClose();
     };
 
+    const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleViewDetails = () => {
+        // Detay görüntüleme işlemi
+        handleMenuClose();
+    };
+
+    const handleEdit = () => {
+        // Düzenleme işlemi
+        handleMenuClose();
+    };
+
+    const handleDelete = () => {
+        // Silme işlemi
+        handleMenuClose();
+    };
+
     const fetchProposalRequests = async () => {
         setIsLoading(true);
         try {
@@ -67,7 +91,6 @@ export const ProposaRequestList = () => {
             setProposalRequestList(response.data ?? []);
             console.log("Proposal Requests Data:", response.data);
         } catch (err) {
-            setError("Teklif talepleri yüklenirken bir hata oluştu");
             console.error(err);
         } finally {
             setIsLoading(false);
@@ -107,6 +130,21 @@ export const ProposaRequestList = () => {
             {
                 accessorKey: 'total',
                 header: t('common:Total'),
+            },
+            {
+                id: 'actions',
+                header: t('common:Actions'),
+                enableColumnFilter: false,
+                enableSorting: false,
+                size: 100,
+                Cell: () => (
+                    <IconButton
+                        onClick={handleMenuClick}
+                        size="small"
+                    >
+                        <MoreVertIcon />
+                    </IconButton>
+                ),
             },
         ],
         [t]
@@ -206,6 +244,15 @@ export const ProposaRequestList = () => {
                 Yeni Teklif Talebi Ekle
             </Button>
             <MaterialReactTable table={table} />
+            <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+            >
+                <MenuItem onClick={handleViewDetails}>Detayları Görüntüle</MenuItem>
+                <MenuItem onClick={handleEdit}>Düzenle</MenuItem>
+                <MenuItem onClick={handleDelete}>Sil</MenuItem>
+            </Menu>
             <ProposalRequestForm open={isFormOpen} onClose={handleFormClose} onSuccess={handleFormSuccess} />
         </>
     );

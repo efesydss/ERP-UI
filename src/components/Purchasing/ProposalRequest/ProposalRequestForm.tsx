@@ -19,9 +19,10 @@ import {
   TableRow,
   Paper,
   Typography,
+  Menu,
 } from '@mui/material';
-import { Add as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
-import { ProposalRequest, MaterialCard, EmployeeExtendedRef, CurrentAccount, OfferStatusEnum, MaterialRequestRowItemUnit, CurrencyEnum, Project, MaterialRequestExtras } from '@/api/model';
+import { Add as AddIcon, Delete as DeleteIcon, MoreVert as MoreVertIcon } from '@mui/icons-material';
+import { ProposalRequest, MaterialCard, EmployeeExtendedRef, CurrentAccount, OfferStatusEnum, MaterialRequestRowItemUnit, CurrencyEnum, Project, MaterialRequestExtras, PaymentTermEnum } from '@/api/model';
 import { addProposalRequest } from '@/api/openAPIDefinition';
 import { employees, currentAccounts, materialCards, projects } from '@/api/filtering';
 
@@ -65,6 +66,20 @@ const ProposalRequestForm = ({ open, onClose, onSuccess }: ProposalRequestFormPr
   const [isLoadingCurrentAccounts, setIsLoadingCurrentAccounts] = useState(false);
   const [isLoadingMaterials, setIsLoadingMaterials] = useState(false);
   const [isLoadingProjects, setIsLoadingProjects] = useState(false);
+  const [selectedCurrentAccount, setSelectedCurrentAccount] = useState<CurrentAccount | null>(null);
+  const [currentAccountExtras, setCurrentAccountExtras] = useState<{
+    paymentTerm: PaymentTermEnum;
+    totalDiscount: number;
+    currency: CurrencyEnum;
+    description: string;
+  }>({
+    paymentTerm: PaymentTermEnum.CASH,
+    totalDiscount: 0,
+    currency: CurrencyEnum.TRY,
+    description: ''
+  });
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [selectedRowIndex, setSelectedRowIndex] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -133,6 +148,80 @@ const ProposalRequestForm = ({ open, onClose, onSuccess }: ProposalRequestFormPr
     }));
   };
 
+  const handleAddCurrentAccount = () => {
+    if (selectedCurrentAccount) {
+      setFormData(prev => ({
+        ...prev,
+        currentAccounts: [...(prev.currentAccounts || []), {
+          currentAccount: selectedCurrentAccount,
+          paymentTerm: currentAccountExtras.paymentTerm,
+          totalDiscount: currentAccountExtras.totalDiscount,
+          currency: currentAccountExtras.currency,
+          description: currentAccountExtras.description
+        }]
+      }));
+      setSelectedCurrentAccount(null);
+      setCurrentAccountExtras({
+        paymentTerm: PaymentTermEnum.CASH,
+        totalDiscount: 0,
+        currency: CurrencyEnum.TRY,
+        description: ''
+      });
+    }
+  };
+
+  const handleRemoveCurrentAccount = (index: number) => {
+    setFormData(prev => ({
+      ...prev,
+      currentAccounts: prev.currentAccounts?.filter((_, i) => i !== index)
+    }));
+  };
+
+  const handlePaymentTermChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCurrentAccountExtras(prev => ({
+      ...prev,
+      paymentTerm: event.target.value as PaymentTermEnum
+    }));
+  };
+
+  const handleCurrencyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCurrentAccountExtras(prev => ({
+      ...prev,
+      currency: event.target.value as CurrencyEnum
+    }));
+  };
+
+  const handleTotalDiscountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCurrentAccountExtras(prev => ({
+      ...prev,
+      totalDiscount: parseFloat(event.target.value) || 0
+    }));
+  };
+
+  const handleDescriptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCurrentAccountExtras(prev => ({
+      ...prev,
+      description: event.target.value
+    }));
+  };
+
+  const handleMenuClick = (event: React.MouseEvent<HTMLElement>, index: number) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedRowIndex(index);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    setSelectedRowIndex(null);
+  };
+
+  const handleDelete = () => {
+    if (selectedRowIndex !== null) {
+      handleRemoveCurrentAccount(selectedRowIndex);
+      handleMenuClose();
+    }
+  };
+
   const handleSubmit = async () => {
     try {
       const payload: ProposalRequest = {
@@ -142,9 +231,71 @@ const ProposalRequestForm = ({ open, onClose, onSuccess }: ProposalRequestFormPr
         requestDate: formData.requestDate || new Date().toISOString().split('T')[0],
         documentName: formData.documentName || '',
         employee: formData.employee || { id: 0, name: '', email: '' },
-        project: formData.project || { id: 0, code: '', name: '', currentAccount: { id: 0, title: '' }, employee: { id: 0, name: '', email: '' } },
         currentAccounts: formData.currentAccounts || [],
         materialRequestExtras: formData.materialRequestExtras || [],
+        project: formData.project || { 
+          id: 0, 
+          code: '', 
+          name: '',
+          currentAccount: { 
+            id: 0, 
+            code: '', 
+            title: '', 
+            active: true, 
+            sector: 'IT',
+            contactInformation: {
+              id: 0,
+              address: '',
+              authorizedPerson: '',
+              faxNo: '',
+              webAddress: undefined,
+              email: '',
+              specialCode: undefined,
+              number: '',
+              backupNumber: undefined,
+              taxAdmin: '',
+              taxNo: 0,
+              invoicedWithCurrency: false,
+              currency: 'TRY',
+              accountType: 'OFFICIAL'
+            },
+            bankAccount: {
+              id: 0,
+              accountNumber: '',
+              branch: {
+                id: 0,
+                bank: {
+                  id: 0,
+                  bankName: '',
+                  bankShortName: '',
+                  swiftCode: ''
+                },
+                name: '',
+                relatedEmployee: ''
+              },
+              iban: '',
+              currency: {
+                currencyCode: 'TRY',
+                numericCode: 949,
+                numericCodeAsString: '949',
+                displayName: 'Turkish Lira',
+                symbol: '₺',
+                defaultFractionDigits: 2
+              }
+            },
+            currentAccountBankAccounts: []
+          },
+          employee: { 
+            id: 0, 
+            identificationNumber: '00000',
+            name: '', 
+            surname: '',
+            companyBranch: { id: 0, name: '' },
+            department: { id: 0, name: '' },
+            profession: '',
+            startDate: new Date().toISOString().split('T')[0]
+          }
+        },
         total: formData.total || 0,
         totalDiscount: formData.totalDiscount || 0,
         unitDiscount: formData.unitDiscount || 0,
@@ -172,6 +323,7 @@ const ProposalRequestForm = ({ open, onClose, onSuccess }: ProposalRequestFormPr
                 label="Belge Adı"
                 value={formData.documentName}
                 onChange={(e) => setFormData({ ...formData, documentName: e.target.value })}
+                variant="outlined"
               />
               <TextField
                 fullWidth
@@ -179,7 +331,7 @@ const ProposalRequestForm = ({ open, onClose, onSuccess }: ProposalRequestFormPr
                 type="date"
                 value={formData.requestDate}
                 onChange={(e) => setFormData({ ...formData, requestDate: e.target.value })}
-                InputLabelProps={{ shrink: true }}
+                variant="outlined"
               />
             </Stack>
             <TextField
@@ -189,6 +341,7 @@ const ProposalRequestForm = ({ open, onClose, onSuccess }: ProposalRequestFormPr
               label="Açıklama"
               value={formData.description || ''}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              variant="outlined"
             />
             <Stack direction="row" spacing={2}>
               <TextField
@@ -197,6 +350,7 @@ const ProposalRequestForm = ({ open, onClose, onSuccess }: ProposalRequestFormPr
                 label="Teklif Durumu"
                 value={formData.offerStatus}
                 onChange={(e) => setFormData({ ...formData, offerStatus: e.target.value as OfferStatusEnum })}
+                variant="outlined"
               >
                 {Object.values(OfferStatusEnum).map((status) => (
                   <MenuItem key={status} value={status}>
@@ -215,12 +369,13 @@ const ProposalRequestForm = ({ open, onClose, onSuccess }: ProposalRequestFormPr
                   <TextField
                     {...params}
                     label="Proje"
+                    variant="outlined"
                     InputProps={{
                       ...params.InputProps,
                       endAdornment: (
                         <>
                           {isLoadingProjects ? 'Yükleniyor...' : null}
-                          {params.InputProps.endAdornment}
+                          {params.InputProps?.endAdornment}
                         </>
                       ),
                     }}
@@ -240,35 +395,13 @@ const ProposalRequestForm = ({ open, onClose, onSuccess }: ProposalRequestFormPr
                   <TextField
                     {...params}
                     label="Sorumlu"
+                    variant="outlined"
                     InputProps={{
                       ...params.InputProps,
                       endAdornment: (
                         <>
                           {isLoadingEmployees ? 'Yükleniyor...' : null}
-                          {params.InputProps.endAdornment}
-                        </>
-                      ),
-                    }}
-                  />
-                )}
-              />
-              <Autocomplete
-                fullWidth
-                options={currentAccountList}
-                getOptionLabel={(option) => option.title || ''}
-                value={formData.selectedCurrentAccount || null}
-                onChange={(_, newValue) => setFormData({ ...formData, selectedCurrentAccount: newValue || undefined })}
-                loading={isLoadingCurrentAccounts}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Seçili Cari Hesap"
-                    InputProps={{
-                      ...params.InputProps,
-                      endAdornment: (
-                        <>
-                          {isLoadingCurrentAccounts ? 'Yükleniyor...' : null}
-                          {params.InputProps.endAdornment}
+                          {params.InputProps?.endAdornment}
                         </>
                       ),
                     }}
@@ -292,12 +425,13 @@ const ProposalRequestForm = ({ open, onClose, onSuccess }: ProposalRequestFormPr
                   <TextField
                     {...params}
                     label="Malzeme"
+                    variant="outlined"
                     InputProps={{
                       ...params.InputProps,
                       endAdornment: (
                         <>
                           {isLoadingMaterials ? 'Yükleniyor...' : null}
-                          {params.InputProps.endAdornment}
+                          {params.InputProps?.endAdornment}
                         </>
                       ),
                     }}
@@ -310,12 +444,14 @@ const ProposalRequestForm = ({ open, onClose, onSuccess }: ProposalRequestFormPr
                 type="number"
                 value={newRowItem.quantity}
                 onChange={(e) => setNewRowItem({ ...newRowItem, quantity: e.target.value })}
+                variant="outlined"
               />
               <TextField
                 sx={{ width: '20%' }}
                 label="Birim"
                 value={newRowItem.material?.defaultUnit || ''}
                 disabled
+                variant="outlined"
               />
               <IconButton color="primary" onClick={handleAddRowItem}>
                 <AddIcon />
@@ -350,6 +486,128 @@ const ProposalRequestForm = ({ open, onClose, onSuccess }: ProposalRequestFormPr
                 </TableBody>
               </Table>
             </TableContainer>
+          </Box>
+
+          <Box sx={{ mt: 4 }}>
+            <Typography variant="h6" gutterBottom>Cari Hesaplar</Typography>
+            <Stack direction="row" spacing={2} alignItems="center">
+              <Autocomplete
+                sx={{ width: '40%' }}
+                options={currentAccountList}
+                getOptionLabel={(option) => `${option.title}`}
+                value={selectedCurrentAccount}
+                onChange={(_, newValue) => setSelectedCurrentAccount(newValue)}
+                loading={isLoadingCurrentAccounts}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Cari Hesap Seç"
+                    variant="outlined"
+                    InputProps={{
+                      ...params.InputProps,
+                      endAdornment: (
+                        <>
+                          {isLoadingCurrentAccounts ? 'Yükleniyor...' : null}
+                          {params.InputProps?.endAdornment}
+                        </>
+                      ),
+                    }}
+                  />
+                )}
+              />
+              <TextField
+                sx={{ width: '15%' }}
+                label="Toplam İndirim"
+                type="number"
+                value={currentAccountExtras.totalDiscount}
+                onChange={handleTotalDiscountChange}
+                variant="outlined"
+              />
+              <TextField
+                sx={{ width: '15%' }}
+                select
+                label="Ödeme Vadesi"
+                value={currentAccountExtras.paymentTerm}
+                onChange={handlePaymentTermChange}
+                variant="outlined"
+              >
+                {Object.values(PaymentTermEnum).map((term) => (
+                  <MenuItem key={term} value={term}>
+                    {term}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <TextField
+                sx={{ width: '15%' }}
+                select
+                label="Para Birimi"
+                value={currentAccountExtras.currency}
+                onChange={handleCurrencyChange}
+                variant="outlined"
+              >
+                {Object.values(CurrencyEnum).map((currency) => (
+                  <MenuItem key={currency} value={currency}>
+                    {currency}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <TextField
+                sx={{ width: '15%' }}
+                label="Açıklama"
+                value={currentAccountExtras.description}
+                onChange={handleDescriptionChange}
+                variant="outlined"
+              />
+              <IconButton color="primary" onClick={handleAddCurrentAccount}>
+                <AddIcon />
+              </IconButton>
+            </Stack>
+
+            <TableContainer component={Paper} sx={{ mt: 2 }}>
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Cari Hesap Adı</TableCell>
+                    <TableCell>Vergi No</TableCell>
+                    <TableCell>Ödeme Vadesi</TableCell>
+                    <TableCell>Toplam İndirim</TableCell>
+                    <TableCell>Para Birimi</TableCell>
+                    <TableCell>Açıklama</TableCell>
+                    <TableCell>İşlem</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {formData.currentAccounts?.map((account, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{account.currentAccount.title}</TableCell>
+                      <TableCell>{account.currentAccount.contactInformation?.taxNo}</TableCell>
+                      <TableCell>{account.paymentTerm}</TableCell>
+                      <TableCell>{account.totalDiscount}</TableCell>
+                      <TableCell>{account.currency}</TableCell>
+                      <TableCell>{account.description}</TableCell>
+                      <TableCell>
+                        <IconButton
+                          size="small"
+                          onClick={(e) => handleMenuClick(e, index)}
+                        >
+                          <MoreVertIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+            >
+              <MenuItem onClick={handleDelete}>
+                <DeleteIcon fontSize="small" sx={{ mr: 1 }} />
+                Sil
+              </MenuItem>
+            </Menu>
           </Box>
         </Box>
       </DialogContent>
