@@ -3,14 +3,13 @@ import { MRT_ColumnDef } from "material-react-table";
 import { useTranslation } from "react-i18next";
 import { proposalRequests, calculateProposalRequestSummary, updateProposalRequest } from "@/api/openAPIDefinition";
 import { MaterialReactTable, useMaterialReactTable } from "material-react-table";
-import { Box, Tab, Tabs, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, IconButton, Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, Typography, Divider, TextField, Stack } from '@mui/material';
+import { Box, Tab, Tabs, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, IconButton, Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, Typography, TextField, Stack } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ProposalRequestForm from '@/components/Purchasing/ProposalRequest/ProposalRequestForm';
 import { useEffect, useMemo, useState } from "react";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
 import SendIcon from '@mui/icons-material/Send';
-import UpdateIcon from '@mui/icons-material/Update';
 import InfoIcon from '@mui/icons-material/Info';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { currentAccounts } from "@/api/filtering";
@@ -113,16 +112,6 @@ export const ProposaRequestList = () => {
     const handleCloseDetailModal = () => {
         setIsDetailModalOpen(false);
         setSelectedProposalRequest(null);
-    };
-
-    const handleEdit = () => {
-        // Düzenleme işlemi
-        handleMenuClose();
-    };
-
-    const handleDelete = () => {
-        // Silme işlemi
-        handleMenuClose();
     };
 
     const handleProposalEntry = () => {
