@@ -8,7 +8,7 @@
 export type PaymentTypeEnum = typeof PaymentTypeEnum[keyof typeof PaymentTypeEnum];
 
 
-export const PaymentTypeEnum = {
+ export const PaymentTypeEnum = {
   NO_PAYMENT: 'NO_PAYMENT',
   CASH: 'CASH',
   CHECK: 'CHECK',

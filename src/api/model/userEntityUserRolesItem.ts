@@ -8,7 +8,7 @@
 export type UserEntityUserRolesItem = typeof UserEntityUserRolesItem[keyof typeof UserEntityUserRolesItem];
 
 
-export const UserEntityUserRolesItem = {
+ export const UserEntityUserRolesItem = {
   ROLE_ACCOUNTING_ADMIN: 'ROLE_ACCOUNTING_ADMIN',
   ROLE_COMPANY_ADMIN: 'ROLE_COMPANY_ADMIN',
   ROLE_FINANCE_ADMIN: 'ROLE_FINANCE_ADMIN',

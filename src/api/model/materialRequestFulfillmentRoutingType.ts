@@ -11,7 +11,7 @@
 export type MaterialRequestFulfillmentRoutingType = typeof MaterialRequestFulfillmentRoutingType[keyof typeof MaterialRequestFulfillmentRoutingType];
 
 
-export const MaterialRequestFulfillmentRoutingType = {
+ export const MaterialRequestFulfillmentRoutingType = {
   PROCUREMENT: 'PROCUREMENT',
   WAREHOUSE: 'WAREHOUSE',
   MATERIAL_REQUEST: 'MATERIAL_REQUEST',

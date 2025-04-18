@@ -187,6 +187,11 @@ export const allMenuItems: MenuItemProps[] = [
             env: [AppEnvironment.DEVELOPMENT],
             sub: [
               {
+                label: 'proposalRequests',
+                icon: FaRProject,
+                env: [AppEnvironment.DEVELOPMENT],
+              },
+              {
                 label: 'additionalCosts',
                 icon: FaRProject,
                 env: [AppEnvironment.DEVELOPMENT],

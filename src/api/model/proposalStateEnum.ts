@@ -11,7 +11,7 @@
 export type ProposalStateEnum = typeof ProposalStateEnum[keyof typeof ProposalStateEnum];
 
 
-export const ProposalStateEnum = {
+ export const ProposalStateEnum = {
   CREATED: 'CREATED',
   FORWARDED_TO_CUSTOMER: 'FORWARDED_TO_CUSTOMER',
   CUSTOMER_ACCEPTED: 'CUSTOMER_ACCEPTED',

@@ -8,7 +8,7 @@
 export type AssignmentStatusEnum = typeof AssignmentStatusEnum[keyof typeof AssignmentStatusEnum];
 
 
-export const AssignmentStatusEnum = {
+ export const AssignmentStatusEnum = {
   ASSIGNED: 'ASSIGNED',
   UNASSIGNED: 'UNASSIGNED',
   IN_MAINTENANCE: 'IN_MAINTENANCE',

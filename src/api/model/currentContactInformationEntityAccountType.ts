@@ -8,6 +8,7 @@
 export type CurrentContactInformationEntityAccountType = typeof CurrentContactInformationEntityAccountType[keyof typeof CurrentContactInformationEntityAccountType];
 
 
+
 export const CurrentContactInformationEntityAccountType = {
   CUSTOMER: 'CUSTOMER',
   SELLER: 'SELLER',

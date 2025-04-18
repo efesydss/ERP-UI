@@ -8,7 +8,7 @@
 export type UnitEnum = typeof UnitEnum[keyof typeof UnitEnum];
 
 
-export const UnitEnum = {
+ export const UnitEnum = {
   KG: 'KG',
   GR: 'GR',
   METER: 'METER',

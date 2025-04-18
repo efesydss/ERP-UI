@@ -8,7 +8,7 @@
 export type WarehouseBranchEnum = typeof WarehouseBranchEnum[keyof typeof WarehouseBranchEnum];
 
 
-export const WarehouseBranchEnum = {
+ export const WarehouseBranchEnum = {
   DUZCE: 'DUZCE',
   TUZLA: 'TUZLA',
   TERSANE: 'TERSANE',

@@ -8,7 +8,7 @@
 export type TimeOffType = typeof TimeOffType[keyof typeof TimeOffType];
 
 
-export const TimeOffType = {
+ export const TimeOffType = {
   SICK_LEAVE: 'SICK_LEAVE',
   VACATION: 'VACATION',
   ON_DEMAND: 'ON_DEMAND',

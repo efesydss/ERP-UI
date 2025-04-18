@@ -36,6 +36,7 @@ const DepotTransactionList = () => {
       setIsLoading(false);
     }
   };
+  //proposalRequestRepository,materialRequestExtrasRepository,materialRequestRowItemRepository
 
   useEffect(() => {
     fetchDepotTransactions();

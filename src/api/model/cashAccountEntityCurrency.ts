@@ -8,7 +8,7 @@
 export type CashAccountEntityCurrency = typeof CashAccountEntityCurrency[keyof typeof CashAccountEntityCurrency];
 
 
-export const CashAccountEntityCurrency = {
+ export const CashAccountEntityCurrency = {
   TRY: 'TRY',
   USD: 'USD',
   EUR: 'EUR',

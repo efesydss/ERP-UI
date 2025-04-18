@@ -8,7 +8,7 @@
 export type SectionTypeEnum = typeof SectionTypeEnum[keyof typeof SectionTypeEnum];
 
 
-export const SectionTypeEnum = {
+ export const SectionTypeEnum = {
   MANAGEMENT: 'MANAGEMENT',
   IT: 'IT',
   PRODUCTION: 'PRODUCTION',

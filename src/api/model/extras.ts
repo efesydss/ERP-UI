@@ -22,6 +22,6 @@ export interface Extras {
   bankAccounts?: BankAccount[];
   /** Technical Details */
   technicalDetails?: string[];
-  designFileRequired?: boolean;
   materialRequestRequired?: boolean;
+  designFileRequired?: boolean;
 }

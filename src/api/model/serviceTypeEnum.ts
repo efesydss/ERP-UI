@@ -8,7 +8,7 @@
 export type ServiceTypeEnum = typeof ServiceTypeEnum[keyof typeof ServiceTypeEnum];
 
 
-export const ServiceTypeEnum = {
+ export const ServiceTypeEnum = {
   MAIN_SERVICE: 'MAIN_SERVICE',
   CONSUMPTION_SERVICE: 'CONSUMPTION_SERVICE',
 } as const;

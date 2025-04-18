@@ -11,7 +11,7 @@
 export type MaterialRequestRowItemUnit = typeof MaterialRequestRowItemUnit[keyof typeof MaterialRequestRowItemUnit];
 
 
-export const MaterialRequestRowItemUnit = {
+ export const MaterialRequestRowItemUnit = {
   KG: 'KG',
   GR: 'GR',
   METER: 'METER',

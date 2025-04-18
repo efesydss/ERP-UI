@@ -8,7 +8,7 @@
 export type InvoiceItemTypeEnum = typeof InvoiceItemTypeEnum[keyof typeof InvoiceItemTypeEnum];
 
 
-export const InvoiceItemTypeEnum = {
+ export const InvoiceItemTypeEnum = {
   ADDITIONAL_COST: 'ADDITIONAL_COST',
   SERVICE: 'SERVICE',
   MATERIAL: 'MATERIAL',

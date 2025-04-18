@@ -8,7 +8,7 @@
 export type CurrentAccountBankAccountEntityCurrency = typeof CurrentAccountBankAccountEntityCurrency[keyof typeof CurrentAccountBankAccountEntityCurrency];
 
 
-export const CurrentAccountBankAccountEntityCurrency = {
+ export const CurrentAccountBankAccountEntityCurrency = {
   TRY: 'TRY',
   USD: 'USD',
   EUR: 'EUR',

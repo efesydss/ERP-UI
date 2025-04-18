@@ -8,7 +8,7 @@
 export type WarrantyPeriodEnum = typeof WarrantyPeriodEnum[keyof typeof WarrantyPeriodEnum];
 
 
-export const WarrantyPeriodEnum = {
+ export const WarrantyPeriodEnum = {
   DAY: 'DAY',
   WEEK: 'WEEK',
   MONTH: 'MONTH',
