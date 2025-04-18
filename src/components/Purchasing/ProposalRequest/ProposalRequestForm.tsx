@@ -42,7 +42,7 @@ const ProposalRequestForm = ({ open, onClose, onSuccess }: ProposalRequestFormPr
   const [formData, setFormData] = useState<Partial<ProposalRequest>>({
     documentName: '',
     requestDate: new Date().toISOString().split('T')[0],
-    offerStatus: OfferStatusEnum.CANCELED_QUOTES,
+    offerStatus: OfferStatusEnum.PENDING_QUOTE_ENTRIES,
     materialRequestExtras: [],
     currentAccounts: [],
     total: 0,
@@ -227,7 +227,7 @@ const ProposalRequestForm = ({ open, onClose, onSuccess }: ProposalRequestFormPr
       const payload: ProposalRequest = {
         ...formData,
         id: null,
-        offerStatus: formData.offerStatus || OfferStatusEnum.CANCELED_QUOTES,
+        offerStatus: OfferStatusEnum.PENDING_CURRENT_PROPOSAL,
         requestDate: formData.requestDate || new Date().toISOString().split('T')[0],
         documentName: formData.documentName || '',
         employee: formData.employee || { id: 0, name: '', email: '' },
@@ -351,6 +351,7 @@ const ProposalRequestForm = ({ open, onClose, onSuccess }: ProposalRequestFormPr
                 value={formData.offerStatus}
                 onChange={(e) => setFormData({ ...formData, offerStatus: e.target.value as OfferStatusEnum })}
                 variant="outlined"
+                disabled
               >
                 {Object.values(OfferStatusEnum).map((status) => (
                   <MenuItem key={status} value={status}>

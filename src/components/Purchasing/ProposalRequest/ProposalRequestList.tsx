@@ -18,6 +18,7 @@ import { PaymentTermEnum, CurrencyEnum, CurrentAccount, CurrentAccountExtras } f
 import { Autocomplete } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import CheckIcon from '@mui/icons-material/Check';
+import { OfferStatusEnum } from '@/api/model/offerStatusEnum';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -76,6 +77,7 @@ export const ProposaRequestList = () => {
     const [isProposalSelectionModalOpen, setIsProposalSelectionModalOpen] = useState(false);
     const [selectedProposalForSelection, setSelectedProposalForSelection] = useState<ProposalRequest | null>(null);
     const [selectedCurrentAccountExtra, setSelectedCurrentAccountExtra] = useState<CurrentAccountExtras | null>(null);
+    const [isApprovalDialogOpen, setIsApprovalDialogOpen] = useState(false);
 
     const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
         setTabValue(newValue);
@@ -411,6 +413,31 @@ export const ProposaRequestList = () => {
         ),
     });
 
+    const handleSendForApproval = async () => {
+        if (selectedProposalRequest) {
+            try {
+                const updatedProposal = {
+                    ...selectedProposalRequest,
+                    offerStatus: OfferStatusEnum.PENDING_ORDERS,
+                };
+                await updateProposalRequest(updatedProposal.id || 0, updatedProposal);
+                fetchProposalRequests();
+                setIsApprovalDialogOpen(false);
+            } catch (error) {
+                console.error('Onaya gönderilirken hata oluştu:', error);
+            }
+        }
+    };
+
+    const handleOpenApprovalDialog = () => {
+        setIsApprovalDialogOpen(true);
+        handleMenuClose();
+    };
+
+    const handleCloseApprovalDialog = () => {
+        setIsApprovalDialogOpen(false);
+    };
+
     return (
         <>
             <Button variant="contained" onClick={handleFormOpen} sx={{ mb: 2 }}>
@@ -430,13 +457,9 @@ export const ProposaRequestList = () => {
                     <EditIcon fontSize="small" sx={{ mr: 1 }} />
                     Teklif Seçimi
                 </MenuItem>
-                <MenuItem onClick={handleDelete}>
+                <MenuItem onClick={handleOpenApprovalDialog}>
                     <SendIcon fontSize="small" sx={{ mr: 1 }} />
                     Onaya Gönder
-                </MenuItem>
-                <MenuItem onClick={handleEdit}>
-                    <UpdateIcon fontSize="small" sx={{ mr: 1 }} />
-                    Güncelle
                 </MenuItem>
                 <MenuItem onClick={handleViewDetails}>
                     <InfoIcon fontSize="small" sx={{ mr: 1 }} />
@@ -739,7 +762,7 @@ export const ProposaRequestList = () => {
                                     </TableHead>
                                     <TableBody>
                                         {selectedProposalForSelection.currentAccounts?.map((account, index) => (
-                                            <TableRow 
+                                            <TableRow
                                                 key={index}
                                                 selected={selectedCurrentAccountExtra === account}
                                                 onClick={() => setSelectedCurrentAccountExtra(account)}
@@ -769,13 +792,31 @@ export const ProposaRequestList = () => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleCloseProposalSelectionModal}>İptal</Button>
-                    <Button 
-                        onClick={handleSaveProposalSelection} 
-                        variant="contained" 
+                    <Button
+                        onClick={handleSaveProposalSelection}
+                        variant="contained"
                         color="primary"
                         disabled={!selectedCurrentAccountExtra}
                     >
                         Kaydet
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            <Dialog
+                open={isApprovalDialogOpen}
+                onClose={handleCloseApprovalDialog}
+                maxWidth="sm"
+                fullWidth
+            >
+                <DialogTitle>Onaya Gönder</DialogTitle>
+                <DialogContent>
+                    <Typography>Bu teklifi onaya göndermek istediğinizden emin misiniz?</Typography>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseApprovalDialog}>İptal</Button>
+                    <Button onClick={handleSendForApproval} variant="contained" color="primary">
+                        Onaya Gönder
                     </Button>
                 </DialogActions>
             </Dialog>
