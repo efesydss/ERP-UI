@@ -605,7 +605,23 @@ const ProposalRequestForm = ({ open, onClose, onSuccess }: ProposalRequestFormPr
             >
               <MenuItem onClick={handleDelete}>
                 <DeleteIcon fontSize="small" sx={{ mr: 1 }} />
-                Sil
+                Teklif Girişi
+              </MenuItem>
+              <MenuItem onClick={handleDelete}>
+                <DeleteIcon fontSize="small" sx={{ mr: 1 }} />
+                Teklif Seçimi
+              </MenuItem>
+              <MenuItem onClick={handleDelete}>
+                <DeleteIcon fontSize="small" sx={{ mr: 1 }} />
+                Onaya Gönder
+              </MenuItem>
+              <MenuItem onClick={handleDelete}>
+                <DeleteIcon fontSize="small" sx={{ mr: 1 }} />
+                Güncelle
+              </MenuItem>
+              <MenuItem onClick={handleDelete}>
+                <DeleteIcon fontSize="small" sx={{ mr: 1 }} />
+                Detayları Görüntüle
               </MenuItem>
             </Menu>
           </Box>
